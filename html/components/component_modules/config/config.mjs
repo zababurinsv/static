@@ -44,8 +44,8 @@ config['waves']['cell'] = 'https://email.zababurinsv.now.sh'
 
 config['telegram'] = {}
 config['telegram']['localHttp'] = 'https://localhost:7000'
-config['telegram']['localWss'] = 'ws://localhost:7000'
-config['telegram']['localSse'] = 'https://localhost:7000/connect'
+config['telegram']['localWss'] = 'wss://localhost:7000'
+config['telegram']['localSse'] = 'wss://localhost:7000/connect'
 config['telegram']['web'] = 'https://rington-messenger.herokuapp.com'
 config['telegram']['wss'] = 'wss://rington-messenger.herokuapp.com'
 config['telegram']['sse'] = 'https://rington-messenger.herokuapp.com/connect'
