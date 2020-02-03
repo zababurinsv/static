@@ -1,0 +1,39 @@
+<template>
+    <section id="account">
+        <div class="preview">
+            <p class="preview">
+                Bank account (!TestNet)
+            </p>
+            <div class ="data">
+                <div class="balance">
+                    Regular Balance
+                    <div class="regularBalance">
+                        0
+                    </div>
+                </div>
+                <div id="multiDomainAccount"></div>
+                <div class="fiat"><slot name="fiat-form"></slot></div>
+            </div>
+        </div>
+        <div  class="container">
+            <form class="account">
+                <div class="account">
+                    <section class="account">
+                        <input  type="number" name="withdraw" id="withdraw" placeholder = 'all'>
+                        <label class="withdraw" for = "withdraw"> Withdraw</label>
+                    </section>
+                    <section class="account">
+                        <input type="number" name="deposit" id="deposit" placeholder = '0'>
+                        <label class="deposit" for = "deposit"> Deposit</label>
+                    </section>
+                </div>
+            </form>
+            <section class="personal">
+                <div class="balanceAccount">0</div>
+                <select class="balanceSelect">
+                    <option>Waves</option>
+                </select>
+            </section>
+        </div>
+    </section>
+</template>

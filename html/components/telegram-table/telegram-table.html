@@ -1,0 +1,54 @@
+<template>
+    <section id="table">
+        <div id="tableHeader">
+            <div class="num_rows">
+            </div>
+            <div class="form-group">
+                <select class  ="form-control" name="state" id="maxRows">
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="70">70</option>
+                    <option value="100">100</option>
+                    <option value="5000">Show ALL Rows</option>
+                </select>
+            </div>
+        </div>
+        <table cellspacing="2" border="1" cellpadding="1" align="center">
+            <thead>
+            <tr>
+                <th><input type="text"  class="col-md-12" id="search_input_id"  placeholder="id" class="form-control"></th>
+                <th>
+                    <select id="search_input_City" name="city">
+                        <option value="0">Все</option>
+                        <option value="1">Москва</option>
+                        <option value="2">Санкт-Петербург</option>
+                    </select>
+                </th>
+                <th><input type="text" class="col-md-12"id="search_input_Developer"   placeholder="Застройщик" class="form-control"></th>
+                <th><input type="text" class="col-md-12"id="search_input_Object"   placeholder="Объект" class="form-control"></th>
+                <th><input type="text" class="col-md-12"id="search_input_Deadline"  placeholder="Срок сдачи" class="form-control"></th>
+                <th><input type="text" class="col-md-12"id="search_input_houseClass"  placeholder="Класс жилья" class="form-control"></th>
+                <th><input type="text" class="col-md-12"id="search_input_houseType"  placeholder="Тип жилья" class="form-control"></th>
+                <th><input type="text" class="col-md-12"id="search_input_Metro"  placeholder="Метро" class="form-control"></th>
+                <th><input type="text" class="col-md-12"id="search_input_geo"  placeholder="ГЕО" class="form-control"></th>
+                <th><input type="text" class="col-md-12"id="search_input_plan"  placeholder="Планировки" class="form-control"></th>
+                <th><input type="text" class="col-md-12"id="search_input_price"  placeholder="Цена от" class="form-control"></th>
+                <th><input type="text" class="col-md-12"id="search_input_Finish"  placeholder="Отделака" class="form-control"></th>
+                <th><input type="text" class="col-md-12"id="search_input_AdditionalInfo"  placeholder="Дополнительная Информация" class="form-control"></th>
+                <th ><input type="text"class="col-md-12"id="search_input_edit"  placeholder="" class="form-control"></th>
+            </tr>
+            </thead>
+            <tbody><tbody>
+        </table>
+        <div class='tableFooter'>
+            <nav>
+                <ul class="pagination">
+                    <!--Here the JS Function Will Add the Rows -->
+                </ul>
+                <div class="rows_count">Showing 11 to 20 of 91 entries</div>
+            </nav>
+        </div>
+    </section>
+</template>

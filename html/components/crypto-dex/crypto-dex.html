@@ -1,0 +1,162 @@
+<template>
+<section>
+    <div id="inputParam">
+        <label><input type="number" min="0" max="24000" id="Waves" />Waves</label>
+        <label><input type="number" min="0" max="24000" id="Usd" />Usd</label>
+        <label><input type="number" min="0" max="24000" id="Euro" />Euro</label>
+    </div>
+    <div id = "graph">
+        <div id="itemWavesEuro" class="itemBid">
+            <div class="info">
+                <p>Waves/Euro</p>
+                <div>
+                    <p>timestamp</p>
+                    <div id="wavesEuroTimestamp"></div>
+                    <p>Delta</p>
+                    <div id="wavesEuroDelta"></div>
+                    <p>~~~~~~~~~~~~</p>
+                    <div style="color: green" id="sew"></div>
+                    <div  style="color: green"  id="cwe"></div>
+                    <div style="color: fuchsia" id="swe"></div>
+
+                    <div  style="color: red"  id="cew" ></div>
+
+                </div>
+            </div>
+            <div id="wavesEuro">
+                <div>
+                    <p>Bids</p>
+                    <div id="wavesEuroBid" class="bid">
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                    </div>
+                </div>
+                <div>
+                    <p>Asks</p>
+                    <div id="wavesEuroAsk" class="ask">
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="itemEuroUsd" class="itemBid">
+            <div class="info">
+                <p>Euro/Usd</p>
+                <div>
+                    <p>timestamp</p>
+                    <div id="euroUsdTimestamp"></div>
+                    <p>Delta</p>
+                    <div id="euroUsdDelta"></div>
+                    <p>~~~~~~~~~~~~</p>
+                    <div style="color: red"  id="sue"></div>
+                    <div style="color: fuchsia" id="ceu"></div>
+                    <div style="color: red"  id="seu"></div>
+
+                    <div style="color: fuchsia" id="cue"></div>
+
+                </div>
+            </div>
+            <div id="euroUsd">
+                <div>
+                    <p>Bids</p>
+                    <div id="euroUsdBid" class="bid">
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                    </div>
+                </div>
+                <div>
+                    <p>Asks</p>
+                    <div id="euroUsdAsk" class="ask">
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="itemWavesUsd" class="itemBid">
+            <div class="info">
+                <p>Waves/Usd</p>
+                <div>
+                    <p>timestamp</p>
+                    <div id="wavesUsdTimestamp"></div>
+                    <p>Delta</p>
+                    <div id="wavesUsdDelta"></div>
+                    <p>~~~~~~~~~~~~</p>
+                    <div  style="color: fuchsia"  id="swu"></div>
+                    <div  style="color: red"  id="cuw"></div>
+                    <div  style="color: green"  id="suw"></div>
+
+                    <div  style="color: green"id="cwu"></div>
+
+                </div>
+            </div>
+            <div id="wavesUsd">
+                <div>
+                    <p>Bids</p>
+                    <div id="wavesUsdBid" class="bid">
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                    </div>
+                </div>
+                <div>
+                    <p>Asks</p>
+                    <div id="wavesUsdAsk" class="ask">
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                        <div class = item></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div id="total"></div>
+</section>
+</template>
