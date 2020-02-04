@@ -1,0 +1,1 @@
+import axios from"axios";const setAuthToken=o=>{o?axios.defaults.headers.common.Authorization=o:delete axios.defaults.headers.common.Authorization};export default setAuthToken;

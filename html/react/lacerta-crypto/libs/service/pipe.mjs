@@ -1,0 +1,1 @@
+const pipe=(p,...e)=>e.reduce((p,e)=>e(p),p);export const pipeF=(...p)=>e=>pipe(e,...p);export default pipe;
