@@ -1,0 +1,1 @@
+export default(e,n)=>new Promise(function(o,t){let d=document.createElement("script");d.src=e,document.body.appendChild(d),d.onload=(e=>{o(window[n])})});
