@@ -1,0 +1,1 @@
+let object={};import{tests}from"/static/html/components/component_modules/loader/loader.mjs";export default(e={_:"default"})=>new Promise(async(e,t)=>{await tests("/tests/wallet.mjs","tests");let o=document.createElement("script");o.type="module",o.innerHTML=void(async e=>{mocha.run()})(document),document.body.appendChild(o),e(object)});
