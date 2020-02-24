@@ -1,0 +1,1 @@
+let object={};export default e=>new Promise(function(c,n){switch(e._){case"launch":(async e=>{console.log("launch")})();break;default:console.warn("неизвестный метод",e._,"----\x3e",e)}c(e)});
