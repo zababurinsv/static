@@ -1,1 +1,1 @@
-let start=function(t){let s=t.this.querySelector(".preloader");s&&(s.classList.contains("done")||s.classList.add("done"))},stop=function(t){let s=t.this.querySelector(".preloader");s&&(s.classList.contains("done")||s.classList.add("done"))};export default{start:t=>start(t),stop:t=>stop(t)};
+document.body.onload=function(){setTimeout(function(){let o=document.body.shadowRoot.querySelector(".preloader");o&&(o.classList.contains("done")||o.classList.add("done"))},3e3)};
