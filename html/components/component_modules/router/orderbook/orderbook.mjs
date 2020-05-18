@@ -1,0 +1,1 @@
+import second from"/static/html/components/component_modules/router/orderbook/orderbooksecond.mjs";export default(o,e,t,c,r)=>new Promise(function(n,s){switch(c.path[3]){case"cancel":case"market":break;default:second(o,e,t,c,r)}});

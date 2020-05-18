@@ -1,0 +1,1 @@
+import orderbook from"/static/html/components/component_modules/router/orderbook/orderbook.mjs";export default(o,r,e,t,m)=>new Promise(function(d,n){switch(t.path[2]){case'"orderbook"':orderbook(o,r,e,t,m)}});

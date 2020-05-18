@@ -1,0 +1,1 @@
+export default(e="",t={})=>document.dispatchEvent(new CustomEvent(`${e}-end`,{detail:{"/":e,data:t,apiBase:{apiBase:"https://nodes-testnet.wavesnodes.com"}}}));
