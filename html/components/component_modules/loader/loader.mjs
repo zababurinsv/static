@@ -1,1 +1,94 @@
-import isEmpty from"/static/html/components/component_modules/isEmpty/isEmpty.mjs";export let style=(e="#",t)=>new Promise(function(o,n){if("object"==typeof t&&t.children.length>0){let o=t.querySelectorAll("style"),n=!1;for(let t=0;t<o.length;t++)o[t].innerText.indexOf(`${e}`)>0&&(n=!0);if(n);else{let o=document.createElement("style");o.innerHTML=`@import '${e}';`,t.appendChild(o)}}else console.assert(!1,"укажите компонент куда будет добавляться стиль");o({style:"true"})});export let tests=(e,t)=>new Promise(function(o,n){let d=document.createElement("script");d.src=e,d.type="module",isEmpty(t)?(console.warn("установите путь куда будет добавлен скрипт /n устанавливается в body "),document.body.appendChild(d)):document.body.querySelector(`#${t}`).appendChild(d),d.onload=(e=>{o({loading:!0})})});export let add=(e,t)=>new Promise(function(o,n){let d=document.createElement("script");d.src=e,isEmpty(t)?(console.warn("установите путь куда будет добавлен скрипт /n устанавливается в body "),document.body.appendChild(d)):document.body.querySelector(`#${t}`).appendChild(d),d.onload=(e=>{o(window[name])})});export default(e,t)=>new Promise(function(o,n){let d=!0,l=t.toLowerCase(),i={};for(let e of document.body.querySelectorAll("script"))e.src.indexOf(`${l}.mjs`)>0&&(d=!1,i=e);if(d)if(isEmpty(window[t])){let n=document.createElement("script");n.src=e,document.body.appendChild(n),n.onload=(e=>{document.dispatchEvent(new CustomEvent(`${t}-loading`)),o(window[t])})}else o(window[t]);else isEmpty(window[t])?document.addEventListener(`${t}-loading`,()=>{o(window[t])}):(console.log("#####3#######",window[t]),o(window[t]))});
+import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
+export let style = (url='#', target = undefined) => {
+    return new Promise(function (resolve, reject) {
+        if(typeof (target) === 'object' && target.children.length > 0){
+            let allStyle = target.querySelectorAll('style')
+            let verify = false
+            for(let i =0; i< allStyle.length;i++){
+                if(allStyle[i].innerText.indexOf(`${url}`) > 0){
+                    verify = true
+                }
+            }
+            if(verify){
+
+            }else{
+                let style = document.createElement('style')
+                style.innerHTML = `@import '${url}';`
+                target.appendChild(style);
+            }
+        }else{
+            console.assert(false, 'укажите компонент куда будет добавляться стиль')
+        }
+        resolve({style:'true'})
+    })
+}
+
+export let tests = (url, target)=>{
+    return new Promise(function (resolve, reject) {
+        let load = document.createElement('script');
+        load.src = url
+        load.type = 'module'
+        if(isEmpty(target)){
+            console.warn(`установите путь куда будет добавлен скрипт /n устанавливается в body `)
+            document.body.appendChild(load)
+        }else{
+            document.body.querySelector(`#${target}`).appendChild(load)
+        }
+
+        load.onload = (out) =>{
+            resolve({loading:true})
+        }
+    })
+}
+export let add = (url, target)=>{
+    return new Promise(function (resolve, reject) {
+        let load = document.createElement('script');
+        load.src = url
+        if(isEmpty(target)){
+            console.warn(`установите путь куда будет добавлен скрипт /n устанавливается в body `)
+            document.body.appendChild(load)
+        }else{
+            document.body.querySelector(`#${target}`).appendChild(load)
+        }
+
+        load.onload = (out) =>{
+            resolve(window[name])
+        }
+    })
+}
+
+export default (url, name)=>{
+    return new Promise(function (resolve, reject) {
+        let verifyScript = true
+        let verifyName = name.toLowerCase()
+        let Script = {}
+        for(let item of document.body.querySelectorAll('script')){
+            if(item.src.indexOf(`${verifyName}.mjs`) > 0){
+                verifyScript =false
+                Script = item
+            }
+        }
+        if(verifyScript){
+            if( isEmpty(window[name])){
+                let load = document.createElement('script');
+                load.src = url
+                document.body.appendChild(load)
+                load.onload = (out) =>{
+                    document.dispatchEvent( new CustomEvent(`${name}-loading`))
+                    resolve(window[name])
+                }
+            }else{
+                resolve(window[name])
+            }
+        }else{
+            if( isEmpty(window[name])){
+              document.addEventListener(`${name}-loading`,()=>{
+                  resolve(window[name])
+              })
+            }else{
+                console.log('#####3#######', window[name])
+                resolve(window[name])
+            }
+        }
+    })
+}

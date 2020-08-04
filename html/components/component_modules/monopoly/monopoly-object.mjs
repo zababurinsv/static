@@ -1,1 +1,26 @@
-import description from"/static/html/components/component_modules/description/description.mjs";let object=void 0;export default(t,e="default",o="default",...c)=>new Promise(async(n,i)=>{try{"string"==typeof c[c.length-1]?object=await description(t,"%c%O"+c[c.length-1],"color:"+o,"[(",c.slice(0,c.length-1),"*)",e,"]"):console.assert(!1,"не выбранно отношение"),function(t){n(t)}(object)}catch(t){!function(t){i(t)}({_:"object",error:t})}});
+import description from '/static/html/components/component_modules/description/description.mjs'
+let object = undefined
+export default (show, message='default', color ='default', ...args) =>{
+    return  new Promise(async (resolve, reject) => {
+        function out(obj) {
+            resolve(obj)
+        }
+        function err(obj) {
+            reject(obj)
+        }
+        try {
+            if(typeof args[args.length-1] === 'string'){
+                object = await description(show, '%c%O' + args[args.length-1],'color:' + color,'[(', args.slice(0, args.length-1),'*)',message,']')
+            }else{
+                console.assert(false, 'не выбранно отношение')
+            }
+            out(object)
+        }catch (e) {
+            err({
+                _:'object',
+                error: e
+            })
+        }
+        
+    })
+}

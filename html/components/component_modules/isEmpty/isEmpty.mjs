@@ -1,1 +1,7 @@
-var has=Object.prototype.hasOwnProperty,toString=Object.prototype.toString;function isEmpty(t){if(null==t)return!0;if("boolean"==typeof t)return!1;if("number"==typeof t)return 0===t;if("string"==typeof t)return 0===t.length;if("function"==typeof t)return 0===t.length;if(Array.isArray(t))return 0===t.length;if(t instanceof Error)return""===t.message;if(t.toString==toString)switch(t.toString()){case"[object File]":case"[object Map]":case"[object Set]":return 0===t.size;case"[object Object]":for(var r in t)if(has.call(t,r))return!1;return!0}return!1}export default isEmpty;
+const isEmpty = value =>
+    value === undefined ||
+    value === null ||
+    (typeof value === 'object' && Object.keys(value).length === 0) ||
+    (typeof value === 'string' && value.trim().length === 0);
+
+export default isEmpty;

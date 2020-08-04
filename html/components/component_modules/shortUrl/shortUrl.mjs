@@ -1,1 +1,73 @@
-export default async(e,t)=>{if("string"!=typeof e)throw new TypeError("shorten-url: url must be a string");if("number"!=typeof t)throw new TypeError("shorten-url: maxLength must be a number");if(e.length<t)return e;var l=/\w+:\/\//.exec(e);l&&(l=l[0],e=e.slice(l.length));var n,r,i=e.indexOf("/");-1===i?(n=e,e=""):(n=e.slice(0,i),e=e.slice(i+1)),-1===(i=e.indexOf("?"))?(r=e,e=""):(r=e.slice(0,i),e=e.slice(i+1));for(var h=e,s=r.split("/"),g=l.length+n.length+r.length,o=-1;s.length&&g>t-3;){(o=Math.floor(s.length/2-1))<0&&(o=0),g-=s.splice(o,1)[0].length+1}-1!==o&&s.splice(o,0,"…");var f=l+n+"/"+s.join("/");if(h){for(s=h.split("&"),i=0;i<s.length&&!(g+s[i].length>=t-3);i++)g+=s[i].length;f+="?"+s.slice(0,i).join("&"),i<s.length&&(i>0&&(f+="&"),f+="…")}return f.length>t&&(f=f.slice(0,t-1)+"…"),f};
+export default async (url, maxLength) => {
+    if (typeof url !== 'string') throw new TypeError('shorten-url: url must be a string')
+    if (typeof maxLength !== 'number') throw new TypeError('shorten-url: maxLength must be a number')
+
+    if (url.length < maxLength) return url
+
+    var scheme = /\w+:\/\//.exec(url)
+    if (scheme) {
+        scheme = scheme[0]
+        url = url.slice(scheme.length)
+    }
+
+    var i = url.indexOf('/')
+    var host
+    if (i === -1) {
+        host = url
+        url = ''
+    } else {
+        host = url.slice(0, i)
+        url = url.slice(i + 1)
+    }
+
+    var path
+    i = url.indexOf('?')
+    if (i === -1) {
+        path = url
+        url = ''
+    } else {
+        path = url.slice(0, i)
+        url = url.slice(i + 1)
+    }
+
+    var query = url
+
+    var parts = path.split('/')
+    var currentLength = scheme.length + host.length + path.length
+    var spliceIndex = -1
+    while (parts.length && currentLength > maxLength - 3) {
+        // Bias towards removing the start of a path vs the end
+        spliceIndex = Math.floor(parts.length / 2 - 1)
+        if (spliceIndex < 0) spliceIndex = 0
+
+        var part = parts.splice(spliceIndex, 1)
+        currentLength -= part[0].length + 1 /* the / */
+    }
+
+    if (spliceIndex !== -1) {
+        parts.splice(spliceIndex, 0, '…')
+    }
+
+    var newUrl = scheme + host + '/' + parts.join('/')
+    if (query) {
+        parts = query.split('&')
+        for (i = 0; i < parts.length; i++) {
+            if (currentLength + parts[i].length >= maxLength - 3) {
+                break
+            }
+            currentLength += parts[i].length
+        }
+        newUrl += '?' + parts.slice(0, i).join('&')
+        if (i < parts.length) {
+            if (i > 0) newUrl += '&'
+            newUrl += '…'
+        }
+    }
+
+    // If it's still too long, just chop some stuff off without caring about contents.
+    if (newUrl.length > maxLength) {
+        newUrl = newUrl.slice(0, maxLength - 1) + '…'
+    }
+
+    return newUrl
+}

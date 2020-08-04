@@ -1,1 +1,76 @@
-function init(){fetch("/static/html/components/component_modules/lacerta-crypto/Exchange/v1/3533.json").then(function(t){if(console.assert(!1,t),!t.ok)throw new Error("HTTP error, status = "+t.status);return t.json()}).then(function(t){console.assert(!1,t),colorLog("(~~~~(~~~(~~(~~~exchange V2~~~)~~)~~~)~~~~)","#3498DB  ",t)}).catch(function(t){}),fetch("/static/html/components/component_modules/lacerta-crypto/Exchange/v1/CPf7EWE4hPrBNKJpzBtBm9os4UsyZ8Eebhzwq4EqLWqG.json").then(function(t){if(!t.ok)throw new Error("HTTP error, status = "+t.status);return t.json()}).then(function(t){colorLog("(~~~~(~~~(~~(~~~exchange V3~~~)~~)~~~)~~~~)","#3498DB  ",t)}).catch(function(t){}),fetch("/static/html/components/component_modules/lacerta-crypto/Exchange/v2/28biMwpgZVjAUk5iJnWvphaFgr8Tybwqe6s5JxGTdDWJ.json").then(function(t){if(!t.ok)throw new Error("HTTP error, status = "+t.status);return t.json()}).then(function(t){colorLog("(~~~~(~~~(~~(~~~exchange V1~~~)~~)~~~)~~~~)","#3498DB  ",t)}).catch(function(t){}),fetch("/static/html/components/component_modules/lacerta-crypto/Exchange/v2/469802.json").then(function(t){if(!t.ok)throw new Error("HTTP error, status = "+t.status);return t.json()}).then(function(t){colorLog("(~~~~(~~~(~~(~~~exchange V1~~~)~~)~~~)~~~~)","#3498DB  ",t)}).catch(function(t){})}export default{init:t=>init()};
+function init (){
+    // console.assert(false)
+    fetch('./static/html/components/component_modules/lacerta-crypto/Exchange/v1/3533.json')
+        .then(function(response) {
+            console.assert(false, response)
+            if (!response.ok) {
+                throw new Error("HTTP error, status = " + response.status);
+            }
+            return response.json();
+        })
+        .then(function(json) {
+            console.assert(false, json)
+            colorLog('(~~~~(~~~(~~(~~~exchange V2~~~)~~)~~~)~~~~)','#3498DB  ',  json)
+
+
+        })
+        .catch(function(error) {
+
+        });
+    fetch('./static/html/components/component_modules/lacerta-crypto/Exchange/v1/CPf7EWE4hPrBNKJpzBtBm9os4UsyZ8Eebhzwq4EqLWqG.json')
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error("HTTP error, status = " + response.status);
+            }
+            return response.json();
+        })
+        .then(function(json) {
+
+            colorLog('(~~~~(~~~(~~(~~~exchange V3~~~)~~)~~~)~~~~)','#3498DB  ',  json)
+
+
+        })
+        .catch(function(error) {
+
+        });
+
+
+    fetch('./static/html/components/component_modules/lacerta-crypto/Exchange/v2/28biMwpgZVjAUk5iJnWvphaFgr8Tybwqe6s5JxGTdDWJ.json')
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error("HTTP error, status = " + response.status);
+            }
+            return response.json();
+        })
+        .then(function(json) {
+
+            colorLog('(~~~~(~~~(~~(~~~exchange V1~~~)~~)~~~)~~~~)','#3498DB  ',  json)
+
+
+        })
+        .catch(function(error) {
+
+        });
+
+    fetch('./static/html/components/component_modules/lacerta-crypto/Exchange/v2/469802.json')
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error("HTTP error, status = " + response.status);
+            }
+            return response.json();
+        })
+        .then(function(json) {
+
+            colorLog('(~~~~(~~~(~~(~~~exchange V1~~~)~~)~~~)~~~~)','#3498DB  ',  json)
+
+
+        })
+        .catch(function(error) {
+
+        });
+}
+
+export default {
+    init: obj => { return init() }
+}
+

@@ -1,1 +1,920 @@
-let waves={};function colorLog(e,s,...a){switch(s=s||"black"){case"success":s="Green";break;case"info":s="DodgerBlue";break;case"error":s="Red";break;case"warning":s="Orange";break;case"events-out":s="blue"}console.log("%c"+e,"color:"+s,...a)}async function init(e){return e.waves={},e.waves=waves,await waves.getPublicState(e),e}waves.sign={},waves.issue={},waves.smart={},waves.smart.account={},waves.smart.assets={},waves.order={},waves.order.buy={},waves.order.sell={},waves.error={},waves.WavesKeeper=window.WavesKeeper,waves.createAlias=function(e){return new Promise(function(s,a){if(!e.waves.alias){let s=window.prompt("введите псевдоним(alias)",null);for(;"null"===s;)s=prompt("введите псевдоним(alias)",null);e.waves.alias=s}e.waves.WavesKeeper.signAndPublishTransaction({type:10,data:{alias:e.waves.alias,fee:{tokens:"0.001",assetId:"WAVES"}}}).then(s=>{e.waves.alias=JSON.parse(s),e.waves.alias=e.waves.alias.alias}).catch(s=>{let a={};if(s.data){a=s.data;let t=window.prompt(`${a} Введите ещё раз`,null);for(;"null"===t;)t=prompt("введите псевдоним(alias)",null);e.waves.alias=t,e.waves.createAlias(e)}else{a=(a=JSON.parse(s.data))[0].message;let t=window.prompt(`${a} Введите ещё раз`,null);for(;"null"===t;)t=prompt("введите псевдоним(alias)",null);e.waves.alias=t,e.waves.createAlias(e)}})})},waves.auth=(async e=>new Promise(function(s,a){e.waves.WavesKeeper.auth({data:"Generated string from server",name:"SoundLane",icon:"/static/images/icons/apple-touch-icon-180x180.png",referrer:"http://127.0.0.1:8887",successPath:"/auth"}).then(a=>{console.log(a),s(e)}).catch(e=>{})})),waves.on=(e=>new Promise(function(s,a){e.waves.WavesKeeper.on("update",a=>{colorLog("~~~~~~state update~~~~~~","green",a),e.waves.state=a,s(e)})})),waves.sign.setTx=(async(e,s)=>new Promise(function(a,t){s?e.waves.sign.tx={type:4,data:{amount:{assetId:"WAVES",tokens:"1.567"},fee:{assetId:"WAVES",tokens:"0.001"},recipient:"test"}}:(console.warn("устанавливается только для разработки default"),e.waves.sign.tx={type:4,data:{amount:{assetId:"WAVES",tokens:"1.567"},fee:{assetId:"WAVES",tokens:"0.001"},recipient:"test"}}),a(e)})),waves.sign.setTxPackage=(async(e,s)=>new Promise(function(a,t){s?e.waves.sign.txPackage=[{type:4,data:{amount:{assetId:"WAVES",tokens:"1.567"},fee:{assetId:"WAVES",tokens:"0.001"},recipient:"test"}},{type:4,data:{amount:{assetId:"WAVES",tokens:"0.51"},fee:{assetId:"WAVES",tokens:"0.001"},recipient:"merry"}}]:(console.warn("устанавливается только для разработки default"),e.waves.sign.namePackage="For Test",e.waves.sign.txPackage=[{type:4,data:{amount:{assetId:"WAVES",tokens:"1.567"},fee:{assetId:"WAVES",tokens:"0.001"},recipient:"test"}},{type:4,data:{amount:{assetId:"WAVES",tokens:"0.51"},fee:{assetId:"WAVES",tokens:"0.001"},recipient:"merry"}}]),a(e)})),waves.sign.signTransaction=(e=>new Promise(function(s,a){e||(alert("нужно послать объект в метод, waves['signTransaction']"),console.assert(!1,"нужно послать объект в метод")),e.waves.sign.txData||(alert("Должна быть txData"),console.assert(!1,"Должна быть txData")),e.waves.WavesKeeper.signTransaction(e.waves.sign.txData).then(a=>{e.waves.sign.signData={},e.waves.sign.signData.json=a,e.waves.sign.signData.object=JSON.parse(a),e.waves.sign.error=null,s(e)}).catch(a=>{e.waves.error=a,s(e)})})),waves.sign.signAndPublishTransaction=(e=>new Promise(function(s,a){e||(alert("нужно послать объект в метод, waves['signTransaction']"),console.assert(!1,"нужно послать объект в метод")),e.waves.sign.txData||(alert("Должна быть txData"),console.assert(!1,"Должна быть txData")),e.waves.WavesKeeper.signAndPublishTransaction(e.waves.sign.txData).then(a=>{e.waves.sign.signData={},e.waves.sign.signData.json=a,e.waves.sign.signData.object=JSON.parse(a),e.waves.sign.error=null,s(e)}).catch(a=>{e.waves.error=a,s(e)})})),waves.sign.signTransactionPackage=(e=>new Promise(function(s,a){e||(alert("нужно послать объект в метод, waves[signTransactionPackage](obj)"),console.assert(!1,"нужно послать объект в метод, waves[signTransactionPackage](obj)")),e.waves.sign.txPackage||(alert("Должна быть txPackage"),console.assert(!1,"Должна быть txPackage")),e.waves.sign.namePackage||(alert("нужно установить название пакета obj['waves']['sign']['namePackage']"),console.assert(!1,"нужно установить название пакета obj['waves']['sign']['namePackage']")),e.waves.WavesKeeper.signTransactionPackage(e.waves.sign.txPackage,e.waves.sign.namePackage).then(a=>{e.waves.sign.txDataPackage={},e.waves.sign.txDataPackage.object=[];for(let s=0;s<a.length;s++)e.waves.sign.txDataPackage.object.push(JSON.parse(a[s]));e.waves.sign.txDataPackage.json=a,e.waves.sign.error=null,s(e)}).catch(a=>{e.waves.error=a,s(e)})})),waves.issue.issueToken=(e=>new Promise(function(s,a){e||(alert("нужно послать объект в метод, waves[signTransactionPackage](obj)"),console.assert(!1,"нужно послать объект в метод, waves[signTransactionPackage](obj)")),e.waves.issue.newToken?e.waves.WavesKeeper.signAndPublishTransaction(e.waves.issue.newToken).then(a=>{let t={};e.waves.issue.asset=[],t.json=a,t.object=JSON.parse(a),e.waves.issue.asset.push(t),s(e)}).catch(a=>{e.waves.error=a,s(e)}):(alert("Должна быть obj['waves']['issue']['newToken']"),console.assert(!1,"Должна быть obj['waves']['issue']['newToken']"))})),waves.issue.setBurnToken=((e,s=null)=>new Promise(function(a,t){null===s?(console.warn("устанавливается только для разработки default"),e.waves.issue.burnAsset={type:6,data:{amount:1e6,assetId:"4adufspbKs4BNoDDFAg6N3VfcXpQqorSrUgq99BZtnXk",fee:{tokens:"0.001",assetId:"WAVES"}}}):e.waves.sign.burnAsset={type:6,data:{amount:9595.38,assetId:"DfsMHLMaigppztSTEwnCHdW2km5aSFXQAXBiXNGsDyWQ",fee:{tokens:"0.001",assetId:"WAVES"}}},a(e)})),waves.issue.burnToken=(e=>new Promise(function(s,a){e||(alert("нужно послать объект в метод, waves[signTransactionPackage](obj)"),console.assert(!1,"нужно послать объект в метод, waves[signTransactionPackage](obj)")),e.waves.issue.burnAsset?e.waves.WavesKeeper.signAndPublishTransaction(e.waves.issue.burnAsset).then(a=>{let t={};e.waves.issue.burnAssetData=[],t.json=a,t.object=JSON.parse(a),e.waves.issue.burnAssetData.push(t),s(e)}).catch(a=>{e.waves.error=a,s(e)}):(alert("Должна быть obj['waves']['issue']['burnAsset']"),console.assert(!1,"Должна быть obj['waves']['issue']['newToken']"))})),waves.issue.setToken=((e,s)=>new Promise(function(a,t){s?e.waves.issue.newToken={type:3,data:{name:"Best Token",description:"Greate token",quantity:1e6,precision:2,reissuable:!0,fee:{tokens:"1",assetId:"WAVES"}}}:(console.warn("устанавливается только для разработки default"),e.waves.issue.newToken={type:3,data:{name:"zArt",description:"Greate token",quantity:1e6,precision:2,reissuable:!0,script:"base64:AQa3b8tH",fee:{tokens:"1",assetId:"WAVES"}}}),a(e)})),waves.smart.account.setScript=((e,s)=>new Promise(function(s,a){e.waves.WavesKeeper.signAndPublishTransaction(e.waves.smart.account.script).then(a=>{let t={};e.waves.smart.account.scriptAsset=[],t.json=a,t.object=JSON.parse(a),e.waves.smart.account.scriptAsset.push(t),s(e)}).catch(a=>{e.waves.error=a,s(e)}),s(e)})),waves.smart.account.createScript=((e,s)=>new Promise(function(a,t){s?e.waves.smart.account.script={type:13,data:{script:"base64:AQa3b8tH",fee:{tokens:"0.01",assetId:"WAVES"}}}:(console.warn("устанавливается только для разработки default"),e.waves.smart.account.script={type:13,data:{script:"",fee:{tokens:"0.01",assetId:"WAVES"}}}),a(e)})),waves.smart.account.removeScript=((e,s)=>new Promise(function(a,t){s?e.waves.smart.account.script={type:13,data:{script:"base64:AQa3b8tH",fee:{tokens:"0.01",assetId:"WAVES"}}}:(console.warn("устанавливается только для разработки default"),e.waves.smart.account.script={type:13,data:{script:"",fee:{tokens:"0.04",assetId:"WAVES"}}}),a(e)})),waves.smart.assets.setScript=((e,s)=>new Promise(function(s,a){e.waves.WavesKeeper.signAndPublishTransaction(e.waves.smart.assets.script).then(a=>{let t={};e.waves.smart.assets.scriptAsset=[],t.json=a,t.object=JSON.parse(a),e.waves.smart.assets.scriptAsset.push(t),s(e)}).catch(a=>{e.waves.error=a,s(e)}),s(e)})),waves.smart.assets.createScript=((e,s)=>new Promise(function(a,t){s?e.waves.smart.assets.script={type:15,data:{assetId:"EHzkEChnHzU4d9xF5uPzpiQqerXjU9ZTYAdQeHRXb8Kb",script:"base64:AQa3b8tH",fee:{tokens:"0.05",assetId:"WAVES"}}}:(console.warn("устанавливается только для разработки default"),e.waves.smart.assets.script={type:15,data:{assetId:"EHzkEChnHzU4d9xF5uPzpiQqerXjU9ZTYAdQeHRXb8Kb",script:"base64:AQa3b8tH",fee:{tokens:"1",assetId:"WAVES"}}}),a(e)})),waves.smart.assets.removeScript=((e,s)=>new Promise(function(a,t){s?e.waves.smart.assets.script={type:15,data:{script:"base64:AQa3b8tH",fee:{tokens:"0.01",assetId:"WAVES"}}}:(console.warn("устанавливается только для разработки default"),e.waves.smart.assets.script={type:15,data:{assetId:"EHzkEChnHzU4d9xF5uPzpiQqerXjU9ZTYAdQeHRXb8Kb",script:"",fee:{tokens:"0.01",assetId:"WAVES"}}}),a(e)})),waves.order.sell.sign=((e,s)=>new Promise(function(a,t){s?e.waves.order.sell.sign={type:1002,data:{matcherPublicKey:s.matcherPublicKey,orderType:s.orderType,expiration:s.expiration,amount:{tokens:s.amount.tokens,assetId:s.amount.assetId},price:{tokens:s.price.tokens,assetId:s.price.assetId},matcherFee:{tokens:s.matcherFee.tokens,assetId:s.matcherFee.assetId}}}:(console.warn("устанавливается только для разработки default"),e.waves.order.sell.sign={type:1002,data:{matcherPublicKey:"3N5net4nzSeeqxPfGZrvVvnGavsinipQHbE",orderType:"sell",expiration:Date.now()+1e5,amount:{tokens:"100",assetId:"WAVES"},price:{tokens:"0.01",assetId:"8LQW8f7P5d5PZM7GtZEBgaqRPGSzS3DfPuiXrURJ4AJS"},matcherFee:{tokens:"0.1",assetId:"WAVES"}}}),a(e)})),waves.order.buy.sign=((e,s)=>new Promise(function(a,t){s?e.waves.order.buy.signOrder={type:1002,data:{matcherPublicKey:s.matcherPublicKey,orderType:s.orderType,expiration:s.expiration,amount:{tokens:s.amount.tokens,assetId:s.amount.assetId},price:{tokens:s.price.tokens,assetId:s.price.assetId},matcherFee:{tokens:s.matcherFee.tokens,assetId:s.matcherFee.assetId}}}:(console.warn("устанавливается только для разработки default"),e.waves.order.buy.signOrder={type:1002,data:{matcherPublicKey:"7kPFrHDiGw1rCm7LPszuECwWYL3dMf6iMifLRDJQZMzy",orderType:"buy",expiration:Date.now()+1e5,amount:{tokens:"100",assetId:"WAVES"},price:{tokens:"0.01",assetId:"8LQW8f7P5d5PZM7GtZEBgaqRPGSzS3DfPuiXrURJ4AJS"},matcherFee:{tokens:"0.03",assetId:"WAVES"}}}),a(e)})),waves.order.signOrder=((e,s)=>new Promise(function(s,a){if(e||(alert("нужно послать объект в метод, waves[signTransactionPackage](obj)"),console.assert(!1,"нужно послать объект в метод, waves[signTransactionPackage](obj)")),!e.waves.order.buy.signOrder||e.waves.order.sell.signOrder)alert("Должна быть obj['waves']['order']['sell']['signOrder']"),console.assert(!1,"Должна быть obj['waves']['order']['sell']['signOrder']");else{let a={};a=e.waves.order.buy.sign?e.waves.order.buy.signOrder:e.waves.order.sell.signOrder,e.waves.order.sell.signOrder&&e.waves.order.buy.signOrder&&(console.log("sell",e.waves.order.buy.signOrder),console.log("buy",e.waves.order.sell.signOrder),console.assert(!1,"существуют обе записи, такого не должно быть")),console.assert(!1,a),e.waves.WavesKeeper.signOrder(a).then(a=>{console.assert(!1);let t={};e.waves.order.signOrderData=[],t.json=a,t.object=JSON.parse(a),e.waves.order.signOrderData.push(t),console.assert(!1),s(e)}).catch(a=>{console.assert(!1),e.waves.error=a,s(e)})}})),waves.order.signAndPublishOrder=((e,s)=>new Promise(function(s,a){if(e||(alert("нужно послать объект в метод, waves[signTransactionPackage](obj)"),console.assert(!1,"нужно послать объект в метод, waves[signTransactionPackage](obj)")),!e.waves.order.buy.signOrder||e.waves.order.sell.signOrder)alert("Должна быть obj['waves']['issue']['burnAsset']"),console.assert(!1,"Должен быть obj['waves']['order']['sell']['signOrder']",e.waves.order);else{let a={};a=e.waves.order.buy.signOrder?e.waves.order.buy.signOrder:e.waves.order.sell.signOrder,e.waves.order.buy.signOrder&&e.waves.order.sell.signOrder&&(console.log("sell",e.waves.order.buy.signOrder),console.log("buy",e.waves.order.sell.signOrder),console.assert(!1,"существуют обе записи, такого не должно быть")),console.assert(!1,a),e.waves.WavesKeeper.signAndPublishOrder(a).then(a=>{let t={};e.waves.order.signOrderData=[],t.json=a,t.object=JSON.parse(a),e.waves.order.signOrderData.push(t),s(e)}).catch(a=>{e.waves.error=a,s(e)})}})),waves.order.buy.signCancel=((e,s)=>new Promise(function(a,t){s?e.waves.order.buy.Cancel={type:1003,data:{id:"31EeVpTAronk95TjCHdyaveDukde4nDr9BfFpvhZ3Sap"}}:(console.warn("устанавливается только для разработки default"),e.waves.order.buy.Cancel={type:1003,data:{id:"31EeVpTAronk95TjCHdyaveDukde4nDr9BfFpvhZ3Sap"}}),a(e)})),waves.order.sell.signCancel=((e,s)=>new Promise(function(a,t){s?e.waves.order.sell.Cancel={type:1003,data:{id:"31EeVpTAronk95TjCHdyaveDukde4nDr9BfFpvhZ3Sap"}}:(console.warn("устанавливается только для разработки default"),e.waves.order.sell.Cancel={type:1003,data:{id:"31EeVpTAronk95TjCHdyaveDukde4nDr9BfFpvhZ3Sap"}}),a(e)})),waves.order.signCancelOrder=((e,s)=>new Promise(function(s,a){if(e||(alert("нужно послать объект в метод, waves[signTransactionPackage](obj)"),console.assert(!1,"нужно послать объект в метод, waves[signTransactionPackage](obj)")),e.waves.issue.burnAsset){let a=null,t={};e.waves.order.buy.sign?(a=1,t=e.waves.order.sell.Cancel):(a=0,t=e.waves.order.buy.Cancel),e.waves.order.buy.Cancel&&e.waves.order.sell.Cancel&&(console.log("sell",e.waves.order.sell.Cancel),console.log("buy",e.waves.order.buy.Cancel),console.assert(!1,"существуют обе записи, такого не должно быть")),e.waves.WavesKeeper.signCancelOrder(t).then(t=>{switch(a){case"0":e.waves.order.buy.signCancelOrderData=[],asset.json=t,asset.object=JSON.parse(t),e.waves.order.buy.signCancelOrderData.push(asset),s(e);break;case"1":e.waves.order.sell.signCancelOrderData=[],asset.json=t,asset.object=JSON.parse(t),e.waves.order.sell.signCancelOrderData.push(asset),s(e)}}).catch(a=>{e.waves.error=a,s(e)})}else alert("Должна быть obj['waves']['issue']['burnAsset']"),console.assert(!1,"Должна быть obj['waves']['issue']['newToken']");s(e)})),waves.getPublicState=(e=>new Promise(function(e,s){try{WavesKeeper.publicState().then(s=>{colorLog("~~~~~~state~~~~~~","green",s),e(s)})}catch(s){e(s)}}));export default waves;
+let waves = {}
+waves['sign'] = {}
+waves['issue'] = {}
+waves['smart'] = {}
+waves['smart']['account'] = {}
+waves['smart']['assets'] = {}
+waves['order'] = {}
+waves['order']['buy'] = {}
+waves['order']['sell'] = {}
+waves['error'] = {}
+waves['WavesKeeper'] = window['WavesKeeper']
+
+function colorLog (message, color, ...args) {
+    color = color || 'black'
+    switch (color) {
+        case 'success':
+            color = 'Green'
+            break
+        case 'info':
+            color = 'DodgerBlue'
+            break
+        case 'error':
+            color = 'Red'
+            break
+        case 'warning':
+            color = 'Orange'
+            break
+        case 'events-out':
+            color = 'blue'
+            break
+        default:
+    }
+    console.log('%c' + message, 'color:' + color, ...args)
+}
+
+/**
+ *  alias[4, 30] string - alias
+ f  ee MoneyLike -fee
+ *  senderPublicKey string - sender's public key in base58
+ *  timestamp number/string – time in ms
+ *
+ * */
+waves['createAlias'] = function(obj){
+    return new Promise(function (resolve, reject) {
+        if(!obj['waves']['alias']){
+            let result = window.prompt('введите псевдоним(alias)', null);
+            while(result === 'null'){
+                result = prompt('введите псевдоним(alias)', null);
+            }
+            obj['waves']['alias'] = result
+        }
+        obj['waves']['WavesKeeper'].signAndPublishTransaction({
+            type: 10,
+            data: {
+                alias: obj['waves']['alias'],
+                fee: {
+                    "tokens": "0.001",
+                    "assetId": "WAVES"
+                }
+            }
+        }).then((tx) => {
+            obj['waves']['alias'] = JSON.parse(tx)
+            obj['waves']['alias'] = obj['waves']['alias']['alias']
+        }).catch((error) => {
+            let message = {}
+
+            if(!error['data']){
+                message = JSON.parse(error['data'])
+                message =  message[0]['message']
+                let result = window.prompt(`${message} Введите ещё раз`, null);
+                while(result === 'null'){
+                    result = prompt('введите псевдоним(alias)', null);
+                }
+                obj['waves']['alias'] = result
+                obj['waves']['createAlias'](obj)
+
+            }else{
+                message = error['data']
+                let result = window.prompt(`${message} Введите ещё раз`, null);
+                while(result === 'null'){
+                    result = prompt('введите псевдоним(alias)', null);
+                }
+                obj['waves']['alias'] = result
+                obj['waves']['createAlias'](obj)
+            }
+        });
+    })
+}
+
+waves['auth'] = async (obj) => {
+    return new Promise(function (resolve, reject) {
+        const authData = {
+            data: "Generated string from server",
+            name: "SoundLane",
+            icon: "/static/images/icons/apple-touch-icon-180x180.png",
+            referrer: "http://127.0.0.1:8887",
+            successPath: "/auth"
+        };
+        obj['waves']['WavesKeeper'].auth(authData).then((data) => {
+            //data – data from Waves Keeper
+            //verifying signature and saving the address...
+            console.log(data);
+            resolve(obj)
+        }).catch((error) => {
+            //processing the error
+        });
+    })
+}
+waves['on'] = (obj) => {
+    return new Promise(function (resolve, reject) {
+        obj['waves']['WavesKeeper'].on("update", state => {
+            colorLog('~~~~~~state update~~~~~~','green', state)
+            obj['waves']['state'] = state
+            resolve(obj)
+        });
+    })
+}
+
+waves['sign']['setTx']= async (obj, params) => {
+    return new Promise(function (resolve, reject) {
+        if(!params){
+            console.warn('устанавливается только для разработки default')
+            obj['waves']['sign']['tx'] ={
+                type: 4,
+                data: {
+                    amount: {
+                        assetId: "WAVES",
+                        tokens: "1.567"
+                    },
+                    fee: {
+                        assetId: "WAVES",
+                        tokens: "0.001"
+                    },
+                    recipient: "test"
+                }
+            };
+        }else{
+            obj['waves']['sign']['tx'] ={
+                type: 4,
+                data: {
+                    amount: {
+                        assetId: "WAVES",
+                        tokens: "1.567"
+                    },
+                    fee: {
+                        assetId: "WAVES",
+                        tokens: "0.001"
+                    },
+                    recipient: "test"
+                }
+            };
+        }
+        resolve(obj)
+    })
+}
+waves['sign']['setTxPackage']= async (obj, params) => {
+    return new Promise(function (resolve, reject) {
+        if(!params){
+            console.warn('устанавливается только для разработки default')
+            obj['waves']['sign']['namePackage'] = "For Test"
+            obj['waves']['sign']['txPackage'] =[{
+                type: 4,
+                data: {
+                    amount: {
+                        assetId: "WAVES",
+                        tokens: "1.567"
+                    },
+                    fee: {
+                        assetId: "WAVES",
+                        tokens: "0.001"
+                    },
+                    recipient: "test"
+                }},{
+                type: 4,
+                data: {
+                    amount: {
+                        assetId: "WAVES",
+                        tokens: "0.51"
+                    },
+                    fee: {
+                        assetId: "WAVES",
+                        tokens: "0.001"
+                    },
+                    recipient: "merry"
+                }
+            }];
+        }else{
+            obj['waves']['sign']['txPackage'] =[{
+                type: 4,
+                data: {
+                    amount: {
+                        assetId: "WAVES",
+                        tokens: "1.567"
+                    },
+                    fee: {
+                        assetId: "WAVES",
+                        tokens: "0.001"
+                    },
+                    recipient: "test"
+                }},{
+                type: 4,
+                data: {
+                    amount: {
+                        assetId: "WAVES",
+                        tokens: "0.51"
+                    },
+                    fee: {
+                        assetId: "WAVES",
+                        tokens: "0.001"
+                    },
+                    recipient: "merry"
+                }
+            }];
+        }
+        resolve(obj)
+    })
+}
+
+waves['sign']['signTransaction'] =  (obj) => {
+    return new Promise(function (resolve, reject) {
+        if(!obj){
+            alert('нужно послать объект в метод, waves[\'signTransaction\']')
+            console.assert(false, 'нужно послать объект в метод')
+        }
+        if(!obj['waves']['sign']['txData']){
+            alert('Должна быть txData')
+            console.assert(false, 'Должна быть txData')
+        }
+        obj['waves']['WavesKeeper'].signTransaction(obj['waves']['sign']['txData'])
+            .then((data) => {
+                obj['waves']['sign']['signData'] = {}
+                obj['waves']['sign']['signData']['json'] = data
+                obj['waves']['sign']['signData']['object'] = JSON.parse(data)
+                obj['waves']['sign']['error'] = null
+                resolve(obj)
+            }).catch((error) => {
+            obj['waves']['error'] = error
+            resolve(obj)
+        });
+    })
+}
+
+waves['sign']['signAndPublishTransaction'] =  (obj) => {
+    return new Promise(function (resolve, reject) {
+        if(!obj){
+            alert('нужно послать объект в метод, waves[\'signTransaction\']')
+            console.assert(false, 'нужно послать объект в метод')
+        }
+        if(!obj['waves']['sign']['txData']){
+            alert('Должна быть txData')
+            console.assert(false, 'Должна быть txData')
+        }
+        obj['waves']['WavesKeeper'].signAndPublishTransaction(obj['waves']['sign']['txData'])
+            .then((data) => {
+                obj['waves']['sign']['signData'] = {}
+                obj['waves']['sign']['signData']['json'] = data
+                obj['waves']['sign']['signData']['object'] = JSON.parse(data)
+                obj['waves']['sign']['error'] = null
+                resolve(obj)
+            }).catch((error) => {
+            obj['waves']['error'] = error
+            resolve(obj)
+        });
+    })
+}
+
+waves['sign']['signTransactionPackage'] =  (obj) => {
+    return new Promise(function (resolve, reject) {
+        if(!obj){
+            alert('нужно послать объект в метод, waves[signTransactionPackage](obj)')
+            console.assert(false, 'нужно послать объект в метод, waves[signTransactionPackage](obj)')
+        }
+        if(!obj['waves']['sign']['txPackage']){
+            alert('Должна быть txPackage')
+            console.assert(false, 'Должна быть txPackage')
+        }
+        if(!obj['waves']['sign']['namePackage']){
+            alert('нужно установить название пакета obj[\'waves\'][\'sign\'][\'namePackage\']')
+            console.assert(false, 'нужно установить название пакета obj[\'waves\'][\'sign\'][\'namePackage\']')
+        }
+        obj['waves']['WavesKeeper'].signTransactionPackage(obj['waves']['sign']['txPackage'], obj['waves']['sign']['namePackage'])
+            .then((data) => {
+                obj['waves']['sign']['txDataPackage'] = {}
+                obj['waves']['sign']['txDataPackage']['object'] = []
+                for(let i=0; i < data.length; i++){
+                    obj['waves']['sign']['txDataPackage']['object'].push(JSON.parse(data[i]))
+                }
+                obj['waves']['sign']['txDataPackage']['json'] = data
+                obj['waves']['sign']['error'] = null
+                resolve(obj)
+            }).catch((error) => {
+            obj['waves']['error'] = error
+            resolve(obj)
+        });
+    })
+}
+
+
+waves['issue']['issueToken'] =  (obj) => {
+    return new Promise(function (resolve, reject) {
+        if(!obj){
+            alert('нужно послать объект в метод, waves[signTransactionPackage](obj)')
+            console.assert(false, 'нужно послать объект в метод, waves[signTransactionPackage](obj)')
+        }
+        if(!obj['waves']['issue']['newToken']){
+            alert('Должна быть obj[\'waves\'][\'issue\'][\'newToken\']')
+            console.assert(false, 'Должна быть obj[\'waves\'][\'issue\'][\'newToken\']')
+        }else{
+            obj['waves']['WavesKeeper'].signAndPublishTransaction(obj['waves']['issue']['newToken'])
+                .then((tx) => {
+                    let asset = {}
+                    obj['waves']['issue']['asset'] = []
+                    asset['json'] = tx
+                    asset['object'] = JSON.parse(tx)
+                    obj['waves']['issue']['asset'].push(asset)
+                    resolve(obj)
+                }).catch((error) => {
+                obj['waves']['error'] = error
+                resolve(obj)
+            });
+        }
+    })
+}
+
+waves['issue']['setBurnToken'] =  (obj, params = null) => {
+    return new Promise(function (resolve, reject) {
+        if(params === null){
+            console.warn('устанавливается только для разработки default')
+            obj['waves']['issue']['burnAsset'] ={
+                type: 6,
+                data: {
+                    amount: 1000000,
+                    assetId: "4adufspbKs4BNoDDFAg6N3VfcXpQqorSrUgq99BZtnXk",
+                    fee: {
+                        "tokens": "0.001",
+                        "assetId": "WAVES"
+                    }
+                }
+            };
+        }else{
+            obj['waves']['sign']['burnAsset'] ={
+                type: 6,
+                data: {
+                    amount: 9595.38,
+                    assetId: "DfsMHLMaigppztSTEwnCHdW2km5aSFXQAXBiXNGsDyWQ",
+                    fee: {
+                        "tokens": "0.001",
+                        "assetId": "WAVES"
+                    }
+                }
+            };
+        }
+
+        resolve(obj)
+    })
+}
+waves['issue']['burnToken'] =  (obj) => {
+    return new Promise(function (resolve, reject) {
+        if(!obj){
+            alert('нужно послать объект в метод, waves[signTransactionPackage](obj)')
+            console.assert(false, 'нужно послать объект в метод, waves[signTransactionPackage](obj)')
+        }
+        if(!obj['waves']['issue']['burnAsset']){
+            alert('Должна быть obj[\'waves\'][\'issue\'][\'burnAsset\']')
+            console.assert(false, 'Должна быть obj[\'waves\'][\'issue\'][\'newToken\']')
+        }else{
+            obj['waves']['WavesKeeper'].signAndPublishTransaction(obj['waves']['issue']['burnAsset'])
+                .then((tx) => {
+                    let asset = {}
+                    obj['waves']['issue']['burnAssetData'] = []
+                    asset['json'] = tx
+                    asset['object'] = JSON.parse(tx)
+                    obj['waves']['issue']['burnAssetData'].push(asset)
+                    resolve(obj)
+                }).catch((error) => {
+                obj['waves']['error'] = error
+                resolve(obj)
+            });
+        }
+    })
+}
+waves['issue']['setToken'] =  (obj, params) => {
+    return new Promise(function (resolve, reject) {
+        if(!params){
+            console.warn('устанавливается только для разработки default')
+            obj['waves']['issue']['newToken'] =      {
+                type: 3,
+                data: {
+                    "name": "zArt",
+                    "description": "Greate token",
+                    "quantity": 1000000,
+                    "precision": 2,
+                    "reissuable": true,
+                    "script": "base64:AQa3b8tH",
+                    fee: {
+                        "tokens": "1",
+                        "assetId": "WAVES"
+                    }
+                }
+            }
+        }else{
+            obj['waves']['issue']['newToken'] ={
+                type: 3,
+                data: {
+                    "name": "Best Token",
+                    "description": "Greate token",
+                    "quantity": 1000000,
+                    "precision": 2,
+                    "reissuable": true,
+                    fee: {
+                        "tokens": "1",
+                        "assetId": "WAVES"
+                    }
+                }
+            }
+        }
+        resolve(obj)
+    })
+}
+
+waves['smart']['account']['setScript'] =  (obj, params) => {
+    return new Promise(function (resolve, reject) {
+        obj['waves']['WavesKeeper'].signAndPublishTransaction(obj['waves']['smart']['account']['script'])
+            .then((tx) => {
+                let asset = {}
+                obj['waves']['smart']['account']['scriptAsset'] = []
+                asset['json'] = tx
+                asset['object'] = JSON.parse(tx)
+                obj['waves']['smart']['account']['scriptAsset'].push(asset)
+                resolve(obj)
+            }).catch((error) => {
+            obj['waves']['error'] = error
+            resolve(obj)
+        });
+        resolve(obj)
+    })
+}
+
+waves['smart']['account']['createScript'] =  (obj, params) => {
+    return new Promise(function (resolve, reject) {
+        if(!params){
+            console.warn('устанавливается только для разработки default')
+            obj['waves']['smart']['account']['script'] ={
+                type: 13,
+                data: {
+                    script: "",
+                    fee: {
+                        "tokens": "0.01",
+                        "assetId": "WAVES"
+                    }
+                }
+            }
+        }else{
+            obj['waves']['smart']['account']['script'] ={
+                type: 13,
+                data: {
+                    script: "base64:AQa3b8tH",
+                    fee: {
+                        "tokens": "0.01",
+                        "assetId": "WAVES"
+                    }
+                }
+            }
+        }
+        resolve(obj)
+    })
+}
+
+
+waves['smart']['account']['removeScript'] =  (obj, params) => {
+    return new Promise(function (resolve, reject) {
+        if(!params){
+            console.warn('устанавливается только для разработки default')
+            obj['waves']['smart']['account']['script'] ={
+                type: 13,
+                data: {
+                    script: "",
+                    fee: {
+                        "tokens": "0.04",
+                        "assetId": "WAVES"
+                    }
+                }
+            }
+        }else{
+            obj['waves']['smart']['account']['script'] ={
+                type: 13,
+                data: {
+                    script: "base64:AQa3b8tH",
+                    fee: {
+                        "tokens": "0.01",
+                        "assetId": "WAVES"
+                    }
+                }
+            }
+        }
+        resolve(obj)
+    })
+}
+
+
+waves['smart']['assets']['setScript'] =  (obj, params) => {
+    return new Promise(function (resolve, reject) {
+        obj['waves']['WavesKeeper'].signAndPublishTransaction(obj['waves']['smart']['assets']['script'])
+            .then((tx) => {
+                let asset = {}
+                obj['waves']['smart']['assets']['scriptAsset'] = []
+                asset['json'] = tx
+                asset['object'] = JSON.parse(tx)
+                obj['waves']['smart']['assets']['scriptAsset'].push(asset)
+                resolve(obj)
+            }).catch((error) => {
+            obj['waves']['error'] = error
+            resolve(obj)
+        });
+        resolve(obj)
+    })
+}
+
+waves['smart']['assets']['createScript'] =  (obj, params) => {
+    return new Promise(function (resolve, reject) {
+        if(!params){
+            console.warn('устанавливается только для разработки default')
+            obj['waves']['smart']['assets']['script'] ={
+                type: 15,
+                data: {
+                    assetId: "EHzkEChnHzU4d9xF5uPzpiQqerXjU9ZTYAdQeHRXb8Kb",
+                    script: "base64:AQa3b8tH",
+                    fee: {
+                        "tokens": "1",
+                        "assetId": "WAVES"
+                    }
+                }
+            }
+        }else{
+            obj['waves']['smart']['assets']['script'] ={
+                type: 15,
+                data: {
+                    assetId: "EHzkEChnHzU4d9xF5uPzpiQqerXjU9ZTYAdQeHRXb8Kb",
+                    script: "base64:AQa3b8tH",
+                    fee: {
+                        "tokens": "0.05",
+                        "assetId": "WAVES"
+                    }
+                }
+            }
+        }
+        resolve(obj)
+    })
+}
+
+
+waves['smart']['assets']['removeScript'] =  (obj, params) => {
+    return new Promise(function (resolve, reject) {
+        if(!params){
+            console.warn('устанавливается только для разработки default')
+            obj['waves']['smart']['assets']['script'] ={
+                type: 15,
+                data:  {
+                    assetId: "EHzkEChnHzU4d9xF5uPzpiQqerXjU9ZTYAdQeHRXb8Kb",
+                    script: "",
+                    fee: {
+                        "tokens": "0.01",
+                        "assetId": "WAVES"
+                    }
+                }
+            }
+        }else{
+            obj['waves']['smart']['assets']['script'] ={
+                type: 15,
+                data: {
+                    script: "base64:AQa3b8tH",
+                    fee: {
+                        "tokens": "0.01",
+                        "assetId": "WAVES"
+                    }
+                }
+            }
+        }
+        resolve(obj)
+    })
+}
+waves['order']['sell']['sign'] =  (obj, params) => {
+    return new Promise(function (resolve, reject) {
+        if(!params){
+            console.warn('устанавливается только для разработки default')
+            obj['waves']['order']['sell']['sign'] ={
+                type: 1002,
+                data: {
+                    matcherPublicKey: "3N5net4nzSeeqxPfGZrvVvnGavsinipQHbE",
+                    orderType: "sell",
+                    expiration: Date.now() + 100000,
+                    amount: {
+                        tokens: "100",
+                        assetId: "WAVES"
+                    },
+                    price: {
+                        tokens: "0.01",
+                        assetId: "8LQW8f7P5d5PZM7GtZEBgaqRPGSzS3DfPuiXrURJ4AJS"
+                    },
+                    matcherFee: {
+                        tokens: "0.1",
+                        assetId: "WAVES"
+                    }
+                }
+            }
+        }else{
+            obj['waves']['order']['sell']['sign'] ={
+                type: 1002,
+                data: {
+                    matcherPublicKey: params['matcherPublicKey'],
+                    orderType: params['orderType'],
+                    expiration: params['expiration'],
+                    amount: {
+                        tokens: params['amount']['tokens'],
+                        assetId: params['amount']['assetId']
+                    },
+                    price: {
+                        tokens: params['price']['tokens'],
+                        assetId: params['price']['assetId']
+                    },
+                    matcherFee: {
+                        tokens: params['matcherFee']['tokens'],
+                        assetId: params['matcherFee']['assetId']
+                    }
+                }
+            }
+        }
+        resolve(obj)
+    })
+}
+
+waves['order']['buy']['sign'] =  (obj, params) => {
+    return new Promise(function (resolve, reject) {
+        if(!params){
+            console.warn('устанавливается только для разработки default')
+            obj['waves']['order']['buy']['signOrder'] ={
+                type: 1002,
+                data: {
+                    matcherPublicKey: "7kPFrHDiGw1rCm7LPszuECwWYL3dMf6iMifLRDJQZMzy",
+                    orderType: "buy",
+                    expiration: Date.now() + 100000,
+                    amount: {
+                        tokens: "100",
+                        assetId: "WAVES"
+                    },
+                    price: {
+                        tokens: "0.01",
+                        assetId: "8LQW8f7P5d5PZM7GtZEBgaqRPGSzS3DfPuiXrURJ4AJS"
+                    },
+                    matcherFee: {
+                        tokens: "0.03",
+                        assetId: "WAVES"
+                    }
+                }
+            }
+        }else{
+            obj['waves']['order']['buy']['signOrder'] ={
+                type: 1002,
+                data: {
+                    matcherPublicKey: params['matcherPublicKey'],
+                    orderType: params['orderType'],
+                    expiration: params['expiration'],
+                    amount: {
+                        tokens: params['amount']['tokens'],
+                        assetId: params['amount']['assetId']
+                    },
+                    price: {
+                        tokens: params['price']['tokens'],
+                        assetId: params['price']['assetId']
+                    },
+                    matcherFee: {
+                        tokens: params['matcherFee']['tokens'],
+                        assetId: params['matcherFee']['assetId']
+                    }
+                }
+            }
+        }
+        resolve(obj)
+    })
+}
+
+
+waves['order']['signOrder'] =  (obj, params) => {
+    return new Promise(function (resolve, reject) {
+        if(!obj){
+            alert('нужно послать объект в метод, waves[signTransactionPackage](obj)')
+            console.assert(false, 'нужно послать объект в метод, waves[signTransactionPackage](obj)')
+        }
+        if(!obj['waves']['order']['buy']['signOrder'] || obj['waves']['order']['sell']['signOrder']){
+            alert('Должна быть obj[\'waves\'][\'order\'][\'sell\'][\'signOrder\']')
+            console.assert(false, 'Должна быть obj[\'waves\'][\'order\'][\'sell\'][\'signOrder\']')
+        }else{
+            let sign = {}
+            if(!obj['waves']['order']['buy']['sign']){
+                sign = obj['waves']['order']['sell']['signOrder']
+            }else{
+                sign = obj['waves']['order']['buy']['signOrder']
+            }
+            if(obj['waves']['order']['sell']['signOrder'] && obj['waves']['order']['buy']['signOrder']){
+                console.log('sell', obj['waves']['order']['buy']['signOrder'])
+                console.log('buy', obj['waves']['order']['sell']['signOrder'])
+                console.assert(false, 'существуют обе записи, такого не должно быть')
+            }
+            console.assert(false,sign)
+            obj['waves']['WavesKeeper'].signOrder(sign)
+                .then((tx) => {
+                    console.assert(false)
+                    let asset = {}
+                    obj['waves']['order']['signOrderData'] = []
+                    asset['json'] = tx
+                    asset['object'] = JSON.parse(tx)
+                    obj['waves']['order']['signOrderData'].push(asset)
+                    console.assert(false)
+                    resolve(obj)
+                }).catch((error) => {
+                console.assert(false)
+                obj['waves']['error'] = error
+                resolve(obj)
+            });
+        }
+    })
+}
+
+waves['order']['signAndPublishOrder'] =  (obj, params) => {
+    return new Promise(function (resolve, reject) {
+        if(!obj){
+            alert('нужно послать объект в метод, waves[signTransactionPackage](obj)')
+            console.assert(false, 'нужно послать объект в метод, waves[signTransactionPackage](obj)')
+        }
+        if(!obj['waves']['order']['buy']['signOrder'] || obj['waves']['order']['sell']['signOrder']){
+            alert('Должна быть obj[\'waves\'][\'issue\'][\'burnAsset\']')
+            console.assert(false, 'Должен быть obj[\'waves\'][\'order\'][\'sell\'][\'signOrder\']', obj['waves']['order'])
+        }else{
+            let sign = {}
+            if(!obj['waves']['order']['buy']['signOrder']){
+                sign =obj['waves']['order']['sell']['signOrder']
+            }else{
+                sign =obj['waves']['order']['buy']['signOrder']
+            }
+            if(obj['waves']['order']['buy']['signOrder'] && obj['waves']['order']['sell']['signOrder']){
+                console.log('sell',obj['waves']['order']['buy']['signOrder'])
+                console.log('buy', obj['waves']['order']['sell']['signOrder'])
+                console.assert(false, 'существуют обе записи, такого не должно быть')
+            }
+            console.assert(false, sign)
+            obj['waves']['WavesKeeper'].signAndPublishOrder(sign)
+                .then((tx) => {
+                    let asset = {}
+                    obj['waves']['order']['signOrderData'] = []
+                    asset['json'] = tx
+                    asset['object'] = JSON.parse(tx)
+                    obj['waves']['order']['signOrderData'].push(asset)
+                    resolve(obj)
+                }).catch((error) => {
+                obj['waves']['error'] = error
+                resolve(obj)
+            });
+        }
+    })
+}
+
+waves['order']['buy']['signCancel'] =  (obj, params) => {
+    return new Promise(function (resolve, reject) {
+        if(!params){
+            console.warn('устанавливается только для разработки default')
+            obj['waves']['order']['buy']['Cancel'] ={
+                type: 1003,
+                data: {
+                    id: '31EeVpTAronk95TjCHdyaveDukde4nDr9BfFpvhZ3Sap'
+                }
+            }
+        }else{
+            obj['waves']['order']['buy']['Cancel'] = {
+                type: 1003,
+                data: {
+                    id: '31EeVpTAronk95TjCHdyaveDukde4nDr9BfFpvhZ3Sap'
+                }
+            }
+        }
+        resolve(obj)
+    })
+}
+
+waves['order']['sell']['signCancel'] =  (obj, params) => {
+    return new Promise(function (resolve, reject) {
+        if(!params){
+            console.warn('устанавливается только для разработки default')
+            obj['waves']['order']['sell']['Cancel'] ={
+                type: 1003,
+                data: {
+                    id: '31EeVpTAronk95TjCHdyaveDukde4nDr9BfFpvhZ3Sap'
+                }
+            }
+        }else{
+            obj['waves']['order']['sell']['Cancel'] = {
+                type: 1003,
+                data: {
+                    id: '31EeVpTAronk95TjCHdyaveDukde4nDr9BfFpvhZ3Sap'
+                }
+            }
+        }
+        resolve(obj)
+    })
+}
+
+
+
+waves['order']['signCancelOrder'] =  (obj, params) => {
+    return new Promise(function (resolve, reject) {
+        if(!obj){
+            alert('нужно послать объект в метод, waves[signTransactionPackage](obj)')
+            console.assert(false, 'нужно послать объект в метод, waves[signTransactionPackage](obj)')
+        }
+        if(!obj['waves']['issue']['burnAsset']){
+            alert('Должна быть obj[\'waves\'][\'issue\'][\'burnAsset\']')
+            console.assert(false, 'Должна быть obj[\'waves\'][\'issue\'][\'newToken\']')
+        }else{
+            let type = null
+            let sign = {}
+            if(!obj['waves']['order']['buy']['sign']){
+                type = 0
+                sign = obj['waves']['order']['buy']['Cancel']
+            }else{
+                type = 1
+                sign = obj['waves']['order']['sell']['Cancel']
+            }
+            if(obj['waves']['order']['buy']['Cancel'] && obj['waves']['order']['sell']['Cancel']){
+                console.log('sell', obj['waves']['order']['sell']['Cancel'])
+                console.log('buy', obj['waves']['order']['buy']['Cancel'])
+                console.assert(false, 'существуют обе записи, такого не должно быть')
+            }
+            obj['waves']['WavesKeeper'].signCancelOrder(sign)
+                .then((tx) => {
+                    switch (type) {
+                        case '0':
+                            obj['waves']['order']['buy']['signCancelOrderData'] = []
+                            asset['json'] = tx
+                            asset['object'] = JSON.parse(tx)
+                            obj['waves']['order']['buy']['signCancelOrderData'].push(asset)
+                            resolve(obj)
+                            break
+                        case '1':
+                            obj['waves']['order']['sell']['signCancelOrderData'] = []
+                            asset['json'] = tx
+                            asset['object'] = JSON.parse(tx)
+                            obj['waves']['order']['sell']['signCancelOrderData'].push(asset)
+                            resolve(obj)
+                            break
+                        default:
+                            break
+                    }
+                }).catch((error) => {
+                obj['waves']['error'] = error
+                resolve(obj)
+            });
+        }
+        resolve(obj)
+    })
+}
+
+// waves['order']['signAndPublishOrder'] =  (obj, params) => {
+//     return new Promise(function (resolve, reject) {
+//         if(!obj){
+//             alert('нужно послать объект в метод, waves[signTransactionPackage](obj)')
+//             console.assert(false, 'нужно послать объект в метод, waves[signTransactionPackage](obj)')
+//         }
+//         if(!obj['waves']['issue']['burnAsset']){
+//             alert('Должна быть obj[\'waves\'][\'issue\'][\'burnAsset\']')
+//             console.assert(false, 'Должна быть obj[\'waves\'][\'issue\'][\'newToken\']')
+//         }else{
+//             let sign = {}
+//             if(!obj['waves']['order']['buy']['signCancel']){
+//                 sign = obj['waves']['order']['buy']['signCancel']
+//             }else{
+//                 sign = obj['waves']['order']['sell']['signCancel']
+//             }
+//             if(obj['waves']['order']['buy']['signCancel'] && obj['waves']['order']['sell']['signCancel']){
+//                 console.log('sell', obj['waves']['order']['sell']['signCancel'])
+//                 console.log('buy', obj['waves']['order']['buy']['signCancel'])
+//                 console.assert(false, 'существуют обе записи, такого не должно быть')
+//             }
+//             obj['waves']['WavesKeeper'].signAndPublishOrder(sign)
+//                 .then((tx) => {
+//                     let asset = {}
+//                     obj['waves']['order']['signCancelOrderData'] = []
+//                     asset['json'] = tx
+//                     asset['object'] = JSON.parse(tx)
+//                     obj['waves']['order']['signCancelOrderData'].push(asset)
+//                     resolve(obj)
+//                 }).catch((error) => {
+//                 obj['waves']['error'] = error
+//                 resolve(obj)
+//             });
+//         }
+//         resolve(obj)
+//     })
+// }
+
+waves['getPublicState'] = (obj) => {
+    return new Promise(function (resolve, reject) {
+        try {
+           WavesKeeper.publicState()
+                .then((state)=>{
+                    colorLog('~~~~~~state~~~~~~','green', state)
+                    resolve(state)
+                })
+        } catch(error) {
+            resolve(error)
+        }
+    })
+}
+
+async function init (obj){
+    obj['waves'] = {}
+    obj['waves']= waves
+    await waves['getPublicState'](obj)
+    return obj
+}
+
+export default waves

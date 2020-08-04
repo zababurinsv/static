@@ -1,1 +1,8 @@
-const user=e=>e.user,getKey=e=>e.key,getObj=e=>e.components;export default{user:user,getKey:getKey,getObj:getObj};
+const user = (state) => { return state.user }
+const getKey = (state) => { return state.key }
+const getObj = (state) => { return state.components }
+export default {
+  user,
+  getKey,
+  getObj
+}

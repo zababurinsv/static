@@ -1,1 +1,79 @@
-import colorlog from"/static/html/components/component_modules/colorLog/colorLog.mjs";import queue from"/static/html/components/component_modules/queue/queue.mjs";import bundle from"/static/html/components/component_modules/bundle/waves/waves.mjs";let net={node:{},matcher:{}};net.node.waves={},net.node.waves.test="https://testnodes.wavesnodes.com",net.node.waves.main="https://nodes.wavesnodes.com",net.matcher.waves={},net.matcher.waves.test="https://matcher-testnet.wavesnodes.com",net.matcher.waves.main="https://testnodes.wavesnodes.com";let Class=class{constructor(e){this.bank=this.bank.bind(this),this.balance=this.balance.bind(this),this.wallet=this.wallet.bind(this),this.faucet=this.faucet.bind(this),this.transfer=this.transfer.bind(this),this.nft=this.nft.bind(this),this.order=this.order.bind(this),this.cancelAllOrders=this.cancelAllOrders.bind(this),this.getOrders=this.getOrders.bind(this),this.getNft=this.getNft.bind(this),this.denormalize=this.denormalize.bind(this),this.details=this.details.bind(this),this.waitForTx=this.waitForTx.bind(this),this.end=this.end.bind(this),document.addEventListener("typeScript-end",this.end)}order(e=!0,t="",a="black",s={_:"order"},n="order"){return new Promise(async(e,t)=>{try{let t={};if("t"===n){let a={method:"POST",body:s,headers:{"Content-Type":"application/json;charset=utf-8"}};t=await fetch(`${net.matcher.waves.test}/matcher/orderbook`,a),e(await t.json())}else"w"===n||(console.warn("укажите тип сети t - тестнет w - майннет"),e(!1))}catch(t){e({_:"error",error:t})}})}cancelAllOrders(e=!0,t="",a="black",s={_:"order"},n="order"){return new Promise(async(e,t)=>{let a={};if("t"===n){let t={method:"POST",body:s,headers:{"Content-Type":"application/json;charset=utf-8"}};a=await fetch(`${net.matcher.waves.test}/matcher/orderbook/cancel`,t),e(await a.json())}else"w"===n||(console.warn("укажите тип сети t - тестнет w - майннет"),e(!1))})}getOrders(e=!0,t="",a="black",s={_:"order"},n="order"){return new Promise(async(e,a)=>{let r={};"t"===n?(r=await fetch(`${net.matcher.waves.test}/matcher/orderbook/${s}?activeOnly=true`,{method:"GET",headers:{Timestamp:t.timestamp,Signature:t.signature}}),e(await r.json())):"w"===n?(r=await fetch(`${net.matcher.waves.main}/matcher/orderbook/${s}?activeOnly=true`,{method:"GET",headers:{Timestamp:t.timestamp,Signature:t.signature}}),e(await r.json())):(console.warn("укажите тип сети t - тестнет w - майннет"),e(!1))})}denormalize(e,t,a){return e/10**(t-a+8)}getNft(e="",t=1,a){return new Promise(async(s,n)=>{let r={};r=void 0===a?await fetch(`${net.node.waves.test}/assets/nft/${e}/limit/${t}`):await fetch(`${net.node.waves.test}/assets/nft/${e}/limit/${t}?after=${a}`),s(await r.json())})}details(e){return new Promise(async(t,a)=>{let s=await fetch(`${net.node.waves.main}/assets/details/${e}`);t(await s.json())})}balance(e=!0,t="",a="black",s={_:"order"},n="t"){return new Promise(async(e,t)=>{let a={};"t"===n?(a=await fetch(`${net.node.waves.test}/addresses/balance/${s}`),e(await a.json())):"w"===n?(a=await fetch(`${net.node.waves.main}/addresses/balance/${s}`),e(await a.json())):(console.warn("укажите тип сети t - тестнет w - майннет"),e(!1))})}nft(e=!0,t="a",a="black",s={_:"button"},n="transfer"){return queue(e,t,a,s,n)}transfer(e=!0,t="a",a="black",s={_:"button"},n="transfer"){return queue(e,t,a,s,n)}faucet(e=!0,t="a",a="black",s={_:"button"},n="faucet"){return queue(e,t,a,s,n)}bank(e=!0,t="a",a="black",s={_:"button"},n="bank"){return queue(e,t,a,s,n)}wallet(e=!0,t="a",a="black",s={_:"player"},n="wallet"){return queue(e,t,a,s,n)}waitForTx(e,t){return new Promise(async(a,s)=>{a(bundle.default.transactions.waitForTx(e,t))})}end(e){queue(e.detail.console,"~end",e.detail.color,e.detail.substrate,e.detail.relation).then(e=>{colorlog(!0,"stat","stat",e,"статистика")})}get self(){return bundle.default}};export default Class;
+import colorlog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
+import queue from '/static/html/components/component_modules/queue/queue.mjs'
+import bundle from '/static/html/components/component_modules/waves/module/waves-bundle.mjs'
+let Class = class Waves {
+    constructor(self) {
+        this.bank = this.bank.bind(this)
+        this.balance = this.balance.bind(this)
+        this.wallet = this.wallet.bind(this)
+        this.faucet = this.faucet.bind(this)
+        this.transfer = this.transfer.bind(this)
+        this.nft = this.nft.bind(this)
+        this.getNft = this.getNft.bind(this)
+        this.denormalize = this.denormalize.bind(this)
+        this.details = this.details.bind(this)
+        this.waitForTx = this.waitForTx.bind(this)
+        this.end = this.end.bind(this)
+        document.addEventListener('typeScript-end', this.end)
+    }
+    denormalize(price, priceAssetDecimals, amountAssetDecimals){
+        let wvsPrice = 10 ** (priceAssetDecimals - amountAssetDecimals + 8)
+        return price/wvsPrice
+    }
+    getNft(address='', limit = 1, after = undefined){
+        return new Promise(async (resolve, reject)=>{
+            let balance = {}
+            if(after === undefined){
+                balance = await fetch(`https://testnodes.wavesnodes.com/assets/nft/${address}/limit/${limit}`)
+            }else{
+                balance = await fetch(`https://testnodes.wavesnodes.com/assets/nft/${address}/limit/${limit}?after=${after}`)
+            }
+            resolve(await balance.json())
+        })
+    }
+    details(assetId){
+        return new Promise(async (resolve, reject)=>{
+            let balance = await fetch(`https://nodes.wavesnodes.com/assets/details/${assetId}`)
+            resolve(await balance.json())
+        })
+    }
+    balance(id){
+        return new Promise(async (resolve, reject)=>{
+            let balance = await fetch(`https://testnodes.wavesnodes.com/addresses/balance/${id}`)
+            resolve(await balance.json())
+        })
+    }
+    nft(view = true,property='a',color = 'black', substrate={_:'button'},relation='transfer'  ){
+        return queue(view, property,color,substrate,relation)
+    }
+    transfer(console = true,property='a',color = 'black', substrate={_:'button'},relation='transfer'  ){
+        return queue(console, property,color,substrate,relation)
+    }
+    faucet(console = true,property='a',color = 'black', substrate={_:'button'},relation='faucet'  ){
+        return queue(console, property,color,substrate,relation)
+    }
+    bank(console = true,property='a',color = 'black', substrate={_:'button'},relation='bank'  ){
+        return queue(console, property,color,substrate,relation)
+    }
+    wallet(console = true,property='a',color = 'black', substrate={_:'player'},relation='wallet'  ){
+        return queue(console, property,color,substrate,relation)
+    }
+    waitForTx(id, node){
+        return  new Promise(async (resolve, reject) => {
+            resolve(bundle['default']['transactions']['waitForTx'](id, node))
+        })
+    }
+    end(event){
+        queue(event['detail']['console'], '~end',event['detail']['color'],event['detail']['substrate'],event['detail']['relation']).then((data)=>{
+            
+            colorlog(true, 'stat','stat',data, 'статистика')
+            
+        })
+    }
+    get self() {
+        return object
+    }
+}
+
+
+export default Class

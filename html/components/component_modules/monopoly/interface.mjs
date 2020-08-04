@@ -1,1 +1,2121 @@
-import gameplay from"./gameplay.mjs";import ai from"./ai.mjs";import monopoly from"./monopoly.mjs";import auction from"./auction.mjs";import classicedition from"./classicedition.mjs";let trade=[];trade.staticProperty=[],trade.staticProperty.initiator=[],trade.staticProperty.recipient=[],trade.staticProperty.property=new Array(40),trade.staticProperty.money=[],trade.staticProperty.communityChestJailCard=[],trade.staticProperty.chanceJailCard=[];export default{get:(e,t,...r)=>new Promise((r,o)=>{function a(e){r(e)}switch(e.type){case"bankruptcyUnmortgage":(async(e,t,r)=>{let o=t.player[t.turn];0===o.creditor&&(game.eliminatePlayer(),a(t));let n,i="<p>"+t.player[o.creditor].name+", you may unmortgage any of the following properties, interest free, by clicking on them. Click OK when finished.</p><table>";for(let e=0;e<40;e++){let r=t.square[e];r.owner==o.index&&r.mortgage&&(n=Math.round(.5*r.price),i+="<tr><td class='propertycellcolor' style='background: "+r.color+";",1==r.groupNumber||2==r.groupNumber?i+=" border: 0.098vw solid grey;":i+=" border: 0.098vw solid "+r.color+";",i+="' showdeed = "+e+" ;></td><td class='propertycellname'><a href='javascript:void(0);' title='Unmortgage "+r.name+" for $"+n+".' onclick='if ("+n+" <= player["+o.creditor+"].money) {player["+o.creditor+"].pay("+n+", 0); square["+e+'].mortgage = false; addAlert("'+player[o.creditor].name+" unmortgaged "+r.name+" for $"+n+'.");} this.parentElement.parentElement.style.display = "none";\'>Unmortgage '+r.name+" ($"+n+")</a></td></tr>",r.owner=o.creditor)}i+="</table>",popup(i,game.eliminatePlayer),a(t)})(0,t);break;case"eliminatePlayer":(async(e,t,r)=>{let o=t.player[t.turn];for(let e=o.index;e<t.pcount;e++)t.player[e]=t.player[e+1],t.player[e].index=e;for(var n=0;n<40;n++)t.square[n].owner>=o.index&&t.square[n].owner--;t.pcount--,t.turn--,2===t.pcount?t.this.getElementById("stats").style.width="454px":3===t.pcount&&(t.this.getElementById("stats").style.width="686px"),1===t.pcount?(await monopoly.get({type:"updateMoney"},t),$("#control").hide(),$("#board").hide(),$("#refresh").show(),await monopoly.get({type:"popup",HTML:"<p>Congratulations, "+t.player[1].name+", you have won the game.</p><div>"},t)):await monopoly.get({type:"play"},t),a(t)})(0,t);break;case"resign":(async(e,t,r)=>{await monopoly.get({type:"popup",HTML:"<p>Are you sure you want to resign?</p>",option:"Yes/No",action:async function(){await monopoly.get({type:"bankruptcy"},t)}},t),a(t)})(0,t);break;case"writeTrade":(async(e,t,r)=>{await monopoly.get({type:"resetTrade",initiator:t.tradeObj.initiator,recipient:t.tradeObj.recipient,allowRecipientToBeChanged:!1},t);for(let e=0;e<40;e++)t.this.getElementById("tradeleftcheckbox"+e)&&(t.this.getElementById("tradeleftcheckbox"+e).checked=!1,console.log(t.tradeObj.property[e]),1===t.tradeObj.property[e]&&(t.this.getElementById("tradeleftcheckbox"+e).checked=!0)),t.this.getElementById("traderightcheckbox"+e)&&(t.this.getElementById("traderightcheckbox"+e).checked=!1,console.log(t.tradeObj.property[e]),-1===t.tradeObj.property[e]&&(t.this.getElementById("traderightcheckbox"+e).checked=!0));t.this.getElementById("tradeleftcheckbox40")&&(1===t.tradeObj.communityChestJailCard?t.this.getElementById("tradeleftcheckbox40").checked=!0:t.this.getElementById("tradeleftcheckbox40").checked=!1),t.this.getElementById("traderightcheckbox40")&&(-1===t.tradeObj.communityChestJailCard?t.this.getElementById("traderightcheckbox40").checked=!0:t.this.getElementById("traderightcheckbox40").checked=!1),t.this.getElementById("tradeleftcheckbox41")&&(1===t.tradeObj.chanceJailCard?t.this.getElementById("tradeleftcheckbox41").checked=!0:t.this.getElementById("tradeleftcheckbox41").checked=!1),t.this.getElementById("traderightcheckbox41")&&(-1===t.tradeObj.chanceJailCard?t.this.getElementById("traderightcheckbox41").checked=!0:t.this.getElementById("traderightcheckbox41").checked=!1),t.tradeObj.money>0?t.this.getElementById("trade-leftp-money").value=t.tradeObj.money+"":t.this.getElementById("trade-rightp-money").value=-t.tradeObj.money+"",a(t)})(0,t);break;case"getTrade":(async(e,t,r)=>{t.tradeObj=trade.staticProperty,a(t)})(0,t);break;case"setTrade":(async(e,t,r)=>{trade.staticProperty=e.obj,a(t)})(e,t);break;case"trade":(async(e,t,r)=>{trade.staticProperty.initiator=e.initiator,trade.staticProperty.recipient=e.recipient,trade.staticProperty.property=e.property,trade.staticProperty.money=e.money,trade.staticProperty.communityChestJailCard=e.communityChestJailCard,trade.staticProperty.chanceJailCard=e.chanceJailCard,t.tradeObj=trade.staticProperty,t.reversedTrade=trade.staticProperty,await monopoly.get({type:"setTrade",obj:trade.staticProperty},t),a(t)})(e,t);break;case"readTrade":(async(e,t,r)=>{await monopoly.get({type:"getTrade"},t),t.tradeObj.property=new Array(40),t.tradeObj.communityChestJailCard,t.tradeObj.chanceJailCard,t.tradeObj.money={};let o,n,i,l=new Array(40);for(let e=0;e<40;e++)t.this.getElementById("tradeleftcheckbox"+e)&&t.this.getElementById("tradeleftcheckbox"+e).checked?(l[e]=1,t.tradeObj.property[e]=1):t.this.getElementById("traderightcheckbox"+e)&&t.this.getElementById("traderightcheckbox"+e).checked?(l[e]=-1,t.tradeObj.property[e]=-1):(t.tradeObj.property[e]=0,l[e]=0);t.this.getElementById("tradeleftcheckbox40")&&t.this.getElementById("tradeleftcheckbox40").checked?(n=1,t.tradeObj.communityChestJailCard=1):t.this.getElementById("traderightcheckbox40")&&t.this.getElementById("traderightcheckbox40").checked?(n=-1,t.tradeObj.communityChestJailCard=-1):(n=0,t.tradeObj.communityChestJailCard=0),t.this.getElementById("tradeleftcheckbox41")&&t.this.getElementById("tradeleftcheckbox41").checked?(t.tradeObj.chanceJailCard=-1,i=1):t.this.getElementById("traderightcheckbox41")&&t.this.getElementById("traderightcheckbox41").checked?(i=-1,t.tradeObj.chanceJailCard=1):(t.tradeObj.chanceJailCard=0,i=0),t.tradeObj.money=parseInt(t.this.getElementById("trade-leftp-money").value,10)||0,t.tradeObj.money-=parseInt(t.this.getElementById("trade-rightp-money").value,10)||0,o=parseInt(t.this.getElementById("trade-leftp-money").value,10)||0,o-=parseInt(t.this.getElementById("trade-rightp-money").value,10)||0,await monopoly.get({type:"trade",initiator:t.tradeObj.currentInitiator,recipient:t.tradeObj.currentRecipient,money:t.tradeObj.money,property:t.tradeObj.property,communityChestJailCard:t.tradeObj.communityChestJailCard,chanceJailCard:t.tradeObj.chanceJailCard},t),a(t)})(0,t);break;case"resetTrade":(async(e,t,r)=>{let o,n,i,l,d,s,c,p;t.currentSquare={},t.currentTableRow={},t.currentTableCell={},t.currentTableCellCheckbox={},t.nameSelect={},t.currentOption={},t.allGroupUninproved={},t.currentName={};let y=function(e){t.this.querySelector("#proposetradebutton").style.display="flex",t.this.querySelector("#canceltradebutton").style.display="flex",t.this.querySelector("#accepttradebutton").style.display="none",t.this.querySelector("#rejecttradebutton").style.display="none"},u=function(e){let r=e.target.parentNode;r=r.querySelector("input"),t.checkboxElement=r,t.checkboxElement!==e.srcElement&&(t.checkboxElement.checked=!t.checkboxElement.checked),t.this.querySelector("#proposetradebutton").style.display="flex",t.this.querySelector("#canceltradebutton").style.display="flex",t.this.querySelector("#accepttradebutton").style.display="none",t.this.querySelector("#rejecttradebutton").style.display="none"},h=t.this.getElementById("trade-leftp-property"),m=t.this.getElementById("trade-rightp-property");for(t.tradeObj.currentInitiator=t.tradeObj.initiator,t.tradeObj.currentRecipient=t.tradeObj.recipient;h.lastChild;)h.removeChild(h.lastChild);for(;m.lastChild;)m.removeChild(m.lastChild);let g=document.createElement("table"),b=document.createElement("table");for(let r=0;r<40;r++){if((o=t.square[r]).house>0||0===o.groupNumber)continue;c=!0;let a=o.group.length;for(let e=0;e<a;e++)if(t.square[o.group[e]].house>0){c=!1;break}c&&(o.owner===e.initiator.index?((n=g.appendChild(document.createElement("tr"))).addEventListener("click",u),(i=n.appendChild(document.createElement("td"))).className="propertycellcheckbox",(l=i.appendChild(document.createElement("input"))).type="checkbox",l.id="tradeleftcheckbox"+r,l.title="Check this box to include "+o.name+" in the trade.",(i=n.appendChild(document.createElement("td"))).className="propertycellcolor",i.setAttribute("show",r),i.style.backgroundColor=o.color,1==o.groupNumber||2==o.groupNumber?i.style.borderColor="grey":i.style.borderColor=o.color,i.propertyIndex=r,i.onmouseover=async function(e){await monopoly.get({type:"showdeed",property:e.target.getAttribute("show")},t)},i.onmouseout=function(e){t.this.querySelector("#deed").style.display="none"},(i=n.appendChild(document.createElement("td"))).className="propertycellname",o.mortgage&&(i.title="Mortgaged",i.style.color="grey"),i.textContent=o.name):o.owner===t.tradeObj.recipient.index&&((n=b.appendChild(document.createElement("tr"))).addEventListener("click",u),(i=n.appendChild(document.createElement("td"))).className="propertycellcheckbox",(l=i.appendChild(document.createElement("input"))).type="checkbox",l.id="traderightcheckbox"+r,l.title="Check this box to include "+o.name+" in the trade.",(i=n.appendChild(document.createElement("td"))).className="propertycellcolor",i.setAttribute("show",r),i.style.backgroundColor=o.color,1==o.groupNumber||2==o.groupNumber?i.style.borderColor="grey":i.style.borderColor=o.color,i.propertyIndex=r,i.onmouseover=async function(e){await monopoly.get({type:"showdeed",property:e.target.getAttribute("show")},t)},i.onmouseout=function(){t.this.querySelector("#deed").style.display="none"},(i=n.appendChild(document.createElement("td"))).className="propertycellname",o.mortgage&&(i.title="Mortgaged",i.style.color="grey"),i.textContent=o.name))}if(t.tradeObj.initiator.communityChestJailCard?((n=g.appendChild(document.createElement("tr"))).addEventListener("click",u),(i=n.appendChild(document.createElement("td"))).className="propertycellcheckbox",(l=i.appendChild(document.createElement("input"))).type="checkbox",l.id="tradeleftcheckbox40",l.title="Check this box to include this Get Out of Jail Free Card in the trade.",(i=n.appendChild(document.createElement("td"))).className="propertycellcolor",i.style.backgroundColor="white",i.style.borderColor="grey",(i=n.appendChild(document.createElement("td"))).className="propertycellname",i.textContent="Get Out of Jail Free Card"):t.tradeObj.recipient.communityChestJailCard&&((n=b.appendChild(document.createElement("tr"))).addEventListener("click",u),(i=n.appendChild(document.createElement("td"))).className="propertycellcheckbox",(l=i.appendChild(document.createElement("input"))).type="checkbox",l.id="traderightcheckbox40",l.title="Check this box to include this Get Out of Jail Free Card in the trade.",(i=n.appendChild(document.createElement("td"))).className="propertycellcolor",i.style.backgroundColor="white",i.style.borderColor="grey",(i=n.appendChild(document.createElement("td"))).className="propertycellname",i.textContent="Get Out of Jail Free Card"),t.tradeObj.initiator.chanceJailCard?((n=g.appendChild(document.createElement("tr"))).addEventListener("click",u),(i=n.appendChild(document.createElement("td"))).className="propertycellcheckbox",(l=i.appendChild(document.createElement("input"))).type="checkbox",l.id="tradeleftcheckbox41",l.title="Check this box to include this Get Out of Jail Free Card in the trade.",(i=n.appendChild(document.createElement("td"))).className="propertycellcolor",i.style.backgroundColor="white",i.style.borderColor="grey",(i=n.appendChild(document.createElement("td"))).className="propertycellname",i.textContent="Get Out of Jail Free Card"):t.tradeObj.recipient.chanceJailCard&&((n=b.appendChild(document.createElement("tr"))).addEventListener("click",u),(i=n.appendChild(document.createElement("td"))).className="propertycellcheckbox",(l=i.appendChild(document.createElement("input"))).type="checkbox",l.id="traderightcheckbox41",l.title="Check this box to include this Get Out of Jail Free Card in the trade.",(i=n.appendChild(document.createElement("td"))).className="propertycellcolor",i.style.backgroundColor="white",i.style.borderColor="grey",(i=n.appendChild(document.createElement("td"))).className="propertycellname",i.textContent="Get Out of Jail Free Card"),g.lastChild?h.appendChild(g):h.textContent=t.tradeObj.initiator.name+" has no properties to trade.",b.lastChild?m.appendChild(b):m.textContent=t.tradeObj.recipient.name+" has no properties to trade.",t.this.getElementById("trade-leftp-name").textContent=t.tradeObj.initiator.name,p=t.this.getElementById("trade-rightp-name"),e.allowRecipientToBeChanged&&t.pcount>2){for(;p.lastChild;)p.removeChild(p.lastChild);d=p.appendChild(document.createElement("select"));for(let e=1;e<=t.pcount;e++)e!==t.tradeObj.initiator.index&&((s=d.appendChild(document.createElement("option"))).value=e+"",s.style.color=t.player[e].color,s.textContent=t.player[e].name,e===t.tradeObj.recipient.index&&(s.selected="selected"));d.onchange=async function(e){let r=parseInt(e.target.value,10);await monopoly.get({type:"getTrade"},t),t.tradeObj.recipient=t.player[r],t.tradeObj.currentRecipient=t.player[r],await gameplay.get({type:"resetTrade",initiator:t.tradeObj.currentInitiator,recipient:t.player[r],allowRecipientToBeChanged:!0},t)},d.title="Select a player to trade with."}else p.textContent=t.tradeObj.recipient.name;t.this.getElementById("trade-leftp-money").value="0",t.this.getElementById("trade-leftp-money").addEventListener("input",y),t.this.getElementById("trade-rightp-money").value="0",t.this.getElementById("trade-rightp-money").addEventListener("input",y),a(!0)})(e,t);break;case"mortgage":(async(e,t,r)=>{let o=t.square[e.index],n=t.player[o.owner];if(o.house>0||o.hotel>0||o.mortgage)a(!1);else{let e=Math.round(.5*o.price),r=Math.round(.6*o.price);t.mortgagePrice=e,t.unmortgagePrice=r,o.mortgage=!0,n.money+=e,t.this.getElementById("mortgagebutton").value="Unmortgage for $"+r,t.this.getElementById("mortgagebutton").title="Unmortgage "+o.name+" for $"+r+".",await monopoly.get({type:"addAlert",value:`${n.name} mortgaged ${o.name} for $ ${r}.`},t),await monopoly.get({type:"updateOwned",value:""},t),await monopoly.get({type:"updateMoney"},t),a(!0)}})(e,t);break;case"unmortgage":(async(e,t,r)=>{let o=t.square[e.index],n=t.player[o.owner],i=Math.round(.6*o.price),l=Math.round(.5*o.price);i>n.money||!o.mortgage?a(!1):(n.pay(i,0,t),o.mortgage=!1,t.this.getElementById("mortgagebutton").value="Mortgage for $"+l,t.this.getElementById("mortgagebutton").title="Mortgage "+o.name+" for $"+l+".",await monopoly.get({type:"addAlert",value:`${n.name} unmortgaged ${o.name} for $ ${i}.`},t),await monopoly.get({type:"updateOwned",value:""},t),a(!0))})(e,t);break;case"luxurytax":(async(e,t,r)=>{await monopoly.get({type:"addAlert",value:`${t.player[t.turn].name} paid $100 for landing on Luxury Tax.`},t),t.player[t.turn].pay(100,0,t),t.this.querySelector("#landed").style.display="flex",t.this.querySelector("#landed").innerText="You landed on Luxury Tax. Pay $100."})(0,t);break;case"land":(async(e,t,r)=>{e.increasedRent=!!e.increasedRent;let o=t.player[t.turn],n=t.square[o.position],i=t.die1,l=t.die2;if(t.this.querySelector("#landed").style.display="flex",t.this.querySelector("#landed").innerHTML="You landed on "+n.name+".",n.landcount++,await monopoly.get({type:"addAlert",value:`${o.name} landed on ${n.name}.`},t),0!==n.price&&0===n.owner&&(o.human?(t.this.querySelector("#landed").innerHTML="<div>You landed on <a href='javascript:void(0);' id='previeCard' class='statscellcolor'>"+n.name+".</a><input type='button' id='buyCards' value='Buy ($"+n.price+")' title='Buy "+n.name+" for "+n.pricetext+".'/></div>",t.this.querySelector("#buyCards").addEventListener("click",async e=>{let r=t.player[t.turn],o=t.square[r.position],a=o.price;if(r.money>=a){let e=[];for(let o=0;o<t.auctionQueue.length;o++)t.auctionQueue[o]===r.position||e.push(t.auctionQueue[o]);t.auctionQueue=e,r.pay(a,0,t),o.owner=t.turn,await monopoly.get({type:"updateMoney"},t),await monopoly.get({type:"addAlert",value:`${r.name} bought ${o.name} for ${o.pricetext}.`},t),await monopoly.get({type:"updateOwned"},t),t.this.querySelector("#landed").style.display="none"}else await monopoly.get({type:"popup",HTML:"<p>"+r.name+", you need $"+(o.price-r.money)+" more to buy "+o.name+".</p>"},t)}),t.this.querySelector("#previeCard").addEventListener("mouseover",async e=>{let r=t.player[t.turn],o=t.square[r.position];t.this.querySelector("#deed").style.display="flex",t.this.querySelector("#deed-special").style.display="none",t.this.querySelector("#deed-normal").style.display="none",t.this.querySelector("#deed-mortgaged").style.display="none",o.mortgage?(t.this.querySelector("#deed-mortgaged").style.display="flex",t.this.getElementById("deed-mortgaged-name").textContent=o.name,t.this.getElementById("deed-mortgaged-mortgage").textContent=o.price/2):o.groupNumber>=3?(t.this.querySelector("#deed-normal").style.display="flex",t.this.getElementById("deed-header").style.backgroundColor=o.color,t.this.getElementById("deed-name").textContent=o.name,t.this.getElementById("deed-baserent").textContent=o.baserent,t.this.getElementById("deed-rent1").textContent=o.rent1,t.this.getElementById("deed-rent2").textContent=o.rent2,t.this.getElementById("deed-rent3").textContent=o.rent3,t.this.getElementById("deed-rent4").textContent=o.rent4,t.this.getElementById("deed-rent5").textContent=o.rent5,t.this.getElementById("deed-mortgage").textContent=o.price/2,t.this.getElementById("deed-houseprice").textContent=o.houseprice,t.this.getElementById("deed-hotelprice").textContent=o.houseprice):2==o.groupNumber?(t.this.querySelector("#deed-special").style.display="flex",t.this.getElementById("deed-special-name").textContent=o.name,t.this.getElementById("deed-special-text").innerHTML=await classicedition.get({type:"utiltext"},t),t.this.getElementById("deed-special-mortgage").textContent=o.price/2):1==o.groupNumber&&(t.this.querySelector("#deed-special").style.display="flex",t.this.getElementById("deed-special-name").textContent=o.name,t.this.getElementById("deed-special-text").innerHTML=await classicedition.get({type:"transtext"},t),t.this.getElementById("deed-special-mortgage").textContent=o.price/2)}),t.this.querySelector("#previeCard").addEventListener("mouseout",e=>{t.this.querySelector("#deed").style.display="none"})):o.AI.buyProperty(o.position)&&await monopoly.get({type:"buy"},t),await monopoly.get({type:"addPropertyToAuctionQueue",propertyIndex:o.position},t)),0===n.owner||n.owner==t.turn||n.mortgage)n.owner>0&&n.owner!=t.turn&&n.mortgage&&(t.this.getElementById("landed").innerHTML="You landed on "+n.name+". Property is mortgaged; no rent was collected.");else{let r,a=!0;if(t.groupowned=!0,5==o.position||15==o.position||25==o.position||35==o.position)e.increasedRent?(r=25,t.rent=25):(t.rent=12.5,r=12.5),n.owner==t.square[5].owner&&(r*=2,t.rent*=2),n.owner==t.square[15].owner&&(r*=2,t.rent*=2),n.owner==t.square[25].owner&&(r*=2,t.rent*=2),n.owner==t.square[35].owner&&(r*=2,t.rent*=2);else if(12===o.position)e.increasedRent||t.square[28].owner==n.owner?(r=10*(i+l),t.rent=10*(i+l)):(r=4*(i+l),t.rent=4*(i+l));else if(28===o.position)e.increasedRent||t.square[12].owner==n.owner?(r=10*(i+l),t.rent=10*(i+l)):(r=4*(i+l),t.rent=4*(i+l));else{for(let e=0;e<40;e++){let r=t.square[e];r.groupNumber==n.groupNumber&&r.owner!=n.owner&&(a=!1,t.groupowned=!1)}a?0===n.house?(r=2*n.baserent,t.rent=2*n.baserent):(r=n["rent"+n.house],t.rent=n["rent"+n.house]):(r=n.baserent,t.rent=n.baserent)}await gameplay.get({type:"addAlert",value:`${o.name} paid $" ${r} rent to. ${t.player[n.owner].name}`},t),o.pay(r,n.owner,t),t.player[n.owner].money+=r,t.this.getElementById("landed").innerHTML="You landed on "+n.name+". "+t.player[n.owner].name+" collected $"+r+" rent."}4===o.position&&await gameplay.get({type:"citytax"},t),30===o.position&&(await gameplay.get({type:"updateMoney"},t),await gameplay.get({type:"updatePosition"},t),o.human?await gameplay.get({type:"popup",HTML:"<div>Go to jail. Go directly to Jail. Do not pass GO. Do not collect $200.</div>",action:async()=>{await monopoly.get({type:"gotojail"},t)},option:null},t):await gameplay.get({type:"gotojail"},t),a(t)),38===o.position&&await gameplay.get({type:"luxurytax"},t),await gameplay.get({type:"updateMoney"},t),await gameplay.get({type:"updatePosition"},t),await gameplay.get({type:"updateOwned"},t),o.human?await gameplay.get({type:"chanceCommunityChest"},t):(popup(o.AI.alertList,chanceCommunityChest),o.AI.alertList=""),a(t)})(e,t);break;case"finalizeAuction":(async(e,t,r)=>{let o=t.player[t.highestbidder],n=t.square[t.auctionproperty];t.highestbid>0&&(o.pay(t.highestbid,0,t),n.owner=t.highestbidder,await monopoly.get({type:"addAlert",value:`${o.name} bought ${n.name} for $ ${t.highestbid}.`},t));for(let e=1;e<=t.pcount;e++)t.player[e].bidding=!0;t.this.querySelector("#popupbackground").style.display="none",t.this.querySelector("#popupwrap").style.display="none",await monopoly.auction({type:"auction"},t)||await gameplay.get({type:"play",player:o},t),a(t)})(0,t);break;case"useJailCard":(async(e,t,r)=>{let o=t.player[t.turn];t.this.getElementById("jail").style.border="0.098vw solid black",t.this.getElementById("cell11").style.border="0.195vw solid "+o.color,$("#landed").hide(),o.jail=!1,o.jailroll=0,o.position=10,t.doublecount=0,o.communityChestJailCard?(o.communityChestJailCard=!1,t.communityChestCards.deck.splice(t.communityChestCards.index,0,0),t.communityChestCards.index++,t.communityChestCards.index>=t.communityChestCards.deck.length&&(t.communityChestCards.index=0)):o.chanceJailCard&&(o.chanceJailCard=!1,t.chanceCards.deck.splice(t.chanceCards.index,0,0),t.chanceCards.index++,t.chanceCards.index>=t.chanceCards.deck.length&&(t.chanceCards.index=0)),await monopoly.get({type:"addAlert",value:'used a "Get Out of Jail Free" card.'},t),await gameplay.get({type:"updateOwned"},t),await monopoly.get({type:"updatePosition",player:o},t)})(0,t);break;case"payFifty":(async(e,t,r)=>{let o=t.player[t.turn];t.this.getElementById("jail").style.border="0.098vw solid black",t.this.getElementById("cell11").style.border="0.195vw solid "+o.color,t.this.querySelector("#landed").style.display="none",t.doublecount=0,o.jail=!1,o.jailroll=0,o.position=10,o.pay(50,0,t),await monopoly.get({type:"addAlert",value:`${o.name} paid the $50 fine to get out of jail.`},t),await gameplay.get({type:"updateMoney"},t),await monopoly.get({type:"updatePosition",player:o},t)})(0,t);break;case"getDie":(async(e,t,r)=>{1===e.value?a(t.die1):a(t.die2)})(e,t);break;case"updatePosition":(async(e,t,r)=>{t.this.getElementById("jail").style.border="0.098vw solid black",t.this.querySelector("#jailpositionholder")&&(t.this.querySelector("#jailpositionholder").innerHTML="");for(let e=0;e<40;e++)t.this.getElementById("cell"+e).style.border="0.098vw solid black",t.this.getElementById("cell"+e+"positionholder").innerHTML="";let o,n,i;for(let e=0;e<40;e++){o=t.square[e],n=0,i=0;for(let r=t.turn;r<=t.pcount;r++)t.player[r].position!==e||t.player[r].jail||(t.this.getElementById("cell"+e+"positionholder").innerHTML+="<div class='cell-position' title='"+t.player[r].name+"' style='background-color: "+t.player[r].color+"; left: "+n+"vw; top: "+i+"px;'></div>",36==n?(n=0,i=12):n+=1.2);for(let r=1;r<t.turn;r++)t.player[r].position!=e||t.player[r].jail||(t.this.getElementById("cell"+e+"positionholder").innerHTML+="<div class='cell-position' title='"+t.player[r].name+"' style='background-color: "+t.player[r].color+"; left: "+n+"vw; top: "+i+"px;'></div>",36==n?(n=0,i=12):n+=1.2)}n=0,i=5.2;for(let e=t.turn;e<=t.pcount;e++)t.player[e].jail&&(t.this.getElementById("jailpositionholder").innerHTML+="<div class='cell-position' title='"+t.player[e].name+"' style='background-color: "+t.player[e].color+"; left: "+n+"vw; top: "+i+"vw;'></div>",36===n?(n=0,i=41):n+=1.2);for(let e=1;e<t.turn;e++)t.player[e].jail&&(t.this.getElementById("jailpositionholder").innerHTML+="<div class='cell-position' title='"+t.player[e].name+"' style='background-color: "+t.player[e].color+"; left: "+n+"vw; top: "+i+"vw;'></div>",36===n?(n=0,i=41):n+=1.2);let l=t.player[t.turn];l.jail?t.this.getElementById("jail").style.border="0.098vw solid "+l.color:t.this.getElementById("cell"+l.position).style.border="0.098vw solid "+l.color,a(t)})(0,t);break;case"addAlert":(async(e,t,r)=>{let o=t.this.querySelector("#alert"),n=document.createElement("div");n.innerText=e.value,o.appendChild(n),t.player[t.turn].human||ai.get({type:"alertList",value:`<div>${e.alertText}</div>`}),a(t)})(e,t);break;case"gotojail":(async(e,t,r)=>{let o=t.player[t.turn];await monopoly.get({type:"addAlert",value:`${o.name} was sent directly to jail.`},t),t.this.getElementById("landed").innerHTML="You are in jail.",o.jail=!0,t.doublecount=0,t.this.getElementById("nextbutton").value="End turn",t.this.getElementById("nextbutton").title="End turn and advance to the next player.",o.human&&t.this.getElementById("nextbutton").focus(),await monopoly.get({type:"updatePosition",player:o},t),await monopoly.get({type:"updateOwned",value:""},t),o.human||(popup(o.AI.alertList,game.next),o.AI.alertList="")})(0,t);break;case"updateMoney":(async(e,t,r)=>{let o=t.player[t.turn];t.this.querySelector("#pmoney").innerHTML="$"+o.money;for(let e=0;e<t.this.querySelectorAll(".money-bar-row").length;e++)t.this.querySelectorAll(".money-bar-row")[e].style.display="none";for(let e=1;e<=t.pcount;e++){let r=t.player[e];t.this.querySelector(`#moneybarrow${e}`).style.display="flex",t.this.getElementById("p"+e+"moneybar").style.border="0.195vw solid "+r.color,t.this.getElementById("p"+e+"money").innerHTML=r.money,t.this.getElementById("p"+e+"moneyname").innerHTML=r.name}""===t.this.querySelector("#landed").innerHTML&&(t.this.querySelector("#landed").style.display="none"),t.this.querySelector("#quickstats").style.borderColor=o.color,o.money<0?(t.this.querySelector("#resignbutton").style.display="flex",t.this.querySelector("#nextbutton").style.display="none"):(t.this.querySelector("#resignbutton").style.display="none",t.this.querySelector("#nextbutton").style.display="flex"),a(t)})(0,t);break;case"player":(async(e,t,r)=>{let o={};o.name=name,o.color=e.color,o.position=0,o.money=1500,o.creditor=-1,o.jail=!1,o.jailroll=0,o.communityChestJailCard=!1,o.chanceJailCard=!1,o.bidding=!0,o.human=!0,o.AI=null,o.pay=async function(e,t,r){e<=this.money?(this.money-=e,await gameplay.get({type:"updateMoney"},r),a(!0)):(this.money-=e,this.creditor=t,await gameplay.get({type:"updateMoney"},r),a(!1))},a(o)})(e);break;case"popup":(async(e,t,r)=>{t.this.getElementById("popuptext").innerHTML=e.HTML,t.this.getElementById("popup").style.width="61.297vw",t.this.getElementById("popup").style.height="16.297vw;",t.this.getElementById("popup").style.top="0",t.this.getElementById("popup").style.left="0",e.option||"string"!=typeof e.action||(e.option=e.action),e.option=e.option?e.option.toLowerCase():"","function"!=typeof e.action&&(e.action=null),"yes/no"===e.option?(t.this.getElementById("popuptext").innerHTML+='<div><input type="button" value="Yes" id="popupyes" /><input type="button" value="No" id="popupno" /></div>',t.this.querySelector("#popupyes").addEventListener("click",async()=>{t.this.querySelector("#popupwrap").style.display="none",t.this.querySelector("#popupbackground").style.display="none",e.action(e,t)}),t.this.querySelector("#popupno").addEventListener("click",async()=>{t.this.querySelector("#popupwrap").style.display="none",t.this.querySelector("#popupbackground").style.display="none"})):"blank"!==e.option&&(t.this.querySelector(".containerCard")?t.this.querySelector(".containerCard").insertAdjacentHTML("beforeend","<div><input type='button' value='OK' id='popupclose' /></div>"):t.this.querySelector("#popuptext").insertAdjacentHTML("beforeend","<div><input type='button' value='OK' id='popupclose' /></div>"),t.this.querySelector("#popupclose").focus(),t.this.querySelector("#popupclose").addEventListener("click",async()=>{t.this.querySelector("#popupwrap").style.display="none",null===e.action?e.HTML.indexOf("Go to jail")>-1?t.this.querySelector("#popupbackground").style.display="none":e.HTML.indexOf("more to buy")>-1&&(t.this.querySelector("#popupbackground").style.display="none"):(t.this.querySelector("#popupbackground").style.display="none",e.action(e,t))})),t.this.querySelector("#popupwrap").style.display="flex",t.this.querySelector("#popupbackground").style.display="flex",t.this.querySelector("#auctionBidItem")&&t.this.querySelector("#auctionBidItem").addEventListener("click",async()=>{await auction.get({type:"auctionBid",bid:null},t)}),t.this.querySelector("#auctionPassItem")&&t.this.querySelector("#auctionPassItem").addEventListener("click",async()=>{await auction.get({type:"auctionPass"},t)}),t.this.querySelector("#exitAuctionItem")&&t.this.querySelector("#exitAuctionItem").addEventListener("click",async()=>{confirm("Are you sure you want to stop bidding on this property altogether?")&&await auction.get({type:"auctionExit"},t)}),t.this.querySelector("#popupwrap").style.display="flex",a(t)})(e,t);break;case"chanceCommunityChest":(async(e,t,r)=>{let o=t.player[t.turn];if(2===o.position||17===o.position||33===o.position){let e=t.communityChestCards.deck[t.communityChestCards.index];0===e&&t.communityChestCards.deck.splice(t.communityChestCards.index,1),await monopoly.get({type:"popup",HTML:`\n                            <img src='./static/html/components/main-manager/images/community_chest_icon.png' style='height: 15vw; width: 15vw; margin: 0.781vw 0.781vw 0.781vw 0;' />\n                            <div class="containerCard">\n                            <div style='font-weight: bold; font-size: 3vw; '>Community Chest:</div>\n                            <div style='text-align: center;'>${t.communityChestCards[e].text}</div>\n                            </div>\n                            `,action:async function(t,r){await auction.get({type:"communityChestAction",communityChestIndex:e},r)}},t),t.communityChestCards.index++,t.communityChestCards.index>=t.communityChestCards.deck.length&&(t.communityChestCards.index=0)}else if(7===o.position||22===o.position||36===o.position){let e=t.chanceCards.deck[t.chanceCards.index];0===e&&t.chanceCards.deck.splice(t.chanceCards.index,1),await monopoly.get({type:"popup",HTML:"<img src='./static/html/components/main-manager/images/chance_icon.png' style='height: 7.883vw; width: 5vw; margin: 0.781vw 0.781vw 0.781vw 0;' /><div style='font-weight: bold; font-size: 3vw; '>Chance:</div><div style='text-align: justify;'>"+t.chanceCards[e].text+"</div>",action:async function(t,r){await auction.get({type:"chanceAction",chanceIndex:e},r)}},t),t.chanceCards.index++,t.chanceCards.index>=t.chanceCards.deck.length&&(t.chanceCards.index=0)}else o.human||(o.AI.alertList="",o.AI.onLand()||game.next())})(0,t);break;case"buyHouse":(async(e,t,r)=>{let o=t.square[e.index],n=t.player[o.owner],i=0,l=0;if(n.money-o.houseprice<0)o.house,a(!1);else{for(let e=0;e<40;e++)1===t.square[e].hotel?l++:i+=t.square[e].house;if(o.house<4)i>=32?a(!1):(o.house++,await gameplay.get({type:"addAlert",value:`${n.name} placed a house on ${o.name}.`},t));else{if(l>=12)return;o.house=5,o.hotel=1,await gameplay.get({type:"addAlert",value:`${n.name}  placed a hotel on ${o.name}.`},t)}n.pay(o.houseprice,0,t),updateOwned(),await gameplay.get({type:"updateMoney"},t)}})(e,t);break;case"getCheckedProperty":(async(e,t,r)=>{let o=-1;for(let e=0;e<42;e++)if(t.this.getElementById("propertycheckbox"+e)&&t.this.getElementById("propertycheckbox"+e).checked){o=e;break}a(o)})(0,t);break;case"next":(async(e,t,r)=>{let o=e.player;!o.human&&o.money<0?(o.AI.payDebt(),o.money<0?await gameplay.get({type:"popup",HTML:"<p>"+o.name+" is bankrupt. All of its assets will be turned over to "+player[o.creditor].name+".</p>",action:game.bankruptcy},t):await gameplay.get({type:"roll",player:o},t)):t.areDiceRolled&&0===t.doublecount?await gameplay.get({type:"play",player:o},t):await gameplay.get({type:"roll",player:o},t),a(t)})(e,t);break;case"updateOption":(async(e,t,r)=>{t.this.querySelector("#option").style.display="flex";let o=!0,n=!0,i=(()=>{for(let e=0;e<42;e++)if(t.this.getElementById("propertycheckbox"+e)&&t.this.getElementById("propertycheckbox"+e).checked)return e;return-1})();if(i<0||i>=40){t.this.querySelector("#buyhousebutton").style.display="none",t.this.querySelector("#sellhousebutton").style.display="none",t.this.querySelector("#mortgagebutton").style.display="none";let e=32,r=12;for(let o=0;o<40;o++){let a=t.square[o];1==a.hotel?r--:e-=a.house}t.this.querySelector("#buildings").style.display="flex",t.this.getElementById("buildings").innerHTML="<img src='./static/html/components/main-manager/images/house.png' alt='' title='House' class='house' />:&nbsp;"+e+"&nbsp;&nbsp;<img src='./static/html/components/main-manager/images/hotel.png' alt='' title='Hotel' class='hotel' />:&nbsp;"+r,a(t)}else{t.this.querySelector("#buildings").style.display="none";let e=t.square[i],r=t.this.getElementById("buyhousebutton"),l=t.this.getElementById("sellhousebutton");if(t.this.querySelector("#mortgagebutton").style.display="flex",t.this.getElementById("mortgagebutton").disabled=!1,e.mortgage)t.this.getElementById("mortgagebutton").value="Unmortgage ($"+Math.round(.6*e.price)+")",t.this.getElementById("mortgagebutton").title="Unmortgage "+e.name+" for $"+Math.round(.6*e.price)+".",t.this.querySelector("#buyhousebutton").style.display="none",t.this.querySelector("#sellhousebutton").style.display="none",n=!1;else if(t.this.getElementById("mortgagebutton").value="Mortgage ($"+.5*e.price+")",t.this.getElementById("mortgagebutton").title="Mortgage "+e.name+" for $"+.5*e.price+".",e.groupNumber>=3){t.this.querySelector("#buyhousebutton").style.display="flex",t.this.querySelector("#sellhousebutton").style.display="flex",r.disabled=!1,l.disabled=!1,r.value="Buy house ($"+e.houseprice+")",l.value="Sell house ($"+.5*e.houseprice+")",r.title="Buy a house for $"+e.houseprice,l.title="Sell a house for $"+.5*e.houseprice,4==e.house&&(r.value="Buy hotel ($"+e.houseprice+")",r.title="Buy a hotel for $"+e.houseprice),1==e.hotel&&(t.this.querySelector("#buyhousebutton").style.display="none",l.value="Sell hotel ($"+.5*e.houseprice+")",l.title="Sell a hotel for $"+.5*e.houseprice);let i=0,d=5,s=e.group.length;for(let a=0;a<s;a++){let s=t.square[e.group[a]];s.owner!==e.owner?(r.disabled=!0,l.disabled=!0,r.title="Before you can buy a house, you must own all the properties of this color-group."):(s.house>i&&(i=s.house),s.house<d&&(d=s.house),s.house>0&&(o=!1),s.mortgage&&(n=!1))}n||(r.disabled=!0,r.title="Before you can buy a house, you must unmortgage all the properties of this color-group."),e.house>d&&(r.disabled=!0,1==e.house?r.title="Before you can buy another house, the other properties of this color-group must all have one house.":4==e.house?r.title="Before you can buy a hotel, the other properties of this color-group must all have 4 houses.":r.title="Before you can buy a house, the other properties of this color-group must all have "+e.house+" houses."),e.house<i&&(l.disabled=!0,1==e.house?l.title="Before you can sell house, the other properties of this color-group must all have one house.":l.title="Before you can sell a house, the other properties of this color-group must all have "+e.house+" houses."),0===e.house&&0===e.hotel?t.this.querySelector("#sellhousebutton").style.display="none":t.this.querySelector("#mortgagebutton").style.display="none",o||(t.this.getElementById("mortgagebutton").title="Before a property can be mortgaged, all the properties of its color-group must unimproved.",t.this.getElementById("mortgagebutton").disabled=!0),a(t)}else t.this.querySelector("#buyhousebutton").style.display="none",t.this.querySelector("#sellhousebutton").style.display="none",a(t);a(t)}})(0,t);break;case"addPropertyToAuctionQueue":(async(e,t,r)=>{t.auctionQueue.push(e.propertyIndex),a(t)})(e,t);break;case"updateOwned":(async(e,t,r)=>{let o=t.player[t.turn],n=(()=>{for(let e=0;e<42;e++)if(t.this.getElementById("propertycheckbox"+e)&&t.this.getElementById("propertycheckbox"+e).checked)return e;return-1})();t.checkedproperty=n,t.this.querySelector("#option").style.display="flex",t.this.querySelector("#owned").style.display="flex";let i,l="",d=-1,s="",c="";for(let e=0;e<40;e++)if((i=t.square[e]).groupNumber&&0===i.owner)t.this.querySelector(`#cell${e}owner`).style.display="none";else if(i.groupNumber&&i.owner>0){let r=t.this.getElementById("cell"+e+"owner");r.style.display="block",r.style.backgroundColor=t.player[i.owner].color,r.title=t.player[i.owner].name}for(let e=0;e<40;e++)if((i=t.square[e]).owner==t.turn){if(s="",i.mortgage&&(s="title='Mortgaged' style='color: grey;'"),c="",i.house>=1&&i.house<=4)for(let e=1;e<=i.house;e++)c+="<img src='./static/html/components/main-manager/images/house.png' alt='' title='House' class='house' />";else i.hotel&&(c+="<img src='./static/html/components/main-manager/images/house.png' alt='' title='Hotel' class='hotel' />");""===l&&(l+="<table>",d=e),l+="<tr class='property-cell-row'><td class='propertycellcheckbox'><input type='checkbox' id='propertycheckbox"+e+"' /></td><td class='propertycellcolor' style='background: "+i.color+";",1!=i.groupNumber&&2!=i.groupNumber||(l+=" border: 0.098vw solid grey; width: 1.758vw;"),l+="' showdeed = "+e+" ></td> <td class = 'propertycellname' > "+i.name+c+"</td> </tr>"}if(o.communityChestJailCard&&(""===l&&(d=40,l+="<table>"),l+="<tr class='property-cell-row'><td class='propertycellcheckbox'><input type='checkbox' id='propertycheckbox40' /></td><td class='propertycellcolor' style='background: white;'></td><td class='propertycellname'>Get Out of Jail Free Card</td></tr>"),o.chanceJailCard&&(""===l&&(d=41,l+="<table>"),l+="<tr class='property-cell-row'><td class='propertycellcheckbox'><input type='checkbox' id='propertycheckbox41' /></td><td class='propertycellcolor' style='background: white;'></td><td class='propertycellname'>Get Out of Jail Free Card</td></tr>"),""===l?(l=o.name+", you don't have any properties.",t.this.querySelector("#option").style.display="none"):l+="</table>",t.this.getElementById("owned").innerHTML=l,t.this.querySelector(".propertycellcolor")){let e=t.this.querySelectorAll(".propertycellcolor");for(let r=0;r<e.length;r++)e[r].addEventListener("mouseover",async o=>{let a=e[r].getAttribute("showdeed");await monopoly.get({type:"showdeed",property:a},t)}),e[r].addEventListener("mouseout",async e=>{t.this.querySelector("#deed").style.display="none"})}n>-1&&t.this.getElementById("propertycheckbox"+n)?t.this.getElementById("propertycheckbox"+n).checked=!0:d>-1&&(t.this.getElementById("propertycheckbox"+d).checked=!0);let p=t.this.querySelectorAll(".property-cell-row");for(let e=0;e<p.length;e++)p[e].addEventListener("click",async e=>{let r=!0,o=e.target.parentNode,a={},n=!1;for(;r;)"TR"===o.tagName?(n=o,o=o.parentNode):"TBODY"===o.tagName?(a=o,r=!1):o=o.parentNode;if(n){for(let e=0;e<a.children.length;e++)a.children[e].querySelector("input").checked=!1;n.querySelector("input").checked=!0}else;await monopoly.get({type:"updateOption"},t)});await monopoly.get({type:"updateOption"},t),a(t)})(0,t);break;case"citytax":(async(e,t,r)=>{await gameplay.get({type:"addAlert",value:`${t.player[t.turn].name} paid $200 for landing on City Tax.`},t),t.player[t.turn].pay(200,0,t),t.this.querySelector("#landed").innerText="You landed on City Tax. Pay $200.",t.this.querySelector("#landed").style.display="flex",a(t)})(0,t);break;case"auction":(async(e,t,r)=>{if(0===await t.auctionQueue.length)a(!1);else{let e=t.auctionQueue.shift();if(void 0===e);else{let r=t.square[e];if(0===r.price||0!==r.owner)a(await monopoly.get({type:"auction"},t));else{t.auctionproperty=e;t.highestbidder=0,t.highestbid=0;t.currentbidder=t.turn+1;let o=t.turn+1;t.currentbidder>t.pcount&&(t.currentbidder-=t.pcount),await monopoly.get({type:"popup",HTML:"\n<div style='font-weight: bold; font-size: 3vw; margin-bottom: 0.977vw;'>\nAuction \n<span id='propertyname'></span>\n</div>\n<div>Highest Bid = $\n<span id='highestbid'></span> (<span id='highestbidder'></span>)\n</div>\n<div>\n<span id='currentbidder'></span>, it is your turn to bid.\n</div>\n<div>\n<input id='bid' title='Enter an amount to bid on \" + s.name + \".' style='width: 85%;' />\n</div>\n<div>\n<input id='auctionBidItem' type='button' value='Bid' title='Place your bid.' />\n<input id='auctionPassItem' type='button' value='Pass' title='Skip bidding this time.'  />\n<input id='exitAuctionItem' type='button' value='Exit Auction' title='Stop bidding on \" + s.name + \" altogether.'  />\n</div>",option:"blank"},t),t.this.getElementById("propertyname").innerHTML=`<a id="propertynameItem" href='javascript:void(0);' class='statscellcolor'>${r.name}</a>`,t.this.querySelector("#propertynameItem").addEventListener("mouseout",async e=>{t.this.querySelector("#deed").style.display="none"}),t.this.querySelector("#propertynameItem").addEventListener("mouseover",async e=>{await monopoly.get({type:"showdeed",property:t.auctionproperty},t)}),t.this.getElementById("highestbid").innerHTML="0",t.this.getElementById("highestbidder").innerHTML="N/A",t.this.getElementById("currentbidder").innerHTML=t.player[o].name,t.this.getElementById("bid").onkeydown=async function(e){let r=0,o=!1,n=!1;if(window.event?(r=window.event.keyCode,o=window.event.ctrlKey,n=window.event.shiftKey):e&&(r=e.keyCode,o=e.ctrlKey,n=e.shiftKey),isNaN(r))return!0;13===r?(await auction.get({type:"auctionBid"},t),a(!1)):a(!!(8===r||9===r||46===r||r>=35&&r<=40||o)||!n&&(r>=48&&r<=57||r>=96&&r<=105))},t.this.getElementById("bid").onfocus=function(){this.style.color="black",isNaN(this.value)&&(this.value="")},await monopoly.get({type:"updateMoney"},t),t.player[o].human||(t.currentbidder=t.turn,await auction.get({type:"auctionPass"},t))}a(!0)}}})(0,t);break;case"auctionExit":(async(e,t,r)=>{t.player[t.currentbidder].bidding=!1,auction.get({type:"auctionPass"},t)})(0,t);break;case"auctionBid":(async(e,t,r)=>{t.bid=e.bid||parseInt(t.this.getElementById("bid").value,10);let o=e.bid||parseInt(t.this.getElementById("bid").value,10);""===o||null===o?(t.this.getElementById("bid").value="Please enter a bid.",t.this.getElementById("bid").style.color="red"):isNaN(o)?(t.this.getElementById("bid").value="Your bid must be a number.",t.this.getElementById("bid").style.color="red"):o>t.player[t.currentbidder].money?(t.this.getElementById("bid").value="You don't have enough money to bid $"+o+".",t.this.getElementById("bid").style.color="red"):o>t.highestbid?(t.highestbid=o,t.this.getElementById("highestbid").innerHTML=parseInt(o,10),t.highestbidder=t.currentbidder,t.this.getElementById("highestbidder").innerHTML=t.player[t.highestbidder].name,t.this.getElementById("bid").focus(),t.player[t.currentbidder].human&&auction.get({type:"auctionPass"},t)):(t.this.getElementById("bid").value="Your bid must be greater than highest bid. ($"+highestbid+")",t.this.getElementById("bid").style.color="red")})(e,t);break;case"auctionPass":(async(e,t,r)=>{for(0===t.highestbidder&&(t.highestbidder=t.currentbidder);;)if(t.currentbidder++,t.currentbidder>t.pcount&&(t.currentbidder-=t.pcount),t.currentbidder==t.highestbidder)await auction.get({type:"finalizeAuction"},t),a(t);else if(t.player[t.currentbidder].bidding){let e=t.player[t.currentbidder];if(e.human)break;{let r=e.AI.bid(t.auctionproperty,t.highestbid);if(-1===r||t.highestbid>=e.money){e.bidding=!1,window.alert(e.name+" exited the auction.");continue}if(0===r){window.alert(e.name+" passed.");continue}if(r>0){t.bid=r,await auction.get({type:"auctionBid",bid:r},t),window.alert(e.name+" bid $"+r+".");continue}a(t)}}t.this.getElementById("currentbidder").innerHTML=t.player[t.currentbidder].name,t.this.getElementById("bid").value="",t.this.getElementById("bid").style.color="black"})(0,t);break;case"showdeed":(async(e,t,r)=>{let o=t.square[e.property];t.this.querySelector("#deed").style.display="flex",t.this.querySelector("#deed-normal").style.display="none",t.this.querySelector("#deed-mortgaged").style.display="none",t.this.querySelector("#deed-special").style.display="none",o.mortgage?(t.this.querySelector("#deed-mortgaged").style.display="flex",t.this.getElementById("deed-mortgaged-name").textContent=o.name,t.this.getElementById("deed-mortgaged-mortgage").textContent=o.price/2):o.groupNumber>=3?(t.this.querySelector("#deed-normal").style.display="flex",t.this.getElementById("deed-header").style.backgroundColor=o.color,t.this.getElementById("deed-name").textContent=o.name,t.this.getElementById("deed-baserent").textContent=o.baserent,t.this.getElementById("deed-rent1").textContent=o.rent1,t.this.getElementById("deed-rent2").textContent=o.rent2,t.this.getElementById("deed-rent3").textContent=o.rent3,t.this.getElementById("deed-rent4").textContent=o.rent4,t.this.getElementById("deed-rent5").textContent=o.rent5,t.this.getElementById("deed-mortgage").textContent=o.price/2,t.this.getElementById("deed-houseprice").textContent=o.houseprice,t.this.getElementById("deed-hotelprice").textContent=o.houseprice):2==o.groupNumber?(t.this.querySelector("#deed-special").style.display="flex",t.this.getElementById("deed-special-name").textContent=o.name,t.this.getElementById("deed-special-text").innerHTML=await classicedition.get({type:"utiltext"},t),t.this.getElementById("deed-special-mortgage").textContent=o.price/2):1==o.groupNumber&&(t.this.querySelector("#deed-special").style.display="flex",t.this.getElementById("deed-special-name").textContent=o.name,t.this.getElementById("deed-special-text").innerHTML=await classicedition.get({type:"transtext"},t),t.this.getElementById("deed-special-mortgage").textContent=o.price/2)})(e,t);break;default:console.assert(!1,`новая функция ${e.type}`)}})};
+import  gameplay from './gameplay.mjs'
+import ai from "./ai.mjs";
+import monopoly from './monopoly.mjs'
+import auction from './auction.mjs'
+import classicedition from "./classicedition.mjs";
+let trade = []
+trade.staticProperty = []
+trade['staticProperty']['initiator'] = []
+trade['staticProperty']['recipient'] = []
+trade['staticProperty']['property'] =  new Array(40)
+trade['staticProperty']['money'] = []
+trade['staticProperty']['communityChestJailCard'] = []
+trade['staticProperty']['chanceJailCard'] = []
+export default {
+    get:(obj, payload, ...rest)=>{
+        return  new Promise((resolve, reject) => {
+            function out(obj) {
+                resolve(obj)
+            }
+            function wrr(obj) {
+                reject(obj)
+            }
+            switch (obj['type']) {
+                case 'bankruptcyUnmortgage':
+                    (async (obj, payload, rest)=>{
+
+                        let p = payload['player'][payload['turn']];
+
+                        if (p.creditor === 0) {
+                            game.eliminatePlayer();
+                            out(payload)
+                        }
+
+                        let HTML = "<p>" + payload['player'][p.creditor].name + ", you may unmortgage any of the following properties, interest free, by clicking on them. Click OK when finished.</p><table>";
+                        let price;
+
+                        for (let i = 0; i < 40; i++) {
+                            let sq = payload['square'][i];
+                            if (sq.owner == p.index && sq.mortgage) {
+                                price = Math.round(sq.price * 0.5);
+
+                                HTML += "<tr><td class='propertycellcolor' style='background: " + sq.color + ";";
+
+                                if (sq.groupNumber == 1 || sq.groupNumber == 2) {
+                                    HTML += " border: 0.098vw solid grey;";
+                                } else {
+                                    HTML += " border: 0.098vw solid " + sq.color + ";";
+                                }
+
+                                // Player already paid interest, so they can unmortgage for the mortgage price.
+                                // HTML += "' onmouseover='showdeed(" + i + ");' onmouseout='hidedeed();'></td><td class='propertycellname'><a href='javascript:void(0);' title='Unmortgage " + sq.name + " for $" + price + ".' onclick='if (" + price + " <= player[" + p.creditor + "].money) {player[" + p.creditor + "].pay(" + price + ", 0); square[" + i + "].mortgage = false; addAlert(\"" + player[p.creditor].name + " unmortgaged " + sq.name + " for $" + price + ".\");} this.parentElement.parentElement.style.display = \"none\";'>Unmortgage " + sq.name + " ($" + price + ")</a></td></tr>";
+                                HTML += "' showdeed = " + i + " ;></td><td class='propertycellname'><a href='javascript:void(0);' title='Unmortgage " + sq.name + " for $" + price + ".' onclick='if (" + price + " <= player[" + p.creditor + "].money) {player[" + p.creditor + "].pay(" + price + ", 0); square[" + i + "].mortgage = false; addAlert(\"" + player[p.creditor].name + " unmortgaged " + sq.name + " for $" + price + ".\");} this.parentElement.parentElement.style.display = \"none\";'>Unmortgage " + sq.name + " ($" + price + ")</a></td></tr>";
+
+                                sq.owner = p.creditor;
+
+                            }
+                        }
+
+                        HTML += "</table>";
+
+                        popup(HTML, game.eliminatePlayer);
+
+                        out(payload)
+                    })(obj, payload, rest)
+                    break
+                case 'eliminatePlayer':
+                    (async (obj, payload, rest)=>{
+                        let p = payload['player'][payload['turn']];
+
+                        for (let i = p.index; i < payload['pcount']; i++) {
+                            payload['player'][i] = payload['player'][i + 1];
+                            payload['player'][i].index = i;
+
+                        }
+
+                        for (var i = 0; i < 40; i++) {
+                            if (payload['square'][i].owner >= p.index) {
+                                payload['square'][i].owner--;
+                            }
+                        }
+
+                        payload['pcount']--;
+                        payload['turn']--;
+
+                        if (payload['pcount'] === 2) {
+                            payload['this'].getElementById("stats").style.width = "454px";
+                        } else if (payload['pcount'] === 3) {
+                            payload['this'].getElementById("stats").style.width = "686px";
+                        }
+
+                        if (payload['pcount'] === 1) {
+                            await monopoly['get']({type:'updateMoney'},payload)
+                            $("#control").hide();
+                            $("#board").hide();
+                            $("#refresh").show();
+
+                            // // Display land counts for survey purposes.
+                            // var text;
+                            // for (var i = 0; i < 40; i++) {
+                            // if (i === 0)
+                            // text = square[i].landcount;
+                            // else
+                            // text += " " + square[i].landcount;
+                            // }
+                            // payload['this'].getElementById("refresh").innerHTML += "<br><br><div><textarea type='text' style='width: 980px;' onclick='javascript:select();' />" + text + "</textarea></div>";
+                            await monopoly['get']({type:'popup', HTML:"<p>Congratulations, " + payload['player'][1].name + ", you have won the game.</p><div>"}, payload)
+                        } else {
+                            await monopoly['get']({type:'play'}, payload)
+                        }
+                        out(payload)
+                    })(obj, payload, rest)
+                    break
+                case 'resign':
+                    (async (obj, payload, rest)=>{
+                        await monopoly['get']({type:'popup', HTML:"<p>Are you sure you want to resign?</p>",option:"Yes/No", action:async function() {
+                                await monopoly['get']({type:'bankruptcy'}, payload);
+                            }}, payload)
+                        out(payload)
+                    })(obj, payload, rest)
+                    break
+                case 'writeTrade':
+                    (async (obj, payload, rest)=>{
+
+                        // console.assert(false, payload)
+                        await monopoly['get']({
+                            type:'resetTrade',
+                            initiator:payload['tradeObj']['initiator'],
+                            recipient:payload['tradeObj']['recipient'],
+                            allowRecipientToBeChanged: false },
+                            payload)
+                        // console.assert(false, payload)
+                        for (let i = 0; i < 40; i++) {
+
+                            if (payload['this'].getElementById("tradeleftcheckbox" + i)) {
+                                payload['this'].getElementById("tradeleftcheckbox" + i).checked = false;
+                                console.log(payload['tradeObj']['property'][i])
+                                if (payload['tradeObj']['property'][i] === 1) {
+                                    payload['this'].getElementById("tradeleftcheckbox" + i).checked = true;
+                                }
+                            }
+
+                            if (payload['this'].getElementById("traderightcheckbox" + i)) {
+                                payload['this'].getElementById("traderightcheckbox" + i).checked = false;
+                                console.log(payload['tradeObj']['property'][i])
+                                if (payload['tradeObj']['property'][i] === -1) {
+                                    payload['this'].getElementById("traderightcheckbox" + i).checked = true;
+                                }
+                            }
+                        }
+                        // console.assert(false)
+                        if (payload['this'].getElementById("tradeleftcheckbox40")) {
+                            if (payload['tradeObj']['communityChestJailCard'] === 1) {
+                                payload['this'].getElementById("tradeleftcheckbox40").checked = true;
+                            } else {
+                                payload['this'].getElementById("tradeleftcheckbox40").checked = false;
+                            }
+                        }
+
+                        if (payload['this'].getElementById("traderightcheckbox40")) {
+                            if (payload['tradeObj']['communityChestJailCard'] === -1) {
+                                payload['this'].getElementById("traderightcheckbox40").checked = true;
+                            } else {
+                                payload['this'].getElementById("traderightcheckbox40").checked = false;
+                            }
+                        }
+
+                        if (payload['this'].getElementById("tradeleftcheckbox41")) {
+                            if (payload['tradeObj']['chanceJailCard'] === 1) {
+                                payload['this'].getElementById("tradeleftcheckbox41").checked = true;
+                            } else {
+                                payload['this'].getElementById("tradeleftcheckbox41").checked = false;
+                            }
+                        }
+
+                        if (payload['this'].getElementById("traderightcheckbox41")) {
+                            if (payload['tradeObj']['chanceJailCard'] === -1) {
+                                payload['this'].getElementById("traderightcheckbox41").checked = true;
+                            } else {
+                                payload['this'].getElementById("traderightcheckbox41").checked = false;
+                            }
+                        }
+
+                        if (payload['tradeObj']['money'] > 0) {
+                            payload['this'].getElementById("trade-leftp-money").value = payload['tradeObj']['money'] + "";
+                        } else {
+                            payload['this'].getElementById("trade-rightp-money").value = (-payload['tradeObj']['money']) + "";
+                        }
+
+                        // console.assert(false, payload)
+                        out(payload)
+                    })(obj, payload, rest)
+                    break
+                case'getTrade':
+                    (async (obj,payload, rest)=>{
+                        payload['tradeObj'] = trade['staticProperty']
+                        out(payload)
+                    })(obj,payload, rest)
+                    break
+                case'setTrade':
+                    (async (obj,payload, rest)=>{
+                        trade['staticProperty'] = obj['obj']
+                        out(payload)
+                    })(obj,payload, rest)
+                    break
+                case'trade':
+                    (async (obj,payload, rest)=>{
+                        trade['staticProperty']['initiator'] = obj['initiator']
+                        trade['staticProperty']['recipient'] = obj['recipient']
+                        trade['staticProperty']['property'] =  obj['property']
+                        trade['staticProperty']['money'] = obj['money']
+                        trade['staticProperty']['communityChestJailCard'] = obj['communityChestJailCard']
+                        trade['staticProperty']['chanceJailCard'] = obj['chanceJailCard']
+                        payload['tradeObj'] =  trade['staticProperty']
+                        payload['reversedTrade'] = trade['staticProperty']
+                        await monopoly['get']({type:'setTrade', obj:trade['staticProperty']}, payload)
+                        out(payload)
+                    })(obj,payload, rest)
+                    break
+                case 'readTrade':
+                    (async (obj, payload, rest)=>{
+                        await monopoly['get']({type:'getTrade'}, payload)
+                        payload['tradeObj']['property'] = new Array(40);
+                        payload['tradeObj']['communityChestJailCard']
+                        payload['tradeObj']['chanceJailCard']
+                        payload['tradeObj']['money'] = {}
+                        // let initiator = payload['tradeObj']['currentInitiator'];
+                        // let recipient = payload['tradeObj']['currentRecipient'];
+                        let property = new Array(40);
+                        let money;
+                        let communityChestJailCard;
+                        let chanceJailCard;
+
+                        for (let i = 0; i < 40; i++) {
+
+                            if (payload['this'].getElementById("tradeleftcheckbox" + i) && payload['this'].getElementById("tradeleftcheckbox" + i).checked) {
+                                property[i] = 1;
+                                payload['tradeObj']['property'][i] = 1
+                            } else if (payload['this'].getElementById("traderightcheckbox" + i) && payload['this'].getElementById("traderightcheckbox" + i).checked) {
+                                property[i] = -1;
+                                payload['tradeObj']['property'][i] = -1
+                            } else {
+                                payload['tradeObj']['property'][i] = 0
+                                property[i] = 0;
+                            }
+                        }
+
+                        if (payload['this'].getElementById("tradeleftcheckbox40") && payload['this'].getElementById("tradeleftcheckbox40").checked) {
+                            communityChestJailCard = 1;
+                            payload['tradeObj']['communityChestJailCard'] = 1
+                        } else if (payload['this'].getElementById("traderightcheckbox40") && payload['this'].getElementById("traderightcheckbox40").checked) {
+                            communityChestJailCard = -1;
+                            payload['tradeObj']['communityChestJailCard'] = -1
+                        } else {
+                            communityChestJailCard = 0;
+                            payload['tradeObj']['communityChestJailCard'] = 0
+                        }
+
+                        if (payload['this'].getElementById("tradeleftcheckbox41") && payload['this'].getElementById("tradeleftcheckbox41").checked) {
+                            payload['tradeObj']['chanceJailCard'] = -1
+                            chanceJailCard = 1;
+                        } else if (payload['this'].getElementById("traderightcheckbox41") && payload['this'].getElementById("traderightcheckbox41").checked) {
+                            chanceJailCard = -1;
+                            payload['tradeObj']['chanceJailCard'] = 1
+                        } else {
+                            payload['tradeObj']['chanceJailCard'] = 0
+                            chanceJailCard = 0;
+                        }
+                        payload['tradeObj']['money'] = parseInt(payload['this'].getElementById("trade-leftp-money").value, 10) || 0;
+                        payload['tradeObj']['money'] -= parseInt(payload['this'].getElementById("trade-rightp-money").value, 10) || 0;
+
+                        money = parseInt(payload['this'].getElementById("trade-leftp-money").value, 10) || 0;
+                        money -= parseInt(payload['this'].getElementById("trade-rightp-money").value, 10) || 0;
+
+                        // console.assert(false, payload['tradeObj'])
+                        await monopoly['get']({
+                            type:'trade',
+                            initiator:payload['tradeObj']['currentInitiator'],
+                            recipient:payload['tradeObj']['currentRecipient'],
+                            money:payload['tradeObj']['money'],
+                            property:payload['tradeObj']['property'],
+                            communityChestJailCard:payload['tradeObj']['communityChestJailCard'],
+                            chanceJailCard:payload['tradeObj']['chanceJailCard']
+                        }, payload)
+
+                        // console.assert(false, payload)
+                        out(payload)
+                    })(obj, payload, rest)
+                    break
+                case 'resetTrade':
+                    (async (obj, payload, rest)=>{
+
+                        // console.assert(false, payload)
+                        payload['currentSquare'] = {}
+                        payload['currentTableRow'] = {}
+                        payload['currentTableCell'] = {}
+                        payload['currentTableCellCheckbox'] = {}
+                        payload['nameSelect'] = {}
+                        payload['currentOption'] = {}
+                        payload['allGroupUninproved'] = {}
+                        payload['currentName'] = {}
+                        let currentSquare;
+                        let currentTableRow;
+                        let currentTableCell;
+                        let currentTableCellCheckbox;
+                        let nameSelect;
+                        let currentOption;
+                        let allGroupUninproved;
+                        let currentName;
+
+                        let tableRowOnClickLeftp = function(e) {
+                            payload['this'].querySelector('#proposetradebutton').style.display = 'flex'
+                            payload['this'].querySelector('#canceltradebutton').style.display = 'flex'
+                            payload['this'].querySelector('#accepttradebutton').style.display = 'none'
+                            payload['this'].querySelector('#rejecttradebutton').style.display = 'none'
+                        };
+
+                        let tableRowOnClick = function(e) {
+
+                            let item = e.target.parentNode
+                            item = item.querySelector('input')
+
+                            payload['checkboxElement'] = item
+                            if (payload['checkboxElement'] !== e.srcElement) {
+                                payload['checkboxElement'].checked = !payload['checkboxElement'].checked;
+                            }
+
+                            payload['this'].querySelector('#proposetradebutton').style.display = 'flex'
+                            payload['this'].querySelector('#canceltradebutton').style.display = 'flex'
+                            payload['this'].querySelector('#accepttradebutton').style.display = 'none'
+                            payload['this'].querySelector('#rejecttradebutton').style.display = 'none'
+                        };
+
+                        let initiatorProperty = payload['this'].getElementById("trade-leftp-property");
+                        let recipientProperty = payload['this'].getElementById("trade-rightp-property");
+
+                        payload['tradeObj']['currentInitiator'] = payload['tradeObj']['initiator'];
+                        payload['tradeObj']['currentRecipient'] = payload['tradeObj']['recipient'];
+
+                        // Empty elements.
+                        while (initiatorProperty.lastChild) {
+                            initiatorProperty.removeChild(initiatorProperty.lastChild);
+                        }
+
+                        while (recipientProperty.lastChild) {
+                            recipientProperty.removeChild(recipientProperty.lastChild);
+                        }
+
+                        let initiatorSideTable = document.createElement("table");
+                        let recipientSideTable = document.createElement("table");
+
+
+                        for (let i = 0; i < 40; i++) {
+                            currentSquare = payload['square'][i];
+
+                            // A property cannot be traded if any properties in its group have been improved.
+                            if (currentSquare.house > 0 || currentSquare.groupNumber === 0) {
+                                continue;
+                            }
+
+                            allGroupUninproved = true;
+                            let max = currentSquare.group.length;
+                            for (let j = 0; j < max; j++) {
+
+                                if (payload['square'][currentSquare.group[j]].house > 0) {
+                                    allGroupUninproved = false;
+                                    break;
+                                }
+                            }
+
+                            if (!allGroupUninproved) {
+                                continue;
+                            }
+
+                            // Offered properties.
+                            if (currentSquare.owner === obj['initiator'].index) {
+                                currentTableRow = initiatorSideTable.appendChild(document.createElement("tr"));
+                                currentTableRow.addEventListener('click', tableRowOnClick)
+
+                                currentTableCell = currentTableRow.appendChild(document.createElement("td"));
+                                currentTableCell.className = "propertycellcheckbox";
+                                currentTableCellCheckbox = currentTableCell.appendChild(document.createElement("input"));
+                                currentTableCellCheckbox.type = "checkbox";
+                                currentTableCellCheckbox.id = "tradeleftcheckbox" + i;
+                                currentTableCellCheckbox.title = "Check this box to include " + currentSquare.name + " in the trade.";
+
+                                currentTableCell = currentTableRow.appendChild(document.createElement("td"));
+                                currentTableCell.className = "propertycellcolor";
+                                currentTableCell.setAttribute('show', i)
+                                currentTableCell.style.backgroundColor = currentSquare.color;
+
+                                if (currentSquare.groupNumber == 1 || currentSquare.groupNumber == 2) {
+                                    currentTableCell.style.borderColor = "grey";
+                                } else {
+                                    currentTableCell.style.borderColor = currentSquare.color;
+                                }
+
+                                currentTableCell.propertyIndex = i;
+                                currentTableCell.onmouseover = async function(event) {
+
+                                    // console.assert(false, event.target.getAttribute('show'))
+                                    await  monopoly['get']({type:'showdeed', property:event.target.getAttribute('show')}, payload)
+
+                                };
+                                currentTableCell.onmouseout = function(event) {
+                                    payload['this'].querySelector('#deed').style.display = 'none'
+                                    // $("#deed").hide();
+                                };
+
+                                currentTableCell = currentTableRow.appendChild(document.createElement("td"));
+                                currentTableCell.className = "propertycellname";
+                                if (currentSquare.mortgage) {
+                                    currentTableCell.title = "Mortgaged";
+                                    currentTableCell.style.color = "grey";
+                                }
+                                currentTableCell.textContent = currentSquare.name;
+
+                                // Requested properties.
+                            } else if (currentSquare.owner === payload['tradeObj']['recipient'].index) {
+                                currentTableRow = recipientSideTable.appendChild(document.createElement("tr"));
+                                currentTableRow.addEventListener('click', tableRowOnClick)
+
+                                currentTableCell = currentTableRow.appendChild(document.createElement("td"));
+                                currentTableCell.className = "propertycellcheckbox";
+                                currentTableCellCheckbox = currentTableCell.appendChild(document.createElement("input"));
+                                currentTableCellCheckbox.type = "checkbox";
+                                currentTableCellCheckbox.id = "traderightcheckbox" + i;
+                                currentTableCellCheckbox.title = "Check this box to include " + currentSquare.name + " in the trade.";
+
+                                currentTableCell = currentTableRow.appendChild(document.createElement("td"));
+                                currentTableCell.className = "propertycellcolor";
+                                currentTableCell.setAttribute('show', i)
+                                currentTableCell.style.backgroundColor = currentSquare.color;
+
+                                if (currentSquare.groupNumber == 1 || currentSquare.groupNumber == 2) {
+                                    currentTableCell.style.borderColor = "grey";
+                                } else {
+                                    currentTableCell.style.borderColor = currentSquare.color;
+                                }
+
+                                currentTableCell.propertyIndex = i;
+                                currentTableCell.onmouseover =async function(event) {
+
+                                    await  monopoly['get']({type:'showdeed', property:event.target.getAttribute('show')}, payload)
+
+
+                                };
+                                currentTableCell.onmouseout =function() {
+                                    payload['this'].querySelector('#deed').style.display = 'none'
+                                    // $("#deed").hide();
+                                };
+
+                                currentTableCell = currentTableRow.appendChild(document.createElement("td"));
+                                currentTableCell.className = "propertycellname";
+                                if (currentSquare.mortgage) {
+                                    currentTableCell.title = "Mortgaged";
+                                    currentTableCell.style.color = "grey";
+                                }
+                                currentTableCell.textContent = currentSquare.name;
+                            }
+                        }
+
+                        if (payload['tradeObj']['initiator'].communityChestJailCard) {
+                            currentTableRow = initiatorSideTable.appendChild(document.createElement("tr"));
+                            currentTableRow.addEventListener('click', tableRowOnClick)
+
+                            currentTableCell = currentTableRow.appendChild(document.createElement("td"));
+                            currentTableCell.className = "propertycellcheckbox";
+                            currentTableCellCheckbox = currentTableCell.appendChild(document.createElement("input"));
+                            currentTableCellCheckbox.type = "checkbox";
+                            currentTableCellCheckbox.id = "tradeleftcheckbox40";
+                            currentTableCellCheckbox.title = "Check this box to include this Get Out of Jail Free Card in the trade.";
+
+                            currentTableCell = currentTableRow.appendChild(document.createElement("td"));
+                            currentTableCell.className = "propertycellcolor";
+                            currentTableCell.style.backgroundColor = "white";
+                            currentTableCell.style.borderColor = "grey";
+
+                            currentTableCell = currentTableRow.appendChild(document.createElement("td"));
+                            currentTableCell.className = "propertycellname";
+
+                            currentTableCell.textContent = "Get Out of Jail Free Card";
+                        } else if (payload['tradeObj']['recipient'].communityChestJailCard) {
+                            currentTableRow = recipientSideTable.appendChild(document.createElement("tr"));
+                            currentTableRow.addEventListener('click', tableRowOnClick)
+
+                            currentTableCell = currentTableRow.appendChild(document.createElement("td"));
+                            currentTableCell.className = "propertycellcheckbox";
+                            currentTableCellCheckbox = currentTableCell.appendChild(document.createElement("input"));
+                            currentTableCellCheckbox.type = "checkbox";
+                            currentTableCellCheckbox.id = "traderightcheckbox40";
+                            currentTableCellCheckbox.title = "Check this box to include this Get Out of Jail Free Card in the trade.";
+
+                            currentTableCell = currentTableRow.appendChild(document.createElement("td"));
+                            currentTableCell.className = "propertycellcolor";
+                            currentTableCell.style.backgroundColor = "white";
+                            currentTableCell.style.borderColor = "grey";
+
+                            currentTableCell = currentTableRow.appendChild(document.createElement("td"));
+                            currentTableCell.className = "propertycellname";
+
+                            currentTableCell.textContent = "Get Out of Jail Free Card";
+                        }
+
+                        if (payload['tradeObj']['initiator'].chanceJailCard) {
+                            currentTableRow = initiatorSideTable.appendChild(document.createElement("tr"));
+                            currentTableRow.addEventListener('click', tableRowOnClick)
+
+                            currentTableCell = currentTableRow.appendChild(document.createElement("td"));
+                            currentTableCell.className = "propertycellcheckbox";
+                            currentTableCellCheckbox = currentTableCell.appendChild(document.createElement("input"));
+                            currentTableCellCheckbox.type = "checkbox";
+                            currentTableCellCheckbox.id = "tradeleftcheckbox41";
+                            currentTableCellCheckbox.title = "Check this box to include this Get Out of Jail Free Card in the trade.";
+
+                            currentTableCell = currentTableRow.appendChild(document.createElement("td"));
+                            currentTableCell.className = "propertycellcolor";
+                            currentTableCell.style.backgroundColor = "white";
+                            currentTableCell.style.borderColor = "grey";
+
+                            currentTableCell = currentTableRow.appendChild(document.createElement("td"));
+                            currentTableCell.className = "propertycellname";
+
+                            currentTableCell.textContent = "Get Out of Jail Free Card";
+                        } else if (payload['tradeObj']['recipient'].chanceJailCard) {
+                            currentTableRow = recipientSideTable.appendChild(document.createElement("tr"));
+                            currentTableRow.addEventListener('click', tableRowOnClick)
+
+                            currentTableCell = currentTableRow.appendChild(document.createElement("td"));
+                            currentTableCell.className = "propertycellcheckbox";
+                            currentTableCellCheckbox = currentTableCell.appendChild(document.createElement("input"));
+                            currentTableCellCheckbox.type = "checkbox";
+                            currentTableCellCheckbox.id = "traderightcheckbox41";
+                            currentTableCellCheckbox.title = "Check this box to include this Get Out of Jail Free Card in the trade.";
+
+                            currentTableCell = currentTableRow.appendChild(document.createElement("td"));
+                            currentTableCell.className = "propertycellcolor";
+                            currentTableCell.style.backgroundColor = "white";
+                            currentTableCell.style.borderColor = "grey";
+
+                            currentTableCell = currentTableRow.appendChild(document.createElement("td"));
+                            currentTableCell.className = "propertycellname";
+
+                            currentTableCell.textContent = "Get Out of Jail Free Card";
+                        }
+
+                        // console.assert(false)
+
+                        if (initiatorSideTable.lastChild) {
+                            initiatorProperty.appendChild(initiatorSideTable);
+                        } else {
+                            initiatorProperty.textContent = payload['tradeObj']['initiator'].name + " has no properties to trade.";
+                        }
+
+                        if (recipientSideTable.lastChild) {
+                            recipientProperty.appendChild(recipientSideTable);
+                        } else {
+                            recipientProperty.textContent = payload['tradeObj']['recipient'].name + " has no properties to trade.";
+                        }
+
+                        payload['this'].getElementById("trade-leftp-name").textContent = payload['tradeObj']['initiator'].name;
+
+                        currentName = payload['this'].getElementById("trade-rightp-name");
+
+                        // console.assert(false, obj)
+                        if (obj['allowRecipientToBeChanged'] && payload['pcount'] > 2) {
+                            // Empty element.
+                            while (currentName.lastChild) {
+                                currentName.removeChild(currentName.lastChild);
+                            }
+
+                            nameSelect = currentName.appendChild(document.createElement("select"));
+                            for (let i = 1; i <= payload['pcount']; i++) {
+                                if (i === payload['tradeObj']['initiator'].index) {
+                                    continue;
+                                }
+
+                                currentOption = nameSelect.appendChild(document.createElement("option"));
+                                currentOption.value = i + "";
+                                currentOption.style.color = payload['player'][i].color;
+                                currentOption.textContent = payload['player'][i].name;
+
+                                if (i === payload['tradeObj']['recipient'].index) {
+                                    currentOption.selected = "selected";
+                                }
+                            }
+
+                            nameSelect.onchange = async function(event) {
+                                let curentPlayer = parseInt(event.target.value, 10)
+                                await monopoly['get']({type:'getTrade'},payload)
+                                payload['tradeObj']['recipient'] = payload['player'][curentPlayer]
+                                payload['tradeObj']['currentRecipient'] = payload['player'][curentPlayer]
+                                await gameplay['get']({type:'resetTrade',initiator:payload['tradeObj']['currentInitiator'],recipient:payload['player'][curentPlayer],allowRecipientToBeChanged: true }, payload)
+                            };
+
+                            nameSelect.title = "Select a player to trade with.";
+                        } else {
+                            currentName.textContent = payload['tradeObj']['recipient'].name;
+                        }
+
+                        payload['this'].getElementById("trade-leftp-money").value = "0";
+                        payload['this'].getElementById("trade-leftp-money").addEventListener('input', tableRowOnClickLeftp)
+                        payload['this'].getElementById("trade-rightp-money").value = "0";
+                        payload['this'].getElementById("trade-rightp-money").addEventListener('input', tableRowOnClickLeftp)
+                        // console.assert(false)
+                        out(true)
+                    })(obj, payload, rest)
+                    break
+                case 'mortgage':
+                    (async (obj, payload, rest)=>{
+
+                        let sq = payload['square'][obj['index']];
+                        let p = payload['player'][sq.owner];
+
+                        if (sq.house > 0 || sq.hotel > 0 || sq.mortgage) {
+                            out(false) ;
+                        }else{
+                            let mortgagePrice = Math.round(sq.price * 0.5);
+                            let unmortgagePrice = Math.round(sq.price * 0.6);
+                            payload['mortgagePrice'] = mortgagePrice
+                            payload['unmortgagePrice'] = unmortgagePrice
+                            sq.mortgage = true;
+                            p.money += mortgagePrice;
+
+                            payload['this'].getElementById("mortgagebutton").value = "Unmortgage for $" + unmortgagePrice;
+                            payload['this'].getElementById("mortgagebutton").title = "Unmortgage " + sq.name + " for $" + unmortgagePrice + ".";
+
+                            await monopoly['get']({type:'addAlert', value:`${p.name } mortgaged ${sq.name} for $ ${unmortgagePrice}.` },payload)
+                            await   monopoly['get']({type:'updateOwned', value:`` }, payload)
+                            await monopoly['get']({type:'updateMoney'},payload)
+
+                            out(true)
+                        }
+                    })(obj, payload, rest)
+                    break
+                case 'unmortgage':
+                    (async (obj, payload, rest)=>{
+
+                        //console.assert(false, obj)
+                        let sq = payload['square'][obj['index']];
+                        let p = payload['player'][sq.owner];
+                        let unmortgagePrice = Math.round(sq.price * 0.6);
+                        let mortgagePrice = Math.round(sq.price * 0.5);
+                        if (unmortgagePrice > p.money || !sq.mortgage) {
+                            out(false)
+                        }else{
+                            p.pay(unmortgagePrice, 0, payload);
+                            sq.mortgage = false;
+                            payload['this'].getElementById("mortgagebutton").value = "Mortgage for $" + mortgagePrice;
+                            payload['this'].getElementById("mortgagebutton").title = "Mortgage " + sq.name + " for $" + mortgagePrice + ".";
+                            await monopoly['get']({type:'addAlert', value:`${p.name } unmortgaged ${sq.name} for $ ${unmortgagePrice}.` },payload)
+                            await   monopoly['get']({type:'updateOwned', value:`` }, payload)
+                            out(true)
+                        }
+                    })(obj, payload, rest)
+                    break
+                case 'luxurytax':
+                    (async (obj, payload, rest)=>{
+                        await monopoly['get']({type:'addAlert', value:`${payload['player'][payload['turn']].name} paid $100 for landing on Luxury Tax.` },payload)
+                        payload['player'][payload['turn']].pay(100, 0, payload);
+                        payload['this'].querySelector('#landed').style.display = 'flex'
+                        payload['this'].querySelector('#landed').innerText = "You landed on Luxury Tax. Pay $100."
+                    })(obj, payload, rest)
+                    break
+                case 'land':
+                    (async (obj,payload,  rest)=>{
+                        obj['increasedRent'] = !!obj['increasedRent'] ; // Cast increasedRent to a boolean value. It is used for the ADVANCE TO THE NEAREST RAILROAD/UTILITY Chance cards.
+                        let p = payload['player'][payload['turn']];
+                        let s = payload['square'][p.position];
+
+
+                        let die1 = payload['die1']
+                        let die2 = payload['die2']
+                        // console.assert(false)
+                        payload['this'].querySelector('#landed').style.display ='flex'
+                        payload['this'].querySelector("#landed").innerHTML = "You landed on " + s.name + ".";
+                        s.landcount++;
+                        await monopoly['get']({type:'addAlert', value:`${p.name} landed on ${s.name}.`}, payload);
+                        // Allow player to buy the property on which he landed.
+                        if (s.price !== 0 && s.owner === 0) {
+
+                            if (!p.human) {
+
+                                if (p.AI.buyProperty(p.position)) {
+                                    await monopoly['get']({type:'buy'},payload)
+                                }
+                            } else {
+                                //sssssssssssssssssssssssssssss
+                                payload['this'].querySelector(`#landed`).innerHTML ="<div>You landed on <a href='javascript:void(0);' id='previeCard' class='statscellcolor'>" + s.name +"."+"</a><input type='button' id='buyCards' value='Buy ($" + s.price + ")' title='Buy " + s.name + " for " + s.pricetext + ".'/></div>"
+
+
+                                payload['this'].querySelector(`#buyCards`).addEventListener('click', async (event)=>{
+                                    // console.assert(false)
+                                    let p = payload['player'][payload['turn']]
+                                    let property = payload['square'][p.position];
+                                    let cost = property.price;
+
+                                    if (p.money >= cost) {
+                                        let auctionQueue = []
+                                        for(let i =0; i < payload['auctionQueue'].length;i++){
+                                            if(payload['auctionQueue'][i] === p['position']){
+
+                                            }else{
+                                                auctionQueue.push(payload['auctionQueue'][i])
+                                            }
+                                        }
+                                        payload['auctionQueue'] = auctionQueue
+                                        p.pay(cost, 0, payload);
+
+                                        property.owner = payload['turn'];
+
+                                        await monopoly['get']({type:'updateMoney'},payload)
+                                        await monopoly['get']({type:'addAlert', value:`${p.name} bought ${property.name} for ${property.pricetext}.`}, payload);
+                                        await monopoly['get']({type:'updateOwned' }, payload)
+
+                                        payload['this'].querySelector("#landed").style.display = 'none'
+                                        // $("#landed").hide();
+
+                                    } else {
+                                        await monopoly['get']({type:'popup', HTML: "<p>" + p.name + ", you need $" + (property.price - p.money) + " more to buy " + property.name + ".</p>"}, payload)
+                                    }
+                                })
+                                payload['this'].querySelector(`#previeCard`).addEventListener('mouseover', async (event)=>{
+                                    // console.assert(false)
+                                    let p = payload['player'][payload['turn']]
+                                    let sq = payload['square'][p.position];
+                                    payload['this'].querySelector('#deed').style.display = 'flex'
+                                    // $("#deed").show();
+
+                                    payload['this'].querySelector('#deed-special').style.display = 'none'
+                                    payload['this'].querySelector('#deed-normal').style.display = 'none'
+                                    payload['this'].querySelector('#deed-mortgaged').style.display = 'none'
+                                    // $("#deed-normal").hide();
+                                    // $("#deed-mortgaged").hide();
+                                    // $("#deed-special").hide();
+
+                                    if (sq.mortgage) {
+                                        // $("#deed-mortgaged").show();
+                                        payload['this'].querySelector('#deed-mortgaged').style.display = 'flex'
+                                        payload['this'].getElementById("deed-mortgaged-name").textContent = sq.name;
+                                        payload['this'].getElementById("deed-mortgaged-mortgage").textContent = (sq.price / 2);
+
+                                    } else {
+
+                                        if (sq.groupNumber >= 3) {
+                                            // $("#deed-normal").show();
+                                            payload['this'].querySelector('#deed-normal').style.display = 'flex'
+                                            payload['this'].getElementById("deed-header").style.backgroundColor = sq.color;
+                                            payload['this'].getElementById("deed-name").textContent = sq.name;
+                                            payload['this'].getElementById("deed-baserent").textContent = sq.baserent;
+                                            payload['this'].getElementById("deed-rent1").textContent = sq.rent1;
+                                            payload['this'].getElementById("deed-rent2").textContent = sq.rent2;
+                                            payload['this'].getElementById("deed-rent3").textContent = sq.rent3;
+                                            payload['this'].getElementById("deed-rent4").textContent = sq.rent4;
+                                            payload['this'].getElementById("deed-rent5").textContent = sq.rent5;
+                                            payload['this'].getElementById("deed-mortgage").textContent = (sq.price / 2);
+                                            payload['this'].getElementById("deed-houseprice").textContent = sq.houseprice;
+                                            payload['this'].getElementById("deed-hotelprice").textContent = sq.houseprice;
+                                        } else if (sq.groupNumber == 2) {
+                                            // $("#deed-special").show();
+                                            payload['this'].querySelector('#deed-special').style.display = 'flex'
+                                            payload['this'].getElementById("deed-special-name").textContent = sq.name;
+                                            payload['this'].getElementById("deed-special-text").innerHTML = await classicedition['get']({type:'utiltext'}, payload);
+                                            payload['this'].getElementById("deed-special-mortgage").textContent = (sq.price / 2);
+                                        } else if (sq.groupNumber == 1) {
+                                            // $("#deed-special").show();
+                                            payload['this'].querySelector('#deed-special').style.display = 'flex'
+                                            payload['this'].getElementById("deed-special-name").textContent = sq.name;
+                                            payload['this'].getElementById("deed-special-text").innerHTML = await classicedition['get']({type:'transtext'}, payload);
+                                            payload['this'].getElementById("deed-special-mortgage").textContent = (sq.price / 2);
+                                        }
+                                    }
+
+
+
+                                })
+                                payload['this'].querySelector(`#previeCard`).addEventListener('mouseout', (event)=>{
+                                    payload['this'].querySelector('#deed').style.display = 'none'
+                                })
+
+                            }
+                            await  monopoly['get']({type:'addPropertyToAuctionQueue', propertyIndex:p.position},payload)
+                        }
+
+                        // Collect rent
+                        if (s.owner !== 0 && s.owner != payload['turn'] && !s.mortgage) {
+                            let groupowned = true;
+                            payload['groupowned'] = true
+                            let rent;
+
+                            // Railroads
+                            if (p.position == 5 || p.position == 15 || p.position == 25 || p.position == 35) {
+                                if (obj['increasedRent']) {
+                                    rent = 25;
+                                    payload['rent']= 25;
+                                } else {
+                                    payload['rent']= 12.5;
+                                    rent = 12.5;
+                                }
+
+                                if (s.owner == payload['square'][5].owner) {
+                                    rent *= 2;
+                                    payload['rent'] *= 2;
+                                }
+                                if (s.owner == payload['square'][15].owner) {
+                                    rent *= 2;
+                                    payload['rent'] *= 2;
+                                }
+                                if (s.owner == payload['square'][25].owner) {
+                                    rent *= 2;
+                                    payload['rent'] *= 2;
+                                }
+                                if (s.owner == payload['square'][35].owner) {
+                                    rent *= 2;
+                                    payload['rent'] *= 2;
+                                }
+
+                            } else if (p.position === 12) {
+                                if (obj['increasedRent'] || payload['square'][28].owner == s.owner) {
+                                    rent = (die1 + die2) * 10;
+                                    payload['rent'] = (die1 + die2) * 10;
+                                } else {
+                                    rent = (die1 + die2) * 4;
+                                    payload['rent'] = (die1 + die2) * 4;
+                                }
+
+                            } else if (p.position === 28) {
+                                if (obj['increasedRent'] || payload['square'][12].owner == s.owner) {
+                                    rent = (die1 + die2) * 10;
+                                    payload['rent'] = (die1 + die2) * 10;
+                                } else {
+                                    rent = (die1 + die2) * 4;
+                                    payload['rent'] = (die1 + die2) * 4;
+                                }
+
+                            } else {
+
+                                for (let i = 0; i < 40; i++) {
+                                    let sq = payload['square'][i];
+                                    if (sq.groupNumber == s.groupNumber && sq.owner != s.owner) {
+                                        groupowned = false;
+                                        payload['groupowned'] = false
+                                    }
+                                }
+
+                                if (!groupowned) {
+                                    rent = s.baserent;
+                                    payload['rent'] = s.baserent;
+                                } else {
+                                    if (s.house === 0) {
+                                        rent = s.baserent * 2;
+                                        payload['rent'] = s.baserent * 2;
+                                    } else {
+                                        rent = s["rent" + s.house];
+                                        payload['rent'] = s["rent" + s.house];
+                                    }
+                                }
+                            }
+                            await gameplay['get']({type:'addAlert', value:`${p.name} paid $" ${rent} rent to. ${payload['player'][s.owner].name}`}, payload);
+                            p.pay(rent, s.owner, payload);
+                            payload['player'][s.owner].money += rent;
+
+                            payload['this'].getElementById("landed").innerHTML = "You landed on " + s.name + ". " + payload['player'][s.owner].name + " collected $" + rent + " rent.";
+                        } else if (s.owner > 0 && s.owner != payload['turn'] && s.mortgage) {
+                            payload['this'].getElementById("landed").innerHTML = "You landed on " + s.name + ". Property is mortgaged; no rent was collected.";
+                        }
+
+                        // City Tax
+                        if (p.position === 4) {
+                            await gameplay['get']({type:'citytax'},payload)
+                        }
+
+                        // Go to jail. Go directly to Jail. Do not pass GO. Do not collect $200.
+                        if (p.position === 30) {
+                            await gameplay['get']({type:'updateMoney'},payload)
+                            await gameplay['get']({type:'updatePosition' }, payload)
+
+                            if (p.human) {
+                                await gameplay['get']({type:'popup', HTML:"<div>Go to jail. Go directly to Jail. Do not pass GO. Do not collect $200.</div>",action:async ()=>{
+
+                                        await monopoly['get']({type:'gotojail'},payload)
+
+                                    }, option:null},payload)
+                            } else {
+                                await gameplay['get']({type:'gotojail'},payload)
+                            }
+
+                            out(payload)
+                        }
+
+                        // Luxury Tax
+                        if (p.position === 38) {
+                            await gameplay['get']({type:'luxurytax'},payload)
+                        }
+
+                        await gameplay['get']({type:'updateMoney'},payload)
+                        await gameplay['get']({type:'updatePosition' }, payload)
+                        // console.assert(false)
+                        await gameplay['get']({type:'updateOwned' }, payload)
+
+
+                        if (!p.human) {
+                            popup(p.AI.alertList, chanceCommunityChest);
+                            p.AI.alertList = "";
+                        } else {
+
+                            await gameplay['get']({type:'chanceCommunityChest' }, payload)
+                        }
+                        //console.assert(false, payload)
+                        out(payload)
+                    })(obj,payload, rest)
+                    break
+                case 'finalizeAuction':
+                    (async (obj, payload, rest)=>{
+                        let p = payload['player'][payload['highestbidder']];
+                        let sq = payload['square'][payload['auctionproperty']];
+
+                        if (payload['highestbid'] > 0) {
+                            p.pay(payload['highestbid'], 0, payload);
+                            sq.owner = payload['highestbidder'];
+                            await monopoly['get']({type:'addAlert', value:`${p.name} bought ${sq.name} for $ ${payload['highestbid']}.`}, payload);
+                        }
+
+                        for (let i = 1; i <= payload['pcount']; i++) {
+                            payload['player'][i].bidding = true;
+                        }
+
+
+                        payload['this'].querySelector('#popupbackground').style.display = 'none'
+                        payload['this'].querySelector('#popupwrap').style.display = 'none'
+                        // $("#popupbackground").hide();
+                        // $("#popupwrap").hide();
+
+                        if (! await monopoly['auction']({type:'auction'},payload)) {
+                            await gameplay['get']({type:'play', player: p}, payload);
+                        }
+                        out(payload)
+                    })(obj, payload, rest)
+                    break
+                case 'useJailCard':
+                    (async (obj, payload, rest)=>{
+                        let p = payload['player'][payload['turn']];
+
+                        payload['this'].getElementById("jail").style.border = '0.098vw solid black';
+                        payload['this'].getElementById("cell11").style.border = '0.195vw solid ' + p.color;
+
+                        $("#landed").hide();
+                        p.jail = false;
+                        p.jailroll = 0;
+
+                        p.position = 10;
+
+                        payload['doublecount'] = 0;
+
+                        if (p.communityChestJailCard) {
+                            p.communityChestJailCard = false;
+
+                            // Insert the get out of jail free card back into the community chest deck.
+                            payload['communityChestCards'].deck.splice(payload['communityChestCards'].index, 0, 0);
+
+                            payload['communityChestCards'].index++;
+
+                            if (payload['communityChestCards'].index >= payload['communityChestCards'].deck.length) {
+                                payload['communityChestCards'].index = 0;
+                            }
+                        } else if (p.chanceJailCard) {
+                            p.chanceJailCard = false;
+
+                            // Insert the get out of jail free card back into the chance deck.
+                            payload['chanceCards'].deck.splice(payload['chanceCards'].index, 0, 0);
+
+                            payload['chanceCards'].index++;
+
+                            if (payload['chanceCards'].index >= payload['chanceCards'].deck.length) {
+                                payload['chanceCards'].index = 0;
+                            }
+                        }
+                        await monopoly['get']({type:'addAlert',value:`used a "Get Out of Jail Free" card.`  },payload)
+                        await gameplay['get']({type:'updateOwned'},payload)
+                        await   monopoly['get']({type:'updatePosition', player: p}, payload)
+                    })(obj, payload, rest)
+                    break
+                case 'payFifty':
+                    (async (obj, payload, rest)=>{
+                        let p = payload['player'][payload['turn']];
+
+                        payload['this'].getElementById("jail").style.border = '0.098vw solid black';
+                        payload['this'].getElementById("cell11").style.border = '0.195vw solid ' + p.color;
+                        payload['this'].querySelector('#landed').style.display = 'none'
+
+                        payload['doublecount'] = 0;
+
+                        p.jail = false;
+                        p.jailroll = 0;
+                        p.position = 10;
+                        p.pay(50, 0, payload);
+
+                        await monopoly['get']({type:'addAlert',value:`${p.name} paid the $50 fine to get out of jail.`  },payload)
+                        await gameplay['get']({type:'updateMoney'},payload)
+                        // console.assert(false)
+                        await   monopoly['get']({type:'updatePosition', player: p}, payload)
+                    })(obj, payload, rest)
+                    break
+                case 'getDie':
+                    (async (obj, payload, rest)=>{
+                        if (obj['value'] === 1) {
+                            out(  payload['die1'])
+                        } else {
+                            out(  payload['die2'])
+                        }
+                    })(obj, payload, rest)
+                    break
+                case'updatePosition':
+                    (async (obj, payload, rest)=>{
+                        // console.assert(false)
+                        // console.assert(false, payload['this'])
+                        // Reset borders
+                        payload['this'].getElementById("jail").style.border = "0.098vw solid black";
+                        if(payload['this'].querySelector('#jailpositionholder')){
+                            payload['this'].querySelector('#jailpositionholder').innerHTML = "";
+                        }
+                        for (let i = 0; i < 40; i++) {
+                            payload['this'].getElementById("cell" + i).style.border = "0.098vw solid black";
+                            payload['this'].getElementById("cell" + i + "positionholder").innerHTML = "";
+
+                        }
+
+                        let sq, left, top;
+
+                        for (let x = 0; x < 40; x++) {
+                            sq = payload['square'][x];
+                            left = 0;
+                            top = 0;
+
+                            for (let y = payload['turn']; y <= payload['pcount']; y++) {
+
+                                if (payload['player'][y].position === x && !payload['player'][y].jail) {
+                                    payload['this'].getElementById("cell" + x + "positionholder").innerHTML += "<div class='cell-position' title='" + payload['player'][y].name + "' style='background-color: " + payload['player'][y].color + "; left: " + left + "vw; top: " + top + "px;'></div>";
+                                    if (left == 36) {
+                                        left = 0;
+                                        top = 12;
+                                    } else
+                                        left += 1.2;
+                                }
+                            }
+
+                            for (let y = 1; y < payload['turn']; y++) {
+
+                                if (payload['player'][y].position == x && !payload['player'][y].jail) {
+                                    payload['this'].getElementById("cell" + x + "positionholder").innerHTML += "<div class='cell-position' title='" + payload['player'][y].name + "' style='background-color: " + payload['player'][y].color + "; left: " + left + "vw; top: " + top + "px;'></div>";
+                                    if (left == 36) {
+                                        left = 0;
+                                        top = 12;
+                                    } else
+                                        left += 1.2;
+                                }
+                            }
+                        }
+
+                        left = 0;
+                        top = 5.2;
+                        for (let i = payload['turn']; i <= payload['pcount']; i++) {
+                            if (payload['player'][i].jail) {
+                                payload['this'].getElementById("jailpositionholder").innerHTML += "<div class='cell-position' title='" + payload['player'][i].name + "' style='background-color: " + payload['player'][i].color + "; left: " + left + "vw; top: " + top + "vw;'></div>";
+
+                                if (left === 36) {
+                                    left = 0;
+                                    top = 41;
+                                } else {
+                                    left += 1.2;
+                                }
+                            }
+                        }
+
+                        for (let i = 1; i < payload['turn']; i++) {
+                            if (payload['player'][i].jail) {
+                                payload['this'].getElementById("jailpositionholder").innerHTML += "<div class='cell-position' title='" + payload['player'][i].name + "' style='background-color: " + payload['player'][i].color + "; left: " + left + "vw; top: " + top + "vw;'></div>";
+                                if (left === 36) {
+                                    left = 0;
+                                    top = 41;
+                                } else
+                                    left += 1.2;
+                            }
+                        }
+
+                        let p = payload['player'][payload['turn']];
+
+                        if (p.jail) {
+                            payload['this'].getElementById("jail").style.border = "0.098vw solid " + p.color;
+                        } else {
+                            payload['this'].getElementById("cell" + p.position).style.border = "0.098vw solid " + p.color;
+                        }
+
+                        out(payload)
+                        // for (let i=1; i <= pcount; i++) {
+                        // payload['this'].getElementById("enlarge"+player[i].position+"token").innerHTML+="<img src='"+tokenArray[i].src+"' height='30' width='30' />";
+                        // }
+                    })(obj, payload, rest)
+                    break
+                case 'addAlert':
+                    (async (obj,payload, rest)=>{
+
+                        let alert = payload['this'].querySelector('#alert')
+                        let outDiv = document.createElement('div')
+                        outDiv.innerText = obj['value']
+                        alert.appendChild(outDiv)
+
+
+                        // //console.assert(false, payload['player'])
+                        // Animate scrolling down alert element.
+                        // alert.stop().animate({"scrollTop": $alert.prop("scrollHeight")}, 1000);
+
+                        if (!payload['player'][payload['turn']].human) {
+                            ai['get']({type:'alertList', value:`<div>${obj['alertText']}</div>`})
+                        }
+
+                        out(payload)
+                    })(obj,payload,  rest)
+                    break
+                case 'gotojail':
+                    (async (obj, payload, rest)=>{
+                        let p = payload['player'][payload['turn']];
+                       await monopoly['get']({type:'addAlert',value:`${p.name} was sent directly to jail.`  },payload)
+                        payload['this'].getElementById("landed").innerHTML = "You are in jail.";
+                        p.jail = true;
+                        payload['doublecount'] = 0;
+                        payload['this'].getElementById("nextbutton").value = "End turn";
+                        payload['this'].getElementById("nextbutton").title = "End turn and advance to the next player.";
+                        if (p.human) {
+                            payload['this'].getElementById("nextbutton").focus();
+                        }
+
+
+                        await   monopoly['get']({type:'updatePosition', player: p}, payload)
+                        await   monopoly['get']({type:'updateOwned', value:`` }, payload)
+
+                        if (!p.human) {
+                            popup(p.AI.alertList, game.next);
+                            p.AI.alertList = "";
+                        }
+
+                    })(obj, payload, rest)
+                    break
+                case 'updateMoney':
+                    (async (obj, payload, rest)=>{
+                        let p = payload['player'][payload['turn']];
+                        payload['this'].querySelector("#pmoney").innerHTML = "$" + p.money;
+                        for(let i =0; i < payload['this'].querySelectorAll('.money-bar-row').length; i++){
+                            payload['this'].querySelectorAll('.money-bar-row')[i].style.display = 'none'
+                        }
+                        for (let i = 1; i <= payload['pcount']; i++) {
+                            let p_i =  payload['player'][i];
+                            payload['this'].querySelector(`#moneybarrow${i}`).style.display = 'flex'
+                            payload['this'].getElementById("p" + i + "moneybar").style.border = "0.195vw solid " + p_i.color;
+                            payload['this'].getElementById("p" + i + "money").innerHTML = p_i.money;
+                            payload['this'].getElementById("p" + i + "moneyname").innerHTML = p_i.name;
+                        }
+
+                        // show("moneybarrow9"); // Don't remove this line or make the first for-loop stop when i <= 8, because this affects how the table is displayed.
+
+                        if (payload['this'].querySelector("#landed").innerHTML === "") {
+
+                            payload['this'].querySelector('#landed').style.display = 'none'
+                        }
+
+                        payload['this'].querySelector("#quickstats").style.borderColor = p.color;
+
+                        if (p.money < 0) {
+                            // payload['this'].getElementById("nextbutton").disabled = true;
+                            payload['this'].querySelector('#resignbutton').style.display = 'flex'
+                            payload['this'].querySelector('#nextbutton').style.display = 'none'
+                        } else {
+                            // payload['this'].getElementById("nextbutton").disabled = false;
+                            payload['this'].querySelector('#resignbutton').style.display = 'none'
+                            payload['this'].querySelector('#nextbutton').style.display = 'flex'
+                        }
+                        out(payload)
+                    })(obj, payload, rest)
+                    break
+                case 'player':
+                    (async (obj,payload, rest)=>{
+
+                        let player = {}
+
+                        player.name = name;
+                        player.color = obj['color'];
+                        player.position = 0;
+                        player.money = 1500;
+                        player.creditor = -1;
+                        player.jail = false;
+                        player.jailroll = 0;
+                        player.communityChestJailCard = false;
+                        player.chanceJailCard = false;
+                        player.bidding = true;
+                        player.human = true;
+                        player.AI = null;
+
+                        player.pay = async function (amount, creditor, payload) {
+                            if (amount <= this.money) {
+                                this.money -= amount;
+                                // console.assert(false,payload )
+                                await gameplay['get']({type:'updateMoney'},payload)
+                                out(true)
+                            } else {
+                                // console.assert(false,payload )
+                                this.money -= amount;
+                                this.creditor = creditor;
+                                await gameplay['get']({type:'updateMoney'},payload)
+
+                                out(false)
+
+                            }
+                        };
+                        out(player)
+                    })(obj,payload, rest)
+                    break
+                case 'popup':
+                    (async (obj, payload, rest)=>{
+                        // console.assert(false, obj)
+                        payload['this'].getElementById("popuptext").innerHTML = obj['HTML'];
+                        payload['this'].getElementById("popup").style.width = "61.297vw";
+                        payload['this'].getElementById("popup").style.height = "16.297vw;";
+                        payload['this'].getElementById("popup").style.top = "0";
+                        payload['this'].getElementById("popup").style.left = "0";
+
+                        if (!obj['option'] && typeof obj['action'] === "string") {
+                            obj['option'] = obj['action'];
+                        }
+
+                        obj['option'] =   obj['option'] ?   obj['option'].toLowerCase() : "";
+
+                        if (typeof obj['action'] !== "function") {
+                            obj['action'] = null;
+                        }
+
+                        // Yes/No
+                        if (  obj['option'] === "yes/no") {
+                            payload['this'].getElementById("popuptext").innerHTML += "<div><input type=\"button\" value=\"Yes\" id=\"popupyes\" /><input type=\"button\" value=\"No\" id=\"popupno\" /></div>";
+
+                            payload['this'].querySelector('#popupyes').addEventListener('click',async ()=>{
+                                // console.assert(false, payload)
+                                payload['this'].querySelector('#popupwrap').style.display = 'none'
+                                payload['this'].querySelector('#popupbackground').style.display = 'none'
+                                obj['action'](obj, payload)
+                            });
+                            payload['this'].querySelector('#popupno').addEventListener('click',async ()=>{
+                                // console.assert(false)
+                                payload['this'].querySelector('#popupwrap').style.display = 'none'
+                                payload['this'].querySelector('#popupbackground').style.display = 'none'
+                            });
+
+                            // payload['this'].querySelector('#popupno').addEventListener('click',async ()=>{
+                            //     console.assert(false)
+                            //     obj['action'](obj, payload)
+                            // });
+                            // Ok
+                        } else if (obj['option'] !== "blank") {
+
+                            // console.assert(false, payload)
+
+                            if(!payload['this'].querySelector('.containerCard')){
+                                payload['this'].querySelector('#popuptext').insertAdjacentHTML('beforeend', "<div><input type='button' value='OK' id='popupclose' /></div>")
+                            }else{
+                                payload['this'].querySelector('.containerCard').insertAdjacentHTML('beforeend', "<div><input type='button' value='OK' id='popupclose' /></div>")
+                            }
+
+                            payload['this'].querySelector('#popupclose').focus()
+
+                            payload['this'].querySelector('#popupclose').addEventListener('click',async ()=>{
+                                payload['this'].querySelector('#popupwrap').style.display = 'none'
+                                if(obj['action'] === null){
+                                    if(obj['HTML'].indexOf('Go to jail') >  -1){
+                                        payload['this'].querySelector('#popupbackground').style.display = 'none'
+                                    }else if(obj['HTML'].indexOf('more to buy') >  -1){
+                                        payload['this'].querySelector('#popupbackground').style.display = 'none'
+                                    }
+                                }else{
+                                    payload['this'].querySelector('#popupbackground').style.display = 'none'
+                                    obj['action'](obj, payload)
+                                }
+                            });
+                        }
+
+                        payload['this'].querySelector('#popupwrap').style.display = 'flex'
+                        payload['this'].querySelector('#popupbackground').style.display = 'flex'
+                        // Show using animation.
+                        if(!payload['this'].querySelector('#auctionBidItem')){}else{
+                            payload['this'].querySelector('#auctionBidItem').addEventListener('click',async ()=>{
+
+                                //console.assert(false, payload)
+                                await auction['get']({type:'auctionBid', bid: null},payload)
+                            });
+                        }
+
+                        if(!payload['this'].querySelector('#auctionPassItem')){}else{
+                            payload['this'].querySelector('#auctionPassItem').addEventListener('click',async ()=>{
+
+                                //console.assert(false, payload)
+                                await auction['get']({type:'auctionPass'},payload)
+                            });
+                        }
+
+                        if(!payload['this'].querySelector('#exitAuctionItem')){}else{
+                            payload['this'].querySelector('#exitAuctionItem').addEventListener('click',async ()=>{
+                                //console.assert(false, payload)
+                                if (confirm("Are you sure you want to stop bidding on this property altogether?")){
+                                    await auction['get']({type:'auctionExit'},payload)
+                                }
+                            });
+                        }
+
+                        payload['this'].querySelector('#popupwrap').style.display = 'flex'
+                        // $("#popupbackground").fadeIn(400, function() {
+
+                        // $("#popupwrap").show();
+                        // });
+                        out(payload)
+                    })(obj, payload, rest)
+                    break
+                case 'chanceCommunityChest':
+                    (async (obj,payload,  rest)=>{
+
+                        // console.assert(false, payload)
+                        let p = payload['player'][payload['turn']];
+                        // Community Chest
+                        if (p.position === 2 || p.position === 17 || p.position === 33) {
+                            let communityChestIndex = payload['communityChestCards'].deck[payload['communityChestCards'].index];
+
+                            // Remove the get out of jail free card from the deck.
+                            if (communityChestIndex === 0) {
+                                payload['communityChestCards'].deck.splice(payload['communityChestCards'].index, 1);
+                            }
+
+
+                            await monopoly['get']({type:'popup', HTML:`
+                            <img src='./static/html/components/main-manager/images/community_chest_icon.png' style='height: 15vw; width: 15vw; margin: 0.781vw 0.781vw 0.781vw 0;' />
+                            <div class="containerCard">
+                            <div style='font-weight: bold; font-size: 3vw; '>Community Chest:</div>
+                            <div style='text-align: center;'>${payload['communityChestCards'][communityChestIndex].text}</div>
+                            </div>
+                            `, action:async function(obj, payload) {
+
+                                   await auction['get']({type:'communityChestAction', communityChestIndex: communityChestIndex}, payload);
+
+                                }}, payload)
+
+                            payload['communityChestCards'].index++;
+
+                            if (payload['communityChestCards'].index >= payload['communityChestCards'].deck.length) {
+                                payload['communityChestCards'].index = 0;
+                            }
+
+                            // Chance
+                        } else if (p.position === 7 || p.position === 22 || p.position === 36) {
+                            let chanceIndex = payload['chanceCards'].deck[payload['chanceCards'].index];
+
+                            // Remove the get out of jail free card from the deck.
+                            if (chanceIndex === 0) {
+                                payload['chanceCards'].deck.splice(payload['chanceCards'].index, 1);
+                            }
+
+                            await monopoly['get']({type:'popup', HTML:"<img src='./static/html/components/main-manager/images/chance_icon.png' style='height: 7.883vw; width: 5vw; margin: 0.781vw 0.781vw 0.781vw 0;' /><div style='font-weight: bold; font-size: 3vw; '>Chance:</div><div style='text-align: justify;'>" + payload['chanceCards'][chanceIndex].text + "</div>", action:async function(obj, payload) {
+                                    // console.assert(false, payload)
+                                    // console.assert(false, chanceIndex)
+                                   await auction['get']({type:'chanceAction', chanceIndex: chanceIndex},payload);
+                                }},payload)
+                            payload['chanceCards'].index++;
+
+                            if ( payload['chanceCards'].index >=  payload['chanceCards'].deck.length) {
+                                payload['chanceCards'].index = 0;
+                            }
+                        } else {
+                            if (!p.human) {
+                                p.AI.alertList = "";
+
+                                if (!p.AI.onLand()) {
+                                    game.next();
+                                }
+                            }
+                        }
+
+                    })(obj,payload, rest)
+                    break
+                case 'buyHouse':
+                    (async (obj,payload, rest)=>{
+
+                        let sq = payload['square'][obj['index']];
+                        let p = payload['player'][sq.owner];
+                        let houseSum = 0;
+                        let hotelSum = 0;
+
+                        if (p.money - sq.houseprice < 0) {
+                            if (sq.house == 4) {
+                                out(false)
+                            } else {
+                                out(false)
+                            }
+
+                        } else {
+                            for (let i = 0; i < 40; i++) {
+                                if (payload['square'][i].hotel === 1) {
+                                    hotelSum++;
+                                } else {
+                                    houseSum += payload['square'][i].house;
+                                }
+                            }
+
+                            if (sq.house < 4) {
+                                if (houseSum >= 32) {
+                                    out(false)
+
+                                } else {
+                                    sq.house++;
+                                   await gameplay['get']({type:'addAlert', value:`${p.name} placed a house on ${sq.name}.` }, payload)
+                                }
+
+                            } else {
+                                if (hotelSum >= 12) {
+                                    return;
+
+                                } else {
+                                    sq.house = 5;
+                                    sq.hotel = 1;
+                                  await  gameplay['get']({type:'addAlert', value:`${p.name}  placed a hotel on ${sq.name}.` }, payload)
+                                }
+                            }
+
+                            //console.assert(false, p)
+                            p.pay(sq.houseprice, 0, payload);
+
+                            updateOwned();
+                            await gameplay['get']({type:'updateMoney'},payload)
+                        }
+
+                    })(obj, payload, rest)
+                    break
+                case 'getCheckedProperty':
+                    (async (obj, payload, rest)=>{
+
+                        let card = -1
+                        for (let i = 0; i < 42; i++) {
+                            if (payload['this'].getElementById("propertycheckbox" + i) && payload['this'].getElementById("propertycheckbox" + i).checked) {
+                                card = i
+                                break
+                            }
+                        }
+                        out(card)
+                    })(obj, payload, rest)
+                    break
+                case 'next':
+                    (async (obj, payload, rest)=>{
+                        let p = obj['player']
+                        if (!p.human && p.money < 0) {
+
+                            //console.assert(false, p)
+                            p.AI.payDebt();
+
+                            if (p.money < 0) {
+                                //console.assert(false, p)
+                               await gameplay['get']({type:'popup', HTML: "<p>" + p.name + " is bankrupt. All of its assets will be turned over to " + player[p.creditor].name + ".</p>", action:game.bankruptcy}, payload);
+                            } else {
+                                //console.assert(false, p)
+                               await gameplay['get']({type:'roll', player: p}, payload)
+                            }
+                        } else if (payload['areDiceRolled'] && payload['doublecount'] === 0) {
+                            await gameplay['get']({type:'play', player: p}, payload);
+                        } else {
+                           await gameplay['get']({type:'roll', player: p}, payload)
+                        }
+                        // console.assert(false, payload)
+                        out(payload)
+                    })(obj, payload, rest)
+                    break
+                case 'updateOption':
+                    (async (obj, payload, rest)=>{
+
+                        payload['this'].querySelector('#option').style.display = 'flex'
+                        // $("#option").show();
+
+                        let allGroupUninproved = true;
+                        let allGroupUnmortgaged = true;
+                        let checkedproperty = (()=>{
+
+                            for (let i = 0; i < 42; i++) {
+                                if (payload['this'].getElementById("propertycheckbox" + i) && payload['this'].getElementById("propertycheckbox" + i).checked) {
+                                    return i;
+                                }
+                            }
+                            return -1; // No property is checked.
+
+                        })()
+
+                        if (checkedproperty < 0 || checkedproperty >= 40) {
+                            payload['this'].querySelector('#buyhousebutton').style.display = 'none'
+                            payload['this'].querySelector('#sellhousebutton').style.display = 'none'
+                            payload['this'].querySelector('#mortgagebutton').style.display = 'none'
+                            // $("#buyhousebutton").hide();
+                            // $("#sellhousebutton").hide();
+                            // $("#mortgagebutton").hide();
+
+
+                            let housesum = 32;
+                            let hotelsum = 12;
+
+                            for (let i = 0; i < 40; i++) {
+                                let s = payload['square'][i];
+                                if (s.hotel == 1)
+                                    hotelsum--;
+                                else
+                                    housesum -= s.house;
+                            }
+                            payload['this'].querySelector('#buildings').style.display = 'flex'
+                            // $("#buildings").show();
+
+                            payload['this'].getElementById("buildings").innerHTML = "<img src='./static/html/components/main-manager/images/house.png' alt='' title='House' class='house' />:&nbsp;" + housesum + "&nbsp;&nbsp;<img src='./static/html/components/main-manager/images/hotel.png' alt='' title='Hotel' class='hotel' />:&nbsp;" + hotelsum;
+
+                            out(payload)
+                        }else{
+                            payload['this'].querySelector('#buildings').style.display = 'none'
+                            // $("#buildings").hide();
+                            let sq = payload['square'][checkedproperty];
+
+                            let buyhousebutton = payload['this'].getElementById("buyhousebutton");
+                            let sellhousebutton = payload['this'].getElementById("sellhousebutton");
+                            payload['this'].querySelector('#mortgagebutton').style.display = 'flex'
+                            // $("#mortgagebutton").show();
+                            payload['this'].getElementById("mortgagebutton").disabled = false;
+
+                            if (sq.mortgage) {
+                                payload['this'].getElementById("mortgagebutton").value = "Unmortgage ($" + Math.round(sq.price * 0.6) + ")";
+                                payload['this'].getElementById("mortgagebutton").title = "Unmortgage " + sq.name + " for $" + Math.round(sq.price * 0.6) + ".";
+
+                                payload['this'].querySelector('#buyhousebutton').style.display = 'none'
+                                payload['this'].querySelector('#sellhousebutton').style.display = 'none'
+
+                                // $("#buyhousebutton").hide();
+                                // $("#sellhousebutton").hide();
+
+                                allGroupUnmortgaged = false;
+                            } else {
+                                payload['this'].getElementById("mortgagebutton").value = "Mortgage ($" + (sq.price * 0.5) + ")";
+                                payload['this'].getElementById("mortgagebutton").title = "Mortgage " + sq.name + " for $" + (sq.price * 0.5) + ".";
+
+                                if (sq.groupNumber >= 3) {
+                                    payload['this'].querySelector('#buyhousebutton').style.display = 'flex'
+                                    payload['this'].querySelector('#sellhousebutton').style.display = 'flex'
+
+                                    // $("#buyhousebutton").show();
+                                    // $("#sellhousebutton").show();
+                                    buyhousebutton.disabled = false;
+                                    sellhousebutton.disabled = false;
+
+                                    buyhousebutton.value = "Buy house ($" + sq.houseprice + ")";
+                                    sellhousebutton.value = "Sell house ($" + (sq.houseprice * 0.5) + ")";
+                                    buyhousebutton.title = "Buy a house for $" + sq.houseprice;
+                                    sellhousebutton.title = "Sell a house for $" + (sq.houseprice * 0.5);
+
+                                    if (sq.house == 4) {
+                                        buyhousebutton.value = "Buy hotel ($" + sq.houseprice + ")";
+                                        buyhousebutton.title = "Buy a hotel for $" + sq.houseprice;
+                                    }
+                                    if (sq.hotel == 1) {
+                                        // $("#buyhousebutton").hide();
+                                        payload['this'].querySelector('#buyhousebutton').style.display = 'none'
+
+                                        sellhousebutton.value = "Sell hotel ($" + (sq.houseprice * 0.5) + ")";
+                                        sellhousebutton.title = "Sell a hotel for $" + (sq.houseprice * 0.5);
+                                    }
+
+                                    let maxhouse = 0;
+                                    let minhouse = 5;
+
+                                    // for (let j = 0; j < max; j++) {
+                                    //
+                                    //     if (payload['square'][currentSquare.group[j]].house > 0) {
+                                    //         allGroupUninproved = false;
+                                    //         break;
+                                    //     }
+                                    // }
+
+                                    let max = sq.group.length;
+                                    for (let i = 0; i < max; i++) {
+                                        let s = payload['square'][sq.group[i]];
+
+                                        if (s.owner !== sq.owner) {
+                                            buyhousebutton.disabled = true;
+                                            sellhousebutton.disabled = true;
+                                            buyhousebutton.title = "Before you can buy a house, you must own all the properties of this color-group.";
+                                        } else {
+
+                                            if (s.house > maxhouse) {
+                                                maxhouse = s.house;
+                                            }
+
+                                            if (s.house < minhouse) {
+                                                minhouse = s.house;
+                                            }
+
+                                            if (s.house > 0) {
+                                                allGroupUninproved = false;
+                                            }
+
+                                            if (s.mortgage) {
+                                                allGroupUnmortgaged = false;
+                                            }
+                                        }
+                                    }
+
+                                    if (!allGroupUnmortgaged) {
+                                        buyhousebutton.disabled = true;
+                                        buyhousebutton.title = "Before you can buy a house, you must unmortgage all the properties of this color-group.";
+                                    }
+
+                                    // Force even building
+                                    if (sq.house > minhouse) {
+                                        buyhousebutton.disabled = true;
+
+                                        if (sq.house == 1) {
+                                            buyhousebutton.title = "Before you can buy another house, the other properties of this color-group must all have one house.";
+                                        } else if (sq.house == 4) {
+                                            buyhousebutton.title = "Before you can buy a hotel, the other properties of this color-group must all have 4 houses.";
+                                        } else {
+                                            buyhousebutton.title = "Before you can buy a house, the other properties of this color-group must all have " + sq.house + " houses.";
+                                        }
+                                    }
+                                    if (sq.house < maxhouse) {
+                                        sellhousebutton.disabled = true;
+
+                                        if (sq.house == 1) {
+                                            sellhousebutton.title = "Before you can sell house, the other properties of this color-group must all have one house.";
+                                        } else {
+                                            sellhousebutton.title = "Before you can sell a house, the other properties of this color-group must all have " + sq.house + " houses.";
+                                        }
+                                    }
+
+                                    if (sq.house === 0 && sq.hotel === 0) {
+                                        payload['this'].querySelector('#sellhousebutton').style.display = 'none'
+                                        // $("#sellhousebutton").hide();
+
+                                    } else {
+                                        payload['this'].querySelector('#mortgagebutton').style.display = 'none'
+                                        // $("#mortgagebutton").hide();
+                                    }
+
+                                    // Before a property can be mortgaged or sold, all the properties of its color-group must unimproved.
+                                    if (!allGroupUninproved) {
+                                        payload['this'].getElementById("mortgagebutton").title = "Before a property can be mortgaged, all the properties of its color-group must unimproved.";
+                                        payload['this'].getElementById("mortgagebutton").disabled = true;
+                                    }
+                                    out(payload)
+                                } else {
+                                    payload['this'].querySelector('#buyhousebutton').style.display = 'none'
+                                    payload['this'].querySelector('#sellhousebutton').style.display = 'none'
+
+                                    // $("#buyhousebutton").hide();
+                                    // $("#sellhousebutton").hide();
+                                    out(payload)
+                                }
+                            }
+                            out(payload)
+                        }
+                    })(obj, payload, rest)
+                    break
+                case 'addPropertyToAuctionQueue':
+                    (async (obj, payload, rest)=>{
+                        payload['auctionQueue'].push(obj['propertyIndex']);
+                        out(payload)
+                    })(obj, payload, rest)
+                    break
+                case 'updateOwned':
+                    (async (obj,payload,  rest)=>{
+
+                        // console.assert(false)
+                        let p = payload['player'][payload['turn']];
+                        let checkedproperty = (()=>{
+                            for (let i = 0; i < 42; i++) {
+                                if (payload['this'].getElementById("propertycheckbox" + i) && payload['this'].getElementById("propertycheckbox" + i).checked) {
+                                    return i;
+                                }
+                            }
+                            return -1; // No property is checked.
+
+                        })()
+                        payload['checkedproperty'] = checkedproperty
+                        payload['this'].querySelector('#option').style.display = 'flex'
+                        payload['this'].querySelector('#owned').style.display = 'flex'
+                        // $("#option").show();
+                        // $("#owned").show();
+                        let HTML = "",
+                            firstproperty = -1;
+
+                        let mortgagetext = "",
+                            housetext = "";
+                        let sq;
+
+                        for (let i = 0; i < 40; i++) {
+                            sq = payload['square'][i];
+                            if (sq.groupNumber && sq.owner === 0) {
+
+                                payload['this'].querySelector(`#cell${i}owner`).style.display = 'none'
+                                // $("#cell" + i + "owner").hide();
+                            } else if (sq.groupNumber && sq.owner > 0) {
+                                let currentCellOwner = payload['this'].getElementById("cell" + i + "owner");
+                                currentCellOwner.style.display = "block";
+                                currentCellOwner.style.backgroundColor = payload['player'][sq.owner].color;
+                                currentCellOwner.title = payload['player'][sq.owner].name;
+                            }
+                        }
+
+                        for (let i = 0; i < 40; i++) {
+                            sq = payload['square'][i];
+                            if (sq.owner == payload['turn']) {
+
+                                mortgagetext = "";
+                                if (sq.mortgage) {
+                                    mortgagetext = "title='Mortgaged' style='color: grey;'";
+                                }
+
+                                housetext = "";
+                                if (sq.house >= 1 && sq.house <= 4) {
+                                    for (let x = 1; x <= sq.house; x++) {
+
+                                        housetext += "<img src='./static/html/components/main-manager/images/house.png' alt='' title='House' class='house' />";
+                                    }
+                                } else if (sq.hotel) {
+                                    housetext += "<img src='./static/html/components/main-manager/images/house.png' alt='' title='Hotel' class='hotel' />";
+                                }
+
+                                if (HTML === "") {
+                                    HTML += "<table>";
+                                    firstproperty = i;
+                                }
+
+                                HTML += "<tr class='property-cell-row'><td class='propertycellcheckbox'><input type='checkbox' id='propertycheckbox" + i + "' /></td><td class='propertycellcolor' style='background: " + sq.color + ";";
+
+                                if (sq.groupNumber == 1 || sq.groupNumber == 2) {
+                                    HTML += " border: 0.098vw solid grey; width: 1.758vw;";
+                                }
+
+                                // HTML += "' onmouseover='showdeed(" + i + ");' onmouseout='hidedeed();'></td><td class='propertycellname' " + mortgagetext + ">" + sq.name + housetext + "</td></tr>";
+                                HTML += "' showdeed = " + i +" ></td> <td class = 'propertycellname' > "+ sq.name  + housetext + "</td> </tr>"
+
+                            }
+                        }
+
+                        if (p.communityChestJailCard) {
+                            if (HTML === "") {
+                                firstproperty = 40;
+                                HTML += "<table>";
+                            }
+                            HTML += "<tr class='property-cell-row'><td class='propertycellcheckbox'><input type='checkbox' id='propertycheckbox40' /></td><td class='propertycellcolor' style='background: white;'></td><td class='propertycellname'>Get Out of Jail Free Card</td></tr>";
+
+                        }
+                        if (p.chanceJailCard) {
+                            if (HTML === "") {
+                                firstproperty = 41;
+                                HTML += "<table>";
+                            }
+                            HTML += "<tr class='property-cell-row'><td class='propertycellcheckbox'><input type='checkbox' id='propertycheckbox41' /></td><td class='propertycellcolor' style='background: white;'></td><td class='propertycellname'>Get Out of Jail Free Card</td></tr>";
+                        }
+
+                        if (HTML === "") {
+                            HTML = p.name + ", you don't have any properties.";
+                            payload['this'].querySelector('#option').style.display = 'none'
+                            // $("#option").hide();
+                        } else {
+                            HTML += "</table>";
+                        }
+
+                        payload['this'].getElementById("owned").innerHTML = HTML;
+
+                        if(payload['this'].querySelector('.propertycellcolor')){
+
+                            let nodeList = payload['this'].querySelectorAll('.propertycellcolor')
+                            for(let m = 0; m < nodeList.length; m++){
+                                nodeList[m].addEventListener('mouseover', async (event)=>{
+                                    // console.assert(false)
+                                    let props = nodeList[m].getAttribute('showdeed')
+                                    await  monopoly['get']({type:'showdeed', property:props}, payload)
+
+
+                                })
+                                nodeList[m].addEventListener('mouseout', async (event)=>{
+                                    payload['this'].querySelector('#deed').style.display = 'none'
+                                })
+
+                            }
+                        }
+                        // Select previously selected property.
+                        if (checkedproperty > -1 && payload['this'].getElementById("propertycheckbox" + checkedproperty)) {
+                            payload['this'].getElementById("propertycheckbox" + checkedproperty).checked = true;
+                        } else if (firstproperty > -1) {
+                            payload['this'].getElementById("propertycheckbox" + firstproperty).checked = true;
+                        }
+                        let propertyCellRow =  payload['this'].querySelectorAll('.property-cell-row')
+                        for(let i =0; i < propertyCellRow.length; i++){
+                            propertyCellRow[i].addEventListener('click', async (e)=>{
+                                let verify = true
+                                let row = e.target.parentNode;
+                                let all = {}
+                                let item = false
+                                while(verify){
+                                    if(row.tagName === 'TR'){
+                                        item = row
+                                        row = row.parentNode
+                                    }else if(row.tagName === 'TBODY') {
+                                        all = row
+                                        verify = false
+                                    }else{
+                                        row = row.parentNode
+                                    }
+                                }
+
+                                if(!item){
+
+                                }else{
+                                    for(let i = 0; i < all.children.length;i++){
+                                        all.children[i].querySelector('input').checked = false
+                                    }
+
+                                    item.querySelector('input').checked = true
+                                    // console.assert(false, payload)
+                                }
+
+                                await monopoly['get']({type:'updateOption'}, payload);
+                            })
+                        }
+                        await monopoly['get']({type:'updateOption'}, payload);
+                        out(payload)
+                    })(obj, payload, rest)
+                    break
+                case 'citytax':
+                    (async (obj,payload,  rest)=>{
+
+                       await gameplay['get']({type:'addAlert', value:`${payload['player'][payload['turn']].name} paid $200 for landing on City Tax.` }, payload)
+                        payload['player'][payload['turn']].pay(200, 0, payload);
+
+                        payload['this'].querySelector('#landed').innerText = "You landed on City Tax. Pay $200."
+                       payload['this'].querySelector('#landed').style.display = 'flex'
+                        // $("#landed").show().text("You landed on City Tax. Pay $200.");
+
+                        out(payload)
+                    })(obj, payload, rest)
+                    break
+                case 'auction':
+                    (async (obj, payload, rest)=>{
+                        //console.assert(payload)
+                        if (await payload['auctionQueue'].length === 0) {
+                            out(false)
+                        }else{
+                            // console.assert(false, payload['auctionQueue'])
+                            let index = payload['auctionQueue'].shift();
+
+                            if(index === undefined){
+
+                            }else{
+                                let s = payload['square'][index];
+
+                                if (s.price === 0 || s.owner !== 0) {
+
+
+                                    out(await monopoly['get']({type:'auction'}, payload))
+                                }else{
+
+                                    payload['auctionproperty'] = index
+                                    let auctionproperty = index;
+                                    let highestbidder = 0;
+                                    payload['highestbidder'] = 0
+                                    payload['highestbid'] = 0
+                                    let highestbid = 0;
+                                    payload['currentbidder'] = payload['turn'] + 1
+                                    let currentbidder = payload['turn'] + 1;
+
+                                    if (payload['currentbidder'] > payload['pcount']) {
+                                        payload['currentbidder'] -= payload['pcount'];
+                                    }
+
+                                    await monopoly['get']({type:'popup', HTML:`
+<div style='font-weight: bold; font-size: 3vw; margin-bottom: 0.977vw;'>
+Auction 
+<span id='propertyname'></span>
+</div>
+<div>Highest Bid = $
+<span id='highestbid'></span> (<span id='highestbidder'></span>)
+</div>
+<div>
+<span id='currentbidder'></span>, it is your turn to bid.
+</div>
+<div>
+<input id='bid' title='Enter an amount to bid on " + s.name + ".' style='width: 85%;' />
+</div>
+<div>
+<input id='auctionBidItem' type='button' value='Bid' title='Place your bid.' />
+<input id='auctionPassItem' type='button' value='Pass' title='Skip bidding this time.'  />
+<input id='exitAuctionItem' type='button' value='Exit Auction' title='Stop bidding on " + s.name + " altogether.'  />
+</div>`, option: "blank"}, payload);
+
+                                    payload['this'].getElementById("propertyname").innerHTML = `<a id="propertynameItem" href='javascript:void(0);' class='statscellcolor'>${s.name}</a>`;
+
+
+                                    payload['this'].querySelector(`#propertynameItem`).addEventListener('mouseout', async (event)=>{
+                                        payload['this'].querySelector(`#deed`).style.display = 'none'
+                                    })
+                                    payload['this'].querySelector(`#propertynameItem`).addEventListener('mouseover', async (event)=>{
+                                        await  monopoly['get']({type:'showdeed', property:payload['auctionproperty']}, payload)
+                                    })
+                                    payload['this'].getElementById("highestbid").innerHTML = "0";
+                                    payload['this'].getElementById("highestbidder").innerHTML = "N/A";
+                                    payload['this'].getElementById("currentbidder").innerHTML = payload['player'][currentbidder].name;
+                                    payload['this'].getElementById("bid").onkeydown = async function (e) {
+                                        let key = 0;
+                                        let isCtrl = false;
+                                        let isShift = false;
+
+                                        if (window.event) {
+                                            key = window.event.keyCode;
+                                            isCtrl = window.event.ctrlKey;
+                                            isShift = window.event.shiftKey;
+                                        } else if (e) {
+                                            key = e.keyCode;
+                                            isCtrl = e.ctrlKey;
+                                            isShift = e.shiftKey;
+                                        }
+
+                                        if (isNaN(key)) {
+                                            return true;
+                                        }else{
+                                            if (key === 13) {
+                                                await auction['get']({type:'auctionBid'}, payload)
+                                                out(false)
+                                            }else{
+                                                // Allow backspace, tab, delete, arrow keys, or if control was pressed, respectively.
+                                                if (key === 8 || key === 9 || key === 46 || (key >= 35 && key <= 40) || isCtrl) {
+                                                    out(true)
+                                                }else{
+
+
+                                                    if (isShift) {
+                                                        out(false)
+                                                    }else{
+
+                                                        // Only allow number keys.
+                                                        out((key >= 48 && key <= 57) || (key >= 96 && key <= 105))
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    };
+
+                                    payload['this'].getElementById("bid").onfocus = function () {
+                                        this.style.color = "black";
+                                        if (isNaN(this.value)) {
+                                            this.value = "";
+                                        }
+                                    };
+                                    await monopoly['get']({type:'updateMoney'}, payload);
+
+                                    if (!payload['player'][currentbidder].human) {
+
+                                        //console.assert(false)
+                                        payload['currentbidder']  = payload['turn']; // auctionPass advances currentbidder.
+                                        await auction['get']({type:'auctionPass'}, payload)
+                                    }
+                                }
+                                out(true)
+                            }
+                        }
+                    })(obj, payload, rest)
+                    break
+                case 'auctionExit':
+                    (async (obj,payload, rest)=>{
+                        payload['player'][payload['currentbidder']].bidding = false;
+                        auction['get']({type:'auctionPass'}, payload)
+                    })(obj,payload, rest)
+                    break
+                case 'auctionBid':
+                    (async (obj,payload, rest)=>{
+
+                        payload['bid'] = obj['bid'] || parseInt(payload['this'].getElementById("bid").value, 10);
+                        let  bid = obj['bid'] || parseInt(payload['this'].getElementById("bid").value, 10);
+
+                        if (bid === "" || bid === null) {
+                            payload['this'].getElementById("bid").value = "Please enter a bid.";
+                            payload['this'].getElementById("bid").style.color = "red";
+                        } else if (isNaN(bid)) {
+                            payload['this'].getElementById("bid").value = "Your bid must be a number.";
+                            payload['this'].getElementById("bid").style.color = "red";
+                        } else {
+
+                            if (bid > payload['player'][payload['currentbidder']].money) {
+                                payload['this'].getElementById("bid").value = "You don't have enough money to bid $" + bid + ".";
+                                payload['this'].getElementById("bid").style.color = "red";
+                            } else if (bid > payload['highestbid']) {
+                                payload['highestbid'] = bid;
+                                payload['this'].getElementById("highestbid").innerHTML = parseInt(bid, 10);
+                                payload['highestbidder'] =payload['currentbidder'] ;
+                                payload['this'].getElementById("highestbidder").innerHTML = payload['player'][payload['highestbidder']].name;
+
+                                payload['this'].getElementById("bid").focus();
+
+                                if (payload['player'][payload['currentbidder']].human) {
+                                    auction['get']({type:'auctionPass'}, payload)
+                                }
+                            } else {
+                                payload['this'].getElementById("bid").value = "Your bid must be greater than highest bid. ($" + highestbid + ")";
+                                payload['this'].getElementById("bid").style.color = "red";
+                            }
+                        }
+
+                    })(obj, payload, rest)
+                    break
+                case 'auctionPass':
+                    (async (obj,payload, rest)=>{
+                        if (payload['highestbidder'] === 0) {
+                            payload['highestbidder'] = payload['currentbidder'];
+                        }
+
+                        while (true) {
+                            payload['currentbidder']++;
+
+                            if (payload['currentbidder'] > payload['pcount']) {
+                                payload['currentbidder'] -= payload['pcount'];
+                            }
+
+                            if (payload['currentbidder'] == payload['highestbidder']) {
+                                await auction['get']({type:'finalizeAuction'}, payload)
+                                out(payload)
+                            } else if (payload['player'][payload['currentbidder']].bidding) {
+                                let p = payload['player'][payload['currentbidder']];
+
+                                if (!p.human) {
+                                    let bid = p.AI.bid(payload['auctionproperty'],payload['highestbid']);
+
+                                    if (bid === -1 || payload['highestbid'] >= p.money) {
+                                        p.bidding = false;
+
+                                        window.alert(p.name + " exited the auction.");
+                                        continue;
+
+                                    } else if (bid === 0) {
+                                        window.alert(p.name + " passed.");
+                                        continue;
+
+                                    } else if (bid > 0) {
+                                        payload['bid'] = bid
+                                        await auction['get']({type:'auctionBid', bid: bid}, payload)
+                                        window.alert(p.name + " bid $" + bid + ".");
+                                        continue;
+                                    }
+                                    out(payload);
+                                } else {
+                                    break;
+                                }
+                            }
+
+                        }
+
+                        payload['this'].getElementById("currentbidder").innerHTML = payload['player'][payload['currentbidder']].name;
+                        payload['this'].getElementById("bid").value = "";
+                        payload['this'].getElementById("bid").style.color = "black";
+                    })(obj, payload, rest)
+                    break
+                case 'showdeed':
+                    (async (obj,payload, rest)=>{
+                        // console.assert(false, payload)
+                        let sq = payload['square'][obj['property']];
+                        payload['this'].querySelector('#deed').style.display = 'flex'
+                        payload['this'].querySelector('#deed-normal').style.display = 'none'
+                        payload['this'].querySelector('#deed-mortgaged').style.display = 'none'
+                        payload['this'].querySelector('#deed-special').style.display = 'none'
+                        // $("#deed").show();
+
+                        // $("#deed-normal").hide();
+                        // $("#deed-mortgaged").hide();
+                        // $("#deed-special").hide();
+
+                        if (sq.mortgage) {
+                            payload['this'].querySelector('#deed-mortgaged').style.display = 'flex'
+                            // $("#deed-mortgaged").show();
+                            payload['this'].getElementById("deed-mortgaged-name").textContent = sq.name;
+                            payload['this'].getElementById("deed-mortgaged-mortgage").textContent = (sq.price / 2);
+
+                        } else {
+
+                            if (sq.groupNumber >= 3) {
+                                payload['this'].querySelector('#deed-normal').style.display = 'flex'
+                                // $("#deed-normal").show();
+                                payload['this'].getElementById("deed-header").style.backgroundColor = sq.color;
+                                payload['this'].getElementById("deed-name").textContent = sq.name;
+                                payload['this'].getElementById("deed-baserent").textContent = sq.baserent;
+                                payload['this'].getElementById("deed-rent1").textContent = sq.rent1;
+                                payload['this'].getElementById("deed-rent2").textContent = sq.rent2;
+                                payload['this'].getElementById("deed-rent3").textContent = sq.rent3;
+                                payload['this'].getElementById("deed-rent4").textContent = sq.rent4;
+                                payload['this'].getElementById("deed-rent5").textContent = sq.rent5;
+                                payload['this'].getElementById("deed-mortgage").textContent = (sq.price / 2);
+                                payload['this'].getElementById("deed-houseprice").textContent = sq.houseprice;
+                                payload['this'].getElementById("deed-hotelprice").textContent = sq.houseprice;
+
+                            } else if (sq.groupNumber == 2) {
+                                payload['this'].querySelector('#deed-special').style.display = 'flex'
+                                payload['this'].getElementById("deed-special-name").textContent = sq.name;
+                                payload['this'].getElementById("deed-special-text").innerHTML = await classicedition['get']({type:'utiltext'}, payload);
+                                payload['this'].getElementById("deed-special-mortgage").textContent = (sq.price / 2);
+
+                            } else if (sq.groupNumber == 1) {
+                                payload['this'].querySelector('#deed-special').style.display = 'flex'
+                                payload['this'].getElementById("deed-special-name").textContent = sq.name;
+                                payload['this'].getElementById("deed-special-text").innerHTML = await classicedition['get']({type:'transtext'}, payload);
+                                payload['this'].getElementById("deed-special-mortgage").textContent = (sq.price / 2);
+                            }
+                        }
+                    })(obj, payload, rest)
+                    break
+                default:
+                    console.assert(false, `новая функция ${obj['type']}`)
+                    break
+            }
+
+        })
+    }
+}

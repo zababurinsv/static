@@ -1,1 +1,11 @@
-export default(e="",t={})=>document.dispatchEvent(new CustomEvent(`${e}-end`,{detail:{"/":e,data:t,apiBase:{apiBase:"https://nodes-testnet.wavesnodes.com"}}}));
+export default (name = '', data = {})=>{
+    return document.dispatchEvent( new CustomEvent(`${name}-end`, {
+        detail: {
+            '/':name,
+            data:data,
+            apiBase:{
+                apiBase:'https://nodes-testnet.wavesnodes.com'
+            }
+        }
+    }))
+}

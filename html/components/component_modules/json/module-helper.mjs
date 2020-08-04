@@ -1,1 +1,54 @@
-let Helper={is_template:e=>new Promise(async function(t,n){t(/\{\{(.+)\}\}/g.test(e))}),is_array:e=>new Promise(async function(t,n){t(Array.isArray(e)||!!e&&"object"==typeof e&&"number"==typeof e.length&&(0===e.length||e.length>0&&e.length-1 in e))})};Helper.resolve=((e,t,n)=>new Promise(async function(r,l){let i=e=>{r(e)};try{if(t&&t.length>0){i(Function("new_val","with(this) {this"+t+"=new_val; return this;}").bind(e)(n))}else i(e=n)}catch(e){o={_:"Helper.resolve",error:e},console.log("~~~ err ~~~",o),l(o)}var o}));export default Helper;
+let Helper = {}
+Helper['is_template'] = (str)=>{
+    return  new Promise(async function (resolve, reject) {
+        let re = /\{\{(.+)\}\}/g;
+        resolve(re.test(str))
+    })
+}
+
+
+Helper['is_array'] = (item)=>{
+    return  new Promise(async function (resolve, reject) {
+        resolve(
+            Array.isArray(item) ||
+            (!!item &&
+                typeof item === 'object' && typeof item.length === 'number' &&
+                (item.length === 0 || (item.length > 0 && (item.length - 1) in item))
+            )
+        )
+    })
+}
+
+Helper.resolve =(o, path, new_val)=> {
+    return  new Promise(async function (resolve, reject) {
+        let out = (obj) => {
+            resolve(obj)
+        }
+        let err = (error) => {
+            console.log('~~~ err ~~~', error)
+            reject(error)
+        }
+        try {
+            //colorlog('>~~~~~~~~~ SELECT.root ~~~resolve~~~~<','#348feb',SELECT.$selected_root)
+            // 1. Takes any object
+            // 2. Finds subtree based on path
+            // 3. Sets the value to new_val
+            // 4. Returns the object;
+            if (path && path.length > 0) {
+                let func = Function('new_val', 'with(this) {this' + path + '=new_val; return this;}').bind(o);
+                out(func(new_val));
+            } else {
+                o = new_val;
+                out(o);
+            }
+        }catch (e) {
+            err({
+                _:'Helper.resolve',
+                error: e
+            })
+        }
+    })
+}
+
+
+export default Helper

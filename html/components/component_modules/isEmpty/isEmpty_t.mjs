@@ -1,1 +1,79 @@
-var has=Object.prototype.hasOwnProperty,toString=Object.prototype.toString;function isEmpty(t){if(null==t)return!0;if("boolean"==typeof t)return!1;if("number"==typeof t)return 0===t;if("string"==typeof t)return 0===t.length;if("function"==typeof t)return 0===t.length;if(Array.isArray(t))return 0===t.length;if(t instanceof Error)return""===t.message;if(t.toString==toString)switch(t.toString()){case"[object File]":case"[object Map]":case"[object Set]":return 0===t.size;case"[object Object]":for(var r in t)if(has.call(t,r))return!1;return!0}return!1}export default isEmpty;
+
+/**
+ * Has own property.
+ *
+ * @type {Function}
+ */
+
+var has = Object.prototype.hasOwnProperty
+
+/**
+ * To string.
+ *
+ * @type {Function}
+ */
+
+var toString = Object.prototype.toString
+
+/**
+ * Test whether a value is "empty".
+ *
+ * @param {Mixed} val
+ * @return {Boolean}
+ */
+
+function isEmpty(val) {
+    // Null and Undefined...
+    if (val == null) return true
+
+    // Booleans...
+    if ('boolean' == typeof val) return false
+
+    // Numbers...
+    if ('number' == typeof val) return val === 0
+
+    // Strings...
+    if ('string' == typeof val) return val.length === 0
+
+    // Functions...
+    if ('function' == typeof val) return val.length === 0
+
+    // Arrays...
+    if (Array.isArray(val)) return val.length === 0
+
+    // Errors...
+    if (val instanceof Error) return val.message === ''
+
+    // Objects...
+    if (val.toString == toString) {
+        switch (val.toString()) {
+
+            // Maps, Sets, Files and Errors...
+            case '[object File]':
+            case '[object Map]':
+            case '[object Set]': {
+                return val.size === 0
+            }
+
+            // Plain objects...
+            case '[object Object]': {
+                for (var key in val) {
+                    if (has.call(val, key)) return false
+                }
+
+                return true
+            }
+        }
+    }
+
+    // Anything else...
+    return false
+}
+
+/**
+ * Export `isEmpty`.
+ *
+ * @type {Function}
+ */
+
+export default isEmpty

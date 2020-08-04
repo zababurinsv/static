@@ -1,1 +1,285 @@
-import mongodb from"/static/html/components/component_modules/matcher/matcher/this/database/mongoDb/mongodb.mjs";export default(e,t,...a)=>new Promise(function(d,o){bundle.default(e,"export",async function(i,n){let b=e=>{d(e)},c=e=>{console.log("~~~ err router ~~~",e),o(e)};switch(t){case"create":(async(e,t,a)=>{try{switch(e[t]){case"channel":b(mongodb.create({feed:e.data,id:"news",object:"feed"},"channel"));break;case"bidChanel":b(mongodb.create({feed:e.data,id:"news",object:"bid"},"bidChanel"));break;case"item":b(mongodb.create({item:e.data,id:e.id,object:"item"},"item"));break;case"bid":b(mongodb.create({item:e.data,id:e.id,object:"item"},"itemBid"));break;case"auth":b(mongodb.create({data:{id:"auth",auth:e.data,object:"waves"}},"auth"));break;default:console.warn("необрабатываемый тип запроса",e[t])}}catch(e){c(e)}})(e,a[0],a[1],a[2],a[3]);break;case"get":(async(e,t,a)=>{try{switch(e[t]){case"jsonPhoto":b(mongodb.get({input:"mongodb",type:"jsonPhoto"},"type"));break;case"feeds":b(mongodb.get({input:"mongodb",type:"feeds"},"type"));break;case"bids":b(mongodb.get({input:"mongodb",type:"bids"},"type"));break;case"itemsBid":b(mongodb.get({input:"mongodb",type:"itemsBid"},"type"));break;case"bidItem":b(mongodb.get({input:"mongodb",type:"bidItem",id:e.date},"type"));break;case"items":b(mongodb.get({input:"mongodb",type:"items"},"type"));break;case"item":b(mongodb.get({input:"mongodb",type:"item",data:{id:e.id}},"type"));break;case"img":b(mongodb.get({input:"mongodb",type:"img",data:e.data},"type"));break;default:console.warn("необрабатываемый тип запроса",e[t])}}catch(e){c(e)}})(e,a[0],a[1],a[2],a[3]);break;case"set":(async(e,t,a)=>{try{switch(e[t]){case"item":b(mongodb.set({input:"mongodb",type:"item",data:{feed:e.data,id:"news",object:"feed"}},"type"));break;case"auth":b(mongodb.set({input:"mongodb",type:"auth",data:{auth:e.data,id:"waves",object:"auth"}},"type"));break;default:console.warn("необрабатываемый тип запроса",e[t])}}catch(e){c(e)}})(e,a[0],a[1],a[2],a[3]);break;case"update":(async(e,t,a)=>{try{switch(e[t]){case"feed":let a=await mongodb.set({input:"mongodb",type:"feed",id:e.id,data:{feed:e.data,id:"news",object:"feed"}},"type");b(a);break;case"bid":let d=await mongodb.set({input:"mongodb",type:"bid",id:e.id,data:{feed:e.data,id:"bid",object:"feed"}},"type");b(d);break;case"item":let o=await mongodb.update({input:"mongodb",type:"item",data:{item:e.data,id:e.id,object:"item"}},"type");b(o);break;case"itemBid":let i=await mongodb.update({input:"mongodb",type:"itemBid",data:{item:e.data,id:e.id,object:"item"}},"type");b(i);break;default:console.warn("необрабатываемый тип запроса",e[t])}}catch(e){c(e)}})(e,a[0],a[1],a[2],a[3]);break;case"delete":(async(e,t,a)=>{try{switch(e[t]){case"item":await mongodb.delete({input:"mongodb",type:"item",id:e.id},"type"),b({delete:"ok"});break;case"itemBid":await mongodb.delete({input:"mongodb",type:"itemBid",id:e.id},"type"),b({delete:"ok"});break;default:console.warn("необрабатываемый тип запроса",e[t])}}catch(e){c(e)}})(e,a[0],a[1],a[2],a[3]);break;case"post":(async(e,t,a)=>{try{switch(e[t]){case"form":console.assert(!1);break;default:console.warn("необрабатываемый тип запроса",e[t])}}catch(e){c(e)}})(e,a[0],a[1],a[2],a[3]);break;default:c(`новая функция ${t}`)}})});
+import mongodb from '/static/html/components/component_modules/matcher/matcher/this/database/mongoDb/mongodb.mjs'
+export default  (obj, func, ...args)=>{
+    return new Promise( function (resolve, reject) {
+            let out = (obj) => {
+                //console.log('~~~ out router ~~~')
+                resolve(obj)
+            }
+            let err = (error) => {
+                console.log('~~~ err router ~~~', error)
+                reject(error)
+            }
+            switch (func) {
+                case 'create':
+                    (async (obj, props,data) => {
+                        try {
+                            // console.log(`${obj['input']}[(mongo)${obj[props]}]`)
+                            switch (obj[props]) {
+                                case 'channel':
+                                    out(mongodb['create']({
+                                        feed:obj['data'],
+                                        id:'news',
+                                        object:'feed'
+                                    },'channel'))
+                                    break
+                                case 'bidChanel':
+                                    out(mongodb['create']({
+                                        feed:obj['data'],
+                                        id:'news',
+                                        object:'bid'
+                                    },'bidChanel'))
+
+                                    break
+                                case 'item':
+                                    out(mongodb['create']({
+                                        item:obj['data'],
+                                        id: obj['id'],
+                                        object: 'item'
+                                    },'item'))
+                                    break
+                                case 'bid':
+                                    out(mongodb['create']({
+                                        item:obj['data'],
+                                        id: obj['id'],
+                                        object: 'item'
+                                    },'itemBid'))
+                                    break
+                                case 'auth':
+                                    out(mongodb['create']({
+                                        data: {
+                                            id:'auth',
+                                            auth:obj['data'],
+                                            object:'waves'
+                                        }
+                                    },'auth'))
+                                    break
+                                default:
+                                    console.warn(`необрабатываемый тип запроса`, obj[props])
+                                    break
+                            }
+                        } catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+                    break
+                case 'get':
+                    (async (obj, props,data) => {
+                        try {
+                            // console.log(`${func}[(${obj['input']}})${obj[props]}]`)
+                            switch (obj[props]) {
+                                case 'jsonPhoto':
+                                    out(mongodb['get']({
+                                        input:'mongodb',
+                                        type:'jsonPhoto',
+                                    },'type'))
+                                    break
+                                case 'feeds':
+                                    out(mongodb['get']({
+                                        input:'mongodb',
+                                        type:'feeds',
+                                    },'type'))
+                                    break
+                                case 'bids':
+                                    out(mongodb['get']({
+                                        input:'mongodb',
+                                        type:'bids',
+                                    },'type'))
+                                    break
+                                case 'itemsBid':
+                                    out(mongodb['get']({
+                                        input:'mongodb',
+                                        type:'itemsBid',
+                                    },'type'))
+                                    break
+                                case 'bidItem':
+                                    out(mongodb['get']({
+                                        input:'mongodb',
+                                        type:'bidItem',
+                                        id:obj['date']
+                                    },'type'))
+                                    break
+                                case 'items':
+                                    out(mongodb['get']({
+                                        input:'mongodb',
+                                        type:'items',
+                                    },'type'))
+                                    break
+                                case 'item':
+                                    out(mongodb['get']({
+                                        input:'mongodb',
+                                        type:'item',
+                                        data: {
+                                            id:obj['id']
+                                        }
+                                    },'type'))
+                                    break
+                                case 'img':
+                                    out(mongodb['get']({
+                                        input:'mongodb',
+                                        type:'img',
+                                        data:obj['data']
+                                    },'type'))
+                                    break
+                                default:
+                                    console.warn(`необрабатываемый тип запроса`, obj[props])
+                                    break
+                            }
+                        } catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+                    break
+                case 'set':
+                    (async (obj, props,data) => {
+                        try {
+                            // console.log(`${obj['input']}[(mongodb)${obj[props]}]`)
+                            switch (obj[props]) {
+                                case 'item':
+                                    out(mongodb['set']({
+                                        input:'mongodb',
+                                        type:'item',
+                                        data: {
+                                            feed:obj['data'],
+                                            id:'news',
+                                            object:'feed'
+                                        }
+                                    },'type'))
+                                    break
+                                case 'auth':
+                                    out(mongodb['set']({
+                                        input:'mongodb',
+                                        type:'auth',
+                                        data: {
+                                            auth:obj['data'],
+                                            id:'waves',
+                                            object:'auth'
+                                        }
+                                    },'type'))
+                                    break
+                                default:
+                                    console.warn(`необрабатываемый тип запроса`, obj[props])
+                                    break
+                            }
+                        } catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+                    break
+                case 'update':
+                    (async (obj, props,data) => {
+                        try {
+                            // console.log(`${obj['input']}[(mongodb)${obj[props]}]`)
+                            switch (obj[props]) {
+                                case 'feed':
+                                    // console.assert(false, obj['data'])
+                                   let update = await mongodb['set']({
+                                        input:'mongodb',
+                                        type:'feed',
+                                        id: obj['id'],
+                                        data: {
+                                            feed: obj['data'],
+                                            id:'news',
+                                            object:'feed'
+                                        }
+                                    },'type')
+
+                                    out(update)
+                                    break
+                                case 'bid':
+                                    let bid = await mongodb['set']({
+                                        input:'mongodb',
+                                        type:'bid',
+                                        id: obj['id'],
+                                        data: {
+                                            feed: obj['data'],
+                                            id:'bid',
+                                            object:'feed'
+                                        }
+                                    },'type')
+
+                                    out(bid)
+                                    break
+                                case 'item':
+
+                                    let updateItem = await mongodb['update']({
+                                        input:'mongodb',
+                                        type:'item',
+                                        data: {
+                                            item:obj['data'],
+                                            id:obj['id'],
+                                            object:'item'
+                                        }
+                                    },'type')
+
+                                    out(updateItem)
+                                    break
+                                case 'itemBid':
+                                    let itemBid = await mongodb['update']({
+                                        input:'mongodb',
+                                        type:'itemBid',
+                                        data: {
+                                            item:obj['data'],
+                                            id:obj['id'],
+                                            object:'item'
+                                        }
+                                    },'type')
+
+                                    out(itemBid)
+                                    break
+                                default:
+                                    console.warn(`необрабатываемый тип запроса`, obj[props])
+                                    break
+                            }
+                        } catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+                    break
+                case 'delete':
+                    (async (obj, props,data) => {
+                        try {
+                            // console.log(`${obj['input']}[(mongodb)${obj[props]}]`)
+                            switch (obj[props]) {
+                                case 'item':
+                                    await mongodb['delete']({
+                                        input:'mongodb',
+                                        type:'item',
+                                        id: obj['id']
+                                    },'type')
+                                    out({delete:'ok'})
+                                    break
+                                case 'itemBid':
+                                    await mongodb['delete']({
+                                        input:'mongodb',
+                                        type:'itemBid',
+                                        id: obj['id']
+                                    },'type')
+                                    out({delete:'ok'})
+                                    break
+                                default:
+                                    console.warn(`необрабатываемый тип запроса`, obj[props])
+                                    break
+                            }
+                        } catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+                    break
+                case 'post':
+                    (async (obj, props,data) => {
+                        try {
+                            // console.log(`${obj['input']}[(mongodb)${obj[props]}]`)
+                            switch (obj[props]) {
+                                case 'form':
+
+                                  console.assert(false)
+                                    // await mongodb['delete']({
+                                    //     input:'mongodb',
+                                    //     type:'item',
+                                    //     id: obj['id']
+                                    // },'type')
+                                    // out({delete:'ok'})
+                                    break
+                                default:
+                                    console.warn(`необрабатываемый тип запроса`, obj[props])
+                                    break
+                            }
+                        } catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+                    break
+                default:
+                    err(`новая функция ${func}`)
+                    break
+            }
+    })
+}

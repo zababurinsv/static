@@ -1,1 +1,132 @@
-import isEmpty from"/static/html/components/component_modules/isEmpty/isEmpty.mjs";import description from"/static/html/components/component_modules/description/description.mjs";import colorlog from"/static/html/components/component_modules/colorLog/colorLog.mjs";import actions from"/static/html/components/component_modules/action/index.mjs";import emoji from"/static/html/components/component_modules/emoji/emoji.mjs";let object={staticProperty:[]},output={};object.setEventsAction=(async(t,e,o,s,n)=>new Promise(async function(c,r){switch(n){case"button":case"player":c(await actions.monopoly(t,e,o,s,n));break;case"authtorization":c(await actions.postoffice(t,e,o,s,n));break;case"bank":case"wallet":case"transfer":c(await actions.waves(t,e,o,s,n));break;case"faucet-wallet":c(await actions.faucet(t,e,o,s,n));break;case"create-nft":c(await actions.wavesGame(t,e,o,s,n));break;default:console.warn(`${emoji("kissing_heart")} queue.mjs ---\x3e нет акшена на это отношение ---\x3e ${n}`),c(!0)}}));let handler={get:(t,e)=>t[e],set:(t,e,o)=>{switch(t[e]=o,e){case"length":if(1===t.length){let e=setTimeout(async function o(){0===t.length?(console.log("~~~~~~~~~~~ End ~~~~~~~~~~~"),clearTimeout(e)):(t[0].end?(await object.setEventsAction(t[0].console,{end:!0,property:t[0].property},t[0].color,t[0].substrate,t[0].relation),colorlog(t[0].console,{end:!0,property:t[0].property},t[0].color,t[0].substrate,t[0].relation),delete t[0].substrate.queue,document.dispatchEvent(new CustomEvent("typeScript-end",{detail:{_:t[0].substrate._,console:t[0].console,property:t[0].property,color:t[0].color,substrate:t[0].substrate,relation:t[0].relation}}))):(await object.setEventsAction(t[0].console,t[0].property,t[0].color,t[0].substrate,t[0].relation),colorlog(t[0].console,t[0].property,t[0].color,t[0].substrate,t[0].relation)),t.shift(),e=setTimeout(o,10))},0)}}return!0}};export default(t,e="default",o="default",...s)=>new Promise(async(n,c)=>{try{"string"==typeof s[s.length-1]?"~end"===e?(delete object.staticProperty[`${s[s.length-1]}`],output={_:`${s[s.length-1]}`,destruct:!0,queue:object.staticProperty}):(isEmpty(object.staticProperty[`${s[s.length-1]}`])&&(object.staticProperty[`${s[s.length-1]}`]=[],object.staticProperty[`${s[s.length-1]}`].task=[],object.staticProperty[`${s[s.length-1]}`].task=new Proxy(object.staticProperty[`${s[s.length-1]}`].task,handler)),s.unshift(object.staticProperty[`${s[s.length-1]}`]),output=description(t,"%c%O"+s[s.length-1],"color:"+o,"[(",s.slice(0,s.length-1),"*)",e,"]")):console.assert(!1,"не выбранно отношение"),function(t){n(t)}(output)}catch(t){!function(t){c(t)}({_:"object",error:t})}});
+import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty_t.mjs'
+import description from '/static/html/components/component_modules/description/description.mjs'
+import colorlog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
+import actions from '/static/html/components/component_modules/action/monopoly.mjs'
+import postoffice from '/static/html/components/component_modules/action/postOffice.mjs'
+import waves from '/static/html/components/component_modules/action/waves.mjs'
+import emoji from '/static/html/components/component_modules/emoji/emoji.mjs'
+import faucet from '/static/html/components/component_modules/action/faucet.mjs'
+import wavesGame from '/static/html/components/component_modules/action/wavesGame.mjs'
+let object = {}
+object.staticProperty = []
+let output = {}
+object.setEventsAction = async (views, property, color, substrate, relation) => {
+    return new Promise(async function (resolve, reject) {
+        switch (relation) {
+            case 'button':
+                resolve(await actions(views,property,color,substrate,relation))
+                break
+            case 'player':
+                resolve(await actions(views,property,color,substrate,relation))
+                break
+            case 'authtorization':
+                resolve(await postoffice(views,property,color,substrate,relation))
+                break
+            case 'bank':
+                resolve(await waves(views,property,color,substrate,relation))
+                break
+            case 'wallet':
+                resolve(await waves(views,property,color,substrate,relation))
+                break
+            case 'transfer':
+                resolve(await waves(views,property,color,substrate,relation))
+                break
+            case 'faucet-wallet':
+                resolve(await faucet(views,property,color,substrate,relation))
+                break
+            case 'create-nft':
+                resolve(await wavesGame(views,property,color,substrate,relation))
+                break
+            default:
+                console.warn(`${emoji('kissing_heart')} queue.mjs ---> нет акшена на это отношение ---> ${relation}`)
+                resolve(true)
+                break
+        }
+    })
+}
+let handler = {
+    get: (obj, prop) => {
+        return obj[prop];
+    },
+    set: (obj, prop, value) => {
+        obj[prop] = value;
+        switch (prop) {
+            case 'length':
+                if(obj.length === 1){
+                    let timerId = setTimeout(async function tick() {
+                        if(obj.length === 0){
+                            console.log('~~~~~~~~~~~ End ~~~~~~~~~~~')
+                            clearTimeout(timerId);
+                        }else{
+                            if(obj[0].end){
+                                await object.setEventsAction(obj[0].console,{end:true, property:obj[0].property},obj[0].color, obj[0].substrate, obj[0].relation )
+                                colorlog(obj[0].console,{ end:true, property:obj[0].property, },obj[0].color, obj[0].substrate, obj[0].relation )
+                                delete obj[0].substrate.queue
+                                document.dispatchEvent( new CustomEvent('typeScript-end', {
+                                    detail: {
+                                        _:obj[0].substrate._,
+                                        console:obj[0].console,
+                                        property:obj[0].property,
+                                        color: obj[0].color,
+                                        substrate: obj[0].substrate,
+                                        relation:obj[0].relation,
+                                    }
+                                }))
+                            }else{
+                                // console.assert(false)
+                                await object.setEventsAction(obj[0].console,obj[0].property,obj[0].color, obj[0].substrate, obj[0].relation)
+                                colorlog(obj[0].console,obj[0].property,obj[0].color, obj[0].substrate, obj[0].relation )
+                                
+                            }
+                            
+                            obj.shift()
+                            timerId = setTimeout(tick, 10);
+                        }
+                    }, 0);
+                }
+                break
+            default:
+                break
+        }
+        return true
+    }
+}
+export default (show, message='default', color ='default', ...args) =>{
+    return  new Promise(async (resolve, reject) => {
+        function out(obj) {
+            resolve(obj)
+        }
+        function err(obj) {
+            reject(obj)
+        }
+        try {
+            if(typeof args[args.length-1] === 'string'){
+                if(message === '~end'){
+                    delete object.staticProperty[`${args[args.length-1]}`]
+                    output = {
+                        _:`${args[args.length-1]}`,
+                        destruct:true,
+                        queue: object.staticProperty
+                    }
+                }else{
+                    if(isEmpty(object.staticProperty[`${args[args.length-1]}`])){
+                        object.staticProperty[`${args[args.length-1]}`] = []
+                        object.staticProperty[`${args[args.length-1]}`]['task'] = []
+                        object.staticProperty[`${args[args.length-1]}`]['task'] = new Proxy(object.staticProperty[`${args[args.length-1]}`]['task'], handler)
+                    }
+                    args.unshift(object.staticProperty[`${args[args.length-1]}`])
+                    output = description(show, '%c%O' + args[args.length-1],'color:' + color,'[(', args.slice(0, args.length-1),'*)',message,']')
+                }
+            }else{
+                console.assert(false, 'не выбранно отношение')
+            }
+            out(output)
+        }catch (e) {
+            err({
+                _:'object',
+                error: e
+            })
+        }
+        
+    })
+}

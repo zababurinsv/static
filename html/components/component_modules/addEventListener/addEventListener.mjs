@@ -1,1 +1,1172 @@
-import action from"/static/html/components/component_modules/action/action.mjs";import staticProperty from"/static/html/components/component_modules/staticProperty/staticProperty.mjs";import utils from"/static/html/components/component_modules/utils/utils.mjs";import template from"/static/html/components/component_modules/template/template.mjs";import request from"/static/html/components/component_modules/request/request.mjs";import matcher from"/static/html/components/component_modules/matcher/matcher.mjs";import isEmpty from"/static/html/components/component_modules/isEmpty/isEmpty.mjs";let node=(e,t)=>"VARAN-EDITOR"===e.tagName,triger=[];triger.staticProperty=[],triger.staticProperty.auth=[],triger.staticProperty.auth=!1,triger.staticProperty.reg=[],triger.staticProperty.reg=!1;export default(e,t,...r)=>new Promise(function(a,o){let n=e=>{console.log("~~~ out  ~~~"),a(e)},i=e=>{console.log("~~~ err  ~~~",e),o(e)};switch(t){case"add":(async(e,o,l)=>{try{switch(console.log(`app(${t}[(${e.input})${e[o]}]property)`),e[o]){case"lacerta-moderator":(async(e,t,r)=>{try{e.delete.addEventListener("click",async t=>{let r=t.target,a=!1;for(;!a;)"DETAILS"===r.tagName&&r.className.indexOf("item")>-1?a=!0:r=r.parentNode;let o=r.querySelector(".timestamp").innerText;o=+o,await action({input:"lacerta-moderator",this:e.this,date:o,remove:r,type:"moderator"},"delete","type"),r.remove()}),e.change.addEventListener("click",async e=>{let t=e.target,r=!1;for(;!r;)"DETAILS"===t.tagName&&t.className.indexOf("item")>-1?r=!0:t=t.parentNode;let a=t.querySelector(".timestamp").innerText;a=+a;let o=await staticProperty({input:"action",type:"all"},"get","type");for(let e=0;e<o["varan-editor"].length;e++)switch(o["varan-editor"][e].slot){case"moderator":o["varan-editor"][e].obj.this.querySelector(".wall").innerHTML="",o["varan-editor"][e].obj.this.querySelector(".wall").insertAdjacentHTML("afterbegin",t.querySelector(".preview").innerHTML),o["varan-editor"][e].editor.quill.root.innerHTML="";let r=o["varan-editor"][e].obj.this.querySelector("varan-menu");void 0===r.shadowRoot||null===r.shadowRoot||(r=r.shadowRoot),o["varan-editor"][e].editor.quill.root.innerHTML=t.querySelector(".preview").innerHTML,null!==r.querySelector(".update")&&r.querySelector(".update").remove(),o["varan-editor"][e].obj.this.querySelector(".menu-convert").insertAdjacentHTML("afterend",'<button class="update" type="button">update</button>'),await action({input:"addEventListener",type:"menu-update",data:r.querySelector(".update")},"add","type");break;case"moderatorContent":let a=o["varan-editor"][e].obj.this.querySelector("varan-menu");void 0===a.shadowRoot||null===a.shadowRoot||(a=a.shadowRoot),o["varan-editor"][e].obj.this.querySelector(".wall").innerHTML="",o["varan-editor"][e].obj.this.querySelector(".wall").insertAdjacentHTML("afterbegin",t.querySelector(".content").innerHTML),o["varan-editor"][e].obj.this.querySelector(".ql-editor").innerHTML=t.querySelector(".content").innerHTML,a.querySelector(".menu-convert").insertAdjacentHTML("afterend",'<button class="update" type="button">update</button>'),await action({input:"addEventListener",type:"menu-update",data:a.querySelector(".update")},"add","type")}for(let e=0;e<o["lacerta-moderator"].length;e++)switch(o["lacerta-moderator"][e].slot){case"moderator-admin":o["lacerta-moderator"][e].obj.this.shadowRoot.querySelector(".timestamp").innerText=t.querySelector(".timestamp").innerText,o["lacerta-moderator"][e].obj.this.shadowRoot.querySelector("#titleItem").value=t.querySelector("h2").innerText,o["lacerta-moderator"][e].obj.this.shadowRoot.querySelector(".moderator").src=t.querySelector(".moderator").src}}),a(!0)}catch(e){i(e)}})(e,r[0],r[1],r[2],r[3]);break;case"news":(async(e,t,r)=>{try{e.data.querySelector(".delete").addEventListener("click",t=>{let r=t.target,a=!1;for(;!a;)"DETAILS"===r.tagName&&r.className.indexOf("item")>-1?a=!0:r=r.parentNode;let o=r.querySelector(".date").innerText,n=(o=o.split(" "))[1].split(":");for(let e=0;e<n.length;e++)1===n[e].length&&(n[e]=`0${n[e]}`);n=`${o[0]} ${n[0]}:${n[1]}:${n[2]}`,action({input:"lacerta-news",this:e.this,date:n,remove:r,type:"news"},"delete","type")}),e.data.querySelector(".change").addEventListener("click",t=>{let r=t.target,a=!1;for(;!a;)"DETAILS"===r.tagName&&r.className.indexOf("item")>-1?a=!0:r=r.parentNode;let o=r.querySelector(".date").innerText,n=(o=o.split(" "))[1].split(":");for(let e=0;e<n.length;e++)1===n[e].length&&(n[e]=`0${n[e]}`);n=`${o[0]} ${n[0]}:${n[1]}:${n[2]}`,action({input:"lacerta-news",this:e.this,date:n,type:"news"},"update","type")}),n(e)}catch(e){i(e)}})(e,r[0],r[1],r[2],r[3]);break;case"menu-update":(async(e,t,r)=>{try{e.data.addEventListener("click",async t=>{t.target.disable="true",t.target.style.backgroundColor="#62bcd7";let r=t.target,a=!1;for(;!a;)void 0!==(r=r.parentNode).tagName&&"undefined"!==e.tagName||(r=r.getRootNode().host),a=node(r,"varan-editor");let o=await staticProperty({input:"action",type:"all"},"get","type"),n={},i={},l={};for(let e=0;e<o["varan-editor"].length;e++)switch(o["varan-editor"][e].slot){case"cardDescription":l.cardDescription=o["varan-editor"][e].editor.quill.root.innerHTML,n.cardDescription=await utils({input:"varan-menu",data:o["varan-editor"][e].editor.quill.root.innerHTML,type:"html2string"},"convert","type"),o["varan-editor"][e].obj.this.querySelector(".wall").innerHTML="",o["varan-editor"][e].editor.quill.root.innerHTML="";break;case"cardContent":l.cardContent=o["varan-editor"][e].editor.quill.root.innerHTML,n.cardContent=await utils({input:"varan-menu",data:o["varan-editor"][e].editor.quill.root.innerHTML,type:"html2string"},"convert","type"),o["varan-editor"][e].obj.this.querySelector(".wall").innerHTML="",o["varan-editor"][e].editor.quill.root.innerHTML="";break;case"description":l.description=o["varan-editor"][e].editor.quill.root.innerHTML,n.description=await utils({input:"varan-menu",data:o["varan-editor"][e].editor.quill.root.innerHTML,type:"html2string"},"convert","type"),o["varan-editor"][e].obj.this.querySelector(".wall").innerHTML="",o["varan-editor"][e].editor.quill.root.innerHTML="";break;case"content":l.content=o["varan-editor"][e].editor.quill.root.innerHTML,n.content=await utils({input:"varan-menu",data:o["varan-editor"][e].editor.quill.root.innerHTML,type:"html2string"},"convert","type"),o["varan-editor"][e].obj.this.querySelector(".wall").innerHTML="",o["varan-editor"][e].editor.quill.root.innerHTML="";break;case"about":n.about=await utils({input:"varan-menu",data:o["varan-editor"][e].editor.quill.root.innerHTML,type:"html2string"},"convert","type"),i=o["varan-editor"][e].editor.quill.root.innerHTML;break;default:console.warn("~~~~~~~~~","На этот объект нет действия ",o["varan-editor"][e].slot)}let c={};if("moderator"===r.slot||"moderatorContent"===r.slot)c="moderator";else if("cardContent"===r.slot||"cardDescription"===r.slot)c="card";else switch(r.slot){case"about":let e=await utils({input:"varan-menu",target:"about-admin",type:"object",source:o["varan-about"],get:".about"},"get","type");await utils({input:"varan-menu",target:"varan-about",type:"object",source:o["varan-about"],get:".about"},"get","type");e.innerHTML="",e.insertAdjacentHTML("beforeend",i);break;default:let t=o["varan-editor-admin"][0].this.querySelector("lacerta-news"),a=t.shadowRoot.querySelector("#titleItem").value,l=t.shadowRoot.querySelector(".gallery").src,c=t.shadowRoot.querySelector(".date").innerText,s="news";c=+c;let d={image:{}};d.image.data=l,d.image.name=s,d.title=a,d.date=c,d.content=n.content,d.short_content=n.description,d.url="https://universitykids.ru",d.rss="https://universitykids.ru/rss";for(let e=0;e<o["lacerta-news"].length;e++)switch(o["lacerta-news"][e].slot){case"news-admin":o["lacerta-news"][e].obj.this.shadowRoot.querySelector("#titleItem").value="",o["lacerta-news"][e].obj.this.shadowRoot.querySelector(".date").innerHTML="date",o["lacerta-news"][e].obj.this.shadowRoot.querySelector(".gallery").src="/static/html/components/lacerta-news/icons/no_image.jpg";break;default:console.warn("~~~~~~~~~","На этот объект нет действия ",o["lacerta-news"][e].slot)}let u={},p={},m={};for(let e=0;e<o["varan-editor"].length;e++)switch(u=null===o["varan-editor"][e].obj.this.querySelector(".menu-convert")?(u=o["varan-editor"][e].obj.this.querySelector("varan-menu")).shadowRoot.querySelector(".menu-convert"):o["varan-editor"][e].obj.this.querySelector(".menu-convert"),p=null===o["varan-editor"][e].obj.this.querySelector(".update")?(p=o["varan-editor"][e].obj.this.querySelector("varan-menu")).shadowRoot.querySelector(".update"):o["varan-editor"][e].obj.this.querySelector(".update"),m=null===o["varan-editor"][e].obj.this.querySelector(".menu-save")?(m=o["varan-editor"][e].obj.this.querySelector("varan-menu")).shadowRoot.querySelector(".menu-save"):o["varan-editor"][e].obj.this.querySelector(".menu-save"),o["varan-editor"][e].slot){case"description":case"content":u.disabled=!0,u.style.backgroundColor="blue",p.innerText="Идёт обновление новости. Кнопка изчезнет после обновления",p.style.backgroundColor="red",p.disabled=!0,m.disabled=!0,m.style.backgroundColor="blue"}staticProperty({type:"task",task:{type:"updateAction",date:{timestamp:c,utc:new Date(c).toUTCString(),iso:new Date(c).toISOString()},update:d}},"task","type")}switch(c){case"card":let e={image:{}},t=!1;for(let r=0;r<o["varan-card-news"].length;r++)switch(o["varan-card-news"][r].slot){case"card-admin":let a=o["varan-card-news"][r].this.shadowRoot.querySelectorAll(".section")[1];e.title=a.querySelector(".nameBid").value,e.time=a.querySelector(".timerValue").value,e.price=a.querySelector(".priceValue").value,e.content=n.cardContent,e.image.data=a.querySelector(".imgBidAdmin").src,e.image.name=a.querySelector(".nameBid").value,e.short_content=n.cardDescription,e.url="https://universitykids.ru",e.rss="https://universitykids.ru/rss";let i=+a.querySelector(".item").className.split("_")[1];e.date=i,-2===(await matcher.server({path:`/timer/${e.date}`,type:"timer"},"get","type")).mongo.time&&(t=!0),a.querySelector(".item").className=a.querySelector(".item").className.split("_")[0],a.querySelector(".nameBid").value="Наименование товара",a.querySelector(".imgBidAdmin").src="/static/html/components/varan-card-news/icons/no_image.jpg",a.querySelector(".timerValue").value=10,a.querySelector(".priceValue").value=1;break;default:console.warn("~~~~~~~~~","На этот объект нет действия ",o["lacerta-news"][r].slot)}if(!1===t)alert("Проходит аукцион, редактирование невозможно");else{let t={},r={},a={};for(let e=0;e<o["varan-editor"].length;e++)switch(t=null===o["varan-editor"][e].obj.this.querySelector(".menu-convert")?(t=o["varan-editor"][e].obj.this.querySelector("varan-menu")).shadowRoot.querySelector(".menu-convert"):o["varan-editor"][e].obj.this.querySelector(".menu-convert"),r=null===o["varan-editor"][e].obj.this.querySelector(".update")?(r=o["varan-editor"][e].obj.this.querySelector("varan-menu")).shadowRoot.querySelector(".update"):o["varan-editor"][e].obj.this.querySelector(".update"),a=null===o["varan-editor"][e].obj.this.querySelector(".menu-save")?(a=o["varan-editor"][e].obj.this.querySelector("varan-menu")).shadowRoot.querySelector(".menu-save"):o["varan-editor"][e].obj.this.querySelector(".menu-save"),o["varan-editor"][e].slot){case"cardDescription":case"cardContent":t.disabled=!0,t.style.backgroundColor="blue",r.innerText="Идёт обновление. Кнопка изчезнет после обновления",r.style.backgroundColor="red",r.disabled=!0,a.disabled=!0,a.style.backgroundColor="blue"}staticProperty({type:"task",task:{type:"updateAction",date:{timestamp:e.date,utc:new Date(e.date).toUTCString(),iso:new Date(e.date).toISOString()},update:e},name:"bid"},"task","type")}break;case"moderator":let r={},a=await staticProperty({input:"action",type:"all"},"get","type");for(let e=0;e<a["varan-editor"].length;e++)switch(a["varan-editor"][e].slot){case"moderator":r.decription=a["varan-editor"][e].obj.this.querySelector(".wall").innerHTML,a["varan-editor"][e].editor.quill.root.innerHTML="",a["varan-editor"][e].obj.this.querySelector(".wall").innerHTML="";let t={};(t=null===a["varan-editor"][e].obj.this.querySelector(".update")?(t=o["varan-editor"][e].obj.this.querySelector("varan-menu")).shadowRoot.querySelector(".update"):a["varan-editor"][e].obj.this.querySelector(".update")).remove();break;case"moderatorContent":let n={};n=null===a["varan-editor"][e].obj.this.querySelector(".update")?(n=o["varan-editor"][e].obj.this.querySelector("varan-menu")).shadowRoot.querySelector(".update"):a["varan-editor"][e].obj.this.querySelector(".update"),r.content=a["varan-editor"][e].obj.this.querySelector(".wall").innerHTML,a["varan-editor"][e].editor.quill.root.innerHTML="",a["varan-editor"][e].obj.this.querySelector(".wall").innerHTML="",n.remove()}for(let e=0;e<a["lacerta-moderator"].length;e++)switch(a["lacerta-moderator"][e].slot){case"moderator-admin":r.timestamp=a["lacerta-moderator"][e].obj.this.shadowRoot.querySelector(".timestamp").innerText,a["lacerta-moderator"][e].obj.this.shadowRoot.querySelector(".timestamp").innerText="",r.img=a["lacerta-moderator"][e].obj.this.shadowRoot.querySelector(".moderator").src,a["lacerta-moderator"][e].obj.this.shadowRoot.querySelector(".moderator").src="/static/html/components/lacerta-moderator/icons/no_image.jpg",r.title=a["lacerta-moderator"][e].obj.this.shadowRoot.querySelector("#titleItem").value,a["lacerta-moderator"][e].obj.this.shadowRoot.querySelector("#titleItem").value=""}let i={};i.positionImg=confirm("Фотографию раcположить слева ?");for(let e=0;e<a["lacerta-moderator"].length;e++)switch(a["lacerta-moderator"][e].slot){case"lacerta-moderator":let t=a["lacerta-moderator"][e].obj.this.shadowRoot.querySelector(".main");for(let e=0;e<t.children.length;e++){if(t.children[e].querySelector(".timestamp").innerText===r.timestamp){let a=t.children[e];i.positionImg?a.querySelector(".item").prepend(a.querySelector(".hexagon")):a.querySelector(".item").appendChild(a.querySelector(".hexagon")),a.querySelector("h2").innerText=r.title,a.querySelector(".preview").innerHTML="",a.querySelector(".preview").innerHTML=r.decription,a.querySelector(".content").innerHTML="",a.querySelector(".content").innerHTML=r.content,a.querySelector(".moderator").src=r.img}}}let l=await utils({input:"template",data:r.decription,type:"html2string"},"convert","type"),s=await utils({input:"template",data:r.content,type:"html2string"},"convert","type");i.timestamp=r.timestamp,i.title=r.title,i.img=r.img,i.description=l,i.content=s,i.dir="moderator";await matcher.webdav({input:"varan-menu",data:i,type:"components",name:"moderator",path:`/moderator/${i.timestamp}`},"update","type")}}),n(e)}catch(e){i(e)}})(e,r[0],r[1],r[2],r[3]);break;default:i(`new type [(${t})${e[o]}]`)}}catch(e){i(e)}})(e,r[0],r[1],r[2],r[3]);break;case"set":(async(e,a,o)=>{try{switch(console.log(`app(${t}[(${e.input})${e[a]}]property)`),e[a]){case"reg":(async(e,t,r)=>{try{e.data.addEventListener("click",async e=>{let t=!0,r=e.target.parentNode;for(;t;)"authSite"===r.id?t=!1:r=r.parentNode;if(!1===triger.staticProperty.reg){let e=await template({input:"addEventListener",type:"auth"},"get","type");r.querySelector("#auth").innerHTML="",r.querySelector("#auth").insertAdjacentHTML("afterbegin",e),triger.staticProperty.reg=!0,triger.staticProperty.auth=!1,r.querySelector(".btn").addEventListener("click",async e=>{e.preventDefault();let t=e.target.parentNode,r={password:{}},a=0;for(let e=0;e<t.children.length;e++)if(null===t.children[e].querySelector("input"));else switch(t.children[e].querySelector("input").type){case"text":r.text=t.children[e].querySelector("input").value;break;case"email":r.email=t.children[e].querySelector("input").value;break;case"password":r.password[a]=t.children[e].querySelector("input").value,a++}r.text,r.email,r.password[0],r.password[1];alert("IN PROGRESS")})}else r.querySelector("#auth").innerHTML="",triger.staticProperty.reg=!1,triger.staticProperty.auth=!1}),n({register:"ok"})}catch(e){i(e)}})(e,r[0],r[1],r[2],r[3]);break;case"auth":(async(e,t,r)=>{try{e.data.addEventListener("click",async e=>{let t=!0,r=e.target.parentNode;for(;t;)"authSite"===r.id?t=!1:r=r.parentNode;if(!1===triger.staticProperty.auth){let e=await template({input:"addEventListener",type:"login"},"get","type");r.querySelector("#auth").innerHTML="",r.querySelector("#auth").insertAdjacentHTML("afterbegin",e),triger.staticProperty.reg=!1,triger.staticProperty.auth=!0,r.querySelector(".btn").addEventListener("click",async e=>{e.preventDefault();let t=e.target.parentNode,r={password:{}},a=0;for(let e=0;e<t.children.length;e++)if(null===t.children[e].querySelector("input"));else switch(t.children[e].querySelector("input").type){case"text":r.text=t.children[e].querySelector("input").value;break;case"email":r.email=t.children[e].querySelector("input").value;break;case"password":r.password[a]=t.children[e].querySelector("input").value,a++}r.text,r.password[0];alert("IN PROGRESS")})}else r.querySelector("#auth").innerHTML="",triger.staticProperty.reg=!1,triger.staticProperty.auth=!1})}catch(e){i(e)}})(e,r[0],r[1],r[2],r[3]);break;case"varan-about":(async(e,t,r)=>{try{e.data.addEventListener("click",async e=>{let t=await template({input:"addListener",type:"video"},"get","type");e.target.parentNode.insertAdjacentHTML("beforeend",t),e.target.remove()})}catch(e){i(e)}})(e,r[0],r[1],r[2],r[3]);break;case"payLot":(async(e,t,r)=>{try{e.data.addEventListener("click",async e=>{let t=e.target.className.split(" ")[1];e.target.innerText="Процесс оплаты",e.target.disabled=!0;let r=await matcher.server({input:"addEventListener",path:`/winnerPay/${e.target.className.split(" ")[1]}`,type:"winner"},"get","type");try{e.target.innerText="оплата",e.target.disabled=!0;let a={type:16,data:{fee:{tokens:"0.05",assetId:"WAVES"},dApp:window.wt.dappaddress,call:r.mongo[0].winner.call,payment:r.mongo[0].winner.payment}},o=await WavesKeeper.signAndPublishTransaction(a);o=JSON.parse(o);await matcher.server({input:"addEventListener",path:`/winner/${t}`,type:"winner"},"delete","type");await window.wt.nodeInteraction.waitForTx(o.id,{apiBase:"https://nodes-testnet.wavesnodes.com"})}catch(e){"15"===e.code?alert("У вас недостаточно средств для оплаты"):e.code}}),n({addEventListener:"ok"})}catch(e){i(e)}})(e,r[0],r[1],r[2],r[3]);break;case"varan-gallery":(async(e,t,r)=>{try{e.data.addEventListener("click",async e=>{let t=await template({input:"addListener",type:"video"},"get","type");e.target.parentNode.insertAdjacentHTML("beforeend",t),e.target.remove()})}catch(e){i(e)}})(e,r[0],r[1],r[2],r[3]);break;case"lacerta-request":(async(e,t,r)=>{try{e.data.querySelector("#file").addEventListener("change",async e=>{e.target.parentNode.querySelector(".file").innerText=e.target.files[0].name}),e.data.addEventListener("submit",async e=>{var t=e.target.elements;let r,a=0,o={},n={};for(let e=0;e<t.length;e++)switch(t[e].id){case"fio-parent":console.log("",t[e].value),isEmpty(t[e].value)?(r=t[e].placeholder,t[e].placeholder="Введите Ф.И.О родителя",t[e].style.borderColor="red",o.parent=""):(a++,o.parent=t[e].value,t[e].style.borderColor="green");break;case"fio-children":isEmpty(t[e].value)?(r=t[e].placeholder,t[e].placeholder=`Введите  ${r}`,t[e].style.borderColor="red",o.children=""):(o.children=t[e].value,a++,t[e].style.borderColor="green"),console.log("",t[e].value);break;case"school":isEmpty(t[e].value)?(r=t[e].placeholder,t[e].placeholder="Введите учебное заведение и класс",t[e].style.borderColor="red",o.school=""):(o.school=t[e].value,a++,t[e].style.borderColor="green");break;case"email":isEmpty(t[e].value)?(r=t[e].placeholder,t[e].placeholder="Введите электронную почту",t[e].style.borderColor="red",o.email=""):config.validator.isEmail(t[e].value)?(t[e].style.borderColor="green",a++,o.email=t[e].value):(t[e].placeholder="Введите правильно электронную почту",t[e].style.borderColor="red",o.email=""),console.log("",t[e].value);break;case"vk":o.vk=t[e].value;break;case"phone":isEmpty(t[e].value)?(r=t[e].placeholder,t[e].placeholder="Введите номер телефона родителя",t[e].style.borderColor="red",o.phone=""):(o.phone=t[e].value,a++,t[e].style.borderColor="green");break;case"politics":if(t[e].checked)a++;else{!0===confirm("Согласие на обработку данных и использование фото/видео для сайта")?a++:t[e].parentNode.querySelector("p").style.color="red"}console.log("",t[e].value);break;case"file":n=t[e].parentNode.querySelector(".file");let i=!1;if(isEmpty(t[e].value))o.file="",t[e].parentNode.style.borderColor="red",t[e].parentNode.querySelector(".file").innerText="Прикрепите файл";else{switch(t[e].files[0].type){case"application/vnd.openxmlformats-officedocument.wordprocessingml.document":case"application/pdf":case"application/msword":i=!0}i?(t[e].parentNode.querySelector(".file").innerText=t[e].files[0].name,o.file=t[e].files[0],a++):(o.file="",t[e].parentNode.querySelector(".file").innerText="Прикрепите файл формата *.doc, *.docx или *.pdf")}break;default:console.log("необработанное поле",t[e].id)}if(a>=7){for(let e=0;e<t.length;e++)for(let e=0;e<t.length;e++)switch(t[e].id){case"fio-parent":t[e].placeholder="Введите Ф.И.О родителя",t[e].value="";break;case"fio-children":t[e].placeholder="Ф.И.О ребёнка",t[e].value="";break;case"school":t[e].placeholder="Учебное заведение и класс",t[e].value="";break;case"email":t[e].value="",t[e].placeholder="Введите электронную почту";break;case"vk":t[e].value="",t[e].placeholder="Ссылка на страницу Вконтакте (родителя)";break;case"phone":t[e].value="",t[e].placeholder="Введите номер телефона родителя";break;case"politics":break;default:console.log("необработанное поле",t[e].id)}n.innerText="Ваша заявка отправленна";await request({input:"addEventListener",type:"form",data:o},"post","type")}e.preventDefault()})}catch(e){i(e)}})(e,r[0],r[1],r[2],r[3]);break;default:i(`new type [(${t})${e[a]}]`)}}catch(e){i(e)}})(e,r[0],r[1],r[2],r[3]);break;default:i(`new function ${t}`)}});
+import action from '/static/html/components/component_modules/action/action.mjs'
+import staticProperty from '/static/html/components/component_modules/staticProperty/staticProperty.mjs'
+import utils from '/static/html/components/component_modules/utils/utils.mjs'
+import template from '/static/html/components/component_modules/template/template.mjs'
+import request from '/static/html/components/component_modules/request/request.mjs'
+import matcher from '/static/html/components/component_modules/matcher/matcher.mjs'
+import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
+let node = (obj, target)=>{
+
+    if(obj.tagName === 'VARAN-EDITOR'){
+        return true
+    }else {
+        return false
+    }
+}
+let triger = []
+triger.staticProperty = []
+triger.staticProperty['auth'] = []
+triger.staticProperty['auth'] = false
+triger.staticProperty['reg'] = []
+triger.staticProperty['reg'] = false
+export default  (obj, func, ...args)=>{
+    return new Promise( function (resolve, reject) {
+            let out = (obj) => {
+                console.log('~~~ out  ~~~')
+                resolve(obj)
+            }
+            let err = (error) => {
+                console.log('~~~ err  ~~~', error)
+                reject(error)
+            }
+            switch (func) {
+                case 'add':
+                    (async (obj, props,data) => {
+                        try {
+                            // console.log(`app(${func}[(${obj['input']})${obj[props]}]property)`)
+                            switch (obj[props]) {
+                                case 'lacerta-moderator':
+                                    (async (obj, props,data) => {
+                                        try {
+
+                                            obj['delete'].addEventListener('click', async (event) => {
+                                                let target = event.target
+                                                let verify = false
+                                                while (!verify) {
+                                                    if(target.tagName === 'DETAILS' && target.className.indexOf('item') > -1){
+                                                        verify = true
+                                                    }else{
+                                                        target = target.parentNode
+                                                    }
+                                                }
+
+                                                let dateVery =  target.querySelector('.timestamp').innerText
+                                                dateVery = +dateVery
+                                                await action({
+                                                    input:'lacerta-moderator',
+                                                    this: obj['this'],
+                                                    date:dateVery,
+                                                    remove:target,
+                                                    type:'moderator'
+                                                }, 'delete', 'type')
+                                                target.remove()
+                                            })
+
+                                            obj['change'].addEventListener('click', async (event) => {
+                                                let target = event.target
+                                                let verify = false
+                                                while (!verify) {
+                                                    if(target.tagName === 'DETAILS' && target.className.indexOf('item') > -1){
+                                                        verify = true
+                                                    }else{
+                                                        target = target.parentNode
+                                                    }
+                                                }
+                                                let dateVery =  target.querySelector('.timestamp').innerText
+                                                dateVery = +dateVery
+
+                                                // console.assert(false, target.querySelector('.moderator').src)
+                                                // console.assert(false, target.querySelector('h2').innerText)
+                                                // console.assert(false, target.querySelector('.preview').innerHTML)
+                                                // console.assert(false, target.querySelector('.content').innerHTML)
+                                                // console.assert(false,dateVery )
+                                                let editor =  await staticProperty({
+                                                    input:'action',
+                                                    type: 'all'
+                                                }, 'get', 'type')
+                                                // console.assert(false, editor)
+                                                for(let i = 0; i < editor['varan-editor'].length; i++){
+                                                    switch (editor['varan-editor'][i].slot) {
+                                                        case 'moderator':
+                                                            // console.assert(false, target.querySelector('.preview').innerHTML)
+                                                            editor['varan-editor'][i]['obj']['this'].querySelector('.wall').innerHTML =''
+                                                            editor['varan-editor'][i]['obj']['this'].querySelector('.wall').insertAdjacentHTML('afterbegin', target.querySelector('.preview').innerHTML);
+                                                            editor['varan-editor'][i]['editor']['quill'].root.innerHTML = ''
+
+
+                                                            let menu = editor['varan-editor'][i]['obj']['this'].querySelector('varan-menu')
+
+                                                            if( menu.shadowRoot === undefined || menu.shadowRoot === null){
+
+                                                            }else{
+                                                                menu =menu.shadowRoot
+                                                            }
+
+
+                                                            editor['varan-editor'][i]['editor']['quill'].root.innerHTML = target.querySelector('.preview').innerHTML
+                                                            if(menu.querySelector('.update') !== null){
+                                                                menu.querySelector('.update').remove()
+                                                            }
+                                                            editor['varan-editor'][i]['obj']['this'].querySelector('.menu-convert').insertAdjacentHTML('afterend', `<button class="update" type="button">update</button>`)
+
+                                                           await action({
+                                                                input:'addEventListener',
+                                                                type:'menu-update',
+                                                                data: menu.querySelector('.update')
+                                                            }, 'add', 'type')
+
+                                                            break
+                                                        case 'moderatorContent':
+                                                            let menu_t = editor['varan-editor'][i]['obj']['this'].querySelector('varan-menu')
+
+                                                            if( menu_t.shadowRoot === undefined || menu_t.shadowRoot === null){
+
+                                                            }else{
+                                                                menu_t =menu_t.shadowRoot
+                                                            }
+                                                            editor['varan-editor'][i]['obj']['this'].querySelector('.wall').innerHTML = ''
+                                                            editor['varan-editor'][i]['obj']['this'].querySelector('.wall').insertAdjacentHTML('afterbegin',  target.querySelector('.content').innerHTML);
+                                                            // editor['varan-editor'][i]['editor']['quill'].root.innerHTML = ''
+                                                            editor['varan-editor'][i]['obj']['this'].querySelector('.ql-editor').innerHTML =  target.querySelector('.content').innerHTML
+                                                            // editor['varan-editor'][i]['editor']['quill'].root.innerHTML = target.querySelector('.content').innerHTML
+                                                            menu_t.querySelector('.menu-convert').insertAdjacentHTML('afterend', `<button class="update" type="button">update</button>`)
+
+                                                            await action({
+                                                                input:'addEventListener',
+                                                                type:'menu-update',
+                                                                data: menu_t.querySelector('.update')
+                                                            }, 'add', 'type')
+                                                            break
+                                                        default:
+                                                            break
+
+                                                    }
+                                                }
+                                                for(let i = 0; i < editor['lacerta-moderator'].length; i++){
+                                                    switch (editor['lacerta-moderator'][i].slot) {
+                                                        case 'moderator-admin':
+                                                            editor['lacerta-moderator'][i]['obj']['this'].shadowRoot.querySelector('.timestamp').innerText = target.querySelector('.timestamp').innerText
+                                                            editor['lacerta-moderator'][i]['obj']['this'].shadowRoot.querySelector('#titleItem').value =  target.querySelector('h2').innerText
+                                                            editor['lacerta-moderator'][i]['obj']['this'].shadowRoot.querySelector('.moderator').src = target.querySelector('.moderator').src
+                                                            break
+                                                        case 'moderatorContent':
+
+                                                            break
+                                                        default:
+                                                            break
+
+                                                    }
+                                                }
+                                            })
+                                            resolve(true)
+                                        }catch (e) {
+                                            err(e)
+                                        }
+                                    })(obj, args[0], args[1], args[2], args[3])
+                                    break
+                                case 'news':
+                                    (async (obj, props,data) => {
+                                        try {
+                                            obj['data'].querySelector('.delete').addEventListener('click', (event) => {
+                                                let target = event.target
+                                                let verify = false
+                                                while (!verify) {
+                                                    if(target.tagName === 'DETAILS' && target.className.indexOf('item') > -1){
+                                                        verify = true
+                                                    }else{
+                                                        target = target.parentNode
+                                                    }
+                                                }
+                                                let veryDate = target.querySelector('.date').innerText
+                                                veryDate = veryDate.split(' ')
+                                                let dateVery =  veryDate[1].split(':')
+                                                for(let i = 0; i < dateVery.length;i++){
+                                                    if(dateVery[i].length === 1){
+                                                        dateVery[i] = `0${dateVery[i]}`
+                                                    }
+                                                }
+                                                dateVery = `${veryDate[0]} ${dateVery[0]}:${dateVery[1]}:${dateVery[2]}`
+                                                action({
+                                                    input:'lacerta-news',
+                                                    this: obj['this'],
+                                                    date:dateVery,
+                                                    remove:target,
+                                                    type:'news'
+                                                }, 'delete', 'type')
+                                            })
+
+                                            obj['data'].querySelector('.change').addEventListener('click', (event) => {
+                                                let target = event.target
+                                                let verify = false
+                                                while (!verify) {
+                                                    if(target.tagName === 'DETAILS' && target.className.indexOf('item') > -1){
+                                                        verify = true
+                                                    }else{
+                                                        target = target.parentNode
+                                                    }
+                                                }
+                                                let veryDate = target.querySelector('.date').innerText
+                                                veryDate = veryDate.split(' ')
+                                                let dateVery =  veryDate[1].split(':')
+                                                for(let i = 0; i < dateVery.length;i++){
+                                                    if(dateVery[i].length === 1){
+                                                        dateVery[i] = `0${dateVery[i]}`
+                                                    }
+                                                }
+                                                dateVery = `${veryDate[0]} ${dateVery[0]}:${dateVery[1]}:${dateVery[2]}`
+                                                action({
+                                                    input:'lacerta-news',
+                                                    this: obj['this'],
+                                                    date:dateVery,
+                                                    type:'news'
+                                                }, 'update', 'type')
+
+                                            })
+                                            out(obj)
+                                        } catch (e) { err(e) }
+                                    })(obj, args[0], args[1], args[2], args[3])
+                                    break
+                                case 'menu-update':
+                                    (async (obj, props,data) => {
+                                        try {
+
+
+                                            obj['data'].addEventListener('click', async (event) => {
+
+                                                event.target.disable = 'true'
+                                                event.target.style.backgroundColor = '#62bcd7'
+                                                let target = event.target
+                                                let verify = false
+                                                while (!verify) {
+                                                    target = target.parentNode
+                                                    if(target.tagName === undefined || obj.tagName === 'undefined'){
+                                                        target =  target.getRootNode().host
+
+                                                    }
+                                                    verify = node(target, 'varan-editor')
+                                                }
+                                                let store =  await staticProperty({
+                                                    input:'action',
+                                                    type: 'all'
+                                                }, 'get', 'type')
+
+                                                let content = {}
+                                                let data = {}
+                                                let newsUpdate = {}
+
+                                                for(let i = 0; i < store['varan-editor'].length; i ++){
+                                                    switch (store['varan-editor'][i].slot) {
+                                                        case 'cardDescription':
+                                                            newsUpdate['cardDescription'] = store['varan-editor'][i]['editor']['quill'].root.innerHTML
+                                                            content['cardDescription'] = await   utils({
+                                                                input:'varan-menu',
+                                                                data: store['varan-editor'][i]['editor']['quill'].root.innerHTML,
+                                                                type:'html2string'
+                                                            },'convert', 'type')
+                                                            store['varan-editor'][i]['obj']['this'].querySelector('.wall').innerHTML = ''
+                                                            store['varan-editor'][i]['editor']['quill'].root.innerHTML = ''
+                                                            break
+                                                        case 'cardContent':
+                                                            newsUpdate['cardContent'] =  store['varan-editor'][i]['editor']['quill'].root.innerHTML
+                                                            content['cardContent'] =  await  utils({
+                                                                input:'varan-menu',
+                                                                data: store['varan-editor'][i]['editor']['quill'].root.innerHTML,
+                                                                type:'html2string'
+                                                            },'convert', 'type')
+                                                            store['varan-editor'][i]['obj']['this'].querySelector('.wall').innerHTML = ''
+                                                            store['varan-editor'][i]['editor']['quill'].root.innerHTML = ''
+                                                            break
+                                                        case 'description':
+                                                            newsUpdate['description'] = store['varan-editor'][i]['editor']['quill'].root.innerHTML
+                                                            content['description'] = await   utils({
+                                                                input:'varan-menu',
+                                                                data: store['varan-editor'][i]['editor']['quill'].root.innerHTML,
+                                                                type:'html2string'
+                                                            },'convert', 'type')
+                                                            store['varan-editor'][i]['obj']['this'].querySelector('.wall').innerHTML = ''
+                                                            store['varan-editor'][i]['editor']['quill'].root.innerHTML = ''
+                                                            break
+                                                        case 'content':
+                                                            newsUpdate['content'] =  store['varan-editor'][i]['editor']['quill'].root.innerHTML
+                                                            content['content'] =  await  utils({
+                                                                input:'varan-menu',
+                                                                data: store['varan-editor'][i]['editor']['quill'].root.innerHTML,
+                                                                type:'html2string'
+                                                            },'convert', 'type')
+                                                            store['varan-editor'][i]['obj']['this'].querySelector('.wall').innerHTML = ''
+                                                            store['varan-editor'][i]['editor']['quill'].root.innerHTML = ''
+                                                            break
+                                                        case 'about':
+                                                            content['about'] =  await  utils({
+                                                                input:'varan-menu',
+                                                                data: store['varan-editor'][i]['editor']['quill'].root.innerHTML,
+                                                                type:'html2string'
+                                                            },'convert', 'type')
+                                                            data = store['varan-editor'][i]['editor']['quill'].root.innerHTML
+                                                            break
+                                                        default:
+                                                            console.warn('~~~~~~~~~', 'На этот объект нет действия ',store['varan-editor'][i].slot )
+                                                            break
+                                                    }
+                                                }
+
+                                                let slotCase ={}
+                                                if(target.slot === 'moderator' || target.slot === 'moderatorContent'){
+                                                    slotCase = 'moderator'
+                                                }else if(target.slot === 'cardContent' || target.slot === 'cardDescription'){
+                                                    slotCase = 'card'
+
+                                                }else{
+                                                    switch (target.slot) {
+                                                        case 'about':
+
+                                                            let objectAdmin = await utils({
+                                                                input: 'varan-menu',
+                                                                target: 'about-admin',
+                                                                type: 'object',
+                                                                source: store['varan-about'],
+                                                                get: '.about'
+                                                            }, 'get', 'type')
+
+                                                            let object = await utils({
+                                                                input: 'varan-menu',
+                                                                target: 'varan-about',
+                                                                type: 'object',
+                                                                source: store['varan-about'],
+                                                                get: '.about'
+                                                            }, 'get', 'type')
+                                                            objectAdmin.innerHTML = ''
+                                                            objectAdmin.insertAdjacentHTML('beforeend', data);
+                                                            break
+                                                        default:
+                                                            let lacertaNews = store['varan-editor-admin'][0]['this'].querySelector('lacerta-news')
+                                                            let title = lacertaNews.shadowRoot.querySelector('#titleItem').value
+                                                            let img = lacertaNews.shadowRoot.querySelector('.gallery').src
+                                                            let date = lacertaNews.shadowRoot.querySelector('.date').innerText
+                                                            let name = 'news'
+                                                            date = +date
+                                                                let news = {}
+
+                                                                news['image'] = {}
+                                                                news['image']['data'] = img
+                                                                news['image']['name'] = name
+                                                                news['title'] = title
+                                                                news['date'] = date
+                                                                news['content'] = content['content']
+                                                                news['short_content'] = content['description']
+                                                                news['url'] = `https://universitykids.ru`
+                                                                news['rss'] = `https://universitykids.ru/rss`
+
+                                                                for(let i = 0; i < store['lacerta-news'].length; i ++){
+                                                                    switch (store['lacerta-news'][i].slot) {
+                                                                        case 'news-admin':
+                                                                            store['lacerta-news'][i]['obj']['this'].shadowRoot.querySelector('#titleItem').value = ''
+                                                                            store['lacerta-news'][i]['obj']['this'].shadowRoot.querySelector('.date').innerHTML = 'date'
+                                                                            store['lacerta-news'][i]['obj']['this'].shadowRoot.querySelector('.gallery').src = '/static/html/components/lacerta-news/icons/no_image.jpg'
+                                                                           // console.assert(false, store['lacerta-news'][i]['obj']['this'])
+                                                                            break
+                                                                        default:
+                                                                            console.warn('~~~~~~~~~', 'На этот объект нет действия ',store['lacerta-news'][i].slot )
+                                                                            break
+                                                                    }
+                                                                }
+                                                            let convert = {}
+                                                            let update = {}
+                                                            let save = {}
+                                                            for(let i = 0; i < store['varan-editor'].length; i ++){
+                                                                if(store['varan-editor'][i]['obj']['this'].querySelector('.menu-convert') === null){
+                                                                    convert = store['varan-editor'][i]['obj']['this'].querySelector('varan-menu')
+                                                                    convert = convert.shadowRoot.querySelector('.menu-convert')
+                                                                }else{
+                                                                    convert = store['varan-editor'][i]['obj']['this'].querySelector('.menu-convert')
+                                                                }
+                                                                if(store['varan-editor'][i]['obj']['this'].querySelector('.update') === null){
+                                                                    update = store['varan-editor'][i]['obj']['this'].querySelector('varan-menu')
+                                                                    update = update.shadowRoot.querySelector('.update')
+                                                                }else{
+                                                                    update = store['varan-editor'][i]['obj']['this'].querySelector('.update')
+                                                                }
+                                                                if(store['varan-editor'][i]['obj']['this'].querySelector('.menu-save')=== null){
+                                                                    save = store['varan-editor'][i]['obj']['this'].querySelector('varan-menu')
+                                                                    save = save.shadowRoot.querySelector('.menu-save')
+                                                                }else{
+                                                                    save = store['varan-editor'][i]['obj']['this'].querySelector('.menu-save')
+                                                                }
+                                                                switch (store['varan-editor'][i].slot) {
+                                                                    case 'description':
+                                                                        convert.disabled = true;
+                                                                        convert.style.backgroundColor = 'blue';
+                                                                        update.innerText = 'Идёт обновление новости. Кнопка изчезнет после обновления'
+                                                                        update.style.backgroundColor = 'red'
+                                                                        update.disabled = true;
+                                                                        save.disabled = true;
+                                                                        save.style.backgroundColor = 'blue';
+                                                                        break
+                                                                    case 'content':
+                                                                        convert.disabled = true;
+                                                                        convert.style.backgroundColor = 'blue';
+                                                                        update.innerText = 'Идёт обновление новости. Кнопка изчезнет после обновления'
+                                                                        update.style.backgroundColor = 'red'
+                                                                        update.disabled = true;
+                                                                        save.disabled = true;
+                                                                        save.style.backgroundColor = 'blue';
+                                                                        break
+                                                                    default:
+                                                                        // console.warn('~~~~~~~~~', 'На этот объект нет действия ',store['lacerta-news'][i].slot )
+                                                                        break
+                                                                }
+                                                            }
+                                                                staticProperty({
+                                                                    type:'task',
+                                                                    task: {
+                                                                        type:'updateAction',
+                                                                        date:{
+                                                                            timestamp:date,
+                                                                            utc:new Date(date).toUTCString(),
+                                                                            iso:new Date(date).toISOString()
+                                                                        },
+                                                                        update:news
+                                                                    }
+                                                                },'task', 'type')
+
+                                                            break
+                                                    }
+
+                                                }
+                                                switch (slotCase) {
+                                                    case 'card':
+                                                        let card = {}
+                                                        card['image'] = {}
+                                                        let verifyUpdate = false
+
+                                                        for(let i = 0; i < store['varan-card-news'].length; i ++){
+                                                            switch (store['varan-card-news'][i].slot) {
+                                                                case "card-admin":
+                                                                    let admin = store['varan-card-news'][i]['this'].shadowRoot.querySelectorAll('.section')[1]
+
+                                                                    card['title'] =  admin.querySelector('.nameBid').value
+                                                                    card['time'] = admin.querySelector('.timerValue').value
+                                                                    card['price'] =admin.querySelector('.priceValue').value
+                                                                    card['content'] =content['cardContent']
+                                                                    card['image']['data'] = admin.querySelector('.imgBidAdmin').src
+                                                                    card['image']['name'] = admin.querySelector('.nameBid').value
+                                                                    card['short_content'] = content['cardDescription']
+                                                                    card['url'] = `https://universitykids.ru`
+                                                                    card['rss'] = `https://universitykids.ru/rss`
+
+                                                                    let className = +admin.querySelector('.item').className.split('_')[1]
+
+                                                                    card['date'] = className
+
+                                                                    let verifyAuction = await matcher['server']({
+                                                                        path:`/timer/${card['date']}`,
+                                                                        type:'timer'
+                                                                    },'get', 'type')
+
+                                                                    if(verifyAuction['mongo']['time'] === -2){
+                                                                        verifyUpdate = true
+
+                                                                    }else{
+
+                                                                    }
+
+                                                                    admin.querySelector('.item').className = admin.querySelector('.item').className.split('_')[0]
+                                                                    admin.querySelector('.nameBid').value = 'Наименование товара'
+                                                                    admin.querySelector('.imgBidAdmin').src = './static/html/components/varan-card-news/icons/no_image.jpg'
+                                                                    admin.querySelector('.timerValue').value = 10
+                                                                    admin.querySelector('.priceValue').value = 1
+                                                                    break
+                                                                default:
+                                                                    console.warn('~~~~~~~~~', 'На этот объект нет действия ',store['lacerta-news'][i].slot )
+                                                                    break
+                                                            }
+                                                        }
+                                                        if(verifyUpdate ===false){
+                                                            alert('Проходит аукцион, редактирование невозможно')
+                                                        }else{
+
+                                                            let convert = {}
+                                                            let update = {}
+                                                            let save = {}
+                                                            for(let i = 0; i < store['varan-editor'].length; i ++){
+                                                                if(store['varan-editor'][i]['obj']['this'].querySelector('.menu-convert') === null){
+                                                                    convert = store['varan-editor'][i]['obj']['this'].querySelector('varan-menu')
+                                                                    convert = convert.shadowRoot.querySelector('.menu-convert')
+                                                                }else{
+                                                                    convert = store['varan-editor'][i]['obj']['this'].querySelector('.menu-convert')
+                                                                }
+                                                                if(store['varan-editor'][i]['obj']['this'].querySelector('.update') === null){
+                                                                    update = store['varan-editor'][i]['obj']['this'].querySelector('varan-menu')
+                                                                    update = update.shadowRoot.querySelector('.update')
+                                                                }else{
+                                                                    update = store['varan-editor'][i]['obj']['this'].querySelector('.update')
+                                                                }
+                                                                if(store['varan-editor'][i]['obj']['this'].querySelector('.menu-save')=== null){
+                                                                    save = store['varan-editor'][i]['obj']['this'].querySelector('varan-menu')
+                                                                    save = save.shadowRoot.querySelector('.menu-save')
+                                                                }else{
+                                                                    save = store['varan-editor'][i]['obj']['this'].querySelector('.menu-save')
+                                                                }
+                                                                switch (store['varan-editor'][i].slot) {
+                                                                    case 'cardDescription':
+                                                                        convert.disabled = true;
+                                                                        convert.style.backgroundColor = 'blue';
+                                                                        update.innerText = 'Идёт обновление. Кнопка изчезнет после обновления'
+                                                                        update.style.backgroundColor = 'red'
+                                                                        update.disabled = true;
+                                                                        save.disabled = true;
+                                                                        save.style.backgroundColor = 'blue';
+                                                                        break
+                                                                    case 'cardContent':
+                                                                        convert.disabled = true;
+                                                                        convert.style.backgroundColor = 'blue';
+                                                                        update.innerText = 'Идёт обновление. Кнопка изчезнет после обновления'
+                                                                        update.style.backgroundColor = 'red'
+                                                                        update.disabled = true;
+                                                                        save.disabled = true;
+                                                                        save.style.backgroundColor = 'blue';
+                                                                        break
+                                                                    default:
+                                                                        // console.warn('~~~~~~~~~', 'На этот объект нет действия ',store['lacerta-news'][i].slot )
+                                                                        break
+                                                                }
+                                                            }
+
+                                                            staticProperty({
+                                                                type:'task',
+                                                                task: {
+                                                                    type:'updateAction',
+                                                                    date:{
+                                                                        timestamp:card['date'],
+                                                                        utc:new Date(card['date']).toUTCString(),
+                                                                        iso:new Date(card['date']).toISOString()
+                                                                    },
+                                                                    update:card
+                                                                },
+                                                                name:'bid'
+                                                            },'task', 'type')
+
+                                                        }
+
+                                                        break
+                                                    case 'moderator':
+                                                        let outObjectModerator = {}
+                                                        let editor =  await staticProperty({
+                                                            input:'action',
+                                                            type: 'all'
+                                                        }, 'get', 'type')
+
+                                                        for(let i = 0; i < editor['varan-editor'].length; i++){
+                                                            switch (editor['varan-editor'][i].slot) {
+                                                                case 'moderator':
+                                                                    outObjectModerator['decription'] = editor['varan-editor'][i]['obj']['this'].querySelector('.wall').innerHTML
+                                                                    editor['varan-editor'][i]['editor']['quill'].root.innerHTML = ''
+                                                                    editor['varan-editor'][i]['obj']['this'].querySelector('.wall').innerHTML = ''
+
+
+                                                                    let update = {}
+
+                                                                    if( editor['varan-editor'][i]['obj']['this'].querySelector('.update')=== null){
+                                                                        update = store['varan-editor'][i]['obj']['this'].querySelector('varan-menu')
+                                                                        update = update.shadowRoot.querySelector('.update')
+                                                                    }else{
+                                                                        update =  editor['varan-editor'][i]['obj']['this'].querySelector('.update')
+                                                                    }
+                                                                    update.remove()
+                                                                    break
+                                                                case 'moderatorContent':
+                                                                    let update_t = {}
+
+                                                                    if( editor['varan-editor'][i]['obj']['this'].querySelector('.update')=== null){
+                                                                        update_t = store['varan-editor'][i]['obj']['this'].querySelector('varan-menu')
+                                                                        update_t = update_t.shadowRoot.querySelector('.update')
+                                                                    }else{
+                                                                        update_t =  editor['varan-editor'][i]['obj']['this'].querySelector('.update')
+                                                                    }
+                                                                    outObjectModerator['content'] = editor['varan-editor'][i]['obj']['this'].querySelector('.wall').innerHTML
+                                                                    editor['varan-editor'][i]['editor']['quill'].root.innerHTML = ''
+                                                                    editor['varan-editor'][i]['obj']['this'].querySelector('.wall').innerHTML = ''
+                                                                    update_t.remove()
+                                                                    break
+                                                                default:
+                                                                    break
+
+                                                            }
+                                                        }
+                                                        for(let i = 0; i < editor['lacerta-moderator'].length; i++){
+                                                            switch (editor['lacerta-moderator'][i].slot) {
+                                                                case 'moderator-admin':
+                                                                    outObjectModerator['timestamp'] =  editor['lacerta-moderator'][i]['obj']['this'].shadowRoot.querySelector('.timestamp').innerText
+                                                                    editor['lacerta-moderator'][i]['obj']['this'].shadowRoot.querySelector('.timestamp').innerText = ''
+                                                                    outObjectModerator['img'] =  editor['lacerta-moderator'][i]['obj']['this'].shadowRoot.querySelector('.moderator').src
+                                                                    editor['lacerta-moderator'][i]['obj']['this'].shadowRoot.querySelector('.moderator').src = '/static/html/components/lacerta-moderator/icons/no_image.jpg'
+                                                                    outObjectModerator['title'] =    editor['lacerta-moderator'][i]['obj']['this'].shadowRoot.querySelector('#titleItem').value
+                                                                    editor['lacerta-moderator'][i]['obj']['this'].shadowRoot.querySelector('#titleItem').value = ''
+                                                                        break
+                                                                default:
+                                                                    break
+
+                                                            }
+                                                        }
+                                                        let outObject = {}
+                                                        outObject['positionImg'] = confirm("Фотографию раcположить слева ?");
+                                                        for(let i = 0; i < editor['lacerta-moderator'].length; i++){
+                                                            switch (editor['lacerta-moderator'][i].slot) {
+                                                                case 'lacerta-moderator':
+                                                                    let main =  editor['lacerta-moderator'][i]['obj']['this'].shadowRoot.querySelector('.main')
+
+                                                                    // console.assert(false,main.children )
+                                                                    for(let i =0; i < main.children.length;i++){
+                                                                        let temTime =  main.children[i].querySelector('.timestamp').innerText
+                                                                        if(temTime ===  outObjectModerator['timestamp'] ){
+                                                                            // console.log(outObjectModerator)
+                                                                            let source =  main.children[i]
+                                                                            if(outObject['positionImg']){
+                                                                                source.querySelector('.item').prepend( source.querySelector('.hexagon'))
+
+                                                                            }else{
+                                                                                source.querySelector('.item').appendChild( source.querySelector('.hexagon'))
+
+                                                                            }
+                                                                            source.querySelector('h2').innerText = outObjectModerator['title']
+                                                                            source.querySelector('.preview').innerHTML = ''
+                                                                            source.querySelector('.preview').innerHTML = outObjectModerator['decription']
+                                                                            source.querySelector('.content').innerHTML = ''
+                                                                            source.querySelector('.content').innerHTML = outObjectModerator['content']
+                                                                            source.querySelector('.moderator').src =     outObjectModerator['img']
+                                                                        }
+
+                                                                    }
+                                                                    break
+                                                                default:
+                                                                    break
+
+                                                            }
+                                                        }
+                                                        let descr = await   utils({
+                                                            input:'template',
+                                                            data:outObjectModerator['decription'],
+                                                            type:'html2string'
+                                                        },'convert', 'type')
+                                                        let con = await   utils({
+                                                            input:'template',
+                                                            data:outObjectModerator['content'],
+                                                            type:'html2string'
+                                                        },'convert', 'type')
+
+                                                        outObject['timestamp'] = outObjectModerator['timestamp']
+                                                        outObject['title'] = outObjectModerator['title']
+                                                        outObject['img'] = outObjectModerator['img']
+                                                        outObject['description'] = descr
+                                                        outObject['content'] = con
+                                                        outObject['dir'] =  'moderator'
+
+                                                       let  template = await matcher['webdav']({
+                                                            input:'varan-menu',
+                                                            data: outObject,
+                                                            type:'components',
+                                                            name:'moderator',
+                                                            path:`/moderator/${outObject['timestamp']}`
+                                                        },'update', 'type' )
+                                                        break
+                                                    default:
+                                                        break
+
+                                                }
+                                            })
+                                            out(obj)
+                                        } catch (e) { err(e) }
+                                    })(obj, args[0], args[1], args[2], args[3])
+                                    break
+                                default:
+                                    err(`new type [(${func})${obj[props]}]`)
+                                    break
+                            }
+                        } catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+                    break
+                case 'set':
+                    (async (obj, props,data) => {
+                        try {
+                            // console.log(`app(${func}[(${obj['input']})${obj[props]}]property)`)
+                            switch (obj[props]) {
+                                case 'reg':
+                                    (async (obj, props,data) => {
+                                        try {
+                                            let reg = false
+                                            obj['data'].addEventListener('click', async (event) => {
+                                                let verify = true
+                                                let target = event.target.parentNode
+                                                while(verify){
+
+
+                                                    if(target.id === 'authSite'){
+
+                                                        verify = false
+
+                                                    }else{
+                                                        target = target.parentNode
+                                                    }
+
+                                                }
+
+                                                if(triger.staticProperty['reg'] === false){
+
+                                                    let html = await template({
+                                                        input:'addEventListener',
+                                                        type:'auth'
+                                                    }, 'get', 'type')
+
+                                                    target.querySelector('#auth').innerHTML = ''
+                                                    target.querySelector('#auth').insertAdjacentHTML('afterbegin', html)
+                                                    triger.staticProperty['reg'] = true
+                                                    triger.staticProperty['auth'] = false
+                                                    target.querySelector('.btn').addEventListener('click', async (event) => {
+
+                                                        event.preventDefault()
+                                                        let target = event.target.parentNode
+                                                        let out = {}
+                                                        out['password'] = {}
+                                                        let j = 0
+                                                        for(let i = 0; i < target.children.length; i++){
+                                                            if(target.children[i].querySelector('input') === null){
+
+                                                            }else{
+                                                                switch (target.children[i].querySelector('input').type) {
+                                                                    case 'text':
+
+                                                                        out['text'] = target.children[i].querySelector('input').value
+                                                                        break
+                                                                    case 'email':
+                                                                        out['email'] = target.children[i].querySelector('input').value
+                                                                        break
+                                                                    case 'password':
+                                                                        out['password'][j] = target.children[i].querySelector('input').value
+                                                                        j++
+                                                                        break
+                                                                    default:
+                                                                        break
+
+                                                                }
+                                                            }
+                                                        }
+                                                        const newUser = {
+                                                            name: out['text'],
+                                                            email: out['email'],
+                                                            password: out['password'][0],
+                                                            password2: out['password'][1]
+                                                        };
+
+                                                        alert('IN PROGRESS')
+                                                        // let user = await  config['axios'].post('http://localhost:3000/api/users/register', newUser)
+
+
+                                                    })
+                                                }else{
+                                                    target.querySelector('#auth').innerHTML = ''
+                                                    triger.staticProperty['reg'] = false
+                                                    triger.staticProperty['auth'] = false
+                                                }
+
+                                            })
+
+                                            out({register:'ok'})
+                                        } catch (e) { err(e) }
+                                    })(obj, args[0], args[1], args[2], args[3])
+
+                                    break
+                                case 'auth':
+                                    (async (obj, props,data) => {
+                                        try {
+
+                                            obj['data'].addEventListener('click', async (event) => {
+                                                let verify = true
+                                                let target = event.target.parentNode
+                                                while(verify){
+
+
+                                                    if(target.id === 'authSite'){
+
+                                                        verify = false
+
+                                                    }else{
+                                                        target = target.parentNode
+                                                    }
+
+                                                }
+                                                if(  triger.staticProperty['auth'] === false){
+
+                                                    let html = await template({
+                                                        input:'addEventListener',
+                                                        type:'login'
+                                                    }, 'get', 'type')
+
+
+                                                    target.querySelector('#auth').innerHTML = ''
+                                                    target.querySelector('#auth').insertAdjacentHTML('afterbegin', html)
+                                                    triger.staticProperty['reg'] = false
+                                                    triger.staticProperty['auth'] = true
+
+
+                                                    target.querySelector('.btn').addEventListener('click', async (event) => {
+
+                                                        event.preventDefault()
+                                                        let target = event.target.parentNode
+                                                        let out = {}
+                                                        out['password'] = {}
+                                                        let j = 0
+                                                        for(let i = 0; i < target.children.length; i++){
+                                                            if(target.children[i].querySelector('input') === null){
+                                                            }else{
+                                                                switch (target.children[i].querySelector('input').type) {
+                                                                    case 'text':
+                                                                        out['text'] = target.children[i].querySelector('input').value
+                                                                        break
+                                                                    case 'email':
+                                                                        out['email'] = target.children[i].querySelector('input').value
+                                                                        break
+                                                                    case 'password':
+                                                                        out['password'][j] = target.children[i].querySelector('input').value
+                                                                        j++
+                                                                        break
+                                                                    default:
+                                                                        break
+                                                                }
+                                                            }
+                                                        }
+                                                        const userData = {
+                                                            email: out['text'] ,
+                                                            password: out['password'][0]
+                                                        };
+                                                        alert('IN PROGRESS')
+                                                        // let user = await  config['axios'].post('http://localhost:3000/api/users/login', userData)
+                                                    })
+                                                }else{
+                                                    target.querySelector('#auth').innerHTML = ''
+                                                    triger.staticProperty['reg'] = false
+                                                    triger.staticProperty['auth'] = false
+                                                }
+
+                                            })
+
+
+                                        } catch (e) { err(e) }
+                                    })(obj, args[0], args[1], args[2], args[3])
+                                    break
+                                case 'varan-about':
+                                    (async (obj, props,data) => {
+                                        try {
+                                            obj['data'].addEventListener('click', async (event) => {
+
+                                                let video = await template({
+                                                    input:'addListener',
+                                                    type:'video'
+                                                },'get', 'type')
+                                                // console.assert(false, video)
+                                                event.target.parentNode.insertAdjacentHTML('beforeend', video)
+                                                event.target.remove()
+
+                                                // console.assert(false, event.target)
+                                                // .src = "&autoplay=1"
+                                                // console.assert(false, event.target.parentNode)
+
+                                            })
+
+
+                                        } catch (e) { err(e) }
+                                    })(obj, args[0], args[1], args[2], args[3])
+                                    break
+                                case 'payLot':
+                                    (async (obj, props,data) => {
+                                        try {
+
+                                            obj['data'].addEventListener('click', async (event) => {
+                                                let object = event.target.className.split(' ')[1]
+                                                event.target.innerText = 'Процесс оплаты'
+                                                event.target.disabled = true
+                                                let tx = await matcher['server']({
+                                                    input:'addEventListener',
+                                                    path:`/winnerPay/${event.target.className.split(' ')[1]}`,
+                                                    type:'winner'
+                                                },'get', 'type')
+                                                try {
+                                                    event.target.innerText = 'оплата'
+                                                    event.target.disabled = true
+                                                    let request = {
+                                                        type: 16,
+                                                        data: {
+                                                            fee: {
+                                                                "tokens": "0.05",
+                                                                "assetId": "WAVES"
+                                                            },
+                                                            dApp: window['wt']['dappaddress'],
+                                                            call: tx['mongo'][0]['winner']['call'],
+                                                            payment:  tx['mongo'][0]['winner']['payment']
+                                                        }
+                                                    }
+                                                    let payWin = await   WavesKeeper.signAndPublishTransaction(request)
+                                                    payWin = JSON.parse(payWin)
+                                                    let deleteWin = await matcher['server']({
+                                                        input:'addEventListener',
+                                                        path:`/winner/${object}`,
+                                                        type:'winner'
+                                                    },'delete', 'type')
+                                                    await window['wt']['nodeInteraction']['waitForTx'](payWin.id,{
+                                                        apiBase:'https://nodes-testnet.wavesnodes.com'
+                                                    })
+                                                }catch (e) {
+                                                    if(e.code === "15"){
+                                                        alert('У вас недостаточно средств для оплаты')
+                                                    }else if(e.code === "10"){
+
+
+                                                    }
+                                                    else{
+                                                        // console.assert(false, e)
+                                                    }
+                                                }
+                                            })
+                                            out({addEventListener:'ok'})
+                                        } catch (e) { err(e) }
+                                    })(obj, args[0], args[1], args[2], args[3])
+                                    break
+                                case 'varan-gallery':
+                                    (async (obj, props,data) => {
+                                        try {
+                                            obj['data'].addEventListener('click', async (event) => {
+
+                                                let video = await template({
+                                                    input:'addListener',
+                                                    type:'video'
+                                                },'get', 'type')
+                                                // console.assert(false, video)
+                                                event.target.parentNode.insertAdjacentHTML('beforeend', video)
+                                                event.target.remove()
+
+                                                // console.assert(false, event.target)
+                                                // .src = "&autoplay=1"
+                                                // console.assert(false, event.target.parentNode)
+
+                                            })
+
+
+                                        } catch (e) { err(e) }
+                                    })(obj, args[0], args[1], args[2], args[3])
+                                    break
+                                case 'lacerta-request':
+                                    (async (obj, props,data) => {
+                                        try {
+
+                                            obj['data'].querySelector('#file').addEventListener('change', async (event) => {
+                                                event.target.parentNode.querySelector('.file').innerText = event.target.files[0]['name']
+
+                                            })
+
+                                            obj['data'].addEventListener('submit', async (event) => {
+                                                var elems = event.target.elements;
+                                                let verify = false
+                                                let oldPlaceholder
+                                                let submitVerify = 0
+                                                let outForm = {}
+                                                let outText = {}
+                                                for(let i =0; i < elems.length; i ++){
+                                                    switch (elems[i].id) {
+                                                        case 'fio-parent':
+                                                            console.log('', elems[i].value)
+                                                            if(isEmpty(elems[i].value)){
+
+                                                                oldPlaceholder =  elems[i].placeholder
+                                                                elems[i].placeholder = 'Введите Ф.И.О родителя'
+                                                                elems[i].style.borderColor = 'red'
+                                                                outForm['parent'] = ''
+                                                            }else{
+                                                                submitVerify++
+                                                                outForm['parent'] = elems[i].value
+                                                                elems[i].style.borderColor = 'green'
+                                                            }
+                                                            break
+                                                        case 'fio-children':
+                                                            if(isEmpty(elems[i].value)){
+                                                                oldPlaceholder =  elems[i].placeholder
+                                                                elems[i].placeholder = `Введите  ${oldPlaceholder}`
+                                                                elems[i].style.borderColor = 'red'
+                                                                outForm['children'] = ''
+                                                            }else{
+                                                                outForm['children'] = elems[i].value
+                                                                submitVerify++
+                                                                elems[i].style.borderColor = 'green'
+                                                            }
+
+                                                            console.log('', elems[i].value)
+                                                            break
+                                                        case 'school':
+                                                            if(isEmpty(elems[i].value)){
+                                                                oldPlaceholder =  elems[i].placeholder
+                                                                elems[i].placeholder = `Введите учебное заведение и класс`
+                                                                elems[i].style.borderColor = 'red'
+                                                                outForm['school'] = ''
+                                                            }else{
+                                                                outForm['school'] = elems[i].value
+                                                                submitVerify++
+                                                                elems[i].style.borderColor = 'green'
+                                                            }
+                                                            break
+                                                        case 'email':
+                                                            if(isEmpty(elems[i].value)){
+                                                                oldPlaceholder =  elems[i].placeholder
+                                                                elems[i].placeholder = `Введите электронную почту`
+                                                                elems[i].style.borderColor = 'red'
+                                                                outForm['email'] = ''
+                                                            }else{
+                                                                if(config['validator'].isEmail(elems[i].value)){
+                                                                    elems[i].style.borderColor = 'green'
+                                                                    submitVerify++
+                                                                    outForm['email'] = elems[i].value
+                                                                }else{
+                                                                    elems[i].placeholder = `Введите правильно электронную почту`
+                                                                    elems[i].style.borderColor = 'red'
+                                                                    outForm['email'] = ''
+                                                                }
+                                                            }
+                                                            console.log('', elems[i].value)
+                                                            break
+                                                        case 'vk':
+                                                            outForm['vk'] = elems[i].value
+                                                            // if(isEmpty(elems[i].value)){
+                                                            //     oldPlaceholder =  elems[i].placeholder
+                                                            //     elems[i].placeholder = `Введите  ${oldPlaceholder}`
+                                                            //     elems[i].style.borderColor = 'red'
+                                                            // }else{
+                                                            //     elems[i].style.borderColor = 'green'
+                                                            // }
+                                                            // console.log('', elems[i].value)
+                                                            break
+                                                        case 'phone':
+                                                            if(isEmpty(elems[i].value)){
+                                                                oldPlaceholder =  elems[i].placeholder
+                                                                elems[i].placeholder = `Введите номер телефона родителя`
+                                                                elems[i].style.borderColor = 'red'
+                                                                outForm['phone'] = ''
+                                                            }else{
+                                                                outForm['phone'] = elems[i].value
+                                                                submitVerify++
+                                                                elems[i].style.borderColor = 'green'
+                                                            }
+                                                            break
+                                                        case 'politics':
+                                                            if(elems[i].checked){
+
+                                                            submitVerify++
+                                                            }else{
+                                                            let  result = confirm('Согласие на обработку данных и использование фото/видео для сайта');
+                                                            if(result === true){
+                                                                submitVerify++
+                                                            }else{
+                                                                elems[i].parentNode.querySelector('p').style.color = 'red'
+                                                            }
+
+                                                            }
+                                                            console.log('', elems[i].value)
+                                                            break
+                                                        case 'file':
+                                                            outText =   elems[i].parentNode.querySelector('.file')
+                                                            let verify = false
+                                                            if(isEmpty(elems[i].value)){
+                                                                outForm['file'] = ''
+                                                                elems[i].parentNode.style.borderColor = 'red'
+                                                                elems[i].parentNode.querySelector('.file').innerText = 'Прикрепите файл'
+
+                                                            }else{
+                                                                switch(elems[i].files[0].type){
+                                                                    case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+                                                                        verify = true
+                                                                        break
+                                                                    case "application/pdf":
+                                                                        verify = true
+                                                                        break
+                                                                    case  "application/msword":
+                                                                        verify = true
+                                                                        break
+                                                                    default:
+                                                                        break
+                                                                }
+                                                                if(verify){
+                                                                    elems[i].parentNode.querySelector('.file').innerText = elems[i].files[0]['name']
+                                                                    outForm['file'] = elems[i].files[0]
+                                                                    submitVerify++
+                                                                }else{
+                                                                    outForm['file'] = ''
+                                                                    elems[i].parentNode.querySelector('.file').innerText = 'Прикрепите файл формата *.doc, *.docx или *.pdf'
+                                                                }
+                                                            }
+                                                            break
+                                                        default:
+                                                            console.log('необработанное поле', elems[i].id)
+                                                            break
+
+                                                    }
+                                                }
+                                                if(submitVerify >= 7){
+                                                    for(let i =0; i < elems.length; i ++){
+                                                        for(let i =0; i < elems.length; i ++){
+                                                            switch (elems[i].id) {
+                                                                case 'fio-parent':
+                                                                    elems[i].placeholder = 'Введите Ф.И.О родителя'
+                                                                    elems[i].value = ''
+                                                                    break
+                                                                case 'fio-children':
+                                                                    elems[i].placeholder = "Ф.И.О ребёнка"
+                                                                    elems[i].value = ''
+                                                                    break
+                                                                case 'school':
+                                                                    elems[i].placeholder = "Учебное заведение и класс"
+                                                                    elems[i].value = ''
+                                                                    break
+                                                                case 'email':
+                                                                        elems[i].value = ''
+                                                                        elems[i].placeholder = `Введите электронную почту`
+                                                                    break
+                                                                case 'vk':
+                                                                        elems[i].value = ''
+                                                                        elems[i].placeholder = "Ссылка на страницу Вконтакте (родителя)"
+                                                                    break
+                                                                case 'phone':
+                                                                    elems[i].value = ''
+                                                                    elems[i].placeholder = `Введите номер телефона родителя`
+                                                                    break
+                                                                case 'politics':
+                                                                    break
+                                                                default:
+                                                                    console.log('необработанное поле', elems[i].id)
+                                                                    break
+
+                                                            }
+                                                        }
+                                                    }
+                                                    outText.innerText = 'Ваша заявка отправленна'
+                                                    let req =  await request({
+                                                        input:'addEventListener',
+                                                        type:'form',
+                                                        data: outForm
+                                                    },'post', 'type')
+                                                }else{
+
+                                                }
+                                                event.preventDefault()
+                                            })
+                                        } catch (e) { err(e) }
+                                    })(obj, args[0], args[1], args[2], args[3])
+                                    break
+                                default:
+                                    err(`new type [(${func})${obj[props]}]`)
+                                    break
+                            }
+                        } catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+                    break
+                default:
+                    err(`new function ${func}`)
+                    break
+            }
+    })
+}

@@ -1,1 +1,61 @@
-export default(e,t,...n)=>new Promise(function(c,o){let l=e=>{console.log("~~~ err  ~~~",e),o(e)};switch(t){case"set":(async(e,o,s)=>{try{switch(console.log(`app(${t}[(${e.input})${e[o]}]property)`),e[o]){case"scroll":(async(e,t,n)=>{try{(e=>{c(e)})(window.addEventListener("scroll",async t=>{var n=window.pageYOffset||document.documentElement.scrollTop,c=document.documentElement.clientWidth/2,o=.649*document.documentElement.clientHeight;let l=e.this;l&&(l.style.display=n>350?"flex":"none");document.elementFromPoint(c,o)},!1))}catch(e){l(e)}})(e,n[0],n[1],n[2],n[3]);break;default:l(`new type ${t}`)}}catch(e){l(e)}})(e,n[0],n[1],n[2],n[3]);break;default:l(`new function ${t}`)}});
+export default  (obj, func, ...args)=>{
+    return new Promise( function (resolve, reject) {
+        let out = (obj) => {
+            // console.log('~~~ out  ~~~')
+            resolve(obj)
+        }
+        let err = (error) => {
+            console.log('~~~ err  ~~~', error)
+            reject(error)
+        }
+        switch (func) {
+            case 'set':
+                (async (obj, props,data) => {
+                    try {
+                        // console.log(`app(${func}[(${obj['input']})${obj[props]}]property)`)
+                        switch (obj[props]) {
+                            case 'scroll':
+                                (async (obj, props,data) => {
+                                    try {
+                                       out(window.addEventListener('scroll', async (event)=>{
+
+                                           var scrolled = window.pageYOffset || document.documentElement.scrollTop;
+
+                                           var centerX = document.documentElement.clientWidth / 2;
+                                           var centerY = document.documentElement.clientHeight * 0.649;
+
+                                           let scroll = obj['this']
+
+                                           if(!scroll){}else{
+                                               if(scrolled > 350){
+                                                   scroll.style.display = 'flex'
+                                               }else{
+                                                   scroll.style.display = 'none'
+                                               }
+                                           }
+
+
+                                           var elem = document.elementFromPoint(centerX, centerY);
+
+                                           // console.log(elem.shadowRoot.elementFromPoint(centerX, centerY))
+                                           // console.log(elem, centerX,centerY,  scrolled)
+
+
+
+                                       }, false))
+                                    } catch (e) { err(e) }
+                                })(obj, args[0], args[1], args[2], args[3])
+                                break
+                            default:
+                                err(`new type ${func}`)
+                                break
+                        }
+                    } catch (e) { err(e) }
+                })(obj, args[0], args[1], args[2], args[3])
+                break
+            default:
+                err(`new function ${func}`)
+                break
+        }
+    })
+}

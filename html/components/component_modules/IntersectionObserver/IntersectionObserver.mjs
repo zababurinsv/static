@@ -1,1 +1,152 @@
-import action from"/static/html/components/component_modules/action/action.mjs";export default(e,t,...n)=>new Promise(function(a,r){let c=e=>{a(e)},s=e=>{console.log("~~~ err router ~~~",e),r(e)};switch(t){case"get":(async(e,a,r)=>{try{switch(console.log(`${t}[(${e.input})${e[a]}]`),e[a]){case"lazy":(async(e,t,n)=>{try{if("IntersectionObserver"in window){let t=new IntersectionObserver(function(e,n){e.forEach(async function(e){if(e.isIntersecting){let n=e.target,a=await action({input:"intersectionobserver",data:n.dataset.src,type:"lazyImg"},"get","type");n.src=a.mongo.img,n.srcset=a.mongo.img,n.classList.remove("lazy"),t.unobserve(n)}})});e.data.forEach(function(e){t.observe(e)})}c(e)}catch(e){s(e)}})(e,n[0],n[1],n[2],n[3]);break;case"video":(async(e,t,n)=>{try{let t=new IntersectionObserver(function(e,n){e.forEach(async function(n){n.isIntersecting&&e.forEach(async function(e){if(e.isIntersecting){for(var n in e.target.children){var a=e.target.children[n];"string"==typeof a.tagName&&"SOURCE"===a.tagName&&(a.src=a.dataset.src)}e.target.load(),e.target.classList.remove("lazy"),t.unobserve(e.target)}})})});e.data.forEach(function(e){t.observe(e)}),c(e)}catch(e){s(e)}})(e,n[0],n[1],n[2],n[3]);break;default:s(`новая функция ${t}`)}c(e)}catch(e){s(e)}})(e,n[0],n[1],n[2],n[3]);break;case"set":(async(e,a,r)=>{try{switch(console.log(`app(${t}[(${e.input})${e[a]}]intersection)`),e[a]){case"observer":(async(e,t,n)=>{try{if("IntersectionObserver"in window){new IntersectionObserver(function(e,t){e.forEach(async function(e){if(e.isIntersecting){e.target}else switch(e.target.tagName){case"LACERTA-REQUEST":case"LACERTA-GALLERY":e.target.shadowRoot.querySelector("details").open=!1}})}).observe(e.this)}c(e)}catch(e){s(e)}})(e,n[0],n[1],n[2],n[3]);break;default:s(`новая функция ${t}`)}c(e)}catch(e){s(e)}})(e,n[0],n[1],n[2],n[3]);break;default:s(`новая функция ${t}`)}});
+import action from '/static/html/components/component_modules/action/action.mjs'
+
+export default  (obj, func, ...args)=>{
+    return new Promise( function (resolve, reject) {
+        let out = (obj) => {
+            //console.log('~~~ out router ~~~')
+            resolve(obj)
+        }
+        let err = (error) => {
+            console.log('~~~ err router ~~~', error)
+            reject(error)
+        }
+        switch (func) {
+            case 'get':
+                (async (obj, props,data) => {
+                    try {
+                        console.log(`${func}[(${obj['input']})${obj[props]}]`)
+                        switch (obj[props]) {
+                            case 'lazy':
+                                (async (obj, props,data) => {
+                                    try {
+                                        if ("IntersectionObserver" in window) {
+                                            let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+                                                entries.forEach(async function(entry) {
+                                                    if (entry.isIntersecting) {
+                                                        let lazyImage = entry.target;
+                                                        let img = await action({
+                                                            input:'intersectionobserver',
+                                                            data: lazyImage.dataset.src,
+                                                            type:'lazyImg'
+                                                        },'get','type')
+                                                        lazyImage.src =  img['mongo']['img'];
+                                                        lazyImage.srcset = img['mongo']['img'];
+                                                        lazyImage.classList.remove("lazy");
+                                                        lazyImageObserver.unobserve(lazyImage);
+                                                    }
+                                                });
+                                            });
+
+                                            obj['data'].forEach(function(lazyImage) {
+                                                lazyImageObserver.observe(lazyImage);
+                                            });
+                                        } else {
+                                            // Possibly fall back to a more compatible method here
+                                        }
+
+                                        out(obj)
+                                    } catch (e) { err(e) }
+                                })(obj, args[0], args[1], args[2], args[3])
+                                break
+                            case 'video':
+                                (async (obj, props,data) => {
+                                    try {
+                                        let lazyVideoObserver = new IntersectionObserver(function(entries, observer) {
+                                            entries.forEach(async function(entry) {
+                                                if (entry.isIntersecting) {
+                                                    entries.forEach(async function(video) {
+                                                        if (video.isIntersecting) {
+                                                            for (var source in video.target.children) {
+
+
+                                                                var videoSource = video.target.children[source];
+                                                                if (typeof videoSource.tagName === "string" && videoSource.tagName === "SOURCE") {
+
+                                                                    // console.assert(false,  videoSource.dataset.src)
+                                                                    videoSource.src = videoSource.dataset.src;
+                                                                }
+                                                            }
+
+                                                            video.target.load();
+                                                            video.target.classList.remove("lazy");
+                                                            lazyVideoObserver.unobserve(video.target);
+                                                        }
+                                                    });
+
+                                                }
+                                            });
+                                        });
+
+                                        obj['data'].forEach(function(lazyImage) {
+                                            lazyVideoObserver.observe(lazyImage);
+                                        });
+
+                                        out(obj)
+                                    } catch (e) { err(e) }
+                                })(obj, args[0], args[1], args[2], args[3])
+
+                                break
+                            default:
+                                err(`новая функция ${func}`)
+                                break
+                        }
+
+                        out(obj)
+                    } catch (e) { err(e) }
+                })(obj, args[0], args[1], args[2], args[3])
+                break
+            case 'set':
+                (async (obj, props,data) => {
+                    try {
+                        console.log(`app(${func}[(${obj['input']})${obj[props]}]intersection)`)
+                        switch (obj[props]) {
+                            case 'observer':
+                                (async (obj, props,data) => {
+                                    try {
+
+                                        if ("IntersectionObserver" in window) {
+                                            let Observer = new IntersectionObserver(function(entries, observer) {
+                                                entries.forEach(async function(entry) {
+                                                    if (entry.isIntersecting) {
+                                                        let object = entry.target;
+
+
+
+                                                    }else{
+                                                        switch (entry.target.tagName) {
+                                                            case "LACERTA-REQUEST":
+                                                                entry.target.shadowRoot.querySelector('details').open = false
+                                                                break
+                                                            case "LACERTA-GALLERY":
+                                                                entry.target.shadowRoot.querySelector('details').open = false
+                                                                break
+                                                            default:
+                                                                break
+                                                        }
+                                                    }
+                                                });
+                                            });
+                                            Observer.observe(obj['this']);
+                                        } else {
+                                            // Possibly fall back to a more compatible method here
+                                        }
+
+                                        out(obj)
+                                    } catch (e) { err(e) }
+                                })(obj, args[0], args[1], args[2], args[3])
+                                break
+                            default:
+                                err(`новая функция ${func}`)
+                                break
+                        }
+                        out(obj)
+                    } catch (e) { err(e) }
+                })(obj, args[0], args[1], args[2], args[3])
+
+                break
+            default:
+                err(`новая функция ${func}`)
+                break
+        }
+    })
+}

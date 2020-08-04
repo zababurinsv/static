@@ -1,1 +1,53 @@
-export default(t,e,...a)=>new Promise(function(c,n){let r=t=>{console.log("~~~ err  ~~~",t),n(t)};switch(e){case"set":(async(t,n,s)=>{try{switch(t[n]){case"nav":(async(t,e,a)=>{try{console.assert(!1,t.target);let e={attributes:!0,childList:!0,characterData:!0},a=t.target;new MutationObserver(function(t){t.forEach(function(t){t.type})}).observe(a,e),(t=>{c(t)})(t)}catch(t){r(t)}})(t,a[0],a[1],a[2],a[3]);break;default:r(`new type ${e}`)}}catch(t){r(t)}})(t,a[0],a[1],a[2],a[3]);break;default:r(`new function ${e}`)}});
+export default  (obj, func, ...args)=>{
+    return new Promise( function (resolve, reject) {
+        let out = (obj) => {
+            // console.log('~~~ out  ~~~')
+            resolve(obj)
+        }
+        let err = (error) => {
+            console.log('~~~ err  ~~~', error)
+            reject(error)
+        }
+        switch (func) {
+            case 'set':
+                (async (obj, props,data) => {
+                    try {
+                        // console.log(`app(${func}[(${obj['input']})${obj[props]}]property)`)
+                        switch (obj[props]) {
+                            case 'nav':
+                                (async (obj, props,data) => {
+                                    try {
+
+                                        console.assert(false, obj['target'])
+                                        let config = { attributes: true, childList: true, characterData: true }
+                                        let target = obj['target']
+                                        let observer = new MutationObserver(function (mutations) {
+                                            mutations.forEach(function (mutation) {
+                                                // console.log(mutation.type)
+                                                switch (mutation.type) {
+                                                    case 'childList':
+
+                                                        break
+                                                    default:
+                                                        break
+                                                }
+                                            })
+                                        })
+                                        observer.observe(target, config)
+                                        out(obj)
+                                    } catch (e) { err(e) }
+                                })(obj, args[0], args[1], args[2], args[3])
+                                break
+                            default:
+                                err(`new type ${func}`)
+                                break
+                        }
+                    } catch (e) { err(e) }
+                })(obj, args[0], args[1], args[2], args[3])
+                break
+            default:
+                err(`new function ${func}`)
+                break
+        }
+    })
+}

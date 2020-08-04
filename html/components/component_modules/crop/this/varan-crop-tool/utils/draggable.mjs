@@ -1,1 +1,36 @@
-export default function(e,t){const n=function(e){t.drag&&t.drag(e)},o=function(e){t.start&&t.start(e)},u=function(e){document.removeEventListener("mousemove",n),document.removeEventListener("mouseup",u),document.onselectstart=null,document.ondragstart=null,t.end&&t.end(e)};e.addEventListener("mousedown",d=>{if(t.stop&&!1===t.stop(d,e))return!1;document.onselectstart=function(){return!1},document.ondragstart=function(){return!1},document.addEventListener("mousedown",o),document.addEventListener("mousemove",n),document.addEventListener("mouseup",u)})}
+export default function (element, options) {
+  const moveFn = function (event) {
+    if (options.drag) {
+      options.drag(event)
+    }
+  }
+  const downFn = function (event) {
+    if (options.start) {
+      options.start(event)
+    }
+  }
+  const upFn = function (event) {
+    document.removeEventListener('mousemove', moveFn)
+    document.removeEventListener('mouseup', upFn)
+    document.onselectstart = null
+    document.ondragstart = null
+
+    if (options.end) {
+      options.end(event)
+    }
+  }
+  element.addEventListener('mousedown', event => {
+    if (options.stop && options.stop(event, element) === false) {
+      return false
+    }
+    document.onselectstart = function () {
+      return false
+    }
+    document.ondragstart = function () {
+      return false
+    }
+    document.addEventListener('mousedown', downFn)
+    document.addEventListener('mousemove', moveFn)
+    document.addEventListener('mouseup', upFn)
+  })
+}

@@ -1,1 +1,123 @@
-import colorLog from"/static/html/components/component_modules/colorLog/colorLog.mjs";import staticProperty from"/static/html/components/component_modules/staticProperty/staticProperty.mjs";import Parser from"/static/html/components/component_modules/parser/parser.mjs";import action from"/static/html/components/component_modules/action/action.mjs";async function uploadEvent(t){console.assert(!1)}async function saveEditor(t){await action({input:"customEvent",id:event.detail.id,type:"editor"},"save","type")}async function sideBarUpload(t){console.assert(!1),await action({input:"(customEvent)[saveEditor]",id:t.detail.id,file:t.detail.file},`${t.detail.id}-background`,"varan-editor")}async function sideBarCrop(t){await action({input:"(customEvent)[sideBarCrop]",id:t.detail.id,slot:t.detail.slot,file:t.detail.file,type:"crop"},"action","type")}async function universe(t){await action({input:"(customEvent)[avatar]",id:t.detail.id,slot:t.detail.slot,file:t.detail.file,type:"crop"},"action","type")}async function convertAction(t){switch(console.assert(!1),null!==t.detail.data.rss&&void 0!==t.detail.data.rss||(t.detail.data.rss="default"),t.detail.data.rss){case"bid":await action({input:"(customEvent)[create Item -> bid ]",id:t.detail.id,data:t.detail.data,type:"itemBid"},"create","type");break;default:await action({input:"(customEvent)[create Item -> Feed ]",id:t.detail.id,data:t.detail.data,type:"itemFeed"},"create","type")}}async function createChannel(t){console.assert(!1),await action({input:"(customEvent)[saveEditor]",id:"test",type:"channel"},"create","type")}async function updateAction(t){console.assert(!1),"bid"===t.detail.name?await action({input:"(customEvent)[saveEditor]",date:t.detail.date,data:t.detail.data,type:"bid-item"},"update","type"):await action({input:"(customEvent)[saveEditor]",date:t.detail.date,data:t.detail.data,type:"news-item"},"update","type")}document.addEventListener("uploadEvent",uploadEvent,!1),document.addEventListener("saveEditor",saveEditor,!1),document.addEventListener("sideBarUpload",sideBarUpload,!1),document.addEventListener("sideBarCrop",sideBarCrop,!1),document.addEventListener("convertAction",convertAction,!1),document.addEventListener("createChannel",createChannel,!1),document.addEventListener("updateAction",updateAction,!1),document.addEventListener("universe",universe,!1);export default()=>({customEvents:"active"});
+import colorLog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
+// import varanPictures from '/static/html/components/component_modules/varan-pictures/varan-pictures.mjs'
+import staticProperty from '/static/html/components/component_modules/staticProperty/staticProperty.mjs'
+import Parser from '/static/html/components/component_modules/parser/parser.mjs'
+import action from '/static/html/components/component_modules/action/action.mjs'
+async function uploadEvent (event) {
+
+    console.assert(false)
+    // varanPictures({
+    //     input:'customEvents',
+    //     createPicture:event['detail']['obj']
+    // }, 'action', `createPicture`, `${event['detail']}`)
+    // colorLog('[<>]   CustomEvents','orange' ,event['detail'])
+
+}
+
+async function saveEditor (events) {
+    await action({
+        input:'customEvent',
+        id: event['detail']['id'],
+        type: 'editor'
+    }, `save`, 'type')
+}
+
+async function sideBarUpload (events) {
+    console.assert(false)
+    await action({
+        input:'(customEvent)[saveEditor]',
+        id: events['detail']['id'],
+        file: events['detail']['file']
+    }, `${events['detail']['id']}-background`, 'varan-editor')
+}
+
+async function sideBarCrop (event) {
+    await action({
+        input:'(customEvent)[sideBarCrop]',
+        id: event['detail']['id'],
+        slot: event['detail']['slot'],
+        file: event['detail']['file'],
+        type:'crop'
+    }, `action`, 'type')
+}
+async function universe (event) {
+    await action({
+        input:'(customEvent)[avatar]',
+        id: event['detail']['id'],
+        slot: event['detail']['slot'],
+        file: event['detail']['file'],
+        type:'crop'
+    }, `action`, 'type')
+}
+
+async function convertAction (events) {
+    console.assert(false)
+    if(events['detail']['data']['rss'] === null || events['detail']['data']['rss'] === undefined){
+        events['detail']['data']['rss'] = 'default'
+    }
+    switch (events['detail']['data']['rss']) {
+        case 'bid':
+            await action({
+                input:'(customEvent)[create Item -> bid ]',
+                id: events['detail']['id'],
+                data: events['detail']['data'],
+                type: 'itemBid'
+            }, `create`, 'type')
+        break
+        default:
+            await action({
+                input:'(customEvent)[create Item -> Feed ]',
+                id: events['detail']['id'],
+                data: events['detail']['data'],
+                type: 'itemFeed'
+            }, `create`, 'type')
+        break
+    }
+}
+
+async function createChannel(events) {
+    console.assert(false)
+    await action({
+        input:'(customEvent)[saveEditor]',
+        id: 'test',
+        type: 'channel'
+    }, `create`, 'type')
+}
+async function updateAction(events) {
+    console.assert(false)
+    if(events['detail']['name'] === 'bid'){
+        await action({
+            input:'(customEvent)[saveEditor]',
+            date: events['detail']['date'],
+            data: events['detail']['data'],
+            type: 'bid-item'
+        }, `update`, 'type')
+    }else{
+        await action({
+            input:'(customEvent)[saveEditor]',
+            date: events['detail']['date'],
+            data: events['detail']['data'],
+            type: 'news-item'
+        }, `update`, 'type')
+    }
+
+}
+document.addEventListener('uploadEvent', uploadEvent, false)
+document.addEventListener('saveEditor', saveEditor, false)
+document.addEventListener('sideBarUpload', sideBarUpload, false)
+document.addEventListener('sideBarCrop', sideBarCrop, false)
+document.addEventListener('convertAction', convertAction, false)
+document.addEventListener('createChannel', createChannel, false)
+document.addEventListener('updateAction', updateAction, false)
+document.addEventListener('universe', universe, false)
+// document.addEventListener('sliderPage', sliderPage, false)
+// document.addEventListener('activeItem', activeItem, false)
+// document.addEventListener('addItems', addItems, false)
+// document.addEventListener('delItems', delItems, false)
+// document.addEventListener('feed', feed, false)
+
+export default  () =>{
+
+
+    return {customEvents:'active'}
+}

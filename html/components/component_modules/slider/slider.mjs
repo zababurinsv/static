@@ -1,1 +1,79 @@
-export default(e,t,...n)=>new Promise(function(l,s){let i=e=>{l(e)},o=e=>{console.log("~~~ err router ~~~",e),s(e)};switch(t){case"getSliderTemplate":(async(e,t,n,s)=>{try{console.log(`${e.input}[(slider)${e[t]}]`),fetch(`/static/html/components/varan-slider/template/${e[t].slot}.html`).then(function(e){if(e.ok)return e.text()}).then(function(n){let s=(new DOMParser).parseFromString(n,"text/html");e[t].slider=s.getElementsByTagName("template")[0].content.cloneNode(!0);let o=document.createElement("section");o.className="slider",o.slot="view",o.appendChild(e.slider),e[t].slider=o,e[t]["slider-template"]=o;for(let t=0;t<e.type.length;t++)"slider-one-text"===e.type[t]&&(e.verify.sliderText=!0);matcher.database.request.functions.getObject(e).then(e=>{e.get?(pagination.init(e),pagination.action(e).then(e=>{i(e)})):l(e)})}).catch(e=>e)}catch(e){o(e)}})(e,n[0],n[1],n[2],n[3]);break;case"setSlider":(async(e,t,n,l)=>{try{console.log(`${e.input}[(slider)${e[t]}]`),i(Peppermint(e,{dots:!1,slideshow:!1,speed:500,slideshowInterval:5e3,stopSlideshowAfterInteraction:!0,onSetup:function(e){}}))}catch(e){o(e)}})(e,n[0],n[1],n[2],n[3]);break;default:o(`новая функция ${t}`)}});
+export default  (obj, func, ...args)=>{
+    return new Promise( function (resolve, reject) {
+            let out = (obj) => {
+                //console.log('~~~ out router ~~~')
+                resolve(obj)
+            }
+            let err = (error) => {
+                console.log('~~~ err router ~~~', error)
+                reject(error)
+            }
+            switch (func) {
+                case 'getSliderTemplate':
+                    (async (obj, props,state, server) => {
+                        try {
+                            console.log(`${obj['input']}[(slider)${obj[props]}]`)
+                                    fetch(`/static/html/components/varan-slider/template/${obj[props]['slot']}.html`)
+                                        .then(function (response) {
+                                            if (response.ok) {
+                                                return response.text()
+                                            }
+                                        }).then(function (body) {
+                                        let parser = new DOMParser()
+                                        let doc = parser.parseFromString(body, 'text/html')
+                                        obj[props]['slider'] = doc.getElementsByTagName('template')[0].content.cloneNode(true)
+                                        let slider = document.createElement('section')
+                                        slider.className = 'slider'
+                                        slider.slot = 'view'
+                                        slider.appendChild(obj['slider'])
+                                        obj[props]['slider'] = slider
+                                        obj[props]['slider-template'] = slider
+                                        for (let key = 0; key < obj['type'].length; key++) {
+                                            if (obj['type'][key] === 'slider-one-text') {
+                                                obj['verify']['sliderText'] = true
+                                            }
+                                        }
+                                        matcher['database']['request']['functions']['getObject'](obj)
+                                            .then((obj) => {
+                                                if (!obj['get']) {
+                                                    resolve(obj)
+                                                } else {
+                                                    pagination['init'](obj)
+                                                    pagination['action'](obj)
+                                                        .then(obj => {
+
+                                                            out(obj)
+                                                        })
+                                                }
+                                            })
+                                    })
+                                    .catch(error => {
+                                            return error
+                                        })
+                        } catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+                    break
+                case 'setSlider':
+                    (async (obj, props,data, server) => {
+                        try {
+                            console.log(`${obj['input']}[(slider)${obj[props]}]`)
+                            out(Peppermint(obj, {
+                                        dots: false,
+                                        slideshow: false,
+                                        speed: 500,
+                                        slideshowInterval: 5000,
+                                        stopSlideshowAfterInteraction: true,
+                                        onSetup: function (n) {
+                                            // //console.log('Peppermint setup done. Slides found: ' + n)
+                                        }
+                                    }))
+                        } catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+
+                    break
+                default:
+                    err(`новая функция ${func}`)
+                    break
+            }
+    })
+}

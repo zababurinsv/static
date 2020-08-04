@@ -1,1 +1,490 @@
-import action from"/static/html/components/component_modules/action/action.mjs";import isEmpty from"/static/html/components/component_modules/isEmpty/isEmpty.mjs";let queue={staticProperty:[]},handler={get:function(t,e){return t[e]},set:function(t,e,a){switch(t[e]=a,e){case"length":if(1===t.length){let e=setTimeout(async function a(){if(console.log("~~~~~input~~~~~~"),0===t.length)console.log("end~~~~~~~~~~~"),clearTimeout(e);else{switch(t[0].task.type){case"delete":switch(t[0].name||(t[0].name="default"),t[0].name){case"bid":await action({input:"static-property",date:t[0].task.date,remove:t[0].task.remove,type:"bid"},"delete","type");break;default:await action({input:"static-property",date:t[0].task.date,remove:t[0].task.remove,type:"news"},"delete","type")}break;case"create":let e=new CustomEvent("convertAction",{detail:{data:t[0].task.data}});document.dispatchEvent(e);break;case"update":switch(t[0].name||(t[0].name="default"),t[0].name){case"bid":action({button:t[0].task.button,input:"varan-card-news",this:t[0].task.this,date:t[0].task.date,type:"bid"},"update","type");break;default:action({button:t[0].task.button,input:"lacerta-news",this:t[0].task.this,date:t[0].task.date,type:"news"},"update","type")}break;case"updateAction":t[0].name||(t[0].name="default");let a={};switch(t[0].name){case"bid":a=new CustomEvent("updateAction",{detail:{date:t[0].task.date,data:t[0].task.update,name:"bid"}}),document.dispatchEvent(a);break;default:a=new CustomEvent("updateAction",{detail:{date:t[0].task.date,data:t[0].task.update,name:"news"}}),document.dispatchEvent(a)}}console.log("all~~~~~~~~~~~",t,t.length),console.log("now~~~~~~~~~~~",t[0]),t.shift(),e=setTimeout(a,10)}},0)}}return!0}};export default(t,e,...a)=>new Promise(function(r,s){let i=t=>{r(t)},o=t=>{console.log("~~~ err staticProperty ~~~",t),s(t)};switch(e){case"object":(async(t,e,a)=>{try{console.log(`${t.input}[(staticProperty)${t[e]}]`),isEmpty(queue.staticProperty[t[e]])?i(!0):i(queue.staticProperty[t[e]])}catch(t){o(t)}})(t,a[0],a[1],a[2],a[3]);break;case"task":(async(t,e,a)=>{switch(t[e]){case"task":try{isEmpty(queue.staticProperty.task)&&(queue.staticProperty.task=[],queue.staticProperty.task=new Proxy(queue.staticProperty.task,handler)),queue.staticProperty.task.push(t),i({task:"push"})}catch(t){o(t)}break;default:o(`необрабатываемый тип запроса ${t[e]}`)}})(t,a[0],a[1],a[2],a[3]);break;case"set":(async(t,e,a)=>{try{switch(t[e]){case"store":void 0===queue.staticProperty[`${t.input}`]&&(queue.staticProperty[`${t.input}`]=[]),queue.staticProperty[`${t.input}`]=t.store,i(queue.staticProperty);break;case"timer":void 0===queue.staticProperty[`${t.input}`]&&(queue.staticProperty[`${t.input}`]=[]),queue.staticProperty[`${t.input}_${t.id}`]=t.data,i(queue.staticProperty[`${t.input}_${t.id}`]);break;case"obj":queue.staticProperty[t.input]||(queue.staticProperty[t.input]=[]),queue.staticProperty[t.input].push(t),i(t);break;case"all":queue.staticProperty=t.store,i(queue.staticProperty);break;case"object":queue.staticProperty[t.name]||(queue.staticProperty[t.name]=[]),queue.staticProperty[t.name].push(t),console.log("store",t),i(t);break;case"editor":if(isEmpty(queue.staticProperty["varan-editor"]))queue.staticProperty["varan-editor"]=[],queue.staticProperty["varan-editor"].push(t.editor),i(t.editor);else{let e=!1,a=0,r=0;for(let s=0;s<queue.staticProperty["varan-editor"].length;s++)isEmpty(t.slot)?console.assert(!1,"должен быть слот"):t.slot===queue.staticProperty["varan-editor"][s].slot&&(e=!0,a=s,r++);e?r>1?console.assert(!1,"должен быть один объект"):(queue.staticProperty["varan-editor"][a].editor=t.editor,i(t.editor)):(queue.staticProperty["varan-editor"].push(t.editor),i(t.editor))}break;default:o(`необрабатываемый тип запроса ${t[e]}`)}}catch(t){o(t)}})(t,a[0],a[1],a[2],a[3]);break;case"put":(async(t,e,a)=>{try{switch(t[e]){case"timer":i(queue.staticProperty[`${t.input}_${t.id}`].timer=t.timer)}}catch(t){o(t)}})(t,a[0],a[1],a[2],a[3]);break;case"add":(async(t,e,a)=>{try{switch(t[e]){case"timer":queue.staticProperty[`${t.input}_${t.id}`].timer=+queue.staticProperty[`${t.input}_${t.id}`].timer+t.timer,queue.staticProperty[`${t.input}_${t.id}`].price=+queue.staticProperty[`${t.input}_${t.id}`].price+t.price,i(queue.staticProperty[`${t.input}_${t.id}`])}}catch(t){o(t)}})(t,a[0],a[1],a[2],a[3]);break;case"get":(async(t,r,s)=>{try{switch(console.log(`${e}[(${t.input})${t[r]}]`),t[r]){case"all":i(queue.staticProperty);break;case"timer":i(queue.staticProperty[`${t.input}_${t.id}`].timer);break;case"editor":let s=!1,u=0,c=0;if(isEmpty(queue.staticProperty["varan-editor"]))i(void 0);else{for(let e=0;e<queue.staticProperty["varan-editor"].length;e++)t.target===queue.staticProperty["varan-editor"][e].slot&&(s=!0,u=e,c++);s?c>1||i(queue.staticProperty["varan-editor"][u].editor):i(void 0)}break;case"obj":(async(t,e,a)=>{try{let e=!1,a=0,r=0;if(isEmpty(queue.staticProperty[t.target]))i(void 0);else if(isEmpty(t.slot))i(queue.staticProperty[t.target]);else{for(let s=0;s<queue.staticProperty[t.target].length;s++)t.slot===queue.staticProperty[t.target][s].slot&&(e=!0,a=s,r++);e?r>1?console.assert(!1,"должен быть один объект"):i(queue.staticProperty[t.target][a]):(console.warn("staticProperty - слот не найден"),i(queue.staticProperty[t.target]))}}catch(t){}})(t,a[0],a[1],a[2],a[3]);break;case"object":(async(t,e,a)=>{try{let e=[];for(let a=0;a<t.object.length;a++)console.log(t.object[a]),isEmpty(queue.staticProperty[t.object[a]])||e.push(queue.staticProperty[t.object[a]]);i(e)}catch(t){o({staticProperty:t})}})(t,a[0],a[1],a[2],a[3]);break;default:o(`необрабатываемый тип запроса ${t[r]}`)}}catch(t){o(t)}})(t,a[0],a[1],a[2],a[3]);break;case"getObject":(async(t,a,r)=>{try{console.log(`${e}[(${t.input})${t[a]}]`),i(queue.staticProperty[a])}catch(t){o(t)}})(t,a[0],a[1],a[2],a[3]);break;case"set_n":(async(t,a,r)=>{try{switch(console.log(`${e}[(${t.input})${t[a]}]`),t[a]){case"image":queue.staticProperty[t.input]||(queue.staticProperty[t.input]=[]),queue.staticProperty[t.input].push(t),i(t);break;case"object":queue.staticProperty[t.name]||(queue.staticProperty[t.name]=[]),queue.staticProperty[t.name].push(t),i(t);break;case"obj":t.input||console.assert(!1,"надо указаь obj[input]"),queue.staticProperty[t.input]||(queue.staticProperty[t.input]=[]),queue.staticProperty[t.input].push(t),console.log("store",t),i(t);break;default:o(`необрабатываемый тип запроса ${t[a]}`)}}catch(t){o(t)}})(t,a[0],a[1],a[2],a[3]);break;default:o(`новая функция ${e}`)}});
+import action from '/static/html/components/component_modules/action/action.mjs'
+import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
+let queue = {}
+queue.staticProperty = []
+
+let handler = {
+    get: function(obj, prop) {
+        // console.log('~~~!!!~~~',obj, prop)
+
+        return obj[prop];
+    },
+    set: function(obj, prop, value) {
+            obj[prop] = value;
+            switch (prop) {
+                case 'length':
+                    if(obj.length === 1){
+                        let timerId = setTimeout(async function tick() {
+                            console.log('~~~~~input~~~~~~')
+                            if(obj.length === 0){
+                                console.log('end~~~~~~~~~~~')
+                                clearTimeout(timerId);
+                            }else{
+                                switch (obj[0]['task']['type']) {
+                                    case 'delete':
+                                        if(!obj[0]['name']){
+                                            obj[0]['name'] = 'default'
+                                        }
+                                        switch (obj[0]['name']) {
+                                            case 'bid':
+                                                await action({
+                                                    input:'static-property',
+                                                    date:obj[0]['task']['date'],
+                                                    remove:obj[0]['task']['remove'],
+                                                    type:'bid'
+                                                }, 'delete', 'type')
+                                                break
+                                            default:
+                                                await action({
+                                                    input:'static-property',
+                                                    date:obj[0]['task']['date'],
+                                                    remove:obj[0]['task']['remove'],
+                                                    type:'news'
+                                                }, 'delete', 'type')
+                                                break
+                                        }
+                                        break
+                                    case 'create':
+                                        let convert = new CustomEvent('convertAction', {
+                                            detail: {
+                                                data: obj[0]['task']['data']
+                                            }
+                                        })
+                                        document.dispatchEvent(convert)
+                                        break
+                                    case 'update':
+                                        if(!obj[0]['name']){
+                                            obj[0]['name'] = 'default'
+                                        }
+                                        switch (obj[0]['name']) {
+                                            case 'bid':
+                                                action({
+                                                    button: obj[0]['task']['button'],
+                                                    input:'varan-card-news',
+                                                    this: obj[0]['task']['this'],
+                                                    date:obj[0]['task']['date'],
+                                                    type:'bid'
+                                                }, 'update', 'type')
+                                                break
+                                            default:
+                                                action({
+                                                    button: obj[0]['task']['button'],
+                                                    input:'lacerta-news',
+                                                    this: obj[0]['task']['this'],
+                                                    date:obj[0]['task']['date'],
+                                                    type:'news'
+                                                }, 'update', 'type')
+                                                break
+                                        }
+
+                                        break
+                                    case 'updateAction':
+                                        if(!obj[0]['name']){
+                                            obj[0]['name'] = 'default'
+                                        }
+                                        let updateAction ={}
+                                        switch (obj[0]['name']) {
+                                            case 'bid':
+                                                 updateAction = new CustomEvent('updateAction', {
+                                                    detail: {
+                                                        date: obj[0]['task']['date'],
+                                                        data: obj[0]['task']['update'],
+                                                        name:'bid'
+                                                    }
+                                                })
+                                                document.dispatchEvent(updateAction)
+                                                break
+                                            default:
+                                                 updateAction = new CustomEvent('updateAction', {
+                                                    detail: {
+                                                        date: obj[0]['task']['date'],
+                                                        data: obj[0]['task']['update'],
+                                                        name:'news'
+                                                    }
+                                                })
+                                                document.dispatchEvent(updateAction)
+                                                break
+                                        }
+
+                                        break
+                                    default:
+                                        break
+                                }
+                                console.log('all~~~~~~~~~~~',obj, obj.length)
+                                console.log('now~~~~~~~~~~~',obj[0])
+                                obj.shift()
+                                timerId = setTimeout(tick, 10);
+                            }
+                        }, 0);
+                    }
+                    break
+                default:
+                    break
+            }
+            return true
+
+    }
+}
+export default  (obj, func, ...args)=>{
+    return new Promise( function (resolve, reject) {
+            let out = (obj) => {
+                // console.log('~~~ out staticProperty ~~~')
+                resolve(obj)
+            }
+            let err = (error) => {
+                console.log('~~~ err staticProperty ~~~', error)
+                reject(error)
+            }
+            switch (func) {
+                case 'object':
+                    (async (obj, props,data) => {
+                        try {
+                            console.log(`${obj['input']}[(staticProperty)${obj[props]}]`)
+                            if(isEmpty(queue.staticProperty[obj[props]])){
+                                out(true)
+                            }else{
+                                out(queue.staticProperty[obj[props]])
+                            }
+                        } catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+                    break
+                case 'task':
+                    (async (obj, props,data) => {
+                        switch (obj[props]) {
+                            case 'task':
+                                try {
+                                    if(isEmpty(queue.staticProperty['task'])){
+                                        queue.staticProperty['task'] = []
+                                        queue.staticProperty['task'] = new Proxy(queue.staticProperty['task'], handler)
+
+                                    }
+                                    queue.staticProperty['task'].push(obj)
+                                    out({task:'push'})
+                                } catch (e) { err(e) }
+                                break
+                            default:
+                                err(`необрабатываемый тип запроса ${obj[props]}` )
+                                break
+                        }
+                    })(obj, args[0], args[1], args[2], args[3])
+                    break
+                case 'set':
+                    (async (obj, props,data) => {
+                        try {
+                            // console.log(`app(${obj['input']}[(staticProperty)${obj[props]}]staticProperty}`)
+                            switch (obj[props]) {
+                                case 'store':
+                                    if( queue.staticProperty[`${obj['input']}`] === undefined){
+                                        queue.staticProperty[`${obj['input']}`] = []
+                                    }
+                                    queue.staticProperty[`${obj['input']}`] = obj['store']
+                                    out(queue.staticProperty)
+                                    break
+                                case 'timer':
+                                    if( queue.staticProperty[`${obj['input']}`] === undefined){
+                                        queue.staticProperty[`${obj['input']}`] = []
+                                    }
+                                    queue.staticProperty[`${obj['input']}_${obj['id']}`] = obj['data']
+                                    out(queue.staticProperty[`${obj['input']}_${obj['id']}`])
+                                    break
+                                case 'obj':
+
+                                    // console.log(queue.staticProperty)
+                                    // console.assert(false,obj['input'], obj )
+                                    if(!queue.staticProperty[obj['input']]){
+                                        queue.staticProperty[obj['input']] = []
+                                    }
+                                    queue.staticProperty[obj['input']].push(obj)
+                                    // console.log('store image', obj)
+                                    out(obj)
+
+                                    break
+                                case 'all':
+
+                                    queue.staticProperty = obj['store']
+                                    // if(!queue.staticProperty[obj['input']]){
+                                    //     queue.staticProperty[obj['input']] = []
+                                    // }
+                                    // queue.staticProperty[obj['input']].push(obj)
+                                    // console.log('store image', obj)
+                                    out(queue.staticProperty)
+
+                                    break
+                                case 'object':
+
+                                    if(!queue.staticProperty[obj['name']]){
+                                        queue.staticProperty[obj['name']] = []
+                                    }
+                                    queue.staticProperty[obj['name']].push(obj)
+
+                                    console.log('store', obj)
+                                    out(obj)
+
+                                    break
+                                case 'editor':
+                                    if(isEmpty(queue.staticProperty['varan-editor'])){
+
+                                        queue.staticProperty['varan-editor'] = []
+                                        queue.staticProperty['varan-editor'].push(obj['editor'])
+                                        out(obj['editor'])
+                                    }
+                                    else{
+                                        let verify = false
+                                        let position = 0
+                                        let count = 0
+                                        for(let i = 0; i < queue.staticProperty['varan-editor'].length; i++){
+                                            if(isEmpty(obj['slot'])){
+                                                console.assert(false, 'должен быть слот')
+
+                                            }else{
+                                                if(obj['slot'] === queue.staticProperty['varan-editor'][i]['slot']){
+
+
+                                                    verify = true
+                                                    position = i
+                                                    count++
+                                                }
+                                            }
+                                            // console.log(obj['slot'])
+                                            // console.log(queue.staticProperty['varan-editor'][i]['slot'])
+
+                                        }
+
+                                        if(verify){
+                                           if(count > 1){
+
+                                               console.assert(false , 'должен быть один объект')
+                                           }else{
+                                               queue.staticProperty['varan-editor'][position]['editor'] = obj['editor']
+                                               out(obj['editor'])
+                                           }
+
+                                        }else{
+                                            queue.staticProperty['varan-editor'].push(obj['editor'])
+                                            out(obj['editor'])
+                                        }
+                                    }
+                                    break
+                                default:
+                                    err(`необрабатываемый тип запроса ${obj[props]}` )
+                                    break
+                            }
+                        } catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+                    break
+                case 'put':
+                    (async (obj, props,data) => {
+                        try {
+                            switch (obj[props]) {
+                                case 'timer':
+                                  out(queue.staticProperty[`${obj['input']}_${obj['id']}`]['timer'] = obj['timer'])
+
+                                    break
+                                default:
+                                    break
+                            }
+                        }catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+                    break
+                case 'add':
+                    (async (obj, props,data) => {
+                        try {
+                            switch (obj[props]) {
+                                case 'timer':
+                                    queue.staticProperty[`${obj['input']}_${obj['id']}`]['timer'] = +queue.staticProperty[`${obj['input']}_${obj['id']}`]['timer'] + obj['timer']
+                                    queue.staticProperty[`${obj['input']}_${obj['id']}`]['price'] = +queue.staticProperty[`${obj['input']}_${obj['id']}`]['price'] + obj['price']
+                                    out( queue.staticProperty[`${obj['input']}_${obj['id']}`])
+
+                                    break
+                                default:
+                                    break
+                            }
+                        }catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+                    break
+                case 'get':
+                    (async (obj, props,data) => {
+                        try {
+                            console.log(`${func}[(${obj['input']})${obj[props]}]`)
+                            switch (obj[props]) {
+                                case 'all':
+
+                                    out(queue.staticProperty )
+
+                                    break
+                                case 'timer':
+                                    out(queue.staticProperty[`${obj['input']}_${obj['id']}`]['timer'])
+                                    break
+                                case 'editor':
+                                    // obj['target']
+
+                                    let verify = false
+                                    let position = 0
+                                    let count = 0
+                                    // console.log(isEmpty(queue.staticProperty['varan-editor']))
+                                   // console.assert(false, queue.staticProperty)
+                                    if(isEmpty(queue.staticProperty['varan-editor'])){
+
+                                        out(undefined)
+                                    }else{
+
+                                        for(let i = 0; i < queue.staticProperty['varan-editor'].length; i++){
+                                            // console.assert(false, obj['target'])
+
+                                            if(obj['target'] === queue.staticProperty['varan-editor'][i]['slot']){
+                                                verify = true
+                                                position = i
+                                                count++
+                                            }
+                                        }
+                                        if(verify){
+                                            if(count > 1){
+
+                                                // console.assert(false , 'должен быть один объект')
+                                            }else{
+                                                // console.assert(false,queue.staticProperty['varan-editor'][position]['editor'])
+                                                out(queue.staticProperty['varan-editor'][position]['editor'])
+                                            }
+                                        }else{
+                                         out(undefined)
+                                        }
+                                    }
+
+                                    break
+                                case 'obj':
+                                    // obj['target']
+                                    (async (obj, props,data) => {
+                                        try {
+
+                                            let verify = false
+                                            let position = 0
+                                            let count = 0
+                                            // console.log(isEmpty(queue.staticProperty['varan-editor']))
+                                            // console.assert(false, queue.staticProperty)
+                                            if(isEmpty(queue.staticProperty[obj['target']])){
+
+                                                out(undefined)
+                                            }else{
+
+                                                if(isEmpty(obj['slot'])){
+                                                    out(queue.staticProperty[obj['target']])
+                                                }else{
+                                                    for(let i = 0; i < queue.staticProperty[obj['target']].length; i++){
+                                                        // console.assert(false, obj['target'])
+
+                                                        if(obj['slot'] === queue.staticProperty[obj['target']][i]['slot']){
+                                                            verify = true
+                                                            position = i
+                                                            count++
+                                                        }
+                                                    }
+                                                    if(verify){
+                                                        if(count > 1){
+
+                                                            console.assert(false , 'должен быть один объект')
+                                                        }else{
+                                                            // console.assert(false,queue.staticProperty['varan-editor'][position]['editor'])
+                                                            out(queue.staticProperty[obj['target']][position])
+                                                        }
+                                                    }else{
+                                                        console.warn('staticProperty - слот не найден')
+                                                        out(queue.staticProperty[obj['target']])
+                                                    }
+
+                                                }
+                                            }
+
+                                        }catch (e) {
+
+                                        }
+
+                                    })(obj, args[0], args[1], args[2], args[3])
+                                    break
+                                case 'object':
+                                    // obj['target']
+                                    (async (obj, props,data) => {
+                                        try {
+                                            let components = []
+                                            for(let i =0; i < obj['object'].length; i++){
+                                                console.log(obj['object'][i])
+                                                if(isEmpty(queue.staticProperty[obj['object'][i]])){
+
+                                                }else{
+                                                    components.push(queue.staticProperty[obj['object'][i]])
+                                                }
+                                            }
+                                            out(components)
+                                        }catch (e) {
+
+                                            err({
+                                                'staticProperty': e
+                                            })
+                                        }
+
+                                    })(obj, args[0], args[1], args[2], args[3])
+                                    break
+                                default:
+                                    err(`необрабатываемый тип запроса ${obj[props]}` )
+                                    break
+                            }
+
+
+                        } catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+                    break
+                case 'getObject':
+                    (async (obj, props,data) => {
+                        try {
+                            console.log(`${func}[(${obj['input']})${obj[props]}]`)
+                            out(queue.staticProperty[props] )
+
+                        } catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+                    break
+                case 'set_n':
+                    (async (obj, props,data) => {
+                        try {
+                            console.log(`${func}[(${obj['input']})${obj[props]}]`)
+                            switch (obj[props]) {
+                                case 'image':
+
+                                    if(!queue.staticProperty[obj['input']]){
+                                        queue.staticProperty[obj['input']] = []
+                                    }
+                                    queue.staticProperty[obj['input']].push(obj)
+                                    out(obj)
+                                    break
+                                case 'object':
+
+                                    if(!queue.staticProperty[obj['name']]){
+                                        queue.staticProperty[obj['name']] = []
+                                    }
+                                    queue.staticProperty[obj['name']].push(obj)
+                                    out(obj)
+                                    break
+                                case 'obj':
+
+                                    if(!obj['input']){
+                                        console.assert(false, 'надо указаь obj[input]')
+                                    }
+                                    if(!queue.staticProperty[obj['input']]){
+                                        queue.staticProperty[obj['input']] = []
+                                    }
+                                    queue.staticProperty[obj['input']].push(obj)
+                                    console.log('store', obj)
+                                    out(obj)
+
+                                    break
+                                default:
+                                    err(`необрабатываемый тип запроса ${obj[props]}` )
+                                    break
+                            }
+                        } catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+                    break
+                default:
+                    err(`новая функция ${func}`)
+                    break
+            }
+    })
+}

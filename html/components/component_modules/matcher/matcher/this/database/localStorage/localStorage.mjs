@@ -1,1 +1,68 @@
-function storageAvailable(e){try{var t=window[e],o="__storage_test__";return t.setItem(o,o),t.removeItem(o),!0}catch(e){return e instanceof DOMException&&(22===e.code||1014===e.code||"QuotaExceededError"===e.name||"NS_ERROR_DOM_QUOTA_REACHED"===e.name)&&0!==t.length}}function setUpdFile(e){return new Promise(function(t,o){storageAvailable("localStorage")?(localStorage.setItem(e.localStorage),t(!0)):t(!1)})}function delFile(e){return new Promise(function(t,o){storageAvailable("localStorage")?(Storage.removeItem(e.localStorage),t(!0)):t(!1),t(e)})}function getFile(e){return new Promise(function(t,o){storageAvailable("localStorage")?(e.localStore=localStorage.getItem(`${e.slot}`),t(e)):t(!1),t(e)})}function clearData(){console.log("CLEAR"),localStorage.clear()}export default{delFile:e=>delFile(e),setUpdFile:e=>setUpdFile(e),getFile:e=>getFile(e),clearData:()=>{clearData()}};
+function storageAvailable (type) {
+  try {
+    var storage = window[type]
+
+    var x = '__storage_test__'
+    storage.setItem(x, x)
+    storage.removeItem(x)
+    return true
+  } catch (e) {
+    return e instanceof DOMException && (
+    // everything except Firefox
+      e.code === 22 ||
+            // Firefox
+            e.code === 1014 ||
+            // test name field too, because code might not be present
+            // everything except Firefox
+            e.name === 'QuotaExceededError' ||
+            // Firefox
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            // acknowledge QuotaExceededError only if there's something already stored
+            storage.length !== 0
+  }
+}
+function setUpdFile (obj) {
+  return new Promise(function (resolve, reject) {
+    if (storageAvailable('localStorage')) {
+      localStorage.setItem(obj['localStorage'])
+      resolve(true)
+    } else {
+      resolve(false)
+    }
+  })
+}
+function delFile (obj) {
+  return new Promise(function (resolve, reject) {
+    if (storageAvailable('localStorage')) {
+      Storage.removeItem(obj['localStorage'])
+      resolve(true)
+    } else {
+      resolve(false)
+    }
+
+    resolve(obj)
+  })
+}
+function getFile (obj) {
+  return new Promise(function (resolve, reject) {
+    if (storageAvailable('localStorage')) {
+      obj['localStore'] = localStorage.getItem(`${obj['slot']}`)
+
+      resolve(obj)
+    } else {
+      resolve(false)
+    }
+
+    resolve(obj)
+  })
+}
+function clearData () {
+  console.log('CLEAR')
+  localStorage.clear()
+}
+export default {
+  delFile: (obj) => { return delFile(obj) },
+  setUpdFile: (obj) => { return setUpdFile(obj) },
+  getFile: (obj) => { return getFile(obj) },
+  clearData: () => { clearData() }
+}

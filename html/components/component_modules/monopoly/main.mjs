@@ -1,1 +1,14 @@
-import game from"./game.mjs";import monopoly from"./monopoly.mjs";export default async o=>{let t=await game.get({input:"main",type:"monopoly",this:o.this});await monopoly.get({type:"addEventListener"},t)};
+import game from "./game.mjs";
+import monopoly from "./monopoly.mjs";
+
+export default async (self)=>{
+
+  let obj = await game['get']({
+        input:'main',
+        type:'monopoly',
+        this:self['this']
+    })
+   await monopoly['get']({type:'addEventListener'},obj)
+}
+
+

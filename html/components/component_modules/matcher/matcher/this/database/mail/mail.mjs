@@ -1,1 +1,162 @@
-import conf from"/static/html/components/component_modules/matcher/matcher/this/database/config/index.mjs";function email(o,t,e,n){return new Promise((a,c)=>{bundle.default(o,"export",async function(c,s){switch(n){case"GET":console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~",""),s.axios.get(`https://${e}${t}`).then(function(t){console.log(t),o.get_n=[],o.mongo=t.data,o.get_n.push(t.data),a(o)}).catch(function(o){console.log(o)}).finally(function(){});break;case"POST":let c=await(r=o,new Promise((o,t)=>{let e=new FormData;for(let o in r)e.append(o,r[o]);o(e)}));console.log(`${e}${t}`),fetch(`${e}${t}`,{method:n,headers:{mode:"no-cors"},body:c}).then(function(o){if(o.ok)return o.json();throw new Error("HTTP error, status = "+o.status)}).then(function(t){o.get_n=[],o.mongo=t,o.get_n.push(t),a(o)}).catch(function(o){console.assert(!1,"mongoDb",o,`${e}${t}`)});break;case"PUT":fetch(`${e}${t}`,{method:n,headers:{Accept:"application/json","Content-Type":"application/json",mode:"no-cors"},body:JSON.stringify(o.data)}).then(function(o){if(o.ok)return o.json();throw new Error("HTTP error, status = "+o.status)}).then(function(t){o.get_n=[],o.mongo=t,o.get_n.push(t),a(o)}).catch(function(o){console.assert(!1,"mongoDb",o)});break;case"DELETE":fetch(`${e}${t}`,{method:n,headers:{Accept:"application/json","Content-Type":"application/json",mode:"no-cors"}}).then(function(o){if(o.ok)return o.json();throw new Error("HTTP error, status = "+o.status)}).then(function(o){a({delete:"ok"})}).catch(function(o){console.error("ошибка в запросе mongo",o),a({mongo:"null"})});break;default:console.warn("необрабатываемый тип запроса",o[props])}var r})})}export default(o,t,...e)=>new Promise(function(n,a){let c=o=>{console.log("~~~ err  ~~~",o),a(o)};switch(t){case"set":(async(o,a,s)=>{try{switch(console.log(`app(${t}[(${o.input})${o[a]}]property)`),o[a]){case"request":(async(o,t,e)=>{try{(o=>{console.log("~~~ out  ~~~"),n(o)})(await email(o.data,"/setMail",conf.email.web,"POST"))}catch(o){c(o)}})(o,e[0],e[1],e[2],e[3]);break;default:c(`new type [(${t})${o[a]}]`)}}catch(o){c(o)}})(o,e[0],e[1],e[2],e[3]);break;default:c(`new function ${t}`)}});
+import conf from '/static/html/components/component_modules/matcher/matcher/this/database/config/index.mjs'
+
+function email(obj, path,node, method) {
+    return new Promise((resolve, reject) => {
+        bundle['default'](obj,'export', async function (error, config) {
+
+            function setData( data) {
+                return new Promise((resolve, reject) => {
+                    let formData  = new FormData();
+                    for(let name in data) {
+                        formData.append(name, data[name]);
+                    }
+                    resolve(formData)
+                })
+            }
+            switch (method) {
+                case 'GET':
+                    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~',``)
+                    config['axios'].get(`https://${node}${path}`)
+                        .then(function (response) {
+                            // handle success
+                            console.log(response);
+                            obj['get_n'] = []
+                            obj['mongo'] = response['data']
+                            obj['get_n'].push(response['data'])
+                            resolve(obj)
+                        })
+                        .catch(function (error) {
+                            // handle error
+                            console.log(error);
+                        })
+                        .finally(function () {
+                            // always executed
+                        });
+
+                    break
+                case 'POST':
+
+                    let formData = await setData(obj)
+
+                    console.log(`${node}${path}`)
+                    fetch(`${node}${path}`, {
+                        method: method,
+                        headers: {
+                            'mode': 'no-cors'
+                        },
+                        body: formData
+                    }).then(function (response) {
+                        if (!response.ok) {
+                            throw new Error('HTTP error, status = ' + response.status)
+                        } else {
+                            return response.json()
+                        }
+                    })
+                        .then(function (json) {
+                            obj['get_n'] = []
+                            obj['mongo'] = json
+                            obj['get_n'].push(json)
+                            resolve(obj)
+                        })
+                        .catch(function (error) {
+                            console.assert(false, 'mongoDb', error, `${node}${path}`)
+                        })
+                    break
+                case 'PUT':
+                    fetch(`${node}${path}`, {
+                        method: method,
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'mode': 'no-cors'
+                        },
+                        body: JSON.stringify(obj['data'])
+                    }).then(function (response) {
+                        if (!response.ok) {
+                            throw new Error('HTTP error, status = ' + response.status)
+                        } else {
+                            return response.json()
+                        }
+                    })
+                        .then(function (json) {
+                            obj['get_n'] = []
+                            obj['mongo'] = json
+                            obj['get_n'].push(json)
+                            resolve(obj)
+                        })
+                        .catch(function (error) {
+                            console.assert(false, 'mongoDb', error)
+                        })
+                    break
+                case 'DELETE':
+                    fetch(`${node}${path}`, {
+                        method: method,
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'mode': 'no-cors'
+                        },
+                    }).then(function (response) {
+                        if (!response.ok) {
+                            throw new Error('HTTP error, status = ' + response.status)
+                        } else {
+                            return response.json()
+                        }
+                    })
+                        .then(function (json) {
+
+                            resolve({delete:'ok'})
+                        })
+                        .catch(function (error) {
+                            console.error('ошибка в запросе mongo', error)
+                            resolve({mongo:'null'})
+                        })
+                    break
+                default:
+                    console.warn(`необрабатываемый тип запроса`, obj[props])
+                    break
+            }
+
+        })
+
+    })
+}
+
+export default  (obj, func, ...args)=>{
+    return new Promise( function (resolve, reject) {
+        let out = (obj) => {
+            console.log('~~~ out  ~~~')
+            resolve(obj)
+        }
+        let err = (error) => {
+            console.log('~~~ err  ~~~', error)
+            reject(error)
+        }
+        switch (func) {
+            case 'set':
+                (async (obj, props,data) => {
+                    try {
+                        // console.log(`app(${func}[(${obj['input']})${obj[props]}]property)`)
+                        switch (obj[props]) {
+                            case 'request':
+                                (async (obj, props,data) => {
+                                    try {
+
+                                        out(await email(obj['data'], '/setMail', conf['email']['web'], 'POST'))
+
+                                    } catch (e) { err(e) }
+                                })(obj, args[0], args[1], args[2], args[3])
+                                break
+                            default:
+                                err(`new type [(${func})${obj[props]}]`)
+                                break
+                        }
+                    } catch (e) { err(e) }
+                })(obj, args[0], args[1], args[2], args[3])
+                break
+            default:
+                err(`new function ${func}`)
+                break
+        }
+    })
+}

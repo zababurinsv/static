@@ -1,1 +1,188 @@
-const movePos={0:e,4:e,1:s,5:s,2:w,6:w,3:n,7:n,8:ne,9:se,10:sw,11:nw};let width,height,result,ratio;function getMaxSize(e,t,i,r){if("w"===r)switch(i){case"e":case"s":case"n":case"ne":case"se":return e.screen.right-e.l;case"w":case"nw":case"sw":return t.r-e.screen.left}else if("h"===r)switch(i){case"n":case"nw":case"ne":return t.b-e.screen.top;case"s":case"w":case"e":case"sw":case"se":return e.screen.bottom-t.t}}function setRatioSize(e,t,i,r,n,h){if(r)if(n/r>=h){var g=getMaxSize(t,i,e,"h");(h=n/r)>g&&(n=(h=g)*r)}else{var a=getMaxSize(t,i,e,"w");(n=h*r)>a&&(h=(n=a)/r)}return{width:n,height:h}}function e(e,t,i){return ratio=e.cropJson.r,width=range(getWidth(t,i,"e"),getMaxSize(t,i,"e","w")),ratio?(height=range(width/ratio,getMaxSize(t,i,"e","h")),setSize(e,result=setRatioSize("e",t,i,ratio,width,height))):e.width=width,e}function s(e,t,i){return ratio=e.cropJson.r,height=range(getHeight(t,i,"s"),getMaxSize(t,i,"s","h")),ratio?(width=range(height*ratio,getMaxSize(t,i,"s","w")),setSize(e,result=setRatioSize("s",t,i,ratio,width,height))):e.height=height,e}function w(e,t,i){return ratio=e.cropJson.r,width=range(getWidth(t,i,"w"),getMaxSize(t,i,"w","w")),ratio?(height=range(width/ratio,getMaxSize(t,i,"w","h")),setSize(e,result=setRatioSize("w",t,i,ratio,width,height)),e.left=getLeft(e,t,i)):(e.width=width,e.left=rangeMax(t.x-t.screen.left,i.r)),e}function n(e,t,i){return ratio=e.cropJson.r,height=range(getHeight(t,i,"n"),getMaxSize(t,i,"n","h")),ratio?(width=range(height*ratio,getMaxSize(t,i,"n","w")),setSize(e,result=setRatioSize("n",t,i,ratio,width,height)),e.top=getTop(e,t,i)):(e.height=height,e.top=rangeMax(t.y-t.screen.top,i.b)),e}function ne(e,t,i){return height=range(getHeight(t,i,"n"),getMaxSize(t,i,"ne","h")),width=range(getWidth(t,i,"e"),getMaxSize(t,i,"ne","w")),setSize(e,result=setRatioSize("ne",t,i,e.cropJson.r,width,height)),e.top=getTop(e,t,i),e}function se(e,t,i){return height=range(getHeight(t,i,"s"),getMaxSize(t,i,"se","h")),width=range(getWidth(t,i,"e"),getMaxSize(t,i,"se","w")),setSize(e,result=setRatioSize("se",t,i,e.cropJson.r,width,height)),e}function sw(e,t,i){return width=range(getWidth(t,i,"w"),getMaxSize(t,i,"sw","w")),height=range(getHeight(t,i,"s"),getMaxSize(t,i,"sw","h")),setSize(e,result=setRatioSize("sw",t,i,e.cropJson.r,width,height)),e.left=getLeft(e,t,i),e}function nw(e,t,i){return width=range(getWidth(t,i,"w"),getMaxSize(t,i,"nw","w")),height=range(getHeight(t,i,"n"),getMaxSize(t,i,"nw","h")),setSize(e,result=setRatioSize("nw",t,i,e.cropJson.r,width,height)),e.left=getLeft(e,t,i),e.top=getTop(e,t,i),e}function range(e,t){return(e=e>t?t:e)<20?20:e}function rangeMax(e,t){return e>t?t:e}function getTop(e,t,i){return rangeMax(i.b-e.height-t.screen.top,i.b)}function getLeft(e,t,i){return rangeMax(i.r-e.width-t.screen.left,i.r)}function getHeight(e,t,i){return"n"===i?t.b-e.y:e.y-t.t}function getWidth(e,t,i){return"w"===i?t.r-e.x:e.x-t.l}function setSize(e,t){e.width=t.width,e.height=t.height}export default movePos;
+const movePos = {
+  0: e,
+  4: e,
+  1: s,
+  5: s,
+  2: w,
+  6: w,
+  3: n,
+  7: n,
+  8: ne,
+  9: se,
+  10: sw,
+  11: nw
+}
+let width, height, result, ratio
+
+function getMaxSize (json, startJson, dire, type) {
+  if (type === 'w') {
+    switch (dire) {
+      case 'e':
+      case 's':
+      case 'n':
+      case 'ne':
+      case 'se':
+        return json.screen.right - json.l
+      case 'w':
+      case 'nw':
+      case 'sw':
+        return startJson.r - json.screen.left
+    }
+  } else if (type === 'h') {
+    switch (dire) {
+      case 'n':
+      case 'nw':
+      case 'ne':
+        return startJson.b - json.screen.top
+      case 's':
+      case 'w':
+      case 'e':
+      case 'sw':
+      case 'se':
+        return json.screen.bottom - startJson.t
+    }
+  }
+}
+function setRatioSize (type, json, startJson, ratio, width, height) {
+  if (ratio) {
+    if (width / ratio >= height) {
+      var maxHeight = getMaxSize(json, startJson, type, 'h')
+      height = width / ratio
+      if (height > maxHeight) {
+        height = maxHeight
+        width = height * ratio
+      }
+    } else {
+      var maxWidth = getMaxSize(json, startJson, type, 'w')
+      width = height * ratio
+      if (width > maxWidth) {
+        width = maxWidth
+        height = width / ratio
+      }
+    }
+  }
+  return {
+    width: width,
+    height: height
+  }
+}
+function e (_this, json, startJson) {
+  ratio = _this.cropJson.r
+  width = range(getWidth(json, startJson, 'e'), getMaxSize(json, startJson, 'e', 'w'))
+  if (ratio) {
+    height = range(width / ratio, getMaxSize(json, startJson, 'e', 'h'))
+    result = setRatioSize('e', json, startJson, ratio, width, height)
+    setSize(_this, result)
+  } else {
+    _this.width = width
+  }
+  return _this
+}
+
+function s (_this, json, startJson) {
+  ratio = _this.cropJson.r
+  height = range(getHeight(json, startJson, 's'), getMaxSize(json, startJson, 's', 'h'))
+  if (ratio) {
+    width = range(height * ratio, getMaxSize(json, startJson, 's', 'w'))
+    result = setRatioSize('s', json, startJson, ratio, width, height)
+    setSize(_this, result)
+  } else {
+    _this.height = height
+  }
+
+  return _this
+}
+function w (_this, json, startJson) {
+  ratio = _this.cropJson.r
+  width = range(getWidth(json, startJson, 'w'), getMaxSize(json, startJson, 'w', 'w'))
+  if (ratio) {
+    height = range(width / ratio, getMaxSize(json, startJson, 'w', 'h'))
+    result = setRatioSize('w', json, startJson, ratio, width, height)
+    setSize(_this, result)
+    _this.left = getLeft(_this, json, startJson)
+  } else {
+    _this.width = width
+    _this.left = rangeMax(json.x - json.screen.left, startJson.r)
+  }
+  return _this
+}
+function n (_this, json, startJson) {
+  ratio = _this.cropJson.r
+  height = range(getHeight(json, startJson, 'n'), getMaxSize(json, startJson, 'n', 'h'))
+  if (ratio) {
+    width = range(height * ratio, getMaxSize(json, startJson, 'n', 'w'))
+    result = setRatioSize('n', json, startJson, ratio, width, height)
+    setSize(_this, result)
+    _this.top = getTop(_this, json, startJson)
+  } else {
+    _this.height = height
+    _this.top = rangeMax(json.y - json.screen.top, startJson.b)
+  }
+  return _this
+}
+
+function ne (_this, json, startJson) {
+  height = range(getHeight(json, startJson, 'n'), getMaxSize(json, startJson, 'ne', 'h'))
+  width = range(getWidth(json, startJson, 'e'), getMaxSize(json, startJson, 'ne', 'w'))
+  result = setRatioSize('ne', json, startJson, _this.cropJson.r, width, height)
+  setSize(_this, result)
+  _this.top = getTop(_this, json, startJson)
+  return _this
+}
+function se (_this, json, startJson) {
+  height = range(getHeight(json, startJson, 's'), getMaxSize(json, startJson, 'se', 'h'))
+  width = range(getWidth(json, startJson, 'e'), getMaxSize(json, startJson, 'se', 'w'))
+  result = setRatioSize('se', json, startJson, _this.cropJson.r, width, height)
+  setSize(_this, result)
+  return _this
+}
+function sw (_this, json, startJson) {
+  width = range(getWidth(json, startJson, 'w'), getMaxSize(json, startJson, 'sw', 'w'))
+  height = range(getHeight(json, startJson, 's'), getMaxSize(json, startJson, 'sw', 'h'))
+  result = setRatioSize('sw', json, startJson, _this.cropJson.r, width, height)
+  setSize(_this, result)
+  _this.left = getLeft(_this, json, startJson)
+  return _this
+}
+function nw (_this, json, startJson) {
+  width = range(getWidth(json, startJson, 'w'), getMaxSize(json, startJson, 'nw', 'w'))
+  height = range(getHeight(json, startJson, 'n'), getMaxSize(json, startJson, 'nw', 'h'))
+  result = setRatioSize('nw', json, startJson, _this.cropJson.r, width, height)
+  setSize(_this, result)
+  _this.left = getLeft(_this, json, startJson)
+  _this.top = getTop(_this, json, startJson)
+  return _this
+}
+
+// 匹配范围
+function range (value, max) {
+  value = value > max ? max : value
+  return value < 20 ? 20 : value
+}
+// 最大值
+function rangeMax (value, max) {
+  return value > max ? max : value
+}
+// top
+function getTop (_this, json, startJson) {
+  return rangeMax(startJson.b - _this.height - json.screen.top, startJson.b)
+}
+// left
+function getLeft (_this, json, startJson) {
+  return rangeMax(startJson.r - _this.width - json.screen.left, startJson.r)
+}
+// height
+function getHeight (json, startJson, type) {
+  return type === 'n' ? startJson.b - json.y : json.y - startJson.t
+}
+// height
+function getWidth (json, startJson, type) {
+  return type === 'w' ? startJson.r - json.x : json.x - startJson.l
+}
+// setSize
+function setSize (_this, result) {
+  _this.width = result.width
+  _this.height = result.height
+}
+
+export default movePos

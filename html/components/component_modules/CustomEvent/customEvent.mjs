@@ -1,1 +1,24 @@
-import emoji from"/static/html/components/component_modules/emoji/emoji.mjs";import colorLog from"/static/html/components/component_modules/colorLog/colorLog.mjs";export default(o=!0,e="",t="black",n={},m="")=>new Promise(function(i,c){document.addEventListener(`${m}-end`,async o=>{i(o.detail)}),console.log(`${emoji("waxing_gibbous_moon")}`,n),document.dispatchEvent(new CustomEvent(`${m}`,{detail:{"/":m,view:o,property:e,color:t,substrate:n,relation:m,callback:o=>{console.log(`${emoji("waning_gibbous_moon")}`,o),document.dispatchEvent(new CustomEvent(`${m}-end`,{detail:o}))}}}))});
+
+export default (view = true,property='',color = 'black', substrate={},relation=''  )=>{
+    return new Promise(function (resolve, reject) {
+        document.addEventListener(`${relation}-end`, async (event)=>{
+            console.log(event.detail.data)
+            resolve(event.detail.data)
+        })
+        document.dispatchEvent( new CustomEvent(`${relation}`, {
+            detail: {
+                '/':relation,
+                view: view,
+                property:property,
+                color:color,
+                substrate:substrate,
+                relation:relation,
+                callback: (obj) =>{
+                    document.dispatchEvent( new CustomEvent(`${relation}-end`,{
+                        detail:{ data: obj }
+                    }))
+                }
+            }
+        }))
+    })
+}

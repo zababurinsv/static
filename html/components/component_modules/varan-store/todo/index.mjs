@@ -1,1 +1,14 @@
-import*as mutations from"./mutations";import*as actions from"./actions";import*as getters from"./getters";export default{state:{loadedTodos:[],loadedInProgress:[],loadedInDone:[]},mutations:mutations,actions:actions,getters:getters};
+import * as mutations from './mutations'
+import * as actions from './actions'
+import * as getters from './getters'
+
+export default {
+  state: {
+    loadedTodos: [],
+    loadedInProgress: [],
+    loadedInDone: []
+  },
+  mutations,
+  actions,
+  getters
+}

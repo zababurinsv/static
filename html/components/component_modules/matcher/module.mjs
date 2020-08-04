@@ -1,1 +1,379 @@
-"use strict";import database from"/static/html/components/component_modules/matcher/matcher/database.mjs";import draggable from"/static/html/components/component_modules/crop/this/varan-crop-tool/utils/draggable.mjs";import movePos from"/static/html/components/component_modules/crop/this/varan-crop-tool/utils/cropMove.mjs";import crop from"/static/html/components/component_modules/crop/crop.mjs";import convert from"/static/html/components/component_modules/convert/convert.mjs";const dragEle=[".c-crop--drap_eline",".c-crop--drap_sline",".c-crop--drap_wline",".c-crop--drap_nline",".c-crop--drap_e",".c-crop--drap_s",".c-crop--drap_w",".c-crop--drap_n",".c-crop--drap_ne",".c-crop--drap_se",".c-crop--drap_sw",".c-crop--drap_nw"];function dom(){}function colorLog(t,r,...o){switch(r=r||"black"){case"success":r="Green";break;case"info":r="DodgerBlue";break;case"error":r="Red";break;case"warning":r="Orange"}console.log("%c"+t,"color:"+r,...o)}let external=[];external.func=[],external.func.crop=[],external.func.afterCrop=function(t){};let init=async function(t){dom.staticProperty=t.this,t.crop={};for(let r in crop.crop)t.crop[`${r}`]=crop.crop[`${r}`];t.crop.func.tool={};for(let r in external.func)t.crop.func.tool[`${r}`]=external.func[r];return t.crop.func.convert=await convert.init(),t.crop.this.height=0,t.crop.this.top=0,t.crop.this.left=0,t.crop.this.width=0,t.crop.this.marginTop=0,t.crop.this.marginLeft=0,t.crop.this.startPos=[0,0],t.crop.this.cropTimer=null,t.crop.this.startSize=null,t.crop.this.url=t.upload.url,t.crop.this.previewJson=[{width:0,height:0}],t.crop.watch.previewJson=[{width:0,height:0}],t.crop.watch.convert=await convert.init(t),t.crop.watch=proxy(t.crop.watch),t.crop.watch.updateSize=t.crop.func.updateSize,t.crop.watch["c-preview"]=t.crop.func["c-preview"],t.crop.watch.elWidth=0,t.crop.watch.elHeight=0,t.crop.watch.cursorTop=0,t.crop.watch.cursorLeft=0,t.crop.watch.left=0,t.crop.watch.top=0,t.crop.watch.end=!1,t.crop.watch.startPos=0,t.crop.watch.scale=t.crop.this.scale,t.crop.watch.originImgSize=0,t.crop.watch.previewImgSize=0,t.crop.func.tool.style(t),t};const handler={get:function(t,r){return t[r]},set:function(t,r,o){return t[r]=o,"c-crop--area"in t==!1||"updateSize"in t==!1||"previewImgSize"in t==!1||"c-crop--cut"in t==!1||"cursorLeft"in t==!1||"cursorTop"in t==!1||"cut"in t==!1||"elHeight"in t==!1||"elWidth"in t==!1||"height"in t==!1||"imgH"in t==!1||"imgW"in t==!1||"end"in t==!1||"width"in t==!1||!0===t.end&&("end"===r||t.updateSize(t,dom.staticProperty)),t}};function proxy(t){return t=new Proxy(t,handler)}external.func.style=function(t){console.log(`{a[*'style'])t-${t}`,t),dom.staticProperty.querySelector(".c-crop--area").style.display="block";let r=getComputedStyle(dom.staticProperty.querySelector(".c-crop--preview"),"width").width;return r=r.substr(0,r.length-2),t.crop.this.previewJson[0].height=r,t.crop.this.previewJson[0].width=r,t.crop.watch.previewJson[0].height=r,t.crop.watch.previewJson[0].width=r,t},external.func.crop.cropUrl=function(t){return new Promise(function(r,o){console.log("~~~~~~~~cropUrl~~~~~~~~~~",t),init(t).then(t=>{t.crop.func.setImage(t),t.crop.func.tool.mounted(t),t.crop.func.setSize(t);let o=0;t.this.querySelector(".saveImg").addEventListener("click",e=>{colorLog("~~~~~~~~<matcher-save-imgages>~~~~~~~~~~","#FF4500",e),o=e.timeStamp;let c=dom.staticProperty.querySelector(".org"),n=t.crop.func.convert.clearnPx(dom.staticProperty.querySelector(".preview").style.top),i=t.crop.func.convert.clearnPx(dom.staticProperty.querySelector(".preview").style.left),p=t.crop.func.convert.clearnPx(dom.staticProperty.querySelector(".preview").style.width),a=t.crop.func.convert.clearnPx(dom.staticProperty.querySelector(".preview").style.height),s=t.crop.func.convert.vwToPixel(36),l=t.crop.func.convert.vwToPixel(36),h=dom.staticProperty.querySelector(".preview").naturalWidth,u=dom.staticProperty.querySelector(".preview").naturalHeight;i=parseInt(i,10),n=parseInt(n,10),p=parseInt(p,10),a=parseInt(a,10),s=parseInt(s,10),l=parseInt(l,10);var f=document.createElement("canvas");f.width=s,f.height=l,f.getContext("2d").drawImage(c,0,0,h,u,i,n,p,a),t.upload.url=f.toDataURL("image/png").replace("image/png","image/octet-stream"),f.toBlob(function(o){var e=URL.createObjectURL(o);t.slot?t.upload.object=t.slot:t.upload.object=t.parent,t.upload.file=o,t.upload.content=t.this.querySelector(".content").value,t.this.querySelector(".modal").style.display="none",r(t),URL.revokeObjectURL(e)},"image/jpeg",.95)},!0)})})},external.func.crop.mounted=async function(t){return t=await crop.crop.func.setSize(t)},external.func.mounted=function(t){return new Promise(function(r,o){t.crop.this.$cropArea=t.this.querySelector(".c-crop--area");for(let r=0;r<dragEle.length;r++)t.crop.func.tool.dragCall(t,r);t.crop.func.tool.dragCallLocation(t)})},external.func.dragCall=function(t,r){let o=t.this.querySelector(dragEle[r]);draggable(o,{start:r=>{t.crop.this.startSize=t.crop.func.tool.getDragSize(r,t)},drag:o=>{t.crop.func.tool.handleDrag(o,r,t)},end:o=>{t.crop.func.tool.handleDrag(o,r,t)}})},external.func.dragCallLocation=function(t){return new Promise(function(r,o){draggable(t.this.querySelector(".c-crop--drap_screen"),{start:r=>{t.crop.this.startPos=[r.x,r.y]},drag:r=>{t.crop.func.tool.handleDragLocation(r,t)},end:r=>{t.crop.func.tool.handleDragLocation(r,t)}})})},external.func.handleDrag=function(t,r,o){return new Promise(function(e,c){o.crop.this.json=o.crop.func.tool.getDragSize(t,o),movePos[r](o.crop.this,o.crop.this.json,o.crop.this.startSize),o.crop.func.tool.handleSize(!0,o),o.crop.func.tool.drapSizeUpdate(o.crop.this.width,o.crop.this.height,o.crop.this.top,o.crop.this.left,o),clearTimeout(o.crop.this.cropTimer),o.crop.this.cropTimer=setTimeout(()=>{o.crop.func.tool.afterCrop(o)},200)})},external.func.getDragSize=function(t,r){const o=r.crop.this.$cropArea.querySelector(".c-crop--drap"),e=r.crop.this.$cropArea.getBoundingClientRect(),c=o.getBoundingClientRect();let n={x:t.clientX,y:t.clientY,t:c.top,b:c.bottom,l:c.left,r:c.right,w:c.width,h:c.height,screen:e};return n.ratio=n.w/n.h,n},external.func.getCoord=function(t,r,o,e,c){return{p0:[t=c.crop.this.scale*t,r=c.crop.this.scale*r],p1:[t+(o=c.crop.this.scale*o),r],p2:[t+o,r+(e=c.crop.this.scale*e)],p3:[t,r+e],w:o,h:e,l:t,t:r}},external.func.drapSizeUpdate=function(t,r,o,e,c){return new Promise(function(n,i){c.crop.this.elWidth=t,c.crop.this.elHeight=r,c.crop.this.cursorTop=o,c.crop.this.cursorLeft=e,c.crop.watch.elWidth=t,c.crop.watch.elHeight=r,c.crop.watch.cursorTop=o,c.crop.watch.cursorLeft=e,c.crop.this.coord=c.crop.func.tool.getCoord(e,o,t,r,c),c.crop.func.setPreviewSize(c)})},external.func.range2=function(t,r,o){return t<=0?0:t>o-r?o-r:t},external.func.handleSize=function(t,r){return new Promise(function(o,e){if(r.crop.this.left=r.crop.func.tool.range2(r.crop.this.left,r.crop.this.width,r.crop.this.cropJson.w),r.crop.this.top=r.crop.func.tool.range2(r.crop.this.top,r.crop.this.height,r.crop.this.cropJson.h),t){let t=r.crop.this.cropJson.w-r.crop.this.left,o=r.crop.this.cropJson.h-r.crop.this.top;r.crop.this.cropJson.r?t<r.crop.this.width?(r.crop.this.width=t,r.crop.this.height=r.crop.this.width/r.crop.this.cropJson.r):o<r.crop.this.height&&(r.crop.this.height=o,r.crop.this.width=r.crop.this.height*r.crop.this.cropJson.r):(t<r.crop.this.width&&(r.crop.this.width=t),o<r.crop.this.height&&(r.crop.this.height=o))}})},external.func.verify=function(t){return t<0&&(t=0),t},external.func.verifyRB=function(t){return t<0},external.func.handleDragLocation=function(t,r){return new Promise(function(o,e){let c=t.clientX,n=t.clientY;r.crop.this.top=r.crop.func.tool.verify(n-r.crop.this.startPos[1]+r.crop.this.top),r.crop.this.left=r.crop.func.tool.verify(c-r.crop.this.startPos[0]+r.crop.this.left),r.crop.this.startPos=[c,n],r.crop.watch.top=r.crop.func.tool.verify(n-r.crop.this.startPos[1]+r.crop.this.top),r.crop.watch.left=r.crop.func.tool.verify(c-r.crop.this.startPos[0]+r.crop.this.left),r.crop.watch.startPos=[c,n],clearTimeout(r.crop.this.cropTimer),r.crop.this.cropTimer=setTimeout(()=>{r.crop.func.tool.afterCrop(r)},200)})},external.func.getParentElement=function(t,r){return new Promise(function(o,e){return-1===t.className.indexOf(r)?(t=t.parentNode,this.getParentElement(t,r)):t})};export default{database:database,external:external};
+'use strict'
+import database from '/static/html/components/component_modules/matcher/matcher/database.mjs'
+import draggable from '/static/html/components/component_modules/crop/this/varan-crop-tool/utils/draggable.mjs'
+import movePos from '/static/html/components/component_modules/crop/this/varan-crop-tool/utils/cropMove.mjs'
+import crop from '/static/html/components/component_modules/crop/crop.mjs'
+import convert from '/static/html/components/component_modules/convert/convert.mjs'
+const dragEle = ['.c-crop--drap_eline', '.c-crop--drap_sline', '.c-crop--drap_wline', '.c-crop--drap_nline', '.c-crop--drap_e', '.c-crop--drap_s', '.c-crop--drap_w', '.c-crop--drap_n', '.c-crop--drap_ne', '.c-crop--drap_se', '.c-crop--drap_sw', '.c-crop--drap_nw']
+function dom () { }
+function colorLog (message, color, ...args) {
+  color = color || 'black'
+  switch (color) {
+    case 'success':
+      color = 'Green'
+      break
+    case 'info':
+      color = 'DodgerBlue'
+      break
+    case 'error':
+      color = 'Red'
+      break
+    case 'warning':
+      color = 'Orange'
+      break
+    default:
+  }
+  console.log('%c' + message, 'color:' + color, ...args)
+}
+let external = []
+external['func'] = []
+external['func']['crop'] = []
+external['func']['afterCrop'] = function (obj) {
+  /// /console.log(`{a[*'afterCrop'])t-${obj}`, obj)
+}
+let init = async function (obj) {
+  dom['staticProperty'] = obj['this']
+  obj['crop'] = {}
+  for (let key in crop['crop']) {
+    obj['crop'][`${key}`] = crop['crop'][`${key}`]
+  }
+  obj['crop']['func']['tool'] = {}
+  for (let key in external['func']) {
+    obj['crop']['func']['tool'][`${key}`] = external['func'][key]
+  }
+  obj['crop']['func']['convert'] = await convert['init']()
+  obj['crop']['this']['height'] = 0
+  obj['crop']['this']['top'] = 0
+  obj['crop']['this']['left'] = 0
+  obj['crop']['this']['width'] = 0
+  obj['crop']['this']['marginTop'] = 0
+  obj['crop']['this']['marginLeft'] = 0
+  obj['crop']['this']['startPos'] = [0, 0]
+  obj['crop']['this']['cropTimer'] = null
+  obj['crop']['this']['startSize'] = null
+  obj['crop']['this']['url'] = obj['upload']['url']
+  obj['crop']['this']['previewJson'] = [{ width: 0, height: 0 }]
+  obj['crop']['watch']['previewJson'] = [{ width: 0, height: 0 }]
+  obj['crop']['watch']['convert'] = await convert['init'](obj)
+  obj['crop']['watch'] = proxy(obj['crop']['watch'])
+  obj['crop']['watch']['updateSize'] = obj['crop']['func']['updateSize']
+  obj['crop']['watch']['c-preview'] = obj['crop']['func']['c-preview']
+  obj['crop']['watch']['elWidth'] = 0
+  obj['crop']['watch']['elHeight'] = 0
+  obj['crop']['watch']['cursorTop'] = 0
+  obj['crop']['watch']['cursorLeft'] = 0
+  obj['crop']['watch']['left'] = 0
+  obj['crop']['watch']['top'] = 0
+  obj['crop']['watch']['end'] = false
+  obj['crop']['watch']['startPos'] = 0
+  obj['crop']['watch']['scale'] = obj['crop']['this']['scale']
+  obj['crop']['watch']['originImgSize'] = 0
+  obj['crop']['watch']['previewImgSize'] = 0
+  obj['crop']['func']['tool']['style'](obj)
+  return obj
+}
+
+const handler = {
+  get: function (obj, prop) {
+    return obj[prop]
+  },
+  set: function (obj, prop, value) {
+    obj[prop] = value
+    if ('c-crop--area' in obj === false ||
+        'updateSize' in obj === false ||
+        'previewImgSize' in obj === false ||
+        'c-crop--cut' in obj === false ||
+        'cursorLeft' in obj === false ||
+        'cursorTop' in obj === false ||
+        'cut' in obj === false ||
+        'elHeight' in obj === false ||
+        'elWidth' in obj === false ||
+        'height' in obj === false ||
+        'imgH' in obj === false ||
+        'imgW' in obj === false ||
+        'end' in obj === false ||
+        'width' in obj === false) {
+    } else {
+      if (obj['end'] === true) {
+        if (prop === 'end') {} else {
+          obj['updateSize'](obj, dom['staticProperty'])
+        }
+      }
+    }
+    return obj
+  }
+}
+
+function proxy (obj) {
+  obj = new Proxy(obj, handler)
+  return obj
+}
+external['func']['style'] = function (obj) {
+  console.log(`{a[*'style'])t-${obj}`, obj)
+  dom['staticProperty'].querySelector('.c-crop--area').style.display = 'block'
+  let styles = getComputedStyle(dom['staticProperty'].querySelector('.c-crop--preview'), 'width').width
+  styles = styles.substr(0, styles.length - 2)
+  obj['crop']['this']['previewJson'][0]['height'] = styles
+  obj['crop']['this']['previewJson'][0]['width'] = styles
+  obj['crop']['watch']['previewJson'][0]['height'] = styles
+  obj['crop']['watch']['previewJson'][0]['width'] = styles
+  return obj
+}
+
+external['func']['crop']['cropUrl'] = function (obj) {
+  return new Promise(function (resolve, reject) {
+    console.log('~~~~~~~~cropUrl~~~~~~~~~~', obj)
+    init(obj).then(obj => {
+      obj['crop']['func']['setImage'](obj)
+      obj['crop']['func']['tool']['mounted'](obj)
+      obj['crop']['func']['setSize'](obj)
+      let t = 0
+      obj['this'].querySelector('.saveImg').addEventListener('click', (event) => {
+        colorLog(`~~~~~~~~<matcher-save-imgages>~~~~~~~~~~`, '#FF4500', event)
+        t = event.timeStamp
+        let image = dom['staticProperty'].querySelector('.org')
+        let sy = obj['crop']['func']['convert']['clearnPx'](dom['staticProperty'].querySelector('.preview').style.top)
+        let sx = obj['crop']['func']['convert']['clearnPx'](dom['staticProperty'].querySelector('.preview').style.left)
+        let dWidth = obj['crop']['func']['convert']['clearnPx'](dom['staticProperty'].querySelector('.preview').style.width)
+        let dHeight = obj['crop']['func']['convert']['clearnPx'](dom['staticProperty'].querySelector('.preview').style.height)
+        let cWidth = obj['crop']['func']['convert']['vwToPixel'](36)
+        let cHeight = obj['crop']['func']['convert']['vwToPixel'](36)
+
+        let naturalWidth = dom['staticProperty'].querySelector('.preview').naturalWidth
+        let naturalHeight = dom['staticProperty'].querySelector('.preview').naturalHeight
+        sx = parseInt(sx, 10)
+        sy = parseInt(sy, 10)
+        dWidth = parseInt(dWidth, 10)
+        dHeight = parseInt(dHeight, 10)
+        cWidth = parseInt(cWidth, 10)
+        cHeight = parseInt(cHeight, 10)
+        var canvas = document.createElement('canvas')
+        canvas.width = cWidth
+        canvas.height = cHeight
+        var ctx = canvas.getContext('2d')
+        ctx.drawImage(image, 0, 0, naturalWidth, naturalHeight, sx, sy, dWidth, dHeight)
+
+        obj['upload']['url'] = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream')
+        canvas.toBlob(function (blob) {
+          var url = URL.createObjectURL(blob)
+          if (!obj['slot']) {
+            obj['upload']['object'] = obj['parent']
+          } else {
+            obj['upload']['object'] = obj['slot']
+          }
+          obj['upload']['file'] = blob
+          obj['upload']['content'] = obj['this'].querySelector('.content').value
+          obj['this'].querySelector('.modal').style.display = 'none'
+          resolve(obj)
+          URL.revokeObjectURL(url)
+        }, 'image/jpeg', 0.95)
+      }, true)
+    })
+  })
+}
+
+external['func']['crop']['mounted'] = async function (obj) {
+  /// /console.log('~~~~~~~~~~~~~~~mounted~~Crop~~~~~~~~~~~~~~~~~')
+  obj = await crop['crop']['func']['setSize'](obj)
+  return obj
+}
+external['func']['mounted'] = function (obj) {
+  return new Promise(function (resolve, reject) {
+    /// /console.log(`{a[*'mounted'])t-${obj['this'].querySelector('.c-crop--area')}`, obj['this'].querySelector('.c-crop--area'))
+
+    obj['crop']['this']['$cropArea'] = obj['this'].querySelector('.c-crop--area')
+    /// /console.log('~~~~~!!!!~~~~~~~~~~mounted~~Tool~~~~~~~~~~~~~', obj)
+    for (let i = 0; i < dragEle.length; i++) {
+      obj['crop']['func']['tool']['dragCall'](obj, i)
+    }
+    obj['crop']['func']['tool']['dragCallLocation'](obj)
+  })
+}
+external['func']['dragCall'] = function (obj, i) {
+  /// /console.log('~~~~~~!!!!~~~~~~~~~dragCall~~~~~~!!!!~~~~~~~~~~~~~')
+  let target = obj['this'].querySelector(dragEle[i])
+  draggable(target, {
+    start: (event) => {
+      /// /console.log('~~~~~~!!!!~~~~~~~~~dragCall~~~start~~~~~!!!!~~~~~~~~', event)
+      obj['crop']['this']['startSize'] = obj['crop']['func']['tool']['getDragSize'](event, obj)
+    },
+    drag: (event) => {
+      /// /console.log('~~~~~~!!!!~~~~~~~~~dragCall~~~drag~~~~~!!!!~~~~~~~~', event)
+      obj['crop']['func']['tool']['handleDrag'](event, i, obj)
+    },
+    end: (event) => {
+      /// /console.log('~~~~~~!!!!~~~~~~~~~dragCall~~~end~~~~~!!!!~~~~~~~~', event)
+      obj['crop']['func']['tool']['handleDrag'](event, i, obj)
+    }
+  })
+}
+external['func']['dragCallLocation'] = function (obj) {
+  return new Promise(function (resolve, reject) {
+    /// /console.log('~~~~~~~!!!!~~~~~~~~dragCallLocation~~~~~~!!!~~~~~~~', obj)
+    draggable(obj['this'].querySelector('.c-crop--drap_screen'), {
+      start: (event) => {
+        /// /console.log('~~~~~~~!!!!~~~~~~~~dragCallLocation~~~~~~start~~~~~~!!!~~~~~~~', event.x, event.y)
+        obj['crop']['this']['startPos'] = [event.x, event.y]
+      },
+      drag: (event) => {
+        /// /console.log('~~~~~~~~!!!!~~~~~~~dragCallLocation~~~drag~~~~~~!!!!~~~~~~~~~~', event)
+        obj['crop']['func']['tool']['handleDragLocation'](event, obj)
+      },
+      end: (event) => {
+        /// /console.log('~~~~~~~~!!!!~~~~~~~dragCallLocation~~~~~end~~~~!!!!~~~~~~~~~~', event)
+        obj['crop']['func']['tool']['handleDragLocation'](event, obj)
+      }
+    })
+  })
+}
+external['func']['handleDrag'] = function (event, i, obj) {
+  return new Promise(function (resolve, reject) {
+    obj['crop']['this']['json'] = obj['crop']['func']['tool']['getDragSize'](event, obj)
+    movePos[i](obj['crop']['this'], obj['crop']['this']['json'], obj['crop']['this']['startSize'])
+    obj['crop']['func']['tool']['handleSize'](true, obj)
+    obj['crop']['func']['tool']['drapSizeUpdate'](obj['crop']['this']['width'], obj['crop']['this']['height'], obj['crop']['this']['top'], obj['crop']['this']['left'], obj)
+    clearTimeout(obj['crop']['this']['cropTimer'])
+    obj['crop']['this']['cropTimer'] = setTimeout(() => {
+      obj['crop']['func']['tool']['afterCrop'](obj)
+    }, 200)
+  })
+}
+
+external['func']['getDragSize'] = function (event, obj) {
+  /// /console.log('~~~~~~~~~~~~~getDragSize~~~~~~~~~~~1~~~~~~~')
+  const el = obj['crop']['this']['$cropArea'].querySelector('.c-crop--drap')
+  const screen = obj['crop']['this']['$cropArea'].getBoundingClientRect()
+  const rect = el.getBoundingClientRect()
+  let json = {
+    x: event.clientX,
+    y: event.clientY,
+    t: rect.top,
+    b: rect.bottom,
+    l: rect.left,
+    r: rect.right,
+    w: rect.width,
+    h: rect.height,
+    screen: screen
+  }
+  json.ratio = json.w / json.h
+  return json
+}
+
+external['func']['getCoord'] = function (l, t, w, h, obj) {
+  l = obj['crop']['this'].scale * l
+  t = obj['crop']['this'].scale * t
+  w = obj['crop']['this'].scale * w
+  h = obj['crop']['this'].scale * h
+  return {
+    p0: [l, t],
+    p1: [l + w, t],
+    p2: [l + w, t + h],
+    p3: [l, t + h],
+    w: w,
+    h: h,
+    l: l,
+    t: t
+  }
+}
+external['func']['drapSizeUpdate'] = function (w, h, t, l, obj) {
+  return new Promise(function (resolve, reject) {
+    /// /console.log('~~~~~~~~~~~~~~drapSizeUpdate~~~~~~~~~~~~~~~~~~~', w, h, t, l)
+    obj['crop']['this'].elWidth = w
+    obj['crop']['this'].elHeight = h
+    obj['crop']['this'].cursorTop = t
+    obj['crop']['this'].cursorLeft = l
+    obj['crop']['watch'].elWidth = w
+    obj['crop']['watch'].elHeight = h
+    obj['crop']['watch'].cursorTop = t
+    obj['crop']['watch'].cursorLeft = l
+    obj['crop']['this'].coord = obj['crop']['func']['tool']['getCoord'](l, t, w, h, obj)
+
+    /// /console.log('~~~~~~~~~~~~~~~getCoord~~~~~~~~~~~~~~~~~', obj['crop']['this']['coord'])
+    obj['crop']['func']['setPreviewSize'](obj)
+  })
+}
+external['func']['range2'] = function (pos, val, mainW) {
+  /// /console.log('~~~~~~~!!!!!~~~~~~~~range2~~~~~~~~~~!!!!!~~~~~~~~~')
+  return pos <= 0 ? 0 : pos > mainW - val ? mainW - val : pos
+}
+
+external['func']['handleSize'] = function (isSize, obj) {
+  return new Promise(function (resolve, reject) {
+    /// /console.log('~~~~~~~~!!!!!~~~~~~~handleSize~~~~~~!!!!!~~~~~~~~~~~~~', obj)
+    obj['crop']['this'].left = obj['crop']['func']['tool']['range2'](obj['crop']['this'].left, obj['crop']['this'].width, obj['crop']['this'].cropJson.w)
+    obj['crop']['this'].top = obj['crop']['func']['tool']['range2'](obj['crop']['this'].top, obj['crop']['this'].height, obj['crop']['this'].cropJson.h)
+    if (isSize) {
+      let d1 = obj['crop']['this'].cropJson.w - obj['crop']['this'].left
+      let d2 = obj['crop']['this'].cropJson.h - obj['crop']['this'].top
+      if (obj['crop']['this'].cropJson.r) {
+        if (d1 < obj['crop']['this'].width) {
+          obj['crop']['this'].width = d1
+          obj['crop']['this'].height = obj['crop']['this'].width / obj['crop']['this'].cropJson.r
+        } else if (d2 < obj['crop']['this'].height) {
+          obj['crop']['this'].height = d2
+          obj['crop']['this'].width = obj['crop']['this'].height * obj['crop']['this'].cropJson.r
+        }
+      } else {
+        if (d1 < obj['crop']['this'].width) {
+          obj['crop']['this'].width = d1
+        }
+        if (d2 < obj['crop']['this'].height) {
+          obj['crop']['this'].height = d2
+        }
+      }
+    }
+  })
+}
+
+external['func']['verify'] = function (obj) {
+  if (obj < 0) {
+    obj = 0
+  }
+  return obj
+}
+external['func']['verifyRB'] = function (obj) {
+  if (obj < 0) {
+    return true
+  } else {
+    return false
+  }
+}
+external['func']['handleDragLocation'] = function (event, obj) {
+  return new Promise(function (resolve, reject) {
+    /// /console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', event)
+    let x = event.clientX
+    let y = event.clientY
+
+    obj['crop']['this']['top'] = obj['crop']['func']['tool']['verify']((y - obj['crop']['this']['startPos'][1] + obj['crop']['this']['top']))
+    obj['crop']['this']['left'] = obj['crop']['func']['tool']['verify']((x - obj['crop']['this']['startPos'][0] + obj['crop']['this']['left']))
+    obj['crop']['this']['startPos'] = [x, y]
+
+    obj['crop']['watch']['top'] = obj['crop']['func']['tool']['verify']((y - obj['crop']['this']['startPos'][1] + obj['crop']['this']['top']))
+    obj['crop']['watch']['left'] = obj['crop']['func']['tool']['verify']((x - obj['crop']['this']['startPos'][0] + obj['crop']['this']['left']))
+    obj['crop']['watch']['startPos'] = [x, y]
+
+    /// /console.log('~~~~~~~!!!!~~~~~~~~handleDragLocation~~~~~!!!!~~~~~~~~~~~~~~', obj['crop']['watch'].imgW, obj['crop']['watch'].imgH, obj['crop']['this'].top, obj['crop']['this'].left)
+    clearTimeout(obj['crop']['this']['cropTimer'])
+    obj['crop']['this']['cropTimer'] = setTimeout(() => {
+      obj['crop']['func']['tool']['afterCrop'](obj)
+    }, 200)
+  })
+}
+
+external['func']['getParentElement'] = function (p, className) {
+  return new Promise(function (resolve, reject) {
+    /// /console.log('~~~~~~!!!!!~~~~~~~~~getParentElement~~~~~~!!!!~~~~~~~~~~~~~')
+    const classNames = p.className
+    if (classNames.indexOf(className) === -1) {
+      p = p.parentNode
+      return this.getParentElement(p, className)
+    } else {
+      return p
+    }
+  })
+}
+
+export default {
+  database,
+  external
+}

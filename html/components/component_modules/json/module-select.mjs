@@ -1,1 +1,501 @@
-import isEmpty from"/static/html/components/component_modules/isEmpty/isEmpty.mjs";import Helper from"/static/html/components/component_modules/json/module-helper.mjs";import colorlog from"/static/html/components/component_modules/colorLog/colorLog.mjs";import TRANSFORM from"/static/html/components/component_modules/json/module-transform.mjs";let SELECT={},root={};SELECT.$progress=!1,SELECT.$selected=!1,SELECT.staticProperty={},SELECT.staticProperty.view={},SELECT.transform=((e,t,o)=>new Promise(async(r,E)=>{try{SELECT.$parsed=[],SELECT.$progress=null;let s=e;try{t&&(s=JSON.parse(e))}catch(e){}if(SELECT.$template_root=SELECT.$selected_root,String.prototype.$root=s,Number.prototype.$root=s,Function.prototype.$root=s,Array.prototype.$root=s,Boolean.prototype.$root=s,root=s,SELECT.$selected&&SELECT.$selected.length>0)SELECT.$selected.sort(function(e,t){return console.assert(!1),t.path.length-e.path.length}).forEach(function(e){console.assert(!1);let t=TRANSFORM.run(e.object,s,o);SELECT.$template_root=Helper.resolve(SELECT.$template_root,e.path,t),SELECT.$selected_root=SELECT.$template_root,e.object=t}),SELECT.$selected.sort(function(e,t){return e.index-t.index});else{console.assert(!1,SELECT.$selected_root,s);let e=await TRANSFORM.run(SELECT.$selected_root,s,o);SELECT.$template_root=await Helper.resolve(SELECT.$template_root,"",e),SELECT.$selected_root=SELECT.$template_root}delete String.prototype.$root,delete Number.prototype.$root,delete Function.prototype.$root,delete Array.prototype.$root,delete Boolean.prototype.$root,(e=>{r(e)})(SELECT)}catch(e){(e=>{E(e)})({_:"transform",error:e})}})),SELECT.transformWith=((e,t,o,r)=>new Promise(async(E,s)=>{SELECT.staticProperty.view=r;try{isEmpty(SELECT.$progress)&&(SELECT.$progress=null),isEmpty(SELECT.$parsed)&&(SELECT.$parsed=[]),isEmpty(o)||(SELECT=Object.assign(SELECT,o));let l={};l=isEmpty(e.template)?e:e.template,isEmpty(t)&&(e.serialized=t);try{t&&(l=JSON.parse(e))}catch(e){}if(SELECT.$template_root=l,String.prototype.$root=SELECT.$selected_root,Number.prototype.$root=SELECT.$selected_root,Function.prototype.$root=SELECT.$selected_root,Array.prototype.$root=SELECT.$selected_root,Boolean.prototype.$root=SELECT.$selected_root,root=SELECT.$selected_root,SELECT.$selected&&SELECT.$selected.length>0)SELECT.$selected.sort(function(e,t){return t.path.length-e.path.length}).forEach(function(e){console.assert(!1);let t=TRANSFORM.run(l,e.object,r);SELECT.$selected_root=Helper.resolve(SELECT.$selected_root,e.path,t),e.object=t}),SELECT.$selected.sort(function(e,t){return e.index-t.index});else{colorlog(r,"TRANSFORM","2",e,"transformWith");let t=await TRANSFORM.run(l,SELECT.$selected_root,r);colorlog(r,"out TRANSFORM in Helper.resolve","2",e,"transformWith"),SELECT.$selected_root=await Helper.resolve(SELECT.$selected_root,"",t)}delete String.prototype.$root,delete Number.prototype.$root,delete Function.prototype.$root,delete Array.prototype.$root,delete Boolean.prototype.$root,colorlog(r,"end","2",SELECT,"transformWith"),(e=>{E(e)})(SELECT)}catch(e){(e=>{s(e)})({_:"error menu",error:e})}})),SELECT.transformWith=((e,t,o,r=!0)=>new Promise(async(E,s)=>{try{isEmpty(SELECT.$progress)&&(SELECT.$progress=null),isEmpty(SELECT.$parsed)&&(SELECT.$parsed=[]),isEmpty(o)||(SELECT=Object.assign(SELECT,o));let l={};l=isEmpty(e.template)?e:e.template,isEmpty(t)&&(e.serialized=t);try{t&&(l=JSON.parse(e))}catch(e){}if(SELECT.$template_root=l,String.prototype.$root=SELECT.$selected_root,Number.prototype.$root=SELECT.$selected_root,Function.prototype.$root=SELECT.$selected_root,Array.prototype.$root=SELECT.$selected_root,Boolean.prototype.$root=SELECT.$selected_root,root=SELECT.$selected_root,SELECT.$selected&&SELECT.$selected.length>0)SELECT.$selected.sort(function(e,t){return t.path.length-e.path.length}).forEach(function(e){console.assert(!1);let t=TRANSFORM.run(l,e.object,r);SELECT.$selected_root=Helper.resolve(SELECT.$selected_root,e.path,t),e.object=t}),SELECT.$selected.sort(function(e,t){return e.index-t.index});else{colorlog(r,"TRANSFORM","2",e,"transformWith");let t=await TRANSFORM.run(l,SELECT.$selected_root,r);colorlog(r,"out TRANSFORM in Helper.resolve","2",e,"transformWith"),SELECT.$selected_root=await Helper.resolve(SELECT.$selected_root,"",t)}delete String.prototype.$root,delete Number.prototype.$root,delete Function.prototype.$root,delete Array.prototype.$root,delete Boolean.prototype.$root,colorlog(r,"end","2",SELECT,"transformWith"),(e=>{E(e)})(SELECT)}catch(e){(e=>{s(e)})({_:"error menu",error:e})}})),SELECT.select=((e,t,o,r)=>new Promise(async function(E,s){SELECT.staticProperty.view=r;try{isEmpty(t)||(e.filter=t),isEmpty(o)||(e.serialized=o);let l={};l=isEmpty(e.this)?e:e.this;try{o&&(l=JSON.parse(e))}catch(e){}if(t?(SELECT.$selected=[],await SELECT.exec(l,"",t)):SELECT.$selected=null,l&&(await Helper.is_array(l)||"object"==typeof l)){SELECT.$progress||(await Helper.is_array(l)?(SELECT.$val=[],SELECT.$selected_root=[]):(SELECT.$val={},SELECT.$selected_root={}));let e=Object.keys(l);for(let t=0;t<e.length;t++)SELECT.$val[`${e[t]}`]=l[`${e[t]}`],SELECT.$selected_root[`${e[t]}`]=l[`${e[t]}`];colorlog(r,{assert:!1,property:l},"function",SELECT,"SELECT.select")}else SELECT.$val=l,SELECT.$selected_root=l;SELECT.$progress=!0,(e=>{colorlog(SELECT.staticProperty.view,{end:!0,property:"~~~ end SELECT.select end ~~~"},"function",e,"SELECT.select"),E(e)})(SELECT)}catch(e){s({_:"error menu",error:e})}})),SELECT.exec=((e,t,o,r)=>new Promise(async function(r,E){try{if("string"==typeof e);else if(await Helper.is_array(e))for(let r=0;r<e.length;r++)await SELECT.exec(e[r],t+"["+r+"]",o);else for(let r in e)if("$root"!==r){if(o(r,e[r])){let o=SELECT.$selected.length;SELECT.$selected.push({index:o,key:r,path:t,object:e,value:e[r]})}await SELECT.exec(e[r],t+'["'+r+'"]',o)}}catch(e){s={_:"exec",error:e},console.log("~~~ err ~~~",s),E(s)}var s})),SELECT.objects=((e={_:"SELECT",SELECT:void 0})=>new Promise(async function(t,o){isEmpty(e.SELECT)||(SELECT=e.SELECT),SELECT.$progress=null,SELECT.$selected?t(SELECT.$selected.map(function(e){return e.object})):t([SELECT.$selected_root])})),SELECT.keys=((e={_:"SELECT",SELECT:void 0})=>new Promise(async function(t,o){isEmpty(e.SELECT)||(SELECT=e.SELECT),SELECT.$progress=null,SELECT.$selected?t(SELECT.$selected.map(function(e){return e.key})):Array.isArray(SELECT.$selected_root)?t(Object.keys(SELECT.$selected_root).map(function(e){return parseInt(e)})):t(Object.keys(SELECT.$selected_root))})),SELECT.paths=((e={_:"SELECT",SELECT:void 0})=>new Promise(async function(t,o){isEmpty(e.SELECT)||(SELECT=e.SELECT),SELECT.$progress=null,SELECT.$selected?t(SELECT.$selected.map(function(e){return e.path})):Array.isArray(SELECT.$selected_root)?t(Object.keys(SELECT.$selected_root).map(function(e){return"["+e+"]"})):t(Object.keys(SELECT.$selected_root).map(function(e){return'["'+e+'"]'}))})),SELECT.values=((e={_:"SELECT",SELECT:void 0})=>new Promise(async function(t,o){isEmpty(e.SELECT)||(SELECT=e.SELECT),SELECT.$progress=null,SELECT.$selected?t(SELECT.$selected.map(function(e){return e.value})):t(Object.values(SELECT.$selected_root))})),SELECT.root=((e={_:"SELECT",SELECT:void 0})=>new Promise(async function(t,o){isEmpty(e.SELECT)||(SELECT=e.SELECT),SELECT.$progress=null,t(SELECT.$selected_root)}));export default SELECT;
+import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty_t.mjs'
+import Helper from '/static/html/components/component_modules/json/module-helper.mjs'
+import colorlog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
+import TRANSFORM from '/static/html/components/component_modules/json/module-transform.mjs'
+let SELECT ={}
+let root ={}
+SELECT['$progress'] = false
+SELECT['$selected'] = false
+SELECT.staticProperty = {}
+SELECT.staticProperty.view = {}
+SELECT.transform = (obj, serialized,view) => {
+    return new Promise(async (resolve, reject) => {
+        let out = (obj) => {
+            resolve(obj)
+        }
+        let err = (error) => {
+            reject(error)
+        }
+        try {
+            SELECT.$parsed = [];
+            SELECT.$progress = null;
+            /*
+            'selected' is an array that contains items that looks like this:
+
+            {
+              key: The selected key,
+              path: The path leading down to the selected key,
+              object: The entire object that contains the currently selected key/val pair
+              value: The selected value
+            }
+            */
+            let data = obj;
+            try {
+                if (serialized) data = JSON.parse(obj);
+            } catch (error) { }
+
+            // since we're assuming that the template has been already selected, the $template_root is $selected_root
+            SELECT.$template_root = SELECT.$selected_root;
+
+            String.prototype.$root = data;
+            Number.prototype.$root = data;
+            Function.prototype.$root = data;
+            Array.prototype.$root = data;
+            Boolean.prototype.$root = data;
+            root = data;
+
+            if (SELECT.$selected && SELECT.$selected.length > 0) {
+                SELECT.$selected.sort(function(a, b) {
+                    console.assert(false)
+                    // sort by path length, so that deeper level items will be replaced first
+                    // TODO: may need to look into edge cases
+                    return b.path.length - a.path.length;
+                }).forEach(function(selection) {
+                    console.assert(false)
+                    // parse selected
+                    let parsed_object = TRANSFORM.run(selection.object, data, view);
+                    // apply the result to root
+                    SELECT.$template_root = Helper.resolve(SELECT.$template_root, selection.path, parsed_object);
+                    SELECT.$selected_root = SELECT.$template_root;
+
+                    // update selected object with the parsed result
+                    selection.object = parsed_object;
+                });
+                SELECT.$selected.sort(function(a, b) {
+                    return a.index - b.index;
+                });
+            } else {
+                console.assert(false, SELECT.$selected_root, data)
+                let parsed_object = await TRANSFORM.run(SELECT.$selected_root, data, view);
+                // apply the result to root
+                SELECT.$template_root = await Helper.resolve(SELECT.$template_root, '', parsed_object);
+                SELECT.$selected_root = SELECT.$template_root;
+            }
+            delete String.prototype.$root;
+            delete Number.prototype.$root;
+            delete Function.prototype.$root;
+            delete Array.prototype.$root;
+            delete Boolean.prototype.$root;
+            out(SELECT);
+
+        }catch (e) {
+            err({
+                _:'transform',
+                error: e
+            })
+        }
+    })
+}
+SELECT.transformWith = (obj,serialized, selected, view) => {
+    return new Promise(async (resolve, reject) => {
+        SELECT.staticProperty.view = view
+        let out = (obj) => {
+            resolve(obj)
+        }
+        let err = (error) => {
+            reject(error)
+        }
+        try{
+            if(isEmpty(SELECT.$progress)){
+                SELECT.$progress = null;
+            }
+            if(isEmpty(SELECT.$parsed)){
+                SELECT.$parsed = [];
+            }
+            if(isEmpty(selected)){
+            }else{
+                SELECT = Object.assign(SELECT,selected);
+            }
+
+            let template = {}
+            if(isEmpty(obj.template)){
+                template = obj;
+            }else{
+                template = obj.template;
+            }
+            if(isEmpty(serialized)){
+                obj.serialized = serialized
+            }
+            try {
+                if (serialized){
+                    template = JSON.parse(obj);
+                }
+            } catch (error) { }
+            SELECT.$template_root = template;
+            String.prototype.$root = SELECT.$selected_root;
+            Number.prototype.$root = SELECT.$selected_root;
+            Function.prototype.$root = SELECT.$selected_root;
+            Array.prototype.$root = SELECT.$selected_root;
+            Boolean.prototype.$root = SELECT.$selected_root;
+            root = SELECT.$selected_root;
+            // generate new $selected_root
+            if (SELECT.$selected && SELECT.$selected.length > 0) {
+                SELECT.$selected.sort(function(a, b) {
+                    // sort by path length, so that deeper level items will be replaced first
+                    // TODO: may need to look into edge cases
+                    return b.path.length - a.path.length;
+                }).forEach(function(selection) {
+                    console.assert(false)
+                    //SELECT.$selected.forEach(function(selection) {
+                    // parse selected
+                    let parsed_object = TRANSFORM.run(template, selection.object, view);
+
+                    // apply the result to root
+                    SELECT.$selected_root =  Helper.resolve(SELECT.$selected_root, selection.path, parsed_object);
+
+                    // update selected object with the parsed result
+                    selection.object = parsed_object;
+                });
+                SELECT.$selected.sort(function(a, b) {
+                    return a.index - b.index;
+                });
+            } else {
+                colorlog(view, 'TRANSFORM', '2', obj,'transformWith')
+                let parsed_object = await TRANSFORM.run(template, SELECT.$selected_root, view);
+                colorlog(view, 'out TRANSFORM in Helper.resolve', '2', obj,'transformWith')
+                // apply the result to root
+                SELECT.$selected_root = await Helper.resolve(SELECT.$selected_root, '', parsed_object);
+            }
+            delete String.prototype.$root;
+            delete Number.prototype.$root;
+            delete Function.prototype.$root;
+            delete Array.prototype.$root;
+            delete Boolean.prototype.$root;
+
+            colorlog(view, 'end', '2', SELECT,'transformWith')
+            out(SELECT);
+        }catch (e) {
+            err({
+                _:'error menu',
+                error: e
+            })
+        }
+    })
+}
+
+SELECT.transformWith = (obj,serialized, selected,view= true) => {
+    return new Promise(async (resolve, reject) => {
+        let out = (obj) => {
+            resolve(obj)
+        }
+        let err = (error) => {
+            reject(error)
+        }
+        try{
+            //colorlog('>~~~~~~~~~ SELECT.transformWith ~~~~~~~~~<','#6203fc', SELECT)
+            // console.assert(false, SELECT.$progress)
+            if(isEmpty(SELECT.$progress)){
+                SELECT.$progress = null;
+            }
+            if(isEmpty(SELECT.$parsed)){
+                SELECT.$parsed = [];
+            }
+
+            if(isEmpty(selected)){
+            }else{
+                SELECT = Object.assign(SELECT,selected);
+            }
+
+            let template = {}
+            if(isEmpty(obj.template)){
+                template = obj;
+            }else{
+                template = obj.template;
+            }
+            if(isEmpty(serialized)){
+                obj.serialized = serialized
+            }
+            try {
+                if (serialized){
+                    template = JSON.parse(obj);
+                }
+            } catch (error) { }
+            SELECT.$template_root = template;
+            String.prototype.$root = SELECT.$selected_root;
+            Number.prototype.$root = SELECT.$selected_root;
+            Function.prototype.$root = SELECT.$selected_root;
+            Array.prototype.$root = SELECT.$selected_root;
+            Boolean.prototype.$root = SELECT.$selected_root;
+            root = SELECT.$selected_root;
+            // generate new $selected_root
+            if (SELECT.$selected && SELECT.$selected.length > 0) {
+                SELECT.$selected.sort(function(a, b) {
+                    // sort by path length, so that deeper level items will be replaced first
+                    // TODO: may need to look into edge cases
+                    return b.path.length - a.path.length;
+                }).forEach(function(selection) {
+                    console.assert(false)
+                    //SELECT.$selected.forEach(function(selection) {
+                    // parse selected
+                    let parsed_object = TRANSFORM.run(template, selection.object, view);
+
+                    // apply the result to root
+                    SELECT.$selected_root =  Helper.resolve(SELECT.$selected_root, selection.path, parsed_object);
+
+                    // update selected object with the parsed result
+                    selection.object = parsed_object;
+                });
+                SELECT.$selected.sort(function(a, b) {
+                    return a.index - b.index;
+                });
+            } else {
+                colorlog(view, 'TRANSFORM', '2', obj,'transformWith')
+                let parsed_object = await TRANSFORM.run(template, SELECT.$selected_root, view);
+                colorlog(view, 'out TRANSFORM in Helper.resolve', '2', obj,'transformWith')
+                // apply the result to root
+                SELECT.$selected_root = await Helper.resolve(SELECT.$selected_root, '', parsed_object);
+            }
+            delete String.prototype.$root;
+            delete Number.prototype.$root;
+            delete Function.prototype.$root;
+            delete Array.prototype.$root;
+            delete Boolean.prototype.$root;
+
+            colorlog(view, 'end', '2', SELECT,'transformWith')
+            out(SELECT);
+        }catch (e) {
+            err({
+                _:'error menu',
+                error: e
+            })
+        }
+    })
+}
+SELECT.select = (obj,filter, serialized,view) =>{
+    return new Promise(async function (resolve, reject) {
+        SELECT.staticProperty.view = view
+        let out = (obj) => {
+            colorlog(SELECT.staticProperty.view , {end:true, property:'~~~ end SELECT.select end ~~~'},'function', obj, 'SELECT.select')
+            resolve(obj)
+        }
+        let err = (error) => {
+            reject(error)
+        }
+        try{
+
+            if(!isEmpty(filter)){
+                obj.filter = filter
+            }
+            if(!isEmpty(serialized)){
+                obj.serialized = serialized
+            }
+            // iterate '$selected'
+            //
+            /*
+            SELECT.$selected = [{
+              value {
+                '{{#include}}': {
+                  '{{#each items}}': {
+                    'type': 'label',
+                    'text': '{{name}}'
+                  }
+                }
+              },
+              path: '$jason.head.actions.$load'
+              ...
+            }]
+            */
+            let json = {}
+            if(isEmpty(obj.this)){
+                json = obj;
+            }else{
+                json = obj.this
+            }
+
+            try {
+                if (serialized){
+                    json = JSON.parse(obj);
+                }
+            } catch (error) { }
+
+            if (filter) {
+                SELECT.$selected = [];
+                await SELECT.exec(json, '', filter);
+            } else {
+                SELECT.$selected = null;
+            }
+
+            if (json && (await Helper.is_array(json) || typeof json === 'object')) {
+                if (!SELECT.$progress) {
+
+                    // initialize
+                    if (await Helper.is_array(json)) {
+                        SELECT.$val = [];
+                        SELECT.$selected_root = [];
+                    } else {
+                        SELECT.$val = {};
+                        SELECT.$selected_root = {};
+                    }
+                }
+
+                let keys = Object.keys(json)
+                for(let i = 0; i < keys.length;i++){
+                    SELECT.$val[`${keys[i]}`] = json[`${keys[i]}`];
+                    SELECT.$selected_root[`${keys[i]}`] = json[`${keys[i]}`];
+                }
+                // console.assert(false)
+                colorlog(view, {
+                    assert:false,
+                    property: json
+                }, 'function',SELECT,'SELECT.select')
+            } else {
+                SELECT.$val = json;
+                SELECT.$selected_root = json;
+            }
+            SELECT.$progress = true; // set the 'in progress' flag
+            out(SELECT);
+
+        }catch (e) {
+            err({
+                _:'error menu',
+                error: e
+            })
+        }
+    })
+}
+SELECT.exec = (current, path, filter,view) => {
+    return  new Promise(async function (resolve, reject) {
+        let out = (obj) => {
+            resolve(obj)
+        }
+        let err = (error) => {
+            console.log('~~~ err ~~~', error)
+            reject(error)
+        }
+        try {
+            // if current matches the pattern, put it in the selected array
+            if (typeof current === 'string') {
+                // leaf node should be ignored
+                // we're lookin for keys only
+            } else if (await Helper.is_array(current)) {
+                for (let i=0; i<current.length; i++) {
+                    await SELECT.exec(current[i], path+'['+i+']', filter);
+                }
+            } else {
+                // object
+                for (let key in current) {
+                    // '$root' is a special key that links to the root node
+                    // so shouldn't be used to iterate
+                    if (key !== '$root') {
+                        if (filter(key, current[key])) {
+                            let index = SELECT.$selected.length;
+                            SELECT.$selected.push({
+                                index: index,
+                                key: key,
+                                path: path,
+                                object: current,
+                                value: current[key],
+                            });
+                        }
+                        await SELECT.exec(current[key], path+'["'+key+'"]', filter);
+                    }
+                }
+            }
+
+
+        }catch (e) {
+            err({
+                _:'exec',
+                error: e
+            })
+        }
+    })
+}
+
+// Terminal methods
+SELECT.objects = (obj = {_:'SELECT', SELECT:undefined}) =>{
+    return  new Promise(async function (resolve, reject) {
+        if(isEmpty(obj.SELECT)){
+        }else{
+            SELECT = obj.SELECT
+        }
+
+        SELECT.$progress = null;
+        if (SELECT.$selected) {
+            resolve(SELECT.$selected.map(function(item) { return item.object; }));
+        } else {
+            resolve([SELECT.$selected_root]);
+        }
+
+
+    })
+}
+SELECT.keys = (obj = {_:'SELECT', SELECT:undefined}) => {
+    return  new Promise(async function (resolve, reject) {
+        if(isEmpty(obj.SELECT)){
+        }else{
+            SELECT = obj.SELECT
+        }
+
+
+        SELECT.$progress = null;
+        if (SELECT.$selected) {
+            resolve(SELECT.$selected.map(function(item) { return item.key; }));
+        } else {
+            if (Array.isArray(SELECT.$selected_root)) {
+                resolve(Object.keys(SELECT.$selected_root).map(function(key) { return parseInt(key); }));
+            } else {
+                resolve(Object.keys(SELECT.$selected_root));
+            }
+        }
+
+
+    })
+
+}
+SELECT.paths = (obj = {_:'SELECT', SELECT:undefined}) => {
+    return  new Promise(async function (resolve, reject) {
+        if(isEmpty(obj.SELECT)){
+        }else{
+            SELECT = obj.SELECT
+        }
+
+        SELECT.$progress = null;
+        if (SELECT.$selected) {
+            resolve(SELECT.$selected.map(function(item) { return item.path; }));
+        } else {
+            if (Array.isArray(SELECT.$selected_root)) {
+                resolve(Object.keys(SELECT.$selected_root).map(function(item) {
+                    // key is integer
+                    return '[' + item + ']';
+                }))
+            } else {
+                resolve( Object.keys(SELECT.$selected_root).map(function(item) {
+                    // key is string
+                    return '["' + item + '"]';
+                }))
+            }
+        }
+
+    })
+}
+SELECT.values = (obj = {_:'SELECT', SELECT:undefined}) => {
+    return  new Promise(async function (resolve, reject) {
+        if(isEmpty(obj.SELECT)){
+        }else{
+            SELECT = obj.SELECT
+        }
+        SELECT.$progress = null;
+        if (SELECT.$selected) {
+            resolve(SELECT.$selected.map(function(item) { return item.value; }));
+        } else {
+            resolve(Object.values(SELECT.$selected_root));
+        }
+
+
+    })
+}
+SELECT.root = (obj = {_:'SELECT', SELECT:undefined}) =>{
+    return  new Promise(async function (resolve, reject) {
+        if(isEmpty(obj.SELECT)){
+        }else{
+            SELECT = obj.SELECT
+        }
+        SELECT.$progress = null;
+        // //colorlog('>~~~~~~~~~ SELECT.root ~~~$selected_root_out~~~~<','red',SELECT.$selected_root)
+        resolve(SELECT.$selected_root)
+    })
+
+}
+
+export default SELECT

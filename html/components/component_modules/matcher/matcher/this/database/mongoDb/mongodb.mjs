@@ -1,1 +1,726 @@
-import conf from"/static/html/components/component_modules/matcher/matcher/this/database/config/index.mjs";let server="now-0.6";function colorLog(e,o,...t){switch(o=o||"black"){case"success":o="Green";break;case"info":o="DodgerBlue";break;case"error":o="Red";break;case"warning":o="Orange"}console.log("%c"+e,"color:"+o,...t)}function blobToDataURL(e,o){if("string"==typeof e)o(e);else{var t=new FileReader;t.onload=function(e){o(e.target.result)},t.readAsDataURL(e)}}function setData(e){return new Promise((o,t)=>{let n=new FormData;for(let o in e)n.append(o,e[o]);o(n)})}function request(e,o,t,n){return new Promise(async(s,a)=>{switch(n){case"GET":console.log("~~~~~~~~~~GET~~~~~~~~~~~~~~~~~~",`${t}${o}`),fetch(`${t}${o}`,{method:n}).then(function(e){if(e.ok)return e.json();throw new Error("HTTP error, status = "+e.status)}).then(function(e){let o={get_n:[]};o.mongo=e,o.get_n.push(e),s(o)}).catch(function(e){let n={get_n:[],mongo:[]};console.error("в запросе произошла ошибка",`${t}${o}`,e),a(n)});break;case"POST":console.log("~~~~~~~~~~POST~~~~~~~~~~~~~~~~~~",`${t}${o}`);let r=await setData(e);fetch(`${t}${o}`,{method:n,body:r}).then(function(e){if(e.ok)return e.json();throw new Error("HTTP error, status = "+e.status)}).then(function(o){e.get_n=[],e.mongo=o,e.get_n.push(o),s(e)}).catch(function(e){console.assert(!1,"mongoDb",e,`${t}${o}`)});break;case"PUT":console.log("~~~~~~~~~~PUT~~~~~~~~~~~~~~~~~~",`${t}${o}`);let c=await setData(e);fetch(`${t}${o}`,{method:n,body:c}).then(function(e){if(e.ok)return e.json();throw new Error("HTTP error, status = "+e.status)}).then(function(o){e.get_n=[],e.mongo=o,e.get_n.push(o),s(e)}).catch(function(e){console.assert(!1,"mongoDb",e)});break;case"DELETE":let i=await setData(e);fetch(`${t}${o}`,{method:n,body:i}).then(function(e){if(e.ok)return e.json();throw new Error("HTTP error, status = "+e.status)}).then(function(e){s({delete:"ok"})}).catch(function(e){console.error("ошибка в запросе mongo",e),s({mongo:"null"})});break;default:console.warn("необрабатываемый тип запроса",e[props])}})}function webdav(e,o,t,n){return new Promise((s,a)=>{bundle.default(e,"export",async function(a,r){switch(n){case"GET":console.log("~~~~~~~~~~~~GET~~~~~~~~~~~~~~~~",`${t}${o}`),r.axios.get(`${t}${o}`).then(function(o){console.log(o),e.get_n=[],e.mongo=o.data,e.get_n.push(o.data),s(e)}).catch(function(e){console.log(e)}).finally(function(){});break;case"POST":console.log("~~~~~~~~~~~~POST~~~~~~~~~~~~~~~~",`${t}${o}`),fetch(`${t}${o}`,{method:n,headers:{Accept:"application/json","Content-Type":"application/json",mode:"no-cors"},body:JSON.stringify(e)}).then(function(e){if(e.ok)return e.json();throw new Error("HTTP error, status = "+e.status)}).then(function(o){e.get_n=[],e.mongo=o,e.get_n.push(o),s(e)}).catch(function(e){console.assert(!1,"mongoDb",e,`${t}${o}`)});break;case"PUT":console.log("~~~~~~~~~~~~PUT~~~~~~~~~~~~~~~~",`${t}${o}`),fetch(`${t}${o}`,{method:n,headers:{Accept:"application/json","Content-Type":"application/json",mode:"no-cors"},body:JSON.stringify(e.data)}).then(function(e){if(e.ok)return e.json();throw new Error("HTTP error, status = "+e.status)}).then(function(o){e.get_n=[],e.mongo=o,e.get_n.push(o),s(e)}).catch(function(e){console.assert(!1,"mongoDb",e)});break;case"DELETE":console.log("~~~~~~~~~~~~DELETE~~~~~~~~~~~~~~~~",`${t}${o}`),fetch(`${t}${o}`,{method:n,headers:{"Content-Type":"application/json",mode:"no-cors"},bodu:e.id}).then(function(e){if(e.ok)return e.json();throw new Error("HTTP error, status = "+e.status)}).then(function(e){s({delete:"ok"})}).catch(function(e){console.error("ошибка в запросе mongo",e),s({mongo:"null"})});break;default:console.warn("необрабатываемый тип запроса",e[props])}})})}function setFile(e){return new Promise((o,t)=>{let n={},s={},a={};"varan-rss"===(a=e.slot?"edit"===e.slot?e.parent:e.slot:e.parent)&&(a="varan-slider-news"),e.set[a].file?blobToDataURL(e.set[a].file,function(t){e.set[a].file=t,n=e.set[a],s={[`${e.set.object}`]:n,id:e.set.id,object:e.set.object};fetch(`${conf[server[0]][server[1]]}${e.set.object}`,{method:"POST",headers:{Accept:"application/json","Content-Type":"application/json",mode:"no-cors"},body:JSON.stringify(s)}).then(function(e){if(e.ok)return e.json()}).then(function(t){colorLog("~~~~~~~~~~~~~<mongo-out>~~~~~~~~~~~~~","green",t),e.mongo=t,e.mongo[a]._id=t._id,o(e)}).catch(function(e){console.assert(!1,"mongoDb",e)})}):(e.set?(n=e.set[a],s={[`${e.set.object}`]:n,id:e.set.id,object:e.set.object}):console.assert(!1,"должен быть obj[set], mongoDB matcher"),colorLog("~~~~~~~<mongo-setFile>~~~~~~~","green",s),fetch(`${conf[server[0]][server[1]]}${s.object}`,{method:"POST",headers:{Accept:"application/json","Content-Type":"application/json",mode:"no-cors"},body:JSON.stringify(s)}).then(function(e){return e.ok?e.json():e}).then(function(t){404===t.status?(colorLog("~~~~~~~~~~~~~<404>~~~~~~~~~~~~~","green",t),e.mongo=[],o(e)):(colorLog("~~~~~~~~~~~~~<mongo-set-out>~~~~~~~~~~~~~","green",t),e.mongo=t,e.mongo[a]._id=t._id,o(e))}).catch(function(e){console.assert(!1,"mongoDb",e)}))})}function delFile(e){return new Promise((o,t)=>{let n={};n=e.delete?`${conf[server[0]][server[1]]}${e.delete.object}/${e.delete.id}`:`${conf[server[0]][server[1]]}${e.delObj.component}/${e.delObj.id}`;fetch(n,{method:"DELETE",headers:{Accept:"application/json","Content-Type":"application/json",mode:"no-cors"}}).then(t=>{o(e)})})}function getFile(e){return new Promise((o,t)=>{let n="";void 0===(n=e.slot?"edit"===e.slot?e.parent:e.slot:e.parent)&&console.assert(!1,"нет слота и родителя"),"varan-rss"===n&&(n="varan-slider-news"),console.log("dddddd",`${conf[server[0]][server[1]]}${n}`);fetch(`${conf[server[0]][server[1]]}${n}`,{method:"GET",headers:{Accept:"application/json","Content-Type":"application/json",mode:"no-cors"}}).then(function(e){if(e.ok)return e.json();if(404===e.status)return e;throw new Error("HTTP error, status = "+e.status)}).then(function(t){if(404===t.status)e.mongo=[],o(e);else{colorLog("~~~~~~~~~~~~<mongo-get-out>~~~~~~~~~~~~","green",t);let n={};n=e.slot?"edit"===e.slot?e.parent:e.slot:e.parent,e.mongo=t;for(let o=0;o<e.mongo.length;o++)"varan-slider-news"===e.mongo[o].object||(e.mongo[o][n]._id=e.mongo[o]._id);o(e)}}).catch(function(e){console.assert(!1,"mongoDb",e)})})}function updFile(e){return new Promise(async(o,t)=>{let n={};if(e.update){console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~",e.update.object),console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~",conf[server[0]][server[1]]),console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~",e.update.id),n=`${conf[server[0]][server[1]]}${e.update.object}/${e.update.id}`;let t={},s={};"varan-rss"===(s=e.slot?e.slot:e.parent)&&(s="varan-slider-news"),t=e.update?e.update[s]?e.update[s]:e.update:e.upload[s]?e.upload[s]:e.upload;let a={[`${e.update.object}`]:t,object:e.update.object};void 0===t&&console.assert(!1,e),fetch(n,{method:"PUT",headers:{Accept:"application/json","Content-Type":"application/json",mode:"no-cors"},body:JSON.stringify(a)}).then(function(e){if(e.ok)return e.json();throw new Error("HTTP error, status = "+e.status)}).then(function(t){colorLog("~~~~~~~~~~~~~~~~~~<mongo-out-update>~~~~~~~~~~~~~~~~~~","green",t),e.mongo=t,e.update=null,o(e)}).catch(function(e){console.assert(!1,"mongoDb",e)})}else console.log("нет объекта update"),o(e)})}function updateClientId(e){return new Promise(async(o,t)=>{colorLog("~~~~~~~~~~<mongo-update>~~~~~~~~~~","green",e.update);let n={};n=`${conf[server[0]][server[1]]}${e.update.object}/local/${e.update._id}`;let s={};s=e.slot?"edit"===e.slot?e.parent:e.slot:e.parent,e.update||console.assert(!1,e),e.update._id||console.assert(!1,"должен быть _id mongo",e);let a={[`${e.update.object}`]:e.update[s],object:e.update.object,id:e.update[s].id};colorLog("~~~~~~~~~~<mongo-update>~~~~~~~~~~","green",a),fetch(n,{method:"PUT",headers:{Accept:"application/json","Content-Type":"application/json",mode:"no-cors"},body:JSON.stringify(a)}).then(function(e){if(e.ok)return e.json();throw new Error("HTTP error, status = "+e.status)}).then(function(t){colorLog("~~~~~~~<mongo-update-out-json>~~~~~~~","green",t),e.get_n=[],e.mongo=t,e.get_n.push(t),colorLog("~~~~~~~<mongo-update-out>~~~~~~~","green",e.get_n),o(e)}).catch(function(e){console.assert(!1,"mongoDb",e)})})}server=server.split("-");export default{delFile:e=>(console.log("------\x3e deleteImages mongo"),delFile(e)),setFile:e=>(console.log("------\x3e setImages mongo"),setFile(e)),getFile:e=>(console.log("------\x3e getImages mongo"),getFile(e)),updFile:e=>(console.log("------\x3e updateImages mongo"),updFile(e)),updateClientId:e=>(console.log("------\x3e updateClientId mongo"),updateClientId(e)),create:(e,o,t,...n)=>new Promise(async function(t,n){switch(console.log(`[(mongo)${e[o]}]`),o){case"channel":t(await request(e,"/create-channel",conf.mongo.web,"POST"));break;case"bidChanel":t(await request(e,"/create-channelBid",conf.mongo.web,"POST"));break;case"item":t(await request(e,"/create-item",conf.mongo.web,"POST"));break;case"itemBid":t(await request(e,"/create-itemBid",conf.mongo.web,"POST"));break;case"auth":t(await request(e.data,"/auth",conf.waves.web,"POST"));break;default:console.warn("необрабатываемый тип запроса",e[o])}}),get:(e,o,t,...n)=>new Promise(async function(t,n){switch(console.log(`get[(${e.input})${e[o]}]`),e[o]){case"jsonPhoto":t(await webdav(e,"/getList",conf.store.web,"GET"));break;case"feeds":t(await request(e,"/feeds",conf.mongo.web,"GET"));break;case"bids":t(await request(e,"/bids",conf.mongo.web,"GET"));break;case"itemsBid":t(await request(e,"/itemsBid",conf.mongo.web,"GET"));break;case"bidItem":t(await request(e,`/bidItem/${e.id}`,conf.mongo.web,"GET"));break;case"items":t(await request(e,"/items",conf.mongo.web,"GET"));break;case"item":t(await request(e.data,"/item",conf.mongo.web,"POST"));break;case"img":t(await webdav(e,`/img/${e.data}`,conf.store.web,"GET"));break;default:console.warn("необрабатываемый тип запроса",e[o])}}),set:(e,o,t,...n)=>new Promise(async function(t,n){switch(console.log(`${e.input}[(table)${e[o]}]`),e[o]){case"feed":t(await request(e.data,`/update-feed/${e.id}`,conf.mongo.web,"PUT"));break;case"bid":t(await request(e.data,`/update-bid/${e.id}`,conf.mongo.web,"PUT"));break;case"item":t(await request(e.data,`/add-item/${e.id}`,conf.mongo.web,"PUT"));break;case"auth":t(await request(e.data,"/verify",conf.waves.web,"POST"));break;default:console.error("необрабатываемый тип запроса",e[o])}}),update:(e,o,t,...n)=>new Promise(async function(t,n){switch(console.log(`${e.input}[(table)${e[o]}]`),e[o]){case"item":t(await request(e.data,"/update-item",conf.mongo.web,"PUT"));break;case"itemBid":t(await request(e.data,"/update-itemBid",conf.mongo.web,"PUT"));break;case"feed":console.assert(!1,e),t(await request(e,`/update-item/${e.id}`,conf.mongo.web,"PUT"));break;default:console.error("необрабатываемый тип запроса",e[o])}}),delete:(e,o,t,...n)=>new Promise(async function(t,n){switch(console.log(`${e.input}[(table)${e[o]}]`),e[o]){case"item":t(await request(e.id,"/delete-item",conf.mongo.web,"DELETE"));break;case"itemBid":t(await request(e.id,"/delete-itemBid",conf.mongo.web,"DELETE"));break;default:console.error("необрабатываемый тип запроса",e[o])}})};
+import conf from '/static/html/components/component_modules/matcher/matcher/this/database/config/index.mjs'
+
+let server = 'now-0.6'
+// let server = 'local-1.0'
+server = server.split('-')
+
+// console.assert(false, conf[server[0]][server[1]])
+function colorLog (message, color, ...args) {
+  color = color || 'black'
+  switch (color) {
+    case 'success':
+      color = 'Green'
+      break
+    case 'info':
+      color = 'DodgerBlue'
+      break
+    case 'error':
+      color = 'Red'
+      break
+    case 'warning':
+      color = 'Orange'
+      break
+    default:
+  }
+  console.log('%c' + message, 'color:' + color, ...args)
+}
+
+
+function blobToDataURL (blob, callback) {
+  if (typeof (blob) === 'string') {
+    callback(blob)
+  } else {
+    var a = new FileReader()
+    a.onload = function (e) { callback(e.target.result) }
+    a.readAsDataURL(blob)
+  }
+}
+function setData( data) {
+  return new Promise((resolve, reject) => {
+    let formData  = new FormData();
+    for(let name in data) {
+      formData.append(name, data[name]);
+    }
+    resolve(formData)
+  })
+}
+function request(obj, path,node, method) {
+  return new Promise(async (resolve, reject) => {
+
+    switch (method) {
+      case 'GET':
+        // console.log('~~~~~~~~~~GET~~~~~~~~~~~~~~~~~~',`${node}${path}`)
+        fetch(`${node}${path}`, {
+          method: method,
+        }).then(function (response) {
+          if (!response.ok) {
+            throw new Error('HTTP error, status = ' + response.status)
+          } else {
+
+            return response.json()
+          }
+        })
+            .then(function (json) {
+              let obj = {}
+              obj['get_n'] = []
+              obj['mongo'] = json
+              obj['get_n'].push(json)
+              resolve(obj)
+            })
+            .catch(function (error) {
+              let obj = {}
+              obj['get_n'] = []
+              obj['mongo'] = []
+              console.error('в запросе произошла ошибка',`${node}${path}`,  error)
+              reject(obj)
+            })
+        break
+      case 'POST':
+        console.log('~~~~~~~~~~POST~~~~~~~~~~~~~~~~~~',`${node}${path}`)
+        let post = await setData(obj)
+        fetch(`${node}${path}`, {
+          method: method,
+          body: post
+        }).then(function (response) {
+          if (!response.ok) {
+            throw new Error('HTTP error, status = ' + response.status)
+          } else {
+            return response.json()
+          }
+        })
+            .then(function (json) {
+              obj['get_n'] = []
+              obj['mongo'] = json
+              obj['get_n'].push(json)
+              resolve(obj)
+            })
+            .catch(function (error) {
+              console.assert(false, 'mongoDb', error, `${node}${path}`)
+            })
+        break
+      case 'PUT':
+        console.log('~~~~~~~~~~PUT~~~~~~~~~~~~~~~~~~',`${node}${path}`)
+          // console.assert(false, obj)
+        let update = await setData(obj)
+        fetch(`${node}${path}`, {
+          method: method,
+          body: update
+        }).then(function (response) {
+          if (!response.ok) {
+            throw new Error('HTTP error, status = ' + response.status)
+          } else {
+            return response.json()
+          }
+        })
+            .then(function (json) {
+              obj['get_n'] = []
+              obj['mongo'] = json
+              obj['get_n'].push(json)
+              resolve(obj)
+            })
+            .catch(function (error) {
+              console.assert(false, 'mongoDb', error)
+            })
+        break
+      case 'DELETE':
+        let del = await setData(obj)
+        fetch(`${node}${path}`, {
+          method: method,
+          body: del
+        }).then(function (response) {
+          if (!response.ok) {
+            throw new Error('HTTP error, status = ' + response.status)
+          } else {
+            return response.json()
+          }
+        })
+            .then(function (json) {
+
+              resolve({delete:'ok'})
+            })
+            .catch(function (error) {
+              console.error('ошибка в запросе mongo', error)
+              resolve({mongo:'null'})
+            })
+        break
+      default:
+        console.warn(`необрабатываемый тип запроса`, obj[props])
+        break
+    }
+  })
+}
+
+
+function webdav(obj, path,node, method) {
+  return new Promise((resolve, reject) => {
+    bundle['default'](obj,'export', async function (error, config) {
+      switch (method) {
+        case 'GET':
+          console.log('~~~~~~~~~~~~GET~~~~~~~~~~~~~~~~',`${node}${path}`)
+          config['axios'].get(`${node}${path}`)
+              .then(function (response) {
+                // handle success
+                console.log(response);
+                obj['get_n'] = []
+                obj['mongo'] = response['data']
+                obj['get_n'].push(response['data'])
+                resolve(obj)
+              })
+              .catch(function (error) {
+                // handle error
+                console.log(error);
+              })
+              .finally(function () {
+                // always executed
+              });
+
+          break
+        case 'POST':
+          console.log('~~~~~~~~~~~~POST~~~~~~~~~~~~~~~~',`${node}${path}`)
+          fetch(`${node}${path}`, {
+            method: method,
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'mode': 'no-cors'
+            },
+            body: JSON.stringify(obj)
+          }).then(function (response) {
+            if (!response.ok) {
+              throw new Error('HTTP error, status = ' + response.status)
+            } else {
+              return response.json()
+            }
+          })
+              .then(function (json) {
+                obj['get_n'] = []
+                obj['mongo'] = json
+                obj['get_n'].push(json)
+                resolve(obj)
+              })
+              .catch(function (error) {
+                console.assert(false, 'mongoDb', error, `${node}${path}`)
+              })
+          break
+        case 'PUT':
+          console.log('~~~~~~~~~~~~PUT~~~~~~~~~~~~~~~~',`${node}${path}`)
+          fetch(`${node}${path}`, {
+            method: method,
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'mode': 'no-cors'
+            },
+            body: JSON.stringify(obj['data'])
+          }).then(function (response) {
+            if (!response.ok) {
+              throw new Error('HTTP error, status = ' + response.status)
+            } else {
+              return response.json()
+            }
+          })
+              .then(function (json) {
+                obj['get_n'] = []
+                obj['mongo'] = json
+                obj['get_n'].push(json)
+                resolve(obj)
+              })
+              .catch(function (error) {
+                console.assert(false, 'mongoDb', error)
+              })
+          break
+        case 'DELETE':
+          console.log('~~~~~~~~~~~~DELETE~~~~~~~~~~~~~~~~',`${node}${path}`)
+          fetch(`${node}${path}`, {
+            method: method,
+            headers: {
+              'Content-Type': 'application/json',
+              'mode': 'no-cors'
+            },
+            bodu: obj['id']
+          }).then(function (response) {
+            if (!response.ok) {
+              throw new Error('HTTP error, status = ' + response.status)
+            } else {
+              return response.json()
+            }
+          })
+              .then(function (json) {
+
+                resolve({delete:'ok'})
+              })
+              .catch(function (error) {
+                console.error('ошибка в запросе mongo', error)
+                resolve({mongo:'null'})
+              })
+          break
+        default:
+          console.warn(`необрабатываемый тип запроса`, obj[props])
+          break
+      }
+
+    })
+
+  })
+}
+function setFile (obj) {
+  return new Promise((resolve, reject) => {
+    let object = {}
+    let keys = {}
+    let mongoObject = {}
+    let name = {}
+    if (!obj['slot']) {
+      name = obj['parent']
+    } else {
+      if (obj['slot'] === 'edit') {
+        name = obj['parent']
+      } else {
+        name = obj['slot']
+      }
+    }
+    if (name === 'varan-rss') { name = 'varan-slider-news' }
+    if (!obj['set'][name]['file']) {
+      if (!obj['set']) {
+        console.assert(false, 'должен быть obj[set], mongoDB matcher')
+      } else {
+        object = obj['set'][name]
+        mongoObject = {
+          [`${obj['set']['object']}`]: object,
+          id: obj['set']['id'],
+          object: obj['set']['object']
+        }
+      }
+
+      colorLog(`~~~~~~~<mongo-setFile>~~~~~~~`, 'green', mongoObject)
+      fetch(`${conf[server[0]][server[1]]}${mongoObject['object']}`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'mode': 'no-cors'
+        },
+        body: JSON.stringify(mongoObject)
+      }).then(function (response) {
+        if (!response.ok) {
+          return response
+        } else {
+          return response.json()
+        }
+      }).then(function (json) {
+        if (json.status === 404) {
+          colorLog(`~~~~~~~~~~~~~<404>~~~~~~~~~~~~~`, 'green', json)
+          obj['mongo'] = []
+          resolve(obj)
+        } else {
+          colorLog(`~~~~~~~~~~~~~<mongo-set-out>~~~~~~~~~~~~~`, 'green', json)
+          obj['mongo'] = json
+          obj['mongo'][name]['_id'] = json['_id']
+          resolve(obj)
+        }
+      }).catch(function (error) {
+        console.assert(false, 'mongoDb', error)
+      })
+    } else {
+      blobToDataURL(obj['set'][name]['file'], function (file) {
+        obj['set'][name]['file'] = file
+        object = obj['set'][name]
+        mongoObject = {
+          [`${obj['set']['object']}`]: object,
+          id: obj['set']['id'],
+          object: obj['set']['object']
+        }
+        const rawResponse = fetch(`${conf[server[0]][server[1]]}${obj['set']['object']}`, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'mode': 'no-cors'
+          },
+          body: JSON.stringify(mongoObject)
+        }).then(function (response) {
+          if (!response.ok) {
+          } else {
+            return response.json()
+          }
+        }).then(function (json) {
+          colorLog(`~~~~~~~~~~~~~<mongo-out>~~~~~~~~~~~~~`, 'green', json)
+          obj['mongo'] = json
+          obj['mongo'][name]['_id'] = json['_id']
+          resolve(obj)
+        }).catch(function (error) {
+          console.assert(false, 'mongoDb', error)
+        })
+      })
+    }
+  })
+}
+function delFile (obj) {
+  return new Promise((resolve, reject) => {
+    let path = {}
+
+    if (!obj['delete']) {
+      path = `${conf[server[0]][server[1]]}${obj['delObj']['component']}/${obj['delObj']['id']}`
+    } else {
+      path = `${conf[server[0]][server[1]]}${obj['delete']['object']}/${obj['delete']['id']}`
+    }
+    // console.assert(false, obj, path)
+
+    const rawResponse = fetch(path, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'mode': 'no-cors'
+      }
+    }).then((del) => {
+      resolve(obj)
+    })
+  })
+}
+function getFile (obj) {
+  return new Promise((resolve, reject) => {
+    let req = ''
+    if (!obj['slot']) {
+      req = obj['parent']
+    } else {
+      if (obj['slot'] === 'edit') {
+        req = obj['parent']
+      } else {
+        req = obj['slot']
+      }
+    }
+    if (req === undefined) { console.assert(false, 'нет слота и родителя') }
+    if (req === 'varan-rss') { req = 'varan-slider-news' }
+
+    // console.log('obj', obj)
+    // console.assert(false , `${conf[server[0]][server[1]]}${req}`)
+
+    console.log('dddddd', `${conf[server[0]][server[1]]}${req}`)
+    const rawResponse = fetch(`${conf[server[0]][server[1]]}${req}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'mode': 'no-cors'
+      }
+    }).then(function (response) {
+      if (!response.ok) {
+        if (response.status === 404) {
+          return response
+        } else {
+          throw new Error('HTTP error, status = ' + response.status)
+        }
+      } else {
+        return response.json()
+      }
+    })
+        .then(function (json) {
+          if (json.status === 404) {
+            obj['mongo'] = []
+            resolve(obj)
+          } else {
+            colorLog(`~~~~~~~~~~~~<mongo-get-out>~~~~~~~~~~~~`, 'green', json)
+            let name = {}
+
+            if (!obj['slot']) {
+              name = obj['parent']
+            } else {
+              if (obj['slot'] === 'edit') {
+                name = obj['parent']
+              } else {
+                name = obj['slot']
+              }
+            }
+            obj['mongo'] = json
+
+            for (let key = 0; key < obj['mongo'].length; key++) {
+              if (obj['mongo'][key]['object'] === 'varan-slider-news') {
+
+              } else {
+                obj['mongo'][key][name]['_id'] = obj['mongo'][key]['_id']
+              }
+            }
+            resolve(obj)
+          }
+        })
+        .catch(function (error) {
+          console.assert(false, 'mongoDb', error)
+        })
+  })
+}
+
+function updFile (obj) {
+  return new Promise(async (resolve, reject) => {
+    let path = {}
+    if (!obj['update']) {
+      console.log('нет объекта update')
+      // console.assert(false, obj)
+      resolve(obj)
+    } else {
+      console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~', obj['update']['object'])
+      console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~', conf[server[0]][server[1]])
+      console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~', obj['update']['id'])
+      path = `${conf[server[0]][server[1]]}${obj['update']['object']}/${obj['update']['id']}`
+
+      let object = {}
+      let name = {}
+      if (!obj['slot']) {
+        name = obj['parent']
+      } else {
+        name = obj['slot']
+      }
+      if (name === 'varan-rss') { name = 'varan-slider-news' }
+      if (!obj['update']) {
+        if (!obj['upload'][name]) {
+          object = obj['upload']
+        } else {
+          object = obj['upload'][name]
+        }
+      } else {
+        if (!obj['update'][name]) {
+          object = obj['update']
+        } else {
+          object = obj['update'][name]
+        }
+      }
+
+      let mongoObject = {
+        [`${obj['update']['object']}`]: object,
+        object: obj['update']['object']
+      }
+      if (object === undefined) {
+        console.assert(false, obj)
+      }
+
+      fetch(path, {
+        method: 'PUT',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'mode': 'no-cors'
+        },
+        body: JSON.stringify(mongoObject)
+      }).then(function (response) {
+        if (!response.ok) {
+          throw new Error('HTTP error, status = ' + response.status)
+        } else {
+          return response.json()
+        }
+      })
+          .then(function (json) {
+            colorLog(`~~~~~~~~~~~~~~~~~~<mongo-out-update>~~~~~~~~~~~~~~~~~~`, 'green', json)
+            obj['mongo'] = json
+            obj['update'] = null
+            resolve(obj)
+          })
+          .catch(function (error) {
+            console.assert(false, 'mongoDb', error)
+          })
+    }
+  })
+}
+
+function updateClientId (obj) {
+  return new Promise(async (resolve, reject) => {
+    colorLog(`~~~~~~~~~~<mongo-update>~~~~~~~~~~`, 'green', obj['update'])
+    let path = {}
+    path = `${conf[server[0]][server[1]]}${obj['update']['object']}/local/${obj['update']['_id']}`
+    // console.assert(false, path)
+    let object = {}
+    let name = {}
+    if (!obj['slot']) {
+      name = obj['parent']
+    } else {
+      if (obj['slot'] === 'edit') {
+        name = obj['parent']
+      } else {
+        name = obj['slot']
+      }
+    }
+    if (!obj['update']) { console.assert(false, obj) }
+    if (!obj['update']['_id']) { console.assert(false, 'должен быть _id mongo', obj) }
+
+    let mongoObject = {
+      [`${obj['update']['object']}`]: obj['update'][name],
+      object: obj['update']['object'],
+      id: obj['update'][name]['id']
+    }
+    // console.assert(false, mongoObject)
+    colorLog(`~~~~~~~~~~<mongo-update>~~~~~~~~~~`, 'green', mongoObject)
+    fetch(path, {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'mode': 'no-cors'
+      },
+      body: JSON.stringify(mongoObject)
+    }).then(function (response) {
+      if (!response.ok) {
+        throw new Error('HTTP error, status = ' + response.status)
+      } else {
+        return response.json()
+      }
+    })
+        .then(function (json) {
+          colorLog(`~~~~~~~<mongo-update-out-json>~~~~~~~`, 'green', json)
+          obj['get_n'] = []
+          obj['mongo'] = json
+          obj['get_n'].push(json)
+          colorLog(`~~~~~~~<mongo-update-out>~~~~~~~`, 'green', obj['get_n'])
+          resolve(obj)
+        })
+        .catch(function (error) {
+          console.assert(false, 'mongoDb', error)
+        })
+  })
+}
+export default {
+
+  delFile: (obj) => {
+    console.log('------> deleteImages mongo')
+    return delFile(obj)
+  },
+  setFile: (obj) => {
+    console.log('------> setImages mongo')
+    return setFile(obj)
+  },
+  getFile: (obj) => {
+    console.log('------> getImages mongo')
+    return getFile(obj)
+  },
+  updFile: (obj) => {
+    console.log('------> updateImages mongo')
+    return updFile(obj)
+  },
+  updateClientId: (obj) => {
+    console.log('------> updateClientId mongo')
+    return updateClientId(obj)
+  },
+  create: (obj, props, data, ...args) => {
+    return new Promise( async function (resolve, reject) {
+      console.log(`[(mongo)${obj[props]}]`)
+      switch (props) {
+        case 'channel':
+          resolve(await request(obj, '/create-channel', conf['mongo']['web'], 'POST'))
+          break
+        case 'bidChanel':
+          resolve(await request(obj, '/create-channelBid', conf['mongo']['web'], 'POST'))
+          break
+        case 'item':
+          resolve(await request(obj, '/create-item', conf['mongo']['web'], 'POST'))
+          break
+        case 'itemBid':
+          resolve(await request(obj, '/create-itemBid', conf['mongo']['web'], 'POST'))
+          break
+        case 'auth':
+
+          resolve(await request(obj['data'], '/auth', conf['waves']['web'], 'POST'))
+          break
+        default:
+          console.warn(`необрабатываемый тип запроса`, obj[props])
+          break
+      }
+    })
+  },
+  get: (obj, props, data, ...args) => {
+    return new Promise( async function (resolve, reject) {
+      // console.log(`get[(${obj['input']})${obj[props]}]`)
+      switch (obj[props]) {
+        case 'jsonPhoto':
+          resolve(await webdav(obj, '/getList', conf['store']['web'], 'GET'))
+          break
+        case 'feeds':
+          let feeds = await request(obj, '/feeds', conf['mongo']['web'], 'GET')
+          resolve(feeds)
+          break
+        case 'bids':
+          let bid = await request(obj, '/bids', conf['mongo']['web'], 'GET')
+          resolve(bid)
+          break
+        case 'itemsBid':
+          let itemsBid = await request(obj, '/itemsBid', conf['mongo']['web'], 'GET')
+          resolve(itemsBid)
+          break
+        case 'bidItem':
+          let bidItem = await request(obj, `/bidItem/${obj['id']}`, conf['mongo']['web'], 'GET')
+          resolve(bidItem)
+          break
+        case 'items':
+          resolve(await request(obj, '/items', conf['mongo']['web'], 'GET'))
+          break
+        case 'item':
+          resolve(await request(obj['data'], `/item`, conf['mongo']['web'], 'POST'))
+          break
+        case 'img':
+          resolve(await webdav(obj, `/img/${obj['data']}`, conf['store']['web'], 'GET'))
+          break
+        default:
+          console.warn(`необрабатываемый тип запроса`, obj[props])
+          break
+      }
+    })
+  },
+  set: (obj, props, data, ...args) => {
+    return new Promise( async function (resolve, reject) {
+      console.log(`${obj['input']}[(table)${obj[props]}]`)
+      switch (obj[props]) {
+        case 'feed':
+          resolve(await request(obj['data'], `/update-feed/${obj['id']}`, conf['mongo']['web'], 'PUT'))
+          break
+        case 'bid':
+          resolve(await request(obj['data'], `/update-bid/${obj['id']}`, conf['mongo']['web'], 'PUT'))
+          break
+        case 'item':
+          resolve(await request(obj['data'], `/add-item/${obj['id']}`, conf['mongo']['web'], 'PUT'))
+          break
+        case 'auth':
+          resolve(await request(obj['data'], '/verify', conf['waves']['web'], 'POST'))
+          break
+        default:
+          console.error(`необрабатываемый тип запроса`, obj[props])
+          break
+      }
+
+    })
+  },
+  update: (obj, props, data, ...args) => {
+    return new Promise( async function (resolve, reject) {
+      console.log(`${obj['input']}[(table)${obj[props]}]`)
+      switch (obj[props]) {
+        case 'item':
+          resolve(await request(obj['data'], `/update-item`,conf['mongo']['web'], 'PUT'))
+          break
+        case 'itemBid':
+          resolve(await request(obj['data'], `/update-itemBid`,conf['mongo']['web'], 'PUT'))
+          break
+        case 'feed':
+          console.assert(false,obj )
+          resolve(await request(obj, `/update-item/${obj['id']}`,conf['mongo']['web'], 'PUT'))
+          break
+        default:
+          console.error(`необрабатываемый тип запроса`, obj[props])
+            break
+      }
+
+    })
+  },
+  delete: (obj, props, data, ...args) => {
+    return new Promise( async function (resolve, reject) {
+      console.log(`${obj['input']}[(table)${obj[props]}]`)
+      switch (obj[props]) {
+        case 'item':
+          // console.assert(false, obj['id'])
+          resolve(await request(obj['id'], `/delete-item`, conf['mongo']['web'], 'DELETE'))
+          break
+        case 'itemBid':
+          resolve(await request(obj['id'], `/delete-itemBid`, conf['mongo']['web'], 'DELETE'))
+          break
+        default:
+          console.error(`необрабатываемый тип запроса`, obj[props])
+          break
+      }
+
+    })
+  },
+}

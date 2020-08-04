@@ -1,1 +1,370 @@
-import conf from"/static/html/components/component_modules/matcher/matcher/this/database/config/index.mjs";import template from"/static/html/components/component_modules/template/template.mjs";import utils from"/static/html/components/component_modules/utils/utils.mjs";function webdav(t,e,a,o){return new Promise((n,s)=>{bundle.default(t,"export",async function(s,c){function r(t){return new Promise((e,a)=>{let o=new FormData;for(let e in t)o.append(e,t[e]);e(o)})}switch(o){case"GET":console.log("~~~~~~~~~~~~GET~~~~~~~~~~~~~~~~",`${a}${e}`),c.axios.get(`${a}${e}`).then(function(e){(t={}).get_n=[],t.mongo=e.data,t.get_n.push(e.data),n(t)}).catch(function(t){console.log(t)}).finally(function(){n({mongo:"null"})});break;case"POST":console.log("~~~~~~~~~~~~POST~~~~~~~~~~~~~~~~",`${a}${e}`);let s=await r(t);fetch(`${a}${e}`,{method:o,headers:{mode:"no-cors"},body:s}).then(function(t){if(t.ok)return t.json();throw new Error("HTTP error, status = "+t.status)}).then(function(e){(t=[]).get_n=[],t.mongo=e,t.get_n.push(e),n(t)}).catch(function(t){console.warn("webDav",t,`${a}${e}`),n({mongo:"null"})});break;case"PUT":console.log("~~~~~~~~~~~~PUT~~~~~~~~~~~~~~~~",`${a}${e}`);let p=await r(t);fetch(`${a}${e}`,{method:o,headers:{mode:"no-cors"},body:p}).then(function(t){if(t.ok)return t.json();throw new Error("HTTP error, status = "+t.status)}).then(function(e){t.get_n=[],t.mongo=e,t.get_n.push(e),n(t)}).catch(function(t){console.warn("webDav",t,`${a}${e}`),n({mongo:"null"})});break;case"DELETE":console.log("~~~~~~~~~~~~DELETE~~~~~~~~~~~~~~~~",`${a}${e}`),fetch(`${a}${e}`,{method:o,headers:{mode:"no-cors"}}).then(function(t){if(t.ok)return t.json();throw new Error("HTTP error, status = "+t.status)}).then(function(t){n({delete:"ok"})}).catch(function(t){console.warn("webDav",t,`${a}${e}`),n({mongo:"null"})});break;default:console.warn("необрабатываемый тип запроса",t[props])}})})}export default(t,e,...a)=>new Promise(function(o,n){let s=t=>{o(t)},c=t=>{console.log("~~~ err  ~~~",t),n(t)};switch(e){case"set":(async(t,o,n)=>{try{switch(console.log(`app(${e}[(${t.input})${t[o]}]property)`),t[o]){case"request":(async(t,e,a)=>{try{s(await webdav(t.data,"/setMail",conf.store.web,"POST"))}catch(t){c(t)}})(t,a[0],a[1],a[2],a[3]);break;case"components":(async(t,e,a)=>{try{t.path||console.assert(!1,'Должно бытьсвойтсво obj["path""]');let e=await webdav(t.data,t.path,conf.store.web,"POST"),o=[];o.push(e.mongo.data);let n=await template({input:"wabdav",data:o,type:"moderator"},"create","type",a);s(n)}catch(t){c(t)}})(t,a[0],a[1],a[2],a[3]);break;case"about":t.path||console.assert(!1,'Должно бытьсвойтсво obj["path""]');let n=await webdav(t.data,t.path,conf.store.web,"POST"),r=await template({input:"wabdav",data:n.mongo,type:"about"},"create","type");s(r);break;default:c(`new type [(${e})${t[o]}]`)}}catch(t){c(t)}})(t,a[0],a[1],a[2],a[3]);break;case"post":bundle.default(t,"export",async function(o,n){(async(t,o,r)=>{try{switch(console.log(`app(${e}[(${t.input})${t[o]}]property)`),t[o]){case"list":(async(t,e,a)=>{try{t.path||console.assert(!1,'Должно бытьсвойтсво obj["path""]');let e=await webdav(t.data,t.path,conf.store.web,"POST"),a=[];if(n.isEmpty(e.mongo));else for(let t=0;t<e.mongo.length;t++){let o=await webdav({type:"moderator",basename:e.mongo[t].basename,filename:e.mongo[t].filename},"/file",conf.store.web,"POST");a.push(o.mongo)}let o=await template({input:"wabdav",data:a,type:"moderator"},"create","type");s(o)}catch(t){c(t)}})(t,a[0],a[1],a[2],a[3]);break;default:c(`new type [(${e})${t[o]}]`)}}catch(t){c(t)}})(t,a[0],a[1],a[2],a[3])});break;case"get":(async(t,o,n)=>{try{switch(console.log(`app(${e}[(${t.input})${t[o]}]property)`),t[o]){case"components":(async(t,e,a)=>{try{t.path||console.assert(!1,'Должно бытьсвойтсво obj["path""]');let e=await webdav(t.data,t.path,conf.store.web,"GET"),a=await template({input:"wabdav",data:e.mongo,type:"moderator"},"create","type");s(a)}catch(t){c(t)}})(t,a[0],a[1],a[2],a[3]);break;case"about":(async(t,e,a)=>{try{t.path||console.assert(!1,'Должно бытьсвойтсво obj["path""]');let e=await webdav(t.data,t.path,conf.store.web,"GET"),a=await template({input:"wabdav",data:e.mongo,type:"about"},"create","type");s(a)}catch(t){c(t)}})(t,a[0],a[1],a[2],a[3]);break;case"aboutString":(async(t,e,a)=>{try{t.path||console.assert(!1,'Должно бытьсвойтсво obj["path""]');let e=await webdav(t.data,t.path,conf.store.web,"GET"),a=await utils({input:"template",data:e.mongo,type:"string2html"},"convert","type");s(a)}catch(t){c(t)}})(t,a[0],a[1],a[2],a[3]);break;default:c(`new type [(${e})${t[o]}]`)}}catch(t){c(t)}})(t,a[0],a[1],a[2],a[3]);break;case"delete":(async(t,a,o)=>{try{switch(console.log(`app(${e}[(${t.input})${t[a]}]property)`),t[a]){case"moderator":t.path||console.assert(!1,'Должно бытьсвойтсво obj["path""]');let o=await webdav(t.data,t.path,conf.store.web,"DELETE");s(o);break;default:c(`new type [(${e})${t[a]}]`)}}catch(t){c(t)}})(t,a[0],a[1],a[2],a[3]);break;case"update":(async(t,a,o)=>{try{switch(console.log(`app(${e}[(${t.input})${t[a]}]property)`),t[a]){case"components":t.path||console.assert(!1,'Должно бытьсвойтсво obj["path""]');let o=await webdav(t.data,t.path,conf.store.web,"PUT");s(o);break;default:c(`new type [(${e})${t[a]}]`)}}catch(t){c(t)}})(t,a[0],a[1],a[2],a[3]);break;default:c(`new function ${e}`)}});
+import conf from '/static/html/components/component_modules/matcher/matcher/this/database/config/index.mjs'
+import template from '/static/html/components/component_modules/template/template.mjs'
+import utils from '/static/html/components/component_modules/utils/utils.mjs'
+function webdav(obj, path,node, method) {
+    return new Promise((resolve, reject) => {
+        bundle['default'](obj,'export', async function (error, config) {
+
+            function setData( data) {
+                return new Promise((resolve, reject) => {
+                    let formData  = new FormData();
+                    for(let name in data) {
+                        formData.append(name, data[name]);
+                    }
+                    resolve(formData)
+                })
+            }
+            switch (method) {
+                case 'GET':
+                    console.log('~~~~~~~~~~~~GET~~~~~~~~~~~~~~~~',`${node}${path}`)
+                    config['axios'].get(`${node}${path}`)
+                        .then(function (response) {
+                            obj = {}
+                            obj['get_n'] = []
+                            obj['mongo'] = response['data']
+                            obj['get_n'].push(response['data'])
+                            resolve(obj)
+                        })
+                        .catch(function (error) {
+                            // handle error
+                            console.log(error);
+
+                        })
+                        .finally(function () {
+                            resolve({mongo:'null'})
+                        });
+
+                    break
+                case 'POST':
+                    console.log('~~~~~~~~~~~~POST~~~~~~~~~~~~~~~~',`${node}${path}`)
+                  let formData = await setData(obj)
+                    fetch(`${node}${path}`, {
+                        method: method,
+                        headers: {
+                            'mode': 'no-cors'
+                        },
+                        body: formData
+                    }).then(function (response) {
+                        if (!response.ok) {
+                            throw new Error('HTTP error, status = ' + response.status)
+                        } else {
+                            return response.json()
+                        }
+                    })
+                        .then(function (json) {
+                            obj = []
+                            obj['get_n'] = []
+                            obj['mongo'] = json
+                            obj['get_n'].push(json)
+                            resolve(obj)
+                        })
+                        .catch(function (error) {
+                            console.warn( 'webDav', error, `${node}${path}`)
+                            resolve({mongo:'null'})
+                        })
+                    break
+                case 'PUT':
+                    console.log('~~~~~~~~~~~~PUT~~~~~~~~~~~~~~~~',`${node}${path}`)
+                    let update = await setData(obj)
+                    // console.assert(false, obj, `${node}${path}`)
+                    fetch(`${node}${path}`, {
+                        method: method,
+                        headers: {
+                            'mode': 'no-cors'
+                        },
+                        body: update
+                    }).then(function (response) {
+                        if (!response.ok) {
+                            throw new Error('HTTP error, status = ' + response.status)
+                        } else {
+                            return response.json()
+                        }
+                    })
+                        .then(function (json) {
+                            obj['get_n'] = []
+                            obj['mongo'] = json
+                            obj['get_n'].push(json)
+                            resolve(obj)
+                        })
+                        .catch(function (error) {
+                            console.warn( 'webDav', error, `${node}${path}`)
+                            resolve({mongo:'null'})
+                        })
+                    break
+                case 'DELETE':
+                    console.log('~~~~~~~~~~~~DELETE~~~~~~~~~~~~~~~~',`${node}${path}`)
+                    fetch(`${node}${path}`, {
+                        method: method,
+                        headers: {
+                            'mode': 'no-cors'
+                        },
+                    }).then(function (response) {
+                        if (!response.ok) {
+                            throw new Error('HTTP error, status = ' + response.status)
+                        } else {
+                            return response.json()
+                        }
+                    })
+                        .then(function (json) {
+
+                            resolve({delete:'ok'})
+                        })
+                        .catch(function (error) {
+                            console.warn( 'webDav', error, `${node}${path}`)
+                            resolve({mongo:'null'})
+                        })
+                    break
+                default:
+                    console.warn(`необрабатываемый тип запроса`, obj[props])
+                    break
+            }
+
+        })
+
+    })
+}
+
+export default  (obj, func, ...args)=>{
+    return new Promise( function (resolve, reject) {
+        let out = (obj) => {
+            // console.log('~~~ out  ~~~')
+            resolve(obj)
+        }
+        let err = (error) => {
+            console.log('~~~ err  ~~~', error)
+            reject(error)
+        }
+        switch (func) {
+            case 'set':
+                (async (obj, props,data) => {
+                    try {
+                        // console.log(`app(${func}[(${obj['input']})${obj[props]}]property)`)
+                        switch (obj[props]) {
+                            case 'request':
+                                (async (obj, props,data) => {
+                                    try {
+
+                                        out(await webdav(obj['data'], '/setMail', conf['store']['web'], 'POST'))
+
+                                    } catch (e) { err(e) }
+                                })(obj, args[0], args[1], args[2], args[3])
+                                break
+                            case 'components':
+                                (async (obj, props,data) => {
+                                    try {
+
+                                        if(!obj['path']){
+                                            console.assert(false, 'Должно бытьсвойтсво obj["path""]')
+                                        }
+                                       let object = await webdav(obj['data'], obj['path'], conf['store']['web'], 'POST')
+
+                                        let objectItem = []
+                                        objectItem.push(object['mongo']['data'])
+
+                                       let temp =  await template({
+                                            input:'wabdav',
+                                            data:objectItem,
+                                            type:'moderator'
+                                        },'create', 'type', data)
+                                        out(temp)
+
+                                    } catch (e) { err(e) }
+                                })(obj, args[0], args[1], args[2], args[3])
+                                break
+                            case 'about':
+
+                                        if(!obj['path']){
+                                            console.assert(false, 'Должно бытьсвойтсво obj["path""]')
+                                        }
+                                        // console.assert(false, obj['data'])
+                                        let object = await webdav(obj['data'], obj['path'], conf['store']['web'], 'POST')
+                                        let objectItem = []
+
+
+
+                                        let temp =  await template({
+                                            input:'wabdav',
+                                            data:object['mongo'],
+                                            type:'about'
+                                        },'create', 'type')
+                                        out(temp)
+
+                                break
+                            default:
+                                err(`new type [(${func})${obj[props]}]`)
+                                break
+                        }
+                    } catch (e) { err(e) }
+                })(obj, args[0], args[1], args[2], args[3])
+                break
+            case 'post':
+                bundle['default'](obj,'export', async function (error, config) {
+
+                    (async (obj, props,data) => {
+                        try {
+                            // console.log(`app(${func}[(${obj['input']})${obj[props]}]property)`)
+                            switch (obj[props]) {
+                                case 'list':
+                                    (async (obj, props,data) => {
+                                        try {
+
+                                            if(!obj['path']){
+                                                console.assert(false, 'Должно бытьсвойтсво obj["path""]')
+                                            }
+
+                                            let object = await webdav(obj['data'], obj['path'], conf['store']['web'], 'POST')
+                                            let moderatorArray = []
+                                            if(config['isEmpty'](object['mongo'])){
+
+
+                                            }else{
+                                                for(let i = 0 ; i < object['mongo'].length; i++){
+                                                    let item = await webdav({
+                                                        type:'moderator',
+                                                        basename:object['mongo'][i]['basename'],
+                                                        filename:object['mongo'][i]['filename']
+                                                    }, '/file', conf['store']['web'], 'POST')
+
+                                                    // console.assert(false, )
+                                                    moderatorArray.push(item['mongo'])
+                                                }
+
+                                            }
+                                            let temp =  await template({
+                                                input:'wabdav',
+                                                data:moderatorArray,
+                                                type:'moderator'
+                                            },'create', 'type')
+                                            out(temp)
+                                        } catch (e) { err(e) }
+                                    })(obj, args[0], args[1], args[2], args[3])
+                                    break
+                                default:
+                                    err(`new type [(${func})${obj[props]}]`)
+                                    break
+                            }
+
+                        } catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+
+                })
+                break
+            case 'get':
+                (async (obj, props,data) => {
+                    try {
+                        // console.log(`app(${func}[(${obj['input']})${obj[props]}]property)`)
+                        switch (obj[props]) {
+                            case 'components':
+                                (async (obj, props,data) => {
+                                    try {
+
+                                        if(!obj['path']){
+                                            console.assert(false, 'Должно бытьсвойтсво obj["path""]')
+                                        }
+
+                                        let object = await webdav(obj['data'], obj['path'], conf['store']['web'], 'GET')
+
+                                        let temp =  await template({
+                                            input:'wabdav',
+                                            data:object['mongo'],
+                                            type:'moderator'
+                                        },'create', 'type')
+                                        // console.assert(false,temp )
+                                        out(temp)
+                                    } catch (e) { err(e) }
+                                })(obj, args[0], args[1], args[2], args[3])
+                                break
+                            case 'about':
+                                (async (obj, props,data) => {
+                                    try {
+
+                                        if(!obj['path']){
+                                            console.assert(false, 'Должно бытьсвойтсво obj["path""]')
+                                        }
+
+                                        let object = await webdav(obj['data'], obj['path'], conf['store']['web'], 'GET')
+                                        let temp =  await template({
+                                            input:'wabdav',
+                                            data:object['mongo'],
+                                            type:'about'
+                                        },'create', 'type')
+                                        out(temp)
+                                    } catch (e) { err(e) }
+                                })(obj, args[0], args[1], args[2], args[3])
+                                break
+                            case 'aboutString':
+                                (async (obj, props,data) => {
+                                    try {
+
+                                        if(!obj['path']){
+                                            console.assert(false, 'Должно бытьсвойтсво obj["path""]')
+                                        }
+
+                                        let object = await webdav(obj['data'], obj['path'], conf['store']['web'], 'GET')
+                                        let description  = await   utils({
+                                            input:'template',
+                                            data:  object['mongo'],
+                                            type:'string2html'
+                                        },'convert', 'type')
+                                        out(description)
+                                    } catch (e) { err(e) }
+                                })(obj, args[0], args[1], args[2], args[3])
+                                break
+                            default:
+                                err(`new type [(${func})${obj[props]}]`)
+                                break
+                        }
+                    } catch (e) { err(e) }
+                })(obj, args[0], args[1], args[2], args[3])
+                break
+            case 'delete':
+                (async (obj, props,data) => {
+                    try {
+                        // console.log(`app(${func}[(${obj['input']})${obj[props]}]property)`)
+                        switch (obj[props]) {
+                            case 'moderator':
+                                        if(!obj['path']){
+                                            console.assert(false, 'Должно бытьсвойтсво obj["path""]')
+                                        }
+
+                                        let object = await webdav(obj['data'], obj['path'], conf['store']['web'], 'DELETE')
+
+                                        out(object)
+
+                                break
+                            default:
+                                err(`new type [(${func})${obj[props]}]`)
+                                break
+                        }
+                    } catch (e) { err(e) }
+                })(obj, args[0], args[1], args[2], args[3])
+                break
+            case 'update':
+                (async (obj, props,data) => {
+                    try {
+                        // console.log(`app(${func}[(${obj['input']})${obj[props]}]property)`)
+                        switch (obj[props]) {
+                            case 'components':
+                                if(!obj['path']){
+                                    console.assert(false, 'Должно бытьсвойтсво obj["path""]')
+                                }
+
+
+                                let object = await webdav(obj['data'], obj['path'], conf['store']['web'], 'PUT')
+
+                                out(object)
+
+                                break
+                            default:
+                                err(`new type [(${func})${obj[props]}]`)
+                                break
+                        }
+                    } catch (e) { err(e) }
+                })(obj, args[0], args[1], args[2], args[3])
+                break
+            default:
+                err(`new function ${func}`)
+                break
+        }
+    })
+}

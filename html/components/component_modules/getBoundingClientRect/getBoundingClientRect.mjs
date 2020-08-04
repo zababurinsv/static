@@ -1,1 +1,40 @@
-export default(e,t,...c)=>new Promise(function(n,o){let a=e=>{console.log("~~~ err  ~~~",e),o(e)};switch(t){case"set":(async(e,o,l)=>{try{switch(console.log(`app(${t}[(${e.input})${e[o]}]property)`),e[o]){case"getBoundingClientRect":(async(e,t,c)=>{try{(e=>{console.log("~~~ out  ~~~"),n(e)})(e)}catch(e){a(e)}})(e,c[0],c[1],c[2],c[3]);break;default:a(`new type ${t}`)}}catch(e){a(e)}})(e,c[0],c[1],c[2],c[3]);break;default:a(`new function ${t}`)}});
+export default  (obj, func, ...args)=>{
+    return new Promise( function (resolve, reject) {
+        let out = (obj) => {
+            console.log('~~~ out  ~~~')
+            resolve(obj)
+        }
+        let err = (error) => {
+            console.log('~~~ err  ~~~', error)
+            reject(error)
+        }
+        switch (func) {
+            case 'set':
+                (async (obj, props,data) => {
+                    try {
+                        // console.log(`app(${func}[(${obj['input']})${obj[props]}]property)`)
+                        switch (obj[props]) {
+                            case 'getBoundingClientRect':
+                                (async (obj, props,data) => {
+                                    try {
+
+
+
+
+                                        out(obj)
+                                    } catch (e) { err(e) }
+                                })(obj, args[0], args[1], args[2], args[3])
+                                break
+                            default:
+                                err(`new type ${func}`)
+                                break
+                        }
+                    } catch (e) { err(e) }
+                })(obj, args[0], args[1], args[2], args[3])
+                break
+            default:
+                err(`new function ${func}`)
+                break
+        }
+    })
+}

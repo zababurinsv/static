@@ -1,1 +1,43 @@
-import isEmpty from"/static/html/components/component_modules/isEmpty/isEmpty.mjs";import Class from"/static/html/components/component_modules/account/module/class.mjs";export default(t={_:"type"})=>new Promise(async(t,s)=>{let c={staticProperty:{}};c.staticProperty.class=void 0;try{c.class=(()=>(isEmpty(c.staticProperty.class)&&(c.staticProperty.class=new Class),c.staticProperty.class)),isEmpty(c.staticProperty.class)&&(c.staticProperty.class=new Class),(s=>{t(s)})(c.staticProperty.class)}catch(t){(t=>{s(t)})({_:"type",error:t})}});
+export default  (obj, func, ...args)=>{
+    return new Promise( function (resolve, reject) {
+        bundle['default'](obj,null, async function (error, config) {
+
+            let out = (obj) => {
+                console.log('~~~ out  ~~~')
+                resolve(obj)
+            }
+            let err = (error) => {
+                console.log('~~~ err  ~~~', error)
+                reject(error)
+            }
+            switch (func) {
+                case 'get':
+                    (async (obj, props,data) => {
+                        try {
+                            switch (obj[props]) {
+                                case 'state':
+                                    (async (obj, props,data) => {
+                                        try {
+                                            let dappaddress = conf['account']['dappaddress'];
+                                            let baseUri = conf['account']['testnodes'];
+                                            let accountbalance = await  window['wt']['nodeInteraction']['balanceDetails'](dappaddress, baseUri)
+                                            accountbalance = accountbalance['regular'] / 100000000
+                                            out(obj)
+                                        } catch (e) { err(e) }
+                                    })(obj, args[0], args[1], args[2], args[3])
+                                    break
+                                default:
+                                    err(`new type [(${func})${obj[props]}]`)
+                                    break
+                            }
+                        } catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+                    break
+                default:
+                    err(`new function ${func}`)
+                    break
+            }
+
+        })
+    })
+}

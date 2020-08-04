@@ -1,1 +1,43 @@
-import Performance from"/static/html/components/component_modules/performance/performance.mjs";import colors from"/static/html/components/component_modules/colors/colors.mjs";let performance=Performance();export default async(e,o="time",t="black",...r)=>{if(!0===e)if(t=await colors(t),"string"==typeof r[r.length-1]){let e=!1;switch(o){case"end":case"stat":e=!0}"object"==typeof o?(o.hasOwnProperty("end")&&!0===o.end&&(e=!0,o=o.property),o.hasOwnProperty("assert")&&!0===o.assert&&console.assert(!1,"%c%O"+r[r.length-1],"color:"+t,performance.now(e,r[r.length-1],o),"[(",...r.slice(0,r.length-1),"*)",o,"]")):"end"===o&&(e=!0),"stat"===o?console.log("%c"+r[r.length-1],"color:"+t,"[(",performance.allMark,"*)",o,"]"):"assert"===o?console.assert(!1,"%c%O"+r[r.length-1],"color:"+t,performance.now(e,r[r.length-1],o),"[(",...r.slice(0,r.length-1),"*)",o,"]"):console.log("%c%O"+r[r.length-1],"color:"+t,performance.now(e,r[r.length-1],o),"[(",...r.slice(0,r.length-1),"*)",o,"]")}else console.log("%c"+o,"color:"+t,"---\x3e",...r)};
+import Performance from '/static/html/components/component_modules/performance/performance.mjs'
+import colors from '/static/html/components/component_modules/colors/colors.mjs'
+let performance = Performance()
+export default async (show, message='time', color ='black', ...args) =>{
+    if(show === true){
+        color = await colors(color)
+        if(typeof args[args.length-1] === 'string'){
+            let end = false
+            switch (message) {
+                case "end":
+                    end = true
+                    break
+                case "stat":
+                    end = true
+                    break
+                default:
+                    break
+            }
+            if(typeof message === 'object'){
+               if(message.hasOwnProperty('end') && message.end === true){
+                   end = true
+                   message = message.property
+               }
+                if(message.hasOwnProperty('assert') && message.assert === true){
+                    console.assert(false,'%c%O' + args[args.length-1],'color:' + color,performance['now'](end, args[args.length-1], message),'[(', ...args.slice(0, args.length-1),'*)',message,']')
+                }
+            }else{
+                if(message === 'end'){end = true}
+            }
+            if(message === 'stat'){
+                console.log('%c' + args[args.length-1],'color:' + color,'[(', performance.allMark,'*)',message,']')
+            }else if(message === 'assert'){
+
+                console.assert(false,'%c%O' + args[args.length-1],'color:' + color,performance['now'](end, args[args.length-1], message),'[(', ...args.slice(0, args.length-1),'*)',message,']')
+
+            }else{
+                console.log('%c%O' + args[args.length-1],'color:' + color,performance['now'](end, args[args.length-1], message),'[(', ...args.slice(0, args.length-1),'*)',message,']')
+            }
+        }else{
+            console.log('%c' + message, 'color:' + color,'--->', ...args)
+        }
+    }
+}

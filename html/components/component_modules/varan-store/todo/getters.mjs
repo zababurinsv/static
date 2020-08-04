@@ -1,1 +1,54 @@
-export const featuredTodos=(o,d)=>d.loadedTodos;export const loadedTodos=o=>o.loadedTodos.sort((o,d)=>o.date>d.date);export const featuredInProgress=(o,d)=>d.loadedInProgress;export const featuredInDone=(o,d)=>d.loadedInDone;export const loadedInProgress=o=>o.loadedInProgress.sort((o,d)=>o.date>d.date);export const loadedInDone=o=>o.loadedInDone.sort((o,d)=>o.date>d.date);export const loadedTodo=o=>d=>o.loadedTodos.find(o=>o.id===d);export const loadedProgress=o=>d=>o.loadedInProgress.find(o=>o.id===d);export const loadedDone=o=>d=>o.loadedInDone.find(o=>o.id===d);export const stateTodo=o=>o;
+export const featuredTodos = (state, getters) => {
+  // console.log('(todoG[(getters*)featuredTodos])', state, getters)
+  return getters.loadedTodos
+}
+export const loadedTodos = (state) => {
+  return state.loadedTodos.sort((todoA, todoB) => {
+    // console.log('(todoG[(getters*)loadedTodos])', todoA.date)
+    return todoA.date > todoB.date
+  })
+}
+export const featuredInProgress = (state, getters) => {
+  // console.log('(featuredInProgress[(getters*)Trello])', state, getters)
+  return getters.loadedInProgress
+}
+export const featuredInDone = (state, getters) => {
+  // console.log('(featuredInDone[(getters*)Trello])', state, getters)
+  return getters.loadedInDone
+}
+
+export const loadedInProgress = (state) => {
+  return state.loadedInProgress.sort((todoA, todoB) => {
+    return todoA.date > todoB.date
+  })
+}
+export const loadedInDone = (state) => {
+  return state.loadedInDone.sort((todoA, todoB) => {
+    return todoA.date > todoB.date
+  })
+}
+
+export const loadedTodo = (state) => {
+  return (todoId) => {
+    return state.loadedTodos.find((todo) => {
+      return todo.id === todoId
+    })
+  }
+}
+export const loadedProgress = (state) => {
+  return (todoId) => {
+    return state.loadedInProgress.find((todo) => {
+      return todo.id === todoId
+    })
+  }
+}
+export const loadedDone = (state) => {
+  return (todoId) => {
+    return state.loadedInDone.find((todo) => {
+      return todo.id === todoId
+    })
+  }
+}
+export const stateTodo = (state) => {
+  return state
+}

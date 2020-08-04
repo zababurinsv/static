@@ -1,1 +1,180 @@
-import mInterface from"./interface.mjs";import monopoly from"./monopoly.mjs";import gameplay from"./gameplay.mjs";export default{get:(e,t,...i)=>new Promise((i,n)=>{function a(e){i(e)}switch(e.type){case"chanceAction":(async(e,t,i)=>{var n=t.player[t.turn];t.chanceCards[e.chanceIndex].action(n,t),await monopoly.get({type:"updateMoney"},t),15===e.chanceIndex||n.human||(n.AI.alertList="",await mInterface.get({type:"next",player:n},e)),a(t)})(e,t);break;case"communityChestAction":(async(e,t,i)=>{var n=t.player[t.turn];t.communityChestCards[e.communityChestIndex].action({player:n},t),await monopoly.get({type:"updateMoney"},t),15===e.communityChestIndex||n.human||(n.AI.alertList="",game.next())})(e,t);break;case"finalizeAuction":(async(e,t,i)=>{let n=t.player[t.highestbidder],r=t.square[t.auctionproperty];t.highestbid>0&&(n.pay(t.highestbid,0,t),r.owner=t.highestbidder,await mInterface.get({type:"addAlert",value:`${n.name} bought ${r.name} for $ ${t.highestbid}.`},t));for(let e=1;e<=t.pcount;e++)t.player[e].bidding=!0;t.this.querySelector("#popupbackground").style.display="none",t.this.querySelector("#popupwrap").style.display="none",await monopoly.auction({type:"auction"},t)||await gameplay.get({type:"play",player:n},t),a(t)})(0,t);break;case"auctionExit":(async(e,t,i)=>{t.player[t.currentbidder].bidding=!1,await mInterface.get({type:"auctionPass"},t)})(0,t);break;case"auctionBid":(async(e,t,i)=>{t.bid=e.bid||parseInt(t.this.getElementById("bid").value,10);let n=e.bid||parseInt(t.this.getElementById("bid").value,10);""===n||null===n?(t.this.getElementById("bid").value="Please enter a bid.",t.this.getElementById("bid").style.color="red"):isNaN(n)?(t.this.getElementById("bid").value="Your bid must be a number.",t.this.getElementById("bid").style.color="red"):n>t.player[t.currentbidder].money?(t.this.getElementById("bid").value="You don't have enough money to bid $"+n+".",t.this.getElementById("bid").style.color="red"):n>t.highestbid?(t.highestbid=n,t.this.getElementById("highestbid").innerHTML=parseInt(n,10),t.highestbidder=t.currentbidder,t.this.getElementById("highestbidder").innerHTML=t.player[t.highestbidder].name,t.this.getElementById("bid").focus(),t.player[t.currentbidder].human&&mInterface.get({type:"auctionPass"},t)):(t.this.getElementById("bid").value="Your bid must be greater than highest bid. ($"+highestbid+")",t.this.getElementById("bid").style.color="red")})(e,t);break;case"auctionPass":(async(e,t,i)=>{for(0===t.highestbidder&&(t.highestbidder=t.currentbidder);;)if(t.currentbidder++,t.currentbidder>t.pcount&&(t.currentbidder-=t.pcount),t.currentbidder==t.highestbidder)await mInterface.get({type:"finalizeAuction"},t),a(t);else if(t.player[t.currentbidder].bidding){let e=t.player[t.currentbidder];if(e.human)break;{let i=e.AI.bid(t.auctionproperty,t.highestbid);if(-1===i||t.highestbid>=e.money){e.bidding=!1,window.alert(e.name+" exited the auction.");continue}if(0===i){window.alert(e.name+" passed.");continue}if(i>0){t.bid=i,await mInterface.get({type:"auctionBid",bid:i},t),window.alert(e.name+" bid $"+i+".");continue}a(t)}}t.this.getElementById("currentbidder").innerHTML=t.player[t.currentbidder].name,t.this.getElementById("bid").value="",t.this.getElementById("bid").style.color="black"})(0,t)}})};
+import mInterface from './interface.mjs'
+import monopoly from "./monopoly.mjs";
+import gameplay from "./gameplay.mjs";
+export default {
+    get:(obj, payload, ...rest)=>{
+        return  new Promise((resolve, reject) => {
+            function out(obj) {
+                resolve(obj)
+            }
+            function err(obj) {
+                reject(obj)
+            }
+            switch (obj['type']) {
+                case 'chanceAction':
+                    (async (obj, payload, rest)=>{
+                        //console.assert(false, payload)
+                        var p = payload['player'][payload['turn']]; // This is needed for reference in action() method.
+
+                        // $('#popupbackground').hide();
+                        // $('#popupwrap').hide();
+                        //console.assert(false, p)
+                        //console.assert(payload['chanceCards'][obj['chanceIndex']])
+                        payload['chanceCards'][obj['chanceIndex']].action(p, payload);
+                        await monopoly['get']({type:'updateMoney'}, payload);
+
+
+                        if (obj['chanceIndex'] !== 15 && !p.human) {
+                            p.AI.alertList = "";
+                            await mInterface['get']({type:'next', player:p}, obj)
+                        }
+                        out(payload)
+                    })(obj, payload, rest)
+                    break
+                case 'communityChestAction':
+                    (async (obj, payload, rest)=>{
+                        //console.assert(false, payload)
+                            var p = payload['player'][payload['turn']]; // This is needed for reference in action() method.
+
+                            // $('#popupbackground').hide();
+                            // $('#popupwrap').hide();
+                            //console.assert(false, payload['communityChestCards'][obj['communityChestIndex']])
+
+                            payload['communityChestCards'][obj['communityChestIndex']].action({player:p},payload);
+
+                             await monopoly['get']({type:'updateMoney'}, payload);
+
+                            if (obj['communityChestIndex'] !== 15 && !p.human) {
+                                p.AI.alertList = "";
+                                game.next();
+                            }
+
+                    })(obj, payload, rest)
+                    break
+                case 'finalizeAuction':
+                    (async (obj, payload, rest)=>{
+                        let p = payload['player'][payload['highestbidder']];
+                        let sq = payload['square'][payload['auctionproperty']];
+
+                        if (payload['highestbid'] > 0) {
+                            p.pay(payload['highestbid'], 0, payload);
+                            sq.owner = payload['highestbidder'];
+                            await mInterface['get']({type:'addAlert', value:`${p.name} bought ${sq.name} for $ ${payload['highestbid']}.`}, payload);
+                        }
+
+                        for (let i = 1; i <= payload['pcount']; i++) {
+                            payload['player'][i].bidding = true;
+                        }
+
+
+                        payload['this'].querySelector('#popupbackground').style.display = 'none'
+                        payload['this'].querySelector('#popupwrap').style.display = 'none'
+                        // $("#popupbackground").hide();
+                        // $("#popupwrap").hide();
+
+                        if (! await monopoly['auction']({type:'auction'},payload)) {
+                            await gameplay['get']({type:'play', player: p}, payload);
+                        }
+                        out(payload)
+                    })(obj, payload, rest)
+                    break
+                case 'auctionExit':
+                    (async (obj,payload, rest)=>{
+                        payload['player'][payload['currentbidder']].bidding = false;
+                     await mInterface['get']({type:'auctionPass'}, payload);
+                    })(obj,payload, rest)
+                    break
+                case 'auctionBid':
+                    (async (obj,payload, rest)=>{
+
+                        payload['bid'] = obj['bid'] || parseInt(payload['this'].getElementById("bid").value, 10);
+                        let  bid = obj['bid'] || parseInt(payload['this'].getElementById("bid").value, 10);
+
+                        if (bid === "" || bid === null) {
+                            payload['this'].getElementById("bid").value = "Please enter a bid.";
+                            payload['this'].getElementById("bid").style.color = "red";
+                        } else if (isNaN(bid)) {
+                            payload['this'].getElementById("bid").value = "Your bid must be a number.";
+                            payload['this'].getElementById("bid").style.color = "red";
+                        } else {
+
+                            if (bid > payload['player'][payload['currentbidder']].money) {
+                                payload['this'].getElementById("bid").value = "You don't have enough money to bid $" + bid + ".";
+                                payload['this'].getElementById("bid").style.color = "red";
+                            } else if (bid > payload['highestbid']) {
+                                payload['highestbid'] = bid;
+                                payload['this'].getElementById("highestbid").innerHTML = parseInt(bid, 10);
+                                payload['highestbidder'] =payload['currentbidder'] ;
+                                payload['this'].getElementById("highestbidder").innerHTML = payload['player'][payload['highestbidder']].name;
+
+                                payload['this'].getElementById("bid").focus();
+
+                                if (payload['player'][payload['currentbidder']].human) {
+                                    mInterface['get']({type:'auctionPass'}, payload)
+                                }
+                            } else {
+                                payload['this'].getElementById("bid").value = "Your bid must be greater than highest bid. ($" + highestbid + ")";
+                                payload['this'].getElementById("bid").style.color = "red";
+                            }
+                        }
+                    })(obj, payload, rest)
+                    break
+                case 'auctionPass':
+                    (async (obj,payload, rest)=>{
+                        if (payload['highestbidder'] === 0) {
+                            payload['highestbidder'] = payload['currentbidder'];
+                        }
+
+                        while (true) {
+                            payload['currentbidder']++;
+
+                            if (payload['currentbidder'] > payload['pcount']) {
+                                payload['currentbidder'] -= payload['pcount'];
+                            }
+
+                            if (payload['currentbidder'] == payload['highestbidder']) {
+                                await mInterface['get']({type:'finalizeAuction'}, payload)
+                                out(payload)
+                            } else if (payload['player'][payload['currentbidder']].bidding) {
+                                let p = payload['player'][payload['currentbidder']];
+
+                                if (!p.human) {
+                                    let bid = p.AI.bid(payload['auctionproperty'],payload['highestbid']);
+
+                                    if (bid === -1 || payload['highestbid'] >= p.money) {
+                                        p.bidding = false;
+
+                                        window.alert(p.name + " exited the auction.");
+                                        continue;
+
+                                    } else if (bid === 0) {
+                                        window.alert(p.name + " passed.");
+                                        continue;
+
+                                    } else if (bid > 0) {
+                                        payload['bid'] = bid
+                                        await mInterface['get']({type:'auctionBid', bid: bid}, payload)
+                                        window.alert(p.name + " bid $" + bid + ".");
+                                        continue;
+                                    }
+                                    out(payload);
+                                } else {
+                                    break;
+                                }
+                            }
+
+                        }
+
+                        payload['this'].getElementById("currentbidder").innerHTML = payload['player'][payload['currentbidder']].name;
+                        payload['this'].getElementById("bid").value = "";
+                        payload['this'].getElementById("bid").style.color = "black";
+                    })(obj, payload, rest)
+                    break
+                default:
+                    //console.assert(false, `новая функция ${obj['type']}`)
+                    break
+            }
+
+        })
+    }
+}

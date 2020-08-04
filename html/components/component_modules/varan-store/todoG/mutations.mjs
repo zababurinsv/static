@@ -1,1 +1,79 @@
-export const setLoadedTodosG=(e,o)=>{e.loadedTodosG=o};export const setLoadedInProgressG=(e,o)=>{e.loadedInProgressG=o};export const setLoadedInDoneG=(e,o)=>{e.loadedInDoneG=o};export const createTodoG=(e,o)=>{e.loadedTodosG.push(o)};export const createProgressG=(e,o)=>{e.loadedInProgressG.push(o)};export const createDoneG=(e,o)=>{e.loadedInDoneG.push(o)};export const updateTodoG=(e,o)=>{const d=e.loadedTodosG.find(e=>e.id===o.id);o.title&&(d.title=o.title),o.description&&(d.description=o.description),o.date&&(d.date=o.date)};export const updateProgressG=(e,o)=>{const d=e.loadedInProgressG.find(e=>e.id===o.id);o.title&&(d.title=o.title),o.description&&(d.description=o.description),o.date&&(d.date=o.date)};export const updateDoneG=(e,o)=>{const d=e.loadedInDoneG.find(e=>e.id===o.id);o.title&&(d.title=o.title),o.description&&(d.description=o.description),o.date&&(d.date=o.date)};export const deleteTodoG=(e,o)=>{const d=e.loadedTodosG.find(e=>e.id===o.id);e.loadedTodosG.splice(e.loadedTodosG.indexOf(d),1)};export const deleteProgressG=(e,o)=>{const d=e.loadedInProgressG.find(e=>e.id===o.id);e.loadedInProgressG.splice(e.loadedInProgressG.indexOf(d),1)};export const deleteDoneG=(e,o)=>{const d=e.loadedInDoneG.find(e=>e.id===o.id);e.loadedInDoneG.splice(e.loadedInDoneG.indexOf(d),1)};
+export const setLoadedTodosG = (state, payload) => {
+  state.loadedTodosG = payload
+  // console.log('(todo[(action)loadTodos ===])todo[(mutations)payload]', payload)
+}
+export const setLoadedInProgressG = (state, payload) => {
+  // console.log('(toDoG[(mutation*)setLoadedInProgressG])', payload)
+  state.loadedInProgressG = payload
+}
+export const setLoadedInDoneG = (state, payload) => {
+  state.loadedInDoneG = payload
+  // console.log('(setLoadedProgress[(mutation*)trello])', state.loadedInDone)
+}
+export const createTodoG = (state, payload) => {
+  state.loadedTodosG.push(payload)
+}
+export const createProgressG = (state, payload) => {
+  state.loadedInProgressG.push(payload)
+}
+export const createDoneG = (state, payload) => {
+  state.loadedInDoneG.push(payload)
+}
+export const updateTodoG = (state, payload) => {
+  const todo = state.loadedTodosG.find(todo => {
+    return todo.id === payload.id
+  })
+  if (payload.title) {
+    todo.title = payload.title
+  }
+  if (payload.description) {
+    todo.description = payload.description
+  }
+  if (payload.date) {
+    todo.date = payload.date
+  }
+}
+export const updateProgressG = (state, payload) => {
+  const todo = state.loadedInProgressG.find(todo => {
+    return todo.id === payload.id
+  })
+  if (payload.title) {
+    todo.title = payload.title
+  }
+  if (payload.description) {
+    todo.description = payload.description
+  }
+  if (payload.date) {
+    todo.date = payload.date
+  }
+}
+export const updateDoneG = (state, payload) => {
+  const todo = state.loadedInDoneG.find(todo => {
+    return todo.id === payload.id
+  })
+  if (payload.title) {
+    todo.title = payload.title
+  }
+  if (payload.description) {
+    todo.description = payload.description
+  }
+  if (payload.date) {
+    todo.date = payload.date
+  }
+}
+export const deleteTodoG = (state, payload) => {
+  // console.log('todoG(mutations)deleteTodoG', state, payload)
+  const record = state.loadedTodosG.find(element => element.id === payload.id)
+  state.loadedTodosG.splice(state.loadedTodosG.indexOf(record), 1)
+}
+export const deleteProgressG = (state, payload) => {
+  // console.log('todoG(mutations)deleteProgressG', state, payload)
+  const record = state.loadedInProgressG.find(element => element.id === payload.id)
+  // console.log('todoG(mutations)deleteProgressG', record)
+  state.loadedInProgressG.splice(state.loadedInProgressG.indexOf(record), 1)
+}
+export const deleteDoneG = (state, payload) => {
+  // console.log('deleteDone(state)payload', state, payload)
+  const record = state.loadedInDoneG.find(element => element.id === payload.id)
+  state.loadedInDoneG.splice(state.loadedInDoneG.indexOf(record), 1)
+}

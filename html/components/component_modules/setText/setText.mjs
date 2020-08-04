@@ -1,1 +1,38 @@
-export default(e,t,...c)=>new Promise(function(a,n){let o=e=>{console.log("~~~ err  ~~~",e),n(e)};switch(t){case"default":(async(e,n,l)=>{try{switch(e[n]){case"default":(async(e,t,c)=>{try{(e=>{console.log("~~~ out  ~~~"),a(e)})(e)}catch(e){o(e)}})(e,c[0],c[1],c[2],c[3]);break;default:o(`new type [(${t})${e[n]}]`)}}catch(e){o(e)}})(e,c[0],c[1],c[2],c[3]);break;default:o(`new function ${t}`)}});
+export default  (obj, func, ...args)=>{
+    return new Promise( function (resolve, reject) {
+        let out = (obj) => {
+            console.log('~~~ out  ~~~')
+            resolve(obj)
+        }
+        let err = (error) => {
+            console.log('~~~ err  ~~~', error)
+            reject(error)
+        }
+        switch (func) {
+            case 'default':
+                (async (obj, props,data) => {
+                    try {
+                        // console.log(`app(${func}[(${obj['input']})${obj[props]}]property)`)
+                        switch (obj[props]) {
+                            case 'default':
+                                (async (obj, props,data) => {
+                                    try {
+
+
+                                        out(obj)
+                                    } catch (e) { err(e) }
+                                })(obj, args[0], args[1], args[2], args[3])
+                                break
+                            default:
+                                err(`new type [(${func})${obj[props]}]`)
+                                break
+                        }
+                    } catch (e) { err(e) }
+                })(obj, args[0], args[1], args[2], args[3])
+                break
+            default:
+                err(`new function ${func}`)
+                break
+        }
+    })
+}

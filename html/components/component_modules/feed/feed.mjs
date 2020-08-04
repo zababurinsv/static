@@ -1,1 +1,353 @@
-import action from"/static/html/components/component_modules/action/action.mjs";import utils from"/static/html/components/component_modules/utils/utils.mjs";export default(e,t,...a)=>new Promise(function(i,s){bundle.default(e,"export",async function(n,r){let o=e=>{i(e)},d=e=>{console.log("~~~ err router ~~~",e),s(e)};switch(t){case"create":(async(e,a,i)=>{try{console.log(`${e.input}[${t}][(feed)${e[a]}]`);let i={},s={},n={};switch(e[a]){case"channel":switch(r.isEmpty(e.name)&&(e.name="default"),e.name){case"bid":i.option={title:"Аукцион",description:"описание",id:"https://www.universitykids.ru/",link:"https://www.universitykids.ru/rss",language:"ru",webMaster:"s.zababurin.v@gmail.com",image:"https://www.universitykids.ru/universitykids.jpg",favicon:"https://www.universitykids.ru/favicon.ico",copyright:"All rights reserved 2019, Zababurin Sergey",generator:"awesome",author:{name:"Zababurin Sergey",email:"s.zababurin.v@gmail.com",link:"https://vk.com/zababurin"},category:"product"},(s=new r.Feed(i.option)).addCategory("product"),i.json=s.json1(),i.rss=s.rss2(),i.atom=s.atom1();break;default:i.option={title:"Детский университет",description:"Сайт предоставляет родителям и детям возможность публикации проектно-исследовательских работ Эксперты смогут просмотреть проекты в любое время и жать необходимые комментарии.",id:"https://www.universitykids.ru/",link:"https://www.universitykids.ru/rss",language:"ru",webMaster:"s.zababurin.v@gmail.com",image:"https://www.universitykids.ru/universitykids.jpg",favicon:"https://www.universitykids.ru/favicon.ico",copyright:"All rights reserved 2019, Zababurin Sergey",generator:"awesome",author:{name:"Zababurin Sergey",email:"s.zababurin.v@gmail.com",link:"https://vk.com/zababurin"},category:"education"},(s=new r.Feed(i.option)).addCategory("education"),i.json=s.json1(),i.rss=s.rss2(),i.atom=s.atom1()}o(i);break;case"item":s=new r.Feed(e.feed.option),r.isEmpty(e.data.rss)&&(e.data.rss="default"),e.data.rss,n={title:e.data.title,link:e.data.url,description:e.data.short_content,content:e.data.content,author:[{name:"Zababurin Sergey",email:"s.zababurin.v@gmail.com",link:"https://vashi-faili.firebaseapp.com/"}],date:new Date(e.data.timestamp),image:e.data.image.data},s.addItem(n),e.feed.json=s.json1(),e.feed.rss=s.rss2(),e.feed.atom=s.atom1(),e.item={},e.item=JSON.parse(s.json1()).items[0],e.item.date_modified=e.item.date_modified.replace(/(\..*$)/g,".000Z"),e.timestamp=e.data.timestamp,o(e);break;case"feed":let t=new r.Feed(e.feed.option),c=[];for(let t=0;t<e.items.length;t++){let a=`    <item>\n            <title>${e.items[t].title[0]}</title>\n            <guid>${e.items[t].guid[0]}</guid>\n             <link>${e.items[t].link[0]}</link>\n            <pubDate>${e.items[t].pubDate[0]}</pubDate>\n            <description>${e.items[t].description[0]}</description>\n            <content:encoded>${e.items[t]["content:encoded"][0]}</content:encoded>\n            <author>${e.items[t].author[0]}</author>\n            <enclosure url="${e.items[t].enclosure[0].$.url}"/>\n</item>`;c.push(a)}let l=t.rss2(),u=l.substr(0,l.indexOf("</channel>"));for(let e=0;e<c.length;e++)u+=c[e];o(u+=" </channel>\n                                               </rss>");break;default:d(`необрабатываемый тип запроса ${e[a]}`)}}catch(e){d(e)}})(e,a[0],a[1],a[2],a[3]);break;case"convert":(async(e,a,i)=>{try{switch(console.log(`${e.input}[${t}][(feed)${e[a]}]`),e[a]){case"rss":const i=new r.Feed(e.data);o(i.rss2());break;case"light":break;default:d(`необрабатываемый тип запроса ${e[a]}`)}}catch(e){d(e)}})(e,a[0],a[1],a[2],a[3]);break;case"get":(async(e,a,i)=>{try{switch(console.log(`${e.input}[${t}][(feed)${e[a]}]`),e[a]){case"yandex":const i="https://cors-anywhere.herokuapp.com/";(new r.rssParser).parseURL(i+"https://news.yandex.ru/culture.rss",function(e,t){console.log("~~~~~~~~",t)});break;case"feeds":o(action({input:"feed",type:"feeds"},"get","type"));break;case"items":e.func(e.data,async function(e,t){o(t.rss.channel[0].item)});break;default:d(`необрабатываемый тип запроса ${e[a]}`)}}catch(e){d(e)}})(e,a[0],a[1],a[2],a[3]);break;case"search":(async(e,a,i)=>{try{switch(console.log(`${e.input}[${t}][(feed)${e[a]}]`),e[a]){case"item":let i={},s=[];for(let t=0;t<e.data.length;t++)e.data[t].pubDate[0]===e.target?i=e.data[t]:s.push(e.data[t]);let n={};n.feed=s,n.remove=i,o(n);break;default:d(`необрабатываемый тип запроса ${e[a]}`)}}catch(e){d(e)}})(e,a[0],a[1],a[2],a[3]);break;case"find":(async(e,a,i)=>{try{switch(console.log(`${e.input}[${t}][(feed)${e[a]}]`),e[a]){case"item":let i=!1;for(let t=0;t<e.data.length;t++){if(console.assert(!1),(await utils({input:"action",data:e.data[t].item.date_modified,type:"feedDate"},"convert","type")).all===e.target){i=!0,o(e.data[t]._id);break}}!0===i||o(void 0);break;case"itemUpdate":let s=!1;for(let t=0;t<e.data.length;t++)if(console.log("~~1~~~",Date.parse(e.data[t].item.date_modified)),console.log("~~2~~~",e.target),Date.parse(e.data[t].item.date_modified)===e.target){s=!0,o(e.data[t]);break}!0===s||o(void 0);break;default:d(`необрабатываемый тип запроса ${e[a]}`)}}catch(e){d(e)}})(e,a[0],a[1],a[2],a[3]);break;default:d(`новая функция ${t}`)}})});
+import action from '/static/html/components/component_modules/action/action.mjs'
+import utils from '/static/html/components/component_modules/utils/utils.mjs'
+export default  (obj, func, ...args)=>{
+    return new Promise( function (resolve, reject) {
+        bundle['default'](obj,'export', async function (error, config) {
+            let out = (obj) => {
+                //console.log('~~~ out router ~~~')
+                resolve(obj)
+            }
+            let err = (error) => {
+                console.log('~~~ err router ~~~', error)
+                reject(error)
+            }
+            switch (func) {
+                case 'create':
+                    (async (obj, props,data) => {
+                        try {
+                            console.log(`${obj['input']}[${func}][(feed)${obj[props]}]`)
+                            let news = {}
+                            let feed = {}
+                            let item = {}
+                            switch (obj[props]) {
+                                case 'channel':
+                                    if(config['isEmpty'](obj['name'])){
+                                       obj['name'] = 'default'
+                                    }
+                                    switch(obj['name']){
+                                        case'bid':
+                                            news['option'] ={
+                                                title: "Аукцион",
+                                                description: "описание",
+                                                id: "https://www.universitykids.ru/",
+                                                link: "https://www.universitykids.ru/rss",
+                                                language: "ru",
+                                                webMaster: "s.zababurin.v@gmail.com",
+                                                image: "https://www.universitykids.ru/universitykids.jpg",
+                                                favicon: "https://www.universitykids.ru/favicon.ico",
+                                                copyright: "All rights reserved 2019, Zababurin Sergey",
+                                                generator: "awesome",
+                                                author: {
+                                                    name: "Zababurin Sergey",
+                                                    email: "s.zababurin.v@gmail.com",
+                                                    link: "https://vk.com/zababurin"
+                                                },
+                                                category:'product'
+                                            }
+                                            feed = new config['Feed'](news['option']);
+                                            feed.addCategory("product");
+                                            news['json'] = feed.json1()
+                                            news['rss'] = feed.rss2()
+                                            news['atom'] = feed.atom1()
+                                        break
+                                        default:
+                                            news['option'] ={
+                                                title: "Детский университет",
+                                                description: "Сайт предоставляет родителям и детям возможность" +
+                                                    " публикации проектно-исследовательских работ" +
+                                                    " Эксперты смогут просмотреть проекты" +
+                                                    " в любое время и жать необходимые комментарии.",
+                                                id: "https://www.universitykids.ru/",
+                                                link: "https://www.universitykids.ru/rss",
+                                                language: "ru",
+                                                webMaster: "s.zababurin.v@gmail.com",
+                                                image: "https://www.universitykids.ru/universitykids.jpg",
+                                                favicon: "https://www.universitykids.ru/favicon.ico",
+                                                copyright: "All rights reserved 2019, Zababurin Sergey",
+                                                generator: "awesome",
+                                                author: {
+                                                    name: "Zababurin Sergey",
+                                                    email: "s.zababurin.v@gmail.com",
+                                                    link: "https://vk.com/zababurin"
+                                                },
+                                                category:'education'
+                                            }
+                                            feed = new config['Feed'](news['option']);
+                                            feed.addCategory("education");
+                                            news['json'] = feed.json1()
+                                            news['rss'] = feed.rss2()
+                                            news['atom'] = feed.atom1()
+                                        break
+                                    }
+                                    out(news)
+                                    break
+                                case 'item':
+                                    feed = new config['Feed'](obj['feed']['option']);
+
+
+                                    if(config['isEmpty'](obj['data']['rss'])){
+                                        obj['data']['rss'] = 'default'
+                                    }
+                                    switch (obj['data']['rss']) {
+                                        case'bid':
+                                            break
+                                        default:
+                                            break
+
+                                    }
+
+
+                                     item = {
+                                        title:  obj['data']['title'],
+                                        link:obj['data']['url'],
+                                        description: obj['data']['short_content'],
+                                        content: obj['data']['content'],
+                                        author: [
+                                            {
+                                                name: "Zababurin Sergey",
+                                                email: "s.zababurin.v@gmail.com",
+                                                link: "https://vashi-faili.firebaseapp.com/"
+                                            }
+                                        ],
+                                        date: new Date(obj['data']['timestamp']),
+                                        image: obj['data']['image']['data']
+                                    }
+
+                                    feed.addItem(item);
+                                    obj['feed']['json'] = feed.json1()
+                                    obj['feed']['rss'] = feed.rss2()
+                                    obj['feed']['atom'] = feed.atom1()
+                                    obj['item'] = {}
+                                    obj['item'] = JSON.parse(feed.json1()).items[0]
+                                    obj['item']['date_modified'] = obj['item']['date_modified'].replace(/(\..*$)/g,'.000Z')
+                                    obj['timestamp'] = obj['data']['timestamp']
+                                    out(obj)
+                                    break
+                                case 'feed':
+                                   let newFeed = new config['Feed'](obj['feed']['option']);
+
+                                    // console.log(obj['items'])
+                                    // console.assert(false, obj['items'][0]['title'])
+                                    // console.log(obj['items'][0]['title'][0])
+                                    // console.log(obj['items'][0]['guid'][0])
+                                    //
+                                    // console.assert(false, obj['items'])
+                                   let newItems = []
+                                    for(let i =0; i < obj['items'].length;i++){
+
+                                        let tmp = `    <item>
+            <title>${obj['items'][i]['title'][0]}</title>
+            <guid>${obj['items'][i]['guid'][0]}</guid>
+             <link>${obj['items'][i]['link'][0]}</link>
+            <pubDate>${obj['items'][i]['pubDate'][0]}</pubDate>
+            <description>${obj['items'][i]['description'][0]}</description>
+            <content:encoded>${obj['items'][i]['content:encoded'][0]}</content:encoded>
+            <author>${obj['items'][i]['author'][0]}</author>
+            <enclosure url="${obj['items'][i]['enclosure'][0]['$']['url']}"/>
+</item>`
+                                        newItems.push(tmp)
+                                    }
+
+                                  let temp =  newFeed.rss2()
+                                    let subString =  temp.substr(0,temp.indexOf(`</channel>`))
+                                    for(let i = 0; i < newItems.length; i++){
+
+                                        subString = subString + newItems[i]
+                                    }
+                                    let end =` </channel>
+                                               </rss>`
+
+                                    subString = subString + end
+
+                                    out(subString)
+                                    break
+                                default:
+                                    err(`необрабатываемый тип запроса ${obj[props]}` )
+                                    break
+                            }
+                        } catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+                    break
+                case 'convert':
+                    (async (obj, props,data) => {
+                        try {
+                            console.log(`${obj['input']}[${func}][(feed)${obj[props]}]`)
+
+                            switch (obj[props]) {
+                                case 'rss':
+                                    const feed = new config['Feed'](obj['data']);
+                                    out(feed.rss2())
+                                    break
+                                case 'light':
+
+                                    break
+                                default:
+                                    err(`необрабатываемый тип запроса ${obj[props]}` )
+                                    break
+                            }
+
+                            // console.assert(false, config['Feed'])
+
+
+                        } catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+                    break
+                case 'get':
+                    (async (obj, props,data) => {
+                        try {
+                            console.log(`${obj['input']}[${func}][(feed)${obj[props]}]`)
+                            switch (obj[props]) {
+                                case 'yandex':
+                                    const CORS_PROXY = "https://cors-anywhere.herokuapp.com/"
+                                    let parser = new config['rssParser']();
+                                    parser.parseURL(CORS_PROXY + 'https://news.yandex.ru/culture.rss', function(err, feed) {
+
+
+                                        console.log('~~~~~~~~', feed)
+
+
+                                    })
+
+
+                                    // feed.items.forEach(item => {
+                                    //     console.log(item.title + ':' + item.link)
+                                    // });
+                                    // template({
+                                    //     input:"rss",
+                                    //     export: '',
+                                    //     import: feed,
+                                    //     self: obj
+                                    //
+                                    // }, 'news', 'import')
+                                    //     .then((template)=>{
+                                    //
+                                    //
+                                    //         console.assert(false, template)
+                                    // out(template)
+                                    // })
+
+                                    break
+                                case 'feeds':
+
+                                    out(action({
+                                        input:'feed',
+                                        type:'feeds'
+                                    }, 'get', 'type'))
+
+
+                                    break
+                                case 'items':
+                                    obj['func'](obj['data'], async function (err, result) {
+
+                                        // console.assert(false, result['rss']['channel'][0]['item'])
+
+                                        out(result['rss']['channel'][0]['item'])
+
+                                    })
+                                    break
+                                default:
+                                    err(`необрабатываемый тип запроса ${obj[props]}` )
+                                    break
+                            }
+
+                            // console.assert(false, config['Feed'])
+
+
+                        } catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+                    break
+                case 'search':
+                    (async (obj, props,data) => {
+                        try {
+                            console.log(`${obj['input']}[${func}][(feed)${obj[props]}]`)
+                            switch (obj[props]) {
+                                case 'item':
+                                    let remove = {}
+                                    let items = []
+                                    // const filter = obj['data'].filter((item) => item.pubDate[0] !== obj['target']);
+
+                                    for(let i = 0; i < obj['data'].length;i++){
+                                        if(obj['data'][i].pubDate[0] === obj['target']){
+                                            remove = obj['data'][i]
+                                        }else{
+                                            items.push(obj['data'][i])
+                                        }
+
+                                    }
+
+                                    let object = {}
+                                    object['feed'] = items
+                                    object['remove'] = remove
+                                    out(object)
+                                    break
+                                default:
+                                    err(`необрабатываемый тип запроса ${obj[props]}` )
+                                    break
+                            }
+                        } catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+                    break
+                case 'find':
+                    (async (obj, props,data) => {
+                        try {
+                            console.log(`${obj['input']}[${func}][(feed)${obj[props]}]`)
+                            switch (obj[props]) {
+                                case 'item':
+                                    let verify = false
+
+                                    for(let i = 0; i < obj['data'].length; i++){
+
+                                        console.assert(false)
+                                        let dateItem = await utils({
+                                            input:'action',
+                                            data:obj['data'][i]['item']['date_modified'],
+                                            type:'feedDate'
+                                        },'convert', 'type')
+
+
+                                        if(dateItem['all'] === obj['target']){
+                                            verify = true
+                                            out(obj['data'][i]['_id'])
+                                            break
+                                        }
+                                    }
+                                    if(verify === true){
+
+
+                                    }else{
+                                        out(undefined)
+                                    }
+                                    break
+                                case 'itemUpdate':
+                                    let verifyUpdate = false
+                                    for(let i = 0; i < obj['data'].length; i++){
+
+                                        console.log('~~1~~~', Date.parse(obj['data'][i]['item']['date_modified']))
+                                        console.log('~~2~~~', obj['target'])
+                                        if(Date.parse(obj['data'][i]['item']['date_modified']) === obj['target']){
+                                            verifyUpdate = true
+                                            out(obj['data'][i])
+                                            break
+                                        }
+                                    }
+                                    if(verifyUpdate === true){
+
+
+                                    }else{
+                                        out(undefined)
+                                    }
+                                    break
+                                default:
+                                    err(`необрабатываемый тип запроса ${obj[props]}` )
+                                    break
+                            }
+                        } catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+                    break
+                default:
+                    err(`новая функция ${func}`)
+                    break
+            }
+        })
+    })
+}

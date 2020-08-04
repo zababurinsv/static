@@ -1,1 +1,99 @@
-import mInterface from"./interface.mjs";export default{get:(e,t,...n)=>new Promise((a,i)=>{function s(e){a(e)}switch(e.type){case"square":(async(e,t,n)=>{let a={};a.name=n[0],a.pricetext=n[1],a.color=n[2],a.owner=0,a.mortgage=!1,a.house=0,a.hotel=0,a.groupNumber=n[4]||0,a.price=n[3]||0,a.baserent=n[5]||0,a.rent1=n[6]||0,a.rent2=n[7]||0,a.rent3=n[8]||0,a.rent4=n[9]||0,a.rent5=n[10]||0,a.landcount=0,3===n[4]||4===n[4]?a.houseprice=50:5===n[4]||6===n[4]?a.houseprice=100:7===n[4]||8===n[4]?a.houseprice=150:9===n[4]||10===n[4]?a.houseprice=200:a.houseprice=0,s(a)})(0,0,n);break;case"card":(async(e,t,n)=>{let a={};a.text=n[0],a.action=n[1],s(a)})(0,0,n);break;case"corrections":(async(e,t,n)=>{t.this.getElementById("cell1name").textContent="Mediter-ranean Avenue",t.this.getElementById("enlarge5token").innerHTML+='<img src="./static/html/components/main-manager/images/train_icon.png"  width="50%" alt="" style="position: relative; bottom: 1.953vw;" />',t.this.getElementById("enlarge15token").innerHTML+='<img src="./static/html/components/main-manager/images/train_icon.png"  width="50%" alt="" style="position: relative; top: -1.953vw;" />',t.this.getElementById("enlarge25token").innerHTML+='<img src="./static/html/components/main-manager/images/train_icon.png"  width="50%" alt="" style="position: relative; top: -1.953vw;" />',t.this.getElementById("enlarge35token").innerHTML+='<img src="./static/html/components/main-manager/images/train_icon.png"  width="50%" alt="" style="position: relative; top: -1.953vw;" />',t.this.getElementById("enlarge12token").innerHTML+='<img src="./static/html/components/main-manager/images/electric_icon.png"  width="35%" alt="" style="position: relative; top: -1.953vw;" />',t.this.getElementById("enlarge28token").innerHTML+='<img src="./static/html/components/main-manager/images/water_icon.png"  width="50%" alt="" style="position: relative; top: -1.953vw;" />',s(t)})(0,t);break;case"utiltext":(async(e,t,n)=>{s('&nbsp;&nbsp;&nbsp;&nbsp;If one "Utility" is owned rent is 4 times amount shown on dice.<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;If both "Utilitys" are owned rent is 10 times amount shown on dice.')})();break;case"transtext":(async(e,t,n)=>{s('<div style="font-size: 1.367vw; line-height: 1.5;">Rent<span style="float: right;">$25.</span><br />If 2 Railroads are owned<span style="float: right;">50.</span><br />If 3 &nbsp; &nbsp; " &nbsp; &nbsp; " &nbsp; &nbsp; "<span style="float: right;">100.</span><br />If 4 &nbsp; &nbsp; " &nbsp; &nbsp; " &nbsp; &nbsp; "<span style="float: right;">200.</span></div>')})();break;case"luxurytax":(async(e,t,n)=>{await mInterface.get({type:"addAlert",value:`${t.player[t.turn].name} paid $100 for landing on Luxury Tax.`},t),t.player[t.turn].pay(100,0,t),document.querySelector("#landed").style.display="flex",document.querySelector("#landed").innerText="You landed on Luxury Tax. Pay $100."})(0,t);break;case"citytax":(async(e,t,n)=>{await mInterface.get({type:"addAlert",value:`${t.player[t.turn].name} paid $200 for landing on City Tax.`},t),t.player[t.turn].pay(200,0,t),document.querySelector("#landed").style.display="flex",document.querySelector("#landed").innerText="You landed on City Tax. Pay $200."})(0,t)}})};
+import mInterface from './interface.mjs'
+export default {
+	get:(obj, payload,  ...rest)=>{
+		return  new Promise((resolve, reject) => {
+			function out(obj) {
+				resolve(obj)
+			}
+			function wrr(obj) {
+				reject(obj)
+			}
+			switch (obj['type']) {
+				case 'square':
+					(async (obj,payload,  rest)=>{
+						let square = {}
+						square.name = rest[0];
+						square.pricetext = rest[1];
+						square.color = rest[2];
+						square.owner = 0;
+						square.mortgage = false;
+						square.house = 0;
+						square.hotel = 0;
+						square.groupNumber = rest[4] || 0;
+						square.price = (rest[3]|| 0);
+						square.baserent = (rest[5] || 0);
+						square.rent1 = (rest[6] || 0);
+						square.rent2 = (rest[7] || 0);
+						square.rent3 = (rest[8] || 0);
+						square.rent4 = (rest[9] || 0);
+						square.rent5 = (rest[10] || 0);
+						square.landcount = 0;
+
+						if (rest[4] === 3 || rest[4] === 4) {
+							square.houseprice = 50;
+						} else if (rest[4] === 5 || rest[4] === 6) {
+							square.houseprice = 100;
+						} else if (rest[4] === 7 || rest[4] === 8) {
+							square.houseprice = 150;
+						} else if (rest[4] === 9 || rest[4] === 10) {
+							square.houseprice = 200;
+						} else {
+							square.houseprice = 0;
+						}
+
+						out(square)
+					})(obj, payload, rest)
+					break
+				case 'card':
+					(async (obj,payload, rest)=>{
+						let card = {}
+						card.text = rest[0];
+						card.action = rest[1];
+						out(card)
+					})(obj, payload, rest)
+					break
+				case 'corrections':
+					(async (obj, payload, rest)=>{
+						payload['this'].getElementById("cell1name").textContent = "Mediter-ranean Avenue";
+						payload['this'].getElementById("enlarge5token").innerHTML += '<img src="./static/html/components/main-manager/images/train_icon.png"  width="50%" alt="" style="position: relative; bottom: 1.953vw;" />';
+						payload['this'].getElementById("enlarge15token").innerHTML += '<img src="./static/html/components/main-manager/images/train_icon.png"  width="50%" alt="" style="position: relative; top: -1.953vw;" />';
+						payload['this'].getElementById("enlarge25token").innerHTML += '<img src="./static/html/components/main-manager/images/train_icon.png"  width="50%" alt="" style="position: relative; top: -1.953vw;" />';
+						payload['this'].getElementById("enlarge35token").innerHTML += '<img src="./static/html/components/main-manager/images/train_icon.png"  width="50%" alt="" style="position: relative; top: -1.953vw;" />';
+						payload['this'].getElementById("enlarge12token").innerHTML += '<img src="./static/html/components/main-manager/images/electric_icon.png"  width="35%" alt="" style="position: relative; top: -1.953vw;" />';
+						payload['this'].getElementById("enlarge28token").innerHTML += '<img src="./static/html/components/main-manager/images/water_icon.png"  width="50%" alt="" style="position: relative; top: -1.953vw;" />';
+					out(payload)
+					})(obj,payload,  rest)
+					break
+				case 'utiltext':
+					(async (obj,payload, rest)=>{
+						out( '&nbsp;&nbsp;&nbsp;&nbsp;If one "Utility" is owned rent is 4 times amount shown on dice.<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;If both "Utilitys" are owned rent is 10 times amount shown on dice.');
+					})(obj, payload, rest)
+					break
+				case 'transtext':
+					(async (obj, payload, rest)=>{
+						out('<div style="font-size: 1.367vw; line-height: 1.5;">Rent<span style="float: right;">$25.</span><br />If 2 Railroads are owned<span style="float: right;">50.</span><br />If 3 &nbsp; &nbsp; " &nbsp; &nbsp; " &nbsp; &nbsp; "<span style="float: right;">100.</span><br />If 4 &nbsp; &nbsp; " &nbsp; &nbsp; " &nbsp; &nbsp; "<span style="float: right;">200.</span></div>')
+					})(obj, payload, rest)
+					break
+				case 'luxurytax':
+					(async (obj, payload, rest)=>{
+						await mInterface['get']({type:'addAlert', value:`${payload['player'][payload['turn']].name} paid $100 for landing on Luxury Tax.` },payload)
+						payload['player'][payload['turn']].pay(100, 0, payload);
+						document.querySelector('#landed').style.display = 'flex'
+						document.querySelector('#landed').innerText = "You landed on Luxury Tax. Pay $100."
+					})(obj, payload, rest)
+					break
+				case 'citytax':
+					(async (obj, payload, rest)=>{
+						await mInterface['get']({type:'addAlert', value:`${payload['player'][payload['turn']].name} paid $200 for landing on City Tax.` },payload)
+						payload['player'][payload['turn']].pay(200, 0, payload);
+						document.querySelector('#landed').style.display = 'flex'
+						document.querySelector('#landed').innerText = "You landed on City Tax. Pay $200."
+					})(obj, payload, rest)
+					break
+				default:
+					break
+			}
+
+		})
+	}
+}

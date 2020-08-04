@@ -1,1 +1,84 @@
-Object.keys||(Object.keys=function(t){if(t!==Object(t))throw new TypeError("Object.keys called on a non-object");var e,o=[];for(e in t)Object.prototype.hasOwnProperty.call(t,e)&&o.push(e);return o});import init from"/static/html/components/component_modules/init/init.mjs";import store from"/static/html/components/component_modules/staticProperty/staticProperty.mjs";import isEmpty from"/static/html/components/component_modules/isEmpty/isEmpty.mjs";export default(t,e,...o)=>new Promise(function(i,s){let n=t=>{i(t)},r=t=>{console.log("~~~ err  ~~~",t),s(t)};switch(e){case"get":(async(t,i,s)=>{try{switch(console.log(`app(${e}[(${t.input})${t[i]}]property)`),t[i]){case"editor":(async(t,o,i,s)=>{try{console.log(`app(${e}[(${t.input})${t[o]} ditor]`),isEmpty(t.slot)&&r("должен быть указан слот");let i=await store({input:"editor",this:t.this,target:t.slot,type:"editor"},"get","type");if(isEmpty(i)){isEmpty(t.slot)&&r("должен быть объект slot");let e=await init({input:"editor",this:t.this,slot:t.slot,parent:t.parent,menu:t.menu,type:"editor"},"init","type");n(e)}else n(t)}catch(t){r(t)}})(t,o[0],o[1],o[2],o[3]);break;default:r(`new type ${t[i]}`)}}catch(t){r(t)}})(t,o[0],o[1],o[2],o[3]);break;default:r(`new function ${e}`)}});
+(()=>{
+
+    if (!Object.keys) {
+        Object.keys = function (o) {
+            if (o !== Object(o)) { throw new TypeError('Object.keys called on a non-object') }
+            var k = []; var p
+            for (p in o) if (Object.prototype.hasOwnProperty.call(o, p)) k.push(p)
+            return k
+        }
+    }
+
+})()
+import init from '/static/html/components/component_modules/init/init.mjs'
+import store from '/static/html/components/component_modules/staticProperty/staticProperty.mjs'
+import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
+export default  (obj, func, ...args)=>{
+    return new Promise( function (resolve, reject) {
+            let out = (obj) => {
+                resolve(obj)
+            }
+            let err = (error) => {
+                console.log('~~~ err  ~~~', error)
+                reject(error)
+            }
+            switch (func) {
+                case 'get':
+                    (async (obj, props,data) => {
+                        try {
+                            // console.log(`app(${func}[(${obj['input']})${obj[props]}]property)`)
+                            switch (obj[props]) {
+                                case 'editor':
+                                    (async (obj, props,state, server) => {
+                                        try {
+                                            console.log(`app(${func}[(${obj['input']})${obj[props]} ditor]`)
+                                            if(isEmpty(obj.slot)) {
+                                                err('должен быть указан слот')
+                                            }
+                                            let verify = await  store({
+                                                input:'editor',
+                                                this: obj['this'],
+                                                target:obj['slot'],
+                                                type: 'editor'
+                                            },'get', 'type' )
+
+                                            // console.assert(false, verify)
+                                            if(isEmpty(verify)){
+
+
+                                                if(isEmpty(obj['slot'])){
+                                                    err('должен быть объект slot')
+                                                }
+                                                let editor = await init({
+                                                    input:'editor',
+                                                    this: obj['this'],
+                                                    slot: obj['slot'],
+                                                    parent: obj['parent'],
+                                                    menu:obj['menu'],
+                                                    type:'editor'
+                                                }, 'init', 'type')
+
+                                                out(editor)
+
+                                            }else{
+
+
+                                                out(obj)
+
+                                            }
+                                        } catch (e) { err(e) }
+                                    })(obj, args[0], args[1], args[2], args[3])
+                                    break
+                                default:
+                                    err(`new type ${obj[props]}`)
+                                    break
+                            }
+                        } catch (e) { err(e) }
+                    })(obj, args[0], args[1], args[2], args[3])
+                    break
+                default:
+                    err(`new function ${func}`)
+                    break
+            }
+    })
+}
