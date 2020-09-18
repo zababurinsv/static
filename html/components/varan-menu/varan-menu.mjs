@@ -1,1 +1,731 @@
-import menu from"/static/html/components/component_modules/menu/menu.mjs";import matcher from"/static/html/components/component_modules/matcher/matcher.mjs";import Store from"/static/html/components/component_modules/varan-store/varan-store.mjs";import custom from"/static/html/components/component_modules/customEvent/callback.mjs";import utils from"/static/html/components/component_modules/utils/utils.mjs";import staticProperty from"/static/html/components/component_modules/staticProperty/staticProperty.mjs";import addEventListener from"/static/html/components/component_modules/addEventListener/addEventListener.mjs";import isEmpty from"/static/html/components/component_modules/isEmpty/isEmpty.mjs";let timeStamp={staticProperty:0},store={};customElements.define("varan-menu",class extends HTMLElement{static get observedAttributes(){return["mode"]}constructor(){super();let e=[],t=[],r=[],a=[];function n(e,t,r){return new Promise(function(t,r){e["template-shadow"]=[],e["template-light"]=[];let a=[];a.swap=!1,a.external=!1,a.light=!1,a.slider=!1,a.one=!1,a.addBtn=!1;for(let t=0;t<e.type.length;t++){if(-1!==e.type[t].indexOf("slider")&&e.type[t].split("-").length>1){a.slider=!0;for(let r in e.type[t].split("-"))switch(e.type[t].split("-")[r]){case"one":a.one=!0}}if(e.type[t].length)switch(e.type[t]){case"swap":a.swap=!0;break;case"external":a.external=!0;break;case"light":a.light=!0;break;case"slider":a.slider=!0;break;case"addBtn":a.addBtn=!0}}if(!0===a.swap){for(let t=0;t<e.this.children.length;t++)1===e.this.children[t].tagName.split("-").length?("view"===e.this.children[t].slot&&(e.this.children[t].className="wall"),e["template-light"].push(e.this.children[t])):!0===e.getAttribute(e.this.children[t],"light","template")?(e.this.children[t].setAttribute("type",`${e.this.children[t].getAttribute("type")}-external`),i(e.this.children[t]),e["template-light"].push(e.this.children[t])):(e.this.children[t].setAttribute("type",`${e.this.children[t].getAttribute("type")}-external`),i(e.this.children[t]),e["template-shadow"].push(e.this.children[t]));for(let t=0;t<e.template.children.length;t++)1===e.template.children[t].tagName.split("-").length?("view"===e.template.children[t].slot&&(e.template.children[t].className="wall"),e["template-light"].push(e.template.children[t])):!0===e.getAttribute(e.template.children[t],"light","template")?(e.template.children[t].setAttribute("type",`${e.template.children[t].getAttribute("type")}-external`),i(e.template.children[t]),e["template-light"].push(e.template.children[t])):(e.template.children[t].setAttribute("type",`${e.template.children[t].getAttribute("type")}-external`),i(e.template.children[t]),e["template-shadow"].push(e.template.children[t]))}else{for(let t=0;t<e.this.children.length;t++)1===e.this.children[t].tagName.split("-").length?("view"===e.this.children[t].slot&&(e.this.children[t].className="wall"),e["template-shadow"].push(e.this.children[t])):!0===e.getAttribute(e.this.children[t],"light","template")?(i(e.this.children[t]),e["template-shadow"].push(e.this.children[t])):(i(e.this.children[t]),e["template-light"].push(e.this.children[t]));for(let t=0;t<e.template.children.length;t++)1===e.template.children[t].tagName.split("-").length?("view"===e.template.children[t].slot&&(e.template.children[t].className="wall"),e["template-shadow"].push(e.template.children[t])):!0===e.getAttribute(e.template.children[t],"light","template")?(i(e.template.children[t]),e["template-shadow"].push(e.template.children[t])):(i(e.template.children[t]),e["template-light"].push(e.template.children[t]))}e.verify=a,!0===e.verify.slider?function(e){return new Promise(function(t,r){fetch(`/static/html/components/varan-slider/template/${e.slot}.html`).then(function(e){if(e.ok)return e.text()}).then(function(r){let a=new DOMParser,n=a.parseFromString(r,"text/html");e.slider=n.getElementsByTagName("template")[0].content.cloneNode(!0);let o=document.createElement("section");o.className="slider",o.slot="view",o.appendChild(e.slider),e.slider=o,t(e)}).catch(e=>e)})}(e).then(e=>{console.assert(!1,e),e["template-light"].push(e.slider),e.this.appendChild(e.slider),function(e,t,r){return new Promise(function(r,a){if(t){switch(t){case"slider":(function(e,t){return new Promise(function(r,a){for(let a=0;a<e.state.length;a++)for(let n=0;n<e[`template-${e.state[a]}`].length;n++)0===e[`template-${e.state[a]}`][n].getElementsByClassName(t).length||(e.slider=e[`template-${e.state[a]}`][n].getElementsByClassName(t)[0],r(e[`template-${e.state[a]}`][n].getElementsByClassName(t)[0]))})})(e,"peppermint").then(t=>{(function(e){return new Promise(function(t,r){t(Peppermint(e,{dots:!1,slideshow:!1,speed:500,slideshowInterval:5e3,stopSlideshowAfterInteraction:!0,onSetup:function(e){}}))})})(t).then(t=>{e.slider=t,r(e)})})}r(e)}else r(e)})}(e,"slider").then(e=>{if(!0===e.verify.one)for(let r=0;r<e.state.length;r++)for(let a=0;a<e[`template-${e.state[r]}`].length;a++)"wall"===e[`template-${e.state[r]}`][a].className&&(e[`template-${e.state[r]}`].splice(a,1),t(e));else t(e)})}):t(e)})}function o(t,r){return new Promise(function(r,a){t.verify=[],t.this.hasAttribute("preset")&&(t.parent=t.this.getAttribute("parent")),t.this.hasAttribute("preset")?0===t.this.getAttribute("preset").length?(t["path-template"]=`/static/html/components/${t.component}/template/${t.parent}.html`,t.preset="default",t.verify.preset=!0):(t["path-template"]=`/static/html/components/${t.component}/template/${t.this.getAttribute("preset")}/${t.component}-${t.this.getAttribute("preset")}.html`,t.preset=`${t.this.getAttribute("preset")}`,t.verify.preset=!0):(t["path-template"]=`/static/html/components/${t.component}/${t.component}.html`,t.verify.preset=!1),fetch(t["path-template"]).then(function(e){if(e.ok)return e.text()}).then(function(a){let o=(new DOMParser).parseFromString(a,"text/html");t.template=o.getElementsByTagName("template")[0].content.cloneNode(!0),function(t){return new Promise(function(r,a){t["path-external"]=`/static/html/components/${t.component}/external/${t.component}-external.html`,fetch(t["path-external"]).then(function(e){return!1===e.ok?e.ok:e.text()}).then(function(a){if(!1===a);else{let n=new DOMParser,o=n.parseFromString(a,"text/html");t.external=o.querySelectorAll("section"),function(t){return new Promise(function(r,a){t["external-property"]=e["external-property"];let n=[],o=[],i=[];for(let e=0;e<t.external.length;e++){for(let r=0;r<t.external[e].children.length;r++)switch(t.external[e].children[r].tagName){case"SCRIPT":t.external[e].getAttribute("id")&&(o.script=t.external[e].children[r]);break;case"COMPONENT-ID":o.id=t.external[e].children[r].innerText;break;case"COMPONENT-ACTION":for(let a=0;a<t.external[e].children[r].children.length;a++)i.push(t.external[e].children[r].children[a].innerText);o.actions=i}n.push(o),o=[]}t["external-property"]=n,r(t)}).catch(e=>{})}(t).then(e=>{0===e["external-property"].length?r(e):function(e){return new Promise(function(t,r){e["words-action"]=[];let a=[];for(let r=0;r<e["external-property"].length;r++){for(let t=0;t<e["external-property"][r].actions.length;t++)for(let n=0;n<e.words.length;n++)-1!==e["external-property"][r].actions[t].indexOf(e.words[n])&&("shadowRoot"!==e.words[n]&&"shadow"!==e.words[t]||(a.shadow=!0),"light"!==e.words[n]&&"лайт"!==e.words[t]||(a.light=!0),"editor"===e.words[n]&&(a.editor=!0),"слайдер"===e.words[n]&&(a["editor-slider"]=!0),"swap"===e.words[n]&&(a.swap=!0));e["words-action"]=a;for(let t in e["external-property"])for(let r in e["external-property"][t])switch(r){case"id":let a=document.createElement(e["external-property"][t][r]);a.setAttribute("type","external"),e.this.appendChild(a)}t(e)}})}(e).then(e=>{r(e)})})}}).catch(e=>{throw e})})}(t).then(e=>{n(e,e["type-swap"],e["type-external"]).then(e=>{if(!0===e.verify.swap){if(0!==e["template-shadow"].length){e.this.attachShadow({mode:"open"}),e.shadowRoot=!0;for(let t=0;t<e["template-shadow"].length;t++)e.this.shadowRoot.appendChild(e["template-shadow"][t])}if(0!==e["template-light"].length)for(let t=0;t<e["template-light"].length;t++)e.this.appendChild(e["template-light"][t])}else{if(0!==e["template-shadow"].length){e.this.attachShadow({mode:"open"}),e.shadowRoot=!0;for(let t in e["template-shadow"])e.this.shadowRoot.appendChild(e["template-shadow"][t])}if(0!==e["template-light"].length)for(let t in e["template-light"])e.this.appendChild(e["template-light"][t])}r(e)})})}).catch(e=>e)})}function i(e){return new Promise(function(t,r){e.getAttribute("import");const a=document.createElement("script");let n=!1;for(let t in document.head.getElementsByTagName("script"))"object"==typeof document.head.getElementsByTagName("script")[t]&&-1!==document.head.getElementsByTagName("script")[t].outerHTML.indexOf(e.tagName.toLowerCase())&&(n=!0);!0===n||(null===e.getAttribute("import")||(a.type="module"),a.src=`/static/html/components/${e.tagName.toLowerCase()}/${e.tagName.toLowerCase()}.js`,a.onload=t,a.onerror=r,document.head.appendChild(a))})}var l;function s(e){timeStamp.staticProperty=e,s=function(e){return e}}t.push("component-id"),t.push("script"),t.push("component-action"),r.push("h1"),r.push("innerText"),a.push("shadowRoot"),a.push("head"),a.push("shadow"),a.push("light"),a.push("lightDom"),a.push("editor"),a.push("слайдер"),a.push("swap"),e.this=this,e["type-supported"]=r,(l=this,new Promise(function(e,t){let r=[];r.indexeddb=null,r.firebase=null,r.localStorage=null,r.mongo=null,r.mySql=null,r.state=[],r.state.push("shadow"),r.state.push("light"),r.words=a,r["type-swap"]=!1,r["type-external"]=!1,r["document-offsetWidth"]=document.body.offsetWidth;let n=!1;if(r.getAttribute=((e,t,r)=>{if("template"===r){if(!e.getAttribute("type"))return e.setAttribute("type","default"),!1;for(let r=0;r<e.getAttribute("type").split("-").length;r++)e.getAttribute("type").split("-")[r]===t&&(n=!0);return n}if(e[`verify-${t}`]=!1,0===e.this.getAttribute("type").split("-").length)return!1;for(let r=0;r<e.this.getAttribute("type").split("-").length;r++)e.this.getAttribute("type").split("-")[r]===t?e[`verify-${t}`]=!0:e[`verify-${t}`]=!1;return e[`verify-${t}`]}),l.tagName.toLowerCase()&&(r.component=l.tagName.toLowerCase()),"object"!=typeof l);else{if(l.getAttribute("type")){r.type=l.getAttribute("type").split("-");for(let e=0;e<r.type.length;e++)r.type[e]=r.type[e].replace(/:/g,"-");for(let e in r.type)switch(r.type[e]){case"swap":r["type-swap"]=!0;break;case"external":r["type-external"]=!0}}else r.type=["default"],l.setAttribute("type","default");if(l.slot?r.slot=l.slot:(l.slot=l.tagName.toLowerCase(),r.slot=l.slot),l.getAttribute("type")){let e=!1;for(let t in l.getAttribute("type").split("-"))-1!==l.getAttribute("type").split("-")[t].indexOf("style:")&&(e=!0);r["style-custom"]=!0===e?"not-default":"default"}}r.shadowRoot=!1,r.this=l,e(r)})).then(e=>(o(e).then(e=>(function(e){return new Promise(function(t,r){let a=document.createElement("style"),n=document.createElement("style");for(let t=0;t<e.type.length;t++)"swap"===e.type[t]?"scoped"===e.type[t]&&a.setAttribute("scoped",""):"scoped"===e.type[t]&&n.setAttribute("scoped","");for(let r=0;r<e.state.length;r++){switch(e[`path-style-${e.state[r]}`]=`@import '/static/html/components/${e.component}/${e.state[r]}/${e.component}.css'; @import '/static/html/components/${e.component}/${e.state[r]}/${e.component}-custom.css';`,e.state[r]){case"shadow":a.innerText=e[`path-style-${e.state[r]}`];break;case"light":n.innerText=e[`path-style-${e.state[r]}`]}"swap"===e.state[r]?!0===e.shadowRoot?(e.this.shadowRoot.appendChild(n),e.this.appendChild(a),t(e)):e.this.appendChild(a):!0===e.shadowRoot?(e.this.shadowRoot.appendChild(a),e.this.appendChild(n),t(e)):e.this.appendChild(n)}t(e)})}(e).then(e=>(async function(e){let t=(e,t)=>"VARAN-EDITOR"===e.tagName,r=(e,t)=>e.slot===t,a=function(e){s(e.timeStamp);let r=e.timeStamp-timeStamp.staticProperty;if(r>140||0===r){e.target.disable="true",e.target.style.backgroundColor="#62bcd7";let r=e.target,a=!1;for(;!a;)void 0!==(r=r.parentNode).tagName&&"undefined"!==r.tagName||(r=r.getRootNode().host),a=t(r,"varan-editor");let n=new CustomEvent("saveEditor",{detail:{id:r.slot}});document.dispatchEvent(n),setTimeout(function(){e.target.disable="false",e.target.style.backgroundColor="#ccc"},3e3)}timeStamp.staticProperty=e.timeStamp},n=async function(e){s(e.timeStamp);let a=e.timeStamp-timeStamp.staticProperty;if(a>140||0===a){e.target.disable="true",e.target.style.backgroundColor="#62bcd7";let a=e.target,n=!1;for(;!n;)void 0!==(a=a.parentNode).tagName&&"undefined"!==a.tagName||(a=a.getRootNode().host),n=t(a,"varan-editor");let o=await staticProperty({input:"action",type:"all"},"get","type"),i={moderator:{},news:{},card:{}},l={},s={},c={},d={};for(let e=0;e<o["varan-editor"].length;e++)switch(o["varan-editor"][e].slot){case"description":i.news.description=await utils({input:"varan-menu",data:o["varan-editor"][e].editor.quill.root.innerHTML,type:"html2string"},"convert","type"),c.description=o["varan-editor"][e].editor.quill.root.innerHTML,o["varan-editor"][e].obj.this.querySelector(".wall").innerHTML="",o["varan-editor"][e].editor.quill.root.innerHTML="";break;case"content":i.news.content=await utils({input:"varan-menu",data:o["varan-editor"][e].editor.quill.root.innerHTML,type:"html2string"},"convert","type"),c.content=o["varan-editor"][e].editor.quill.root.innerHTML,o["varan-editor"][e].obj.this.querySelector(".wall").innerHTML="",o["varan-editor"][e].editor.quill.root.innerHTML="";break;case"about":i.about=await utils({input:"varan-menu",data:o["varan-editor"][e].editor.quill.root.innerHTML,type:"html2string"},"convert","type"),l=o["varan-editor"][e].editor.quill.root.innerHTML;break;case"moderator":i.moderator.description=await utils({input:"varan-menu",data:o["varan-editor"][e].editor.quill.root.innerHTML,type:"html2string"},"convert","type"),s.description=o["varan-editor"][e].editor.quill.root.innerHTML;break;case"moderatorContent":i.moderator.content=await utils({input:"varan-menu",data:o["varan-editor"][e].editor.quill.root.innerHTML,type:"html2string"},"convert","type"),s.content=o["varan-editor"][e].editor.quill.root.innerHTML;break;case"cardDescription":i.card.description=await utils({input:"varan-menu",data:o["varan-editor"][e].editor.quill.root.innerHTML,type:"html2string"},"convert","type"),d.description=o["varan-editor"][e].editor.quill.root.innerHTML;break;case"cardContent":i.card.content=await utils({input:"varan-menu",data:o["varan-editor"][e].editor.quill.root.innerHTML,type:"html2string"},"convert","type"),d.content=o["varan-editor"][e].editor.quill.root.innerHTML;break;default:console.warn("~~~~~~~~~","На этот объект нет действия ",o["varan-editor"][e].slot)}let p={},h={},m={},u={},y={},w={},g={},v={},f={};switch(a.slot){case"about":f="about";break;case"moderator":case"moderatorContent":f="moderator";break;case"content":case"description":f="news";break;case"cardContent":case"cardDescription":f="card";break;default:f=a.slot,console.warn("необрабатываемый тип",a.slot)}switch(T){case"card":for(let e=0;e<o["varan-card-news"].length;e++)switch(o["varan-card-news"][e].slot){case"card-admin":let t=o["varan-card-news"][e].this.shadowRoot.querySelector(".nameBid").value,r=o["varan-card-news"][e].this.shadowRoot.querySelector(".imgBidAdmin").src,a=o["varan-card-news"][e].this.shadowRoot.querySelector(".timerValue").value;a=+a;let n=o["varan-card-news"][e].this.shadowRoot.querySelector(".priceValue").value;n=+n,a<1&&(alert("минимальное время аукциона 1 минут"),a=1),0===n&&(alert("минимальная стоимость 1 waves"),n=1),0===t.length&&(t="Наименование товара");let l={};u=Date.now(),l.description={time:a,price:n,description:i.card.description},l.image={},l.content=i.card.content,l.timestamp=u,l.title=t,l.image.data=r,l.image.name=t,l.short_content=i.card.description,l.url="https://universitykids.ru",l.rss="https://universitykids.ru/rss",l.rss="bid",o["varan-card-news"][e].this.shadowRoot.querySelector(".nameBid").value="Наименование товара",o["varan-card-news"][e].this.shadowRoot.querySelector(".imgBidAdmin").src="/static/html/components/varan-card-news/icons/no_image.jpg",o["varan-card-news"][e].this.shadowRoot.querySelector(".timerValue").value=10,o["varan-card-news"][e].this.shadowRoot.querySelector(".priceValue").value=1;let s=o["varan-card-news"][e].this.querySelectorAll("varan-menu"),c={},d={},p={},h={};for(let e=0;e<s.length;e++)c=void 0===s[e].shadowRoot||null===s[e].shadowRoot?s[e]:s[e].shadowRoot,d=c.querySelector(".menu-convert"),p=c.querySelector(".menu-save"),null===(h=c.querySelector(".update"))||"null"===h||h.remove(),d.innerText="Создаётся новость. Страница сама перезагрузится",d.style.backgroundColor="red",d.disabled=!0,p.disabled=!0;staticProperty({type:"task",task:{type:"create",data:l}},"task","type")}break;case"about":let e=await utils({input:"varan-menu",data:l,type:"html2string"},"convert","type");for(let t=0;t<o["varan-about"].length;t++)switch(o["varan-about"][t].slot){case"about-admin":let r={};if(null===o["varan-about"][t].obj.this.querySelector(".menu-convert")){let e=o["varan-about"][t].obj.this.querySelector("varan-menu");r=e.shadowRoot.querySelector(".menu-convert")}else r=o["varan-about"][t].obj.this.querySelector(".menu-convert");r.innerText="Идёт сохранение данных.",r.disabled=!0,r.style.backgroundColor="red";let a=await matcher.webdav({input:"varan-menu",data:{txt:e},type:"about",path:"/about"},"set","type"),n=await utils({input:"varan-menu",target:"varan-about",type:"object",source:o["varan-about"],get:".main"},"get","type");n.innerHTML="",n.insertAdjacentHTML("beforeend",a),r.innerText="Данные сохранены",setTimeout(()=>{r.innerText="сохранить",r.disabled=!1,r.style.backgroundColor="#ccc"},2e3)}break;case"moderator":for(n=!1,p={};!n;)p=a.parentNode,n=r(p,a.getAttribute("parent"));h={},m=p.shadowRoot.querySelector("#titleItem").value;let t={};isEmpty(m)?"введите Имя и Фамилию  автора"===(t=prompt("введите Имя и Фамилию  автора","введите Имя и Фамилию  автора"))?(alert("вы не ввели имя автора поле остаётся пустым"),h="модератор"):h=t:h=m,Date.now||(Date.now=function(){return(new Date).getTime()}),u=Date.now(),(y={}).timestamp=u,y.title=h,y.img=p.shadowRoot.querySelector(".moderator").src,y.description=i.moderator.description,y.content=i.moderator.content,y.dir="moderator",y.positionImg=confirm("Фотографию разположить слева ?");let s={},c={},d={},f={};for(let e=0;e<o["varan-editor"].length;e++)switch(o["varan-editor"][e].slot){case"moderator":case"moderatorContent":f=o["varan-editor"][e].obj.this.querySelector("varan-menu").shadowRoot&&void 0!==o["varan-editor"][e].obj.this.querySelector("varan-menu").shadowRoot&&null!==o["varan-editor"][e].obj.this.querySelector("varan-menu").shadowRoot?o["varan-editor"][e].obj.this.querySelector("varan-menu").shadowRoot:o["varan-editor"][e].obj.this.querySelector("varan-menu"),s=f.querySelector(".menu-convert"),c=f.querySelectorAll(".menu-save")[0],null===(d=f.querySelector(".update"))||"null"===d||d.remove(),s.innerHTML="создаётся модератор",s.style.backgroundColor="#e1e1e1",s.disabled=!0,c.disabled=!0}v=await utils({input:"varan-menu",target:"lacerta-moderator",type:"object",source:o["lacerta-moderator"],get:".main"},"get","type"),w=await matcher.webdav({input:"varan-menu",data:y,type:"components",name:"moderator",path:"/components"},"set","type",v.querySelectorAll(".adminMenu").length);let b=v.querySelectorAll(".adminMenu").length;g=await utils({input:"varan-menu",target:"moderator-admin",type:"object",source:o["lacerta-moderator"],get:".adminContent"},"get","type");for(let e=0;e<w.length;e++){v.insertAdjacentHTML("beforeend",w[e]),v.querySelector(`.item_${v.querySelectorAll(".adminMenu").length}`),console.log(b);let t=v.querySelector(`.item_${b}`);await addEventListener({input:"varan-menu",delete:t.querySelector(".delete"),change:t.querySelector(".change"),type:"lacerta-moderator"},"add","type")}for(let e=0;e<o["varan-editor"].length;e++)switch(o["varan-editor"][e].slot){case"moderator":f=o["varan-editor"][e].obj.this.querySelector("varan-menu").shadowRoot&&void 0!==o["varan-editor"][e].obj.this.querySelector("varan-menu").shadowRoot&&null!==o["varan-editor"][e].obj.this.querySelector("varan-menu").shadowRoot?o["varan-editor"][e].obj.this.querySelector("varan-menu").shadowRoot:o["varan-editor"][e].obj.this.querySelector("varan-menu"),s=f.querySelector(".menu-convert"),c=f.querySelectorAll(".menu-save")[0],null===(d=f.querySelector(".update"))||"null"===d||d.remove(),s.innerHTML="модератор создан",location.reload();break;case"moderatorContent":f=o["varan-editor"][e].obj.this.querySelector("varan-menu").shadowRoot&&void 0!==o["varan-editor"][e].obj.this.querySelector("varan-menu").shadowRoot&&null!==o["varan-editor"][e].obj.this.querySelector("varan-menu").shadowRoot?o["varan-editor"][e].obj.this.querySelector("varan-menu").shadowRoot:o["varan-editor"][e].obj.this.querySelector("varan-menu"),s=f.querySelector(".menu-convert"),c=f.querySelectorAll(".menu-save")[0],null===(d=f.querySelector(".update"))||"null"===d||d.remove(),s.innerHTML="модератор создан",s.style.backgroundColor="red",s.disabled=!1,c.disabled=!1}break;case"news":let S=o["varan-editor-admin"][0].this.querySelector("lacerta-news"),q=S.shadowRoot.querySelector("#titleItem").value,A=S.shadowRoot.querySelector(".gallery").src,x="image";0===q.length&&(q="Новость"),Date.now||(Date.now=function(){return(new Date).getTime()});let k={image:{}};k.image.data=A,k.image.name=x,k.title=q,k.content=i.news.content,k.short_content=i.news.description,k.url="https://universitykids.ru",k.rss="https://universitykids.ru/rss",k.timestamp=Date.now();for(let e=0;e<o["lacerta-news"].length;e++)switch(o["lacerta-news"][e].slot){case"news-admin":o["lacerta-news"][e].obj.this.shadowRoot.querySelector("#titleItem").value="",o["lacerta-news"][e].obj.this.shadowRoot.querySelector(".date").innerHTML="",o["lacerta-news"][e].obj.this.shadowRoot.querySelector(".gallery").src="/static/html/components/lacerta-news/icons/no_image.jpg",isEmpty(o.action)&&(o.action={}),isEmpty(o.action.create)&&(o.action.create={}),o.action.create=!0;let t=o["lacerta-news"][e].obj.this.querySelectorAll("varan-menu"),r={},a={},n={},i={};for(let e=0;e<t.length;e++)r=void 0===t[e].shadowRoot||null===t[e].shadowRoot?t[e]:t[e].shadowRoot,a=r.querySelector(".menu-convert"),n=r.querySelector(".menu-save"),null===(i=r.querySelector(".update"))||"null"===i||i.remove(),a.innerText="Создаётся новость. Страница сама перезагрузится",a.style.backgroundColor="red",a.disabled=!0,n.disabled=!0;break;default:console.warn("~~~~~~~~~","На этот объект нет действия ",o["lacerta-news"][e].slot)}staticProperty({type:"task",task:{type:"create",data:k}},"task","type");break;case"varan-editor":let T=await utils({input:"varan-menu",data:o["varan-editor"][0].editor.quill.root.innerHTML,type:"html2string"},"convert","type");document.dispatchEvent(new CustomEvent("textToGitHub",{detail:{content:o["varan-editor"][0].editor.this.contentView.innerText,html:T}}));break;default:console.assert(!1,T)}setTimeout(function(){e.target.disable="false",e.target.style.backgroundColor="#ccc"},3e3)}timeStamp.staticProperty=e.timeStamp};e.this.querySelector(".menu-save")?(e.this.querySelector(".menu-save").addEventListener("click",a,!1),e.this.querySelector(".menu-convert").addEventListener("click",n,!1)):(e.this.shadowRoot.querySelector(".menu-save").addEventListener("click",a,!1),e.this.shadowRoot.querySelector(".menu-convert").addEventListener("click",n,!1))}(e),e)),e)),e))}attributeChangedCallback(e,t,r){let a={};if(a=this.hasAttribute("parent")?{id:e,slot:this.getAttribute("parent"),state:0}:{id:e,slot:"default",state:0},this.hasAttribute("parent")){let n={name:e,oldValue:t,newValue:r,state:0,parent:this.getAttribute("parent")};store.dispatch(a,n).then(e=>{})}else alert("не установлен parent родительский элемент")}});
+import modules from '/static/html/components/varan-menu/external/index.mjs'
+customElements.define('varan-menu',
+    class extends HTMLElement {
+        static get observedAttributes () {
+            return ['feed']
+        }
+        constructor () {
+            super()
+            let white = []
+            let property = []
+
+            let typeSupported = []
+            let words = []
+
+            property.push('component-id')
+            property.push('script')
+            property.push('component-action')
+            typeSupported.push('h1')
+            typeSupported.push('innerText')
+            words.push('shadowRoot')
+            words.push('head')
+            words.push('shadow')
+            words.push('light')
+            words.push('lightDom')
+            words.push('editor')
+            words.push('слайдер')
+            words.push('swap')
+            white['this'] = this
+            white['type-supported'] = typeSupported
+
+            function style (obj) {
+                return new Promise(function (resolve, reject) {
+                    let styleS = document.createElement('style')
+                    let styleL = document.createElement('style')
+                    let name = {}
+                    if (!obj['slot']) {
+                        name = obj['parent']
+                    } else {
+                        name = obj['slot']
+                    }
+                    if (!name) {
+                        console.assert(false, 'не установленны ни слот ни парент')
+                    }
+                    for (let key = 0; key < obj['type'].length; key++) {
+                        if (obj['type'][key] === 'swap') {
+                            if (obj['type'][key] === 'scoped') {
+                                styleS.setAttribute('scoped', '')
+                            }
+                        } else {
+                            if (obj['type'][key] === 'scoped') {
+                                styleL.setAttribute('scoped', '')
+                            }
+                        }
+                    }
+                    for (let state = 0; state < obj['state'].length; state++) {
+                        obj[`path-style-${obj['state'][state]}`] = `@import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}.css'; @import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}-custom.css';`
+                        switch (obj['state'][state]) {
+                            case 'shadow':
+                                if (obj['verify']['preset'] === true) {
+                                    obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${name}.css';`
+                                }
+                                styleS.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
+                                break
+                            case 'light':
+                                if (obj['verify']['preset'] === true) {
+                                    obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${name}.css';`
+                                }
+                                styleL.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
+                                break
+                            default:
+                                // //console.log(`новый тип`, obj['state'][state])
+                                break
+                        }
+                        if (obj['state'][state] === 'swap') {
+                            if (obj['shadowRoot'] === true) {
+                                obj['this']['shadowRoot'].appendChild(styleL)
+                                obj['this'].appendChild(styleS)
+                                resolve(obj)
+                            } else {
+                                obj['this'].appendChild(styleS)
+                            }
+                        } else {
+                            if (obj['shadowRoot'] === true) {
+                                obj['this']['shadowRoot'].appendChild(styleS)
+                                obj['this'].appendChild(styleL)
+                                resolve(obj)
+                            } else {
+                                obj['this'].appendChild(styleL)
+                            }
+                        }
+                    }
+                    resolve(obj)
+                })
+            }
+            function objectProperty (obj) {
+                return new Promise(function (resolve, reject) {
+                    let black = []
+                    black['staticProperty'] = []
+                    black['staticProperty']['c'] = 0
+                    black['state'] = []
+                    black['state'].push('shadow')
+                    black['state'].push('light')
+                    black['words'] = words
+                    black[`type-swap`] = false
+                    black[`type-external`] = false
+                    black[`document-offsetWidth`] = document['body'].offsetWidth
+                    let verifyLight = false
+                    black[`getAttribute`] = (obj, type, property) => {
+                        if (property === 'template') {
+                            if (!obj.getAttribute('type')) {
+                                // //console.log('не установлен тип ставим default')
+                                obj.setAttribute('type', 'default')
+                                return false
+                            } else {
+                                for (let key = 0; key < obj.getAttribute('type').split('-').length; key++) {
+                                    if (obj.getAttribute('type').split('-')[key] === type) {
+                                        verifyLight = true
+                                    }
+                                }
+                            }
+                            return verifyLight
+                        } else {
+                            // //console.log(obj['this'].getAttribute('type'))
+                            obj[`verify-${type}`] = false
+                            if (obj['this'].getAttribute('type').split('-').length === 0) {
+                                return false
+                            } else {
+                                for (let key = 0; key < obj['this'].getAttribute('type').split('-').length; key++) {
+                                    if (obj['this'].getAttribute('type').split('-')[key] === type) {
+                                        obj[`verify-${type}`] = true
+                                    } else {
+                                        obj[`verify-${type}`] = false
+                                    }
+                                }
+                            }
+                            console.assert(false, obj)
+                            return obj[`verify-${type}`]
+                        }
+                    }
+                    if (!obj.tagName.toLowerCase()) {
+                        // //console.log('что то пошло не так middleware js objectProperty', '')
+                    } else {
+                        black[`component`] = obj.tagName.toLowerCase()
+                    }
+                    if (typeof (obj) !== 'object') {
+                        // //console.log('objectProperty middleware.js пришёл не объект')
+                    } else {
+                        if (!obj.getAttribute('type')) {
+                            black[`type`] = ['default']
+                            // //console.log('нет типа ставим default')
+                            obj.setAttribute('type', 'default')
+                        } else {
+                            black[`type`] = obj.getAttribute('type').split('-')
+                            for (let type = 0; type < black[`type`].length; type++) {
+                                black[`type`][type] = black[`type`][type].replace(/:/g, '-')
+                            }
+                            for (let key in black[`type`]) {
+                                switch (black[`type`][key]) {
+                                    case 'swap':
+                                        black[`type-swap`] = true
+                                        break
+                                    case 'external':
+                                        black[`type-external`] = true
+                                        break
+                                    default:
+                                        // //console.log(`дополнительные типы`, black[`type`][key])
+                                        break
+                                }
+                            }
+                        }
+                        if (!obj.slot) {
+                            // //console.log('отсутствует слот, ставится- по тегу ', obj.tagName.toLowerCase())
+                            obj.slot = obj.tagName.toLowerCase()
+                            black[`slot`] = obj.slot
+                        } else {
+                            black[`slot`] = obj.slot
+                        }
+                        if (!obj.getAttribute('type')) {
+                            // //console.log(' почему то нет атрибутов')
+                        } else {
+                            let veryfiStyle = false
+                            for (let key in obj.getAttribute('type').split('-')) {
+                                if (obj.getAttribute('type').split('-')[key].indexOf('style:') !== -1) {
+                                    // //console.log('устанавливаются пути к стилям')
+                                    veryfiStyle = true
+                                }
+                            }
+                            if (veryfiStyle === true) {
+                                black['style-custom'] = 'not-default'
+                            } else {
+                                // //console.log('устанавливается стиль по default')
+                                black['style-custom'] = 'default'
+                            }
+                        }
+                    }
+                    black['shadowRoot'] = false
+                    black['this'] = obj
+
+                    // //console.log(black['this'])
+                    resolve(black)
+                })
+            }
+
+            function externalProperty (obj) {
+                return new Promise(function (resolve, reject) {
+                    obj['external-property'] = white['external-property']
+                    let object = []
+                    let component = []
+                    let a = []
+                    for (let key = 0; key < obj['external'].length; key++) {
+                        for (let type = 0; type < obj['external'][key].children.length; type++) {
+                            switch (obj['external'][key].children[type].tagName) {
+                                case 'SCRIPT':
+                                    if (!obj['external'][key].getAttribute('id')) {
+                                        // //console.log('у компонента нет id нужно в external property script  получить id для загрузки скрипта')
+                                    } else {
+                                        component['script'] = obj['external'][key]['children'][type]
+                                    }
+                                    break
+                                case 'COMPONENT-ID':
+                                    component['id'] = obj['external'][key]['children'][type].innerText
+                                    break
+                                case 'COMPONENT-ACTION':
+                                    for (let action = 0; action < obj['external'][key]['children'][type]['children'].length; action++) {
+                                        a.push(obj['external'][key]['children'][type]['children'][action].innerText)
+                                    }
+                                    component['actions'] = a
+                                    break
+                                default:
+                                    // //console.log(`Не отслеживается, по мере надобности добавляются [${obj['external'][key].children[type].tagName.toLowerCase()}]`)
+                                    break
+                            }
+                        }
+                        object.push(component)
+                        component = []
+                    }
+                    obj['external-property'] = object
+                    resolve(obj)
+                })
+                    .catch(error => {
+                        // //console.log('здесь я перехватывал отсутствие страницы но это убрал', error)
+                    })
+            }
+
+            function getTemplate (obj, swap, external) {
+                return new Promise(function (resolve, reject) {
+                    obj['template-shadow'] = []
+                    obj['template-light'] = []
+                    let verify = []
+                    verify['swap'] = false
+                    verify['blog'] = false
+                    verify['external'] = false
+                    verify['light'] = false
+                    verify['slider'] = false
+                    verify['one'] = false
+                    verify['sliderText'] = false
+                    verify['text'] = false
+                    for (let type = 0; type < obj['type'].length; type++) {
+                        if (obj['type'][type].indexOf('slider') !== -1) {
+                            if (obj['type'][type].split('-').length > 1) {
+                                verify['slider'] = true
+                                for (let key in obj['type'][type].split('-')) {
+                                    switch (obj['type'][type].split('-')[key]) {
+                                        case 'one':
+                                            verify['one'] = true
+                                            break
+                                        default:
+                                            // //console.log(`~~~дополнительное свойство~~~`, obj['type'][type].split('-')[key])
+                                            break
+                                    }
+                                }
+                            }
+                        }
+                        if (obj['type'][type].length) {
+                            if (obj['type'][type].split('-').length > 1) {
+                                switch (obj['type'][type].split('-')[0]) {
+                                    case 'blog':
+                                        verify['blog'] = true
+                                        break
+                                    default:
+                                        console.log(`типы не отслеживаются`, obj['type'][type])
+                                        break
+                                }
+                            } else {
+                                switch (obj['type'][type]) {
+                                    case 'swap':
+                                        verify['swap'] = true
+                                        break
+                                    case 'external':
+                                        verify['external'] = true
+                                        break
+                                    case 'light':
+                                        verify['light'] = true
+                                        break
+                                    case 'slider':
+                                        verify['slider'] = true
+                                        break
+                                    case 'sliderText':
+                                        verify['sliderText'] = true
+                                        break
+                                    case 'text':
+                                        verify['text'] = true
+                                        break
+                                    default:
+                                        // //console.log(`типы не отслеживаются`, obj['type'][type])
+                                        break
+                                }
+                            }
+                        }
+                    }
+                    /**
+                     * цикл this
+                     * цикл template
+                     */
+                    if (verify['swap'] === true) {
+                        for (let key = 0; key < obj['this'].children.length; key++) {
+                            // //console.log('~~~~~~this~~~~~~~', obj['this'].children[key].tagName)
+                            if (obj['this'].children[key].tagName.split('-').length === 1) {
+                                if (obj['this'].children[key].slot === 'view') {
+                                    obj['this'].children[key].className = 'wall'
+                                }
+                                obj['template-light'].push(obj['this'].children[key])
+                            } else {
+                                if (obj['getAttribute'](obj['this'].children[key], 'light', 'template') === true) {
+                                    obj['this'].children[key].setAttribute('type', `${obj['this'].children[key].getAttribute('type')}-external`)
+                                    scriptTemplate(obj['this'].children[key], obj)
+                                    obj['template-light'].push(obj['this'].children[key])
+                                } else {
+                                    obj['this'].children[key].setAttribute('type', `${obj['this'].children[key].getAttribute('type')}-external`)
+                                    scriptTemplate(obj['this'].children[key], obj)
+                                    obj['template-shadow'].push(obj['this'].children[key])
+                                }
+                            }
+                        }
+                        for (let key = 0; key < obj['template'].children.length; key++) {
+                            // //console.log('~~~~~~template~~~~~~~', obj['template'].children[key].tagName)
+                            if (obj['template'].children[key].tagName.split('-').length === 1) {
+                                if (obj['template'].children[key].slot === 'view') {
+                                    obj['template'].children[key].className = 'wall'
+                                }
+                                obj['template-light'].push(obj['template'].children[key])
+                            } else {
+                                if (obj['getAttribute'](obj['template'].children[key], 'light', 'template') === true) {
+                                    obj['template'].children[key].setAttribute('type', `${obj['template'].children[key].getAttribute('type')}-external`)
+                                    scriptTemplate(obj['template'].children[key], obj)
+                                    obj['template-light'].push(obj['template'].children[key])
+                                } else {
+                                    obj['template'].children[key].setAttribute('type', `${obj['template'].children[key].getAttribute('type')}-external`)
+                                    scriptTemplate(obj['template'].children[key], obj)
+                                    obj['template-shadow'].push(obj['template'].children[key])
+                                }
+                            }
+                        }
+                    } else {
+                        for (let key = 0; key < obj['this'].children.length; key++) {
+                            // //console.log('~~~~~~this~~~~~~~', obj['this'].children[key].tagName)
+                            if (obj['this'].children[key].tagName.split('-').length === 1) {
+                                if (obj['this'].children[key].slot === 'view') {
+                                    obj['this'].children[key].className = 'wall'
+                                }
+                                obj['template-shadow'].push(obj['this'].children[key])
+                            } else {
+                                if (obj['getAttribute'](obj['this'].children[key], 'light', 'template') === true) {
+                                    scriptTemplate(obj['this'].children[key], obj)
+                                    obj['template-shadow'].push(obj['this'].children[key])
+                                } else {
+                                    scriptTemplate(obj['this'].children[key], obj)
+                                    obj['template-light'].push(obj['this'].children[key])
+                                }
+                            }
+                        }
+                        for (let key = 0; key < obj['template'].children.length; key++) {
+                            // //console.log('~~~~~~template~~~~~~~', obj['template'].children[key].tagName)
+                            if (obj['template'].children[key].tagName.split('-').length === 1) {
+                                if (obj['template'].children[key].slot === 'view') {
+                                    obj['template'].children[key].className = 'wall'
+                                }
+                                obj['template-shadow'].push(obj['template'].children[key])
+                            } else {
+                                if (obj['getAttribute'](obj['template'].children[key], 'light', 'template') === true) {
+                                    scriptTemplate(obj['template'].children[key], obj)
+                                    obj['template-shadow'].push(obj['template'].children[key])
+                                } else {
+                                    scriptTemplate(obj['template'].children[key], obj)
+                                    obj['template-light'].push(obj['template'].children[key])
+                                }
+                            }
+                        }
+                    }
+                    for (let key in verify) {
+                        obj['verify'][key] = verify[key]
+                    }
+                    if (obj['verify']['slider'] === true) {
+                        getSliderTemplate(obj)
+                            .then((obj) => {
+                                obj['template-light'].push(obj['slider'])
+                                obj['this']['appendChild'](obj['slider'])
+                                setExternalComponent(obj, 'slider')
+                                    .then((obj) => {
+                                        if (obj['verify']['one'] === true) {
+                                            for (let state = 0; state < obj['state'].length; state++) {
+                                                for (let key = 0; key < obj[`template-${obj['state'][state]}`].length; key++) {
+                                                    if (obj[`template-${obj['state'][state]}`][key]['className'] === 'wall') {
+                                                        obj[`template-${obj['state'][state]}`].splice(key, 1)
+                                                        resolve(obj)
+                                                    }
+                                                }
+                                            }
+                                        } else {
+                                            resolve(obj)
+                                        }
+                                    })
+                            })
+                    } else {
+                        resolve(obj)
+                    }
+                })
+            }
+            function template (obj, type) {
+                return new Promise(function (resolve, reject) {
+                    obj['verify'] = []
+                    // изменил
+                    let name = {}
+                    if (!obj['slot']) {
+                        name = obj['parent']
+                    } else {
+                        name = obj['slot']
+                    }
+                    if (!obj['this'].hasAttribute('preset')) {
+                        obj['path-template'] = `/static/html/components/${obj['component']}/${obj['component']}.html`
+                        obj['verify']['preset'] = false
+                    } else {
+                        if (obj['this'].getAttribute('preset').length === 0) {
+                            obj['path-template'] = `/static/html/components/${obj['component']}/template/${name}.html`
+                            obj['preset'] = `default`
+                            obj['verify']['preset'] = true
+                        } else {
+                            obj['path-template'] = `/static/html/components/${obj['component']}/template/${obj['this'].getAttribute('preset')}/${obj['component']}-${obj['this'].getAttribute('preset')}.html`
+                            obj['preset'] = `${obj['this'].getAttribute('preset')}`
+                            obj['verify']['preset'] = true
+                        }
+                    }
+                    fetch(obj['path-template'])
+                        .then(function (response) {
+                            if (response.ok) {
+                                return response.text()
+                            }
+                        }).then(function (body) {
+                        let parser = new DOMParser()
+                        let doc = parser.parseFromString(body, 'text/html')
+                        obj['template'] = doc.getElementsByTagName('template')[0].content.cloneNode(true)
+                        external(obj)
+                            .then((obj) => {
+                                getTemplate(obj, obj['type-swap'], obj['type-external'])
+                                    .then((obj) => {
+                                        let menu = {}
+                                        for (let key = 0; key < obj['template-light'].length; key++) {
+                                            if (obj['template-light'][key].tagName === 'VARAN-MENU') {
+                                                menu = obj['template-light'].splice(key, 1)
+                                                obj['template-light'].push(menu[0])
+                                            }
+                                        }
+                                        if (obj['verify']['swap'] === true) {
+                                            if (obj['template-shadow'].length !== 0) {
+                                                obj['this']['attachShadow']({mode: 'open'})
+                                                obj['shadowRoot'] = true
+                                                for (let key = 0; key < obj['template-shadow'].length; key++) {
+                                                    obj['this']['shadowRoot']['appendChild'](obj['template-shadow'][key])
+                                                }
+                                            }
+                                            if (obj['template-light'].length !== 0) {
+                                                for (let key = 0; key < obj['template-light'].length; key++) {
+                                                    // if (obj['template-light'][key].tagName === 'SECTION') {
+                                                    //   for (let i = 0; i < obj['template-light'][key].children.length; i++) {
+                                                    //     if (obj['template-light'][key].children[i].tagName.split('-').length > 1) {
+                                                    //       scriptTemplate(obj['template-light'][key].children[i], obj)
+                                                    //     }
+                                                    //   }
+                                                    // }
+                                                    obj['this']['appendChild'](obj['template-light'][key])
+                                                }
+                                            }
+                                        } else {
+                                            if (obj['template-shadow'].length !== 0) {
+                                                obj['this']['attachShadow']({mode: 'open'})
+                                                obj['shadowRoot'] = true
+                                                for (let key in obj['template-shadow']) {
+                                                    obj['this']['shadowRoot']['appendChild'](obj['template-shadow'][key])
+                                                }
+                                            }
+                                            if (obj['template-light'].length !== 0) {
+                                                for (let key in obj['template-light']) {
+                                                    obj['this']['appendChild'](obj['template-light'][key])
+                                                }
+                                            }
+                                        }
+                                        resolve(obj)
+                                    })
+                            })
+                    })
+                        .catch(error => {
+                            return error
+                        })
+                })
+            }
+            function getSliderTemplate (obj) {
+                return new Promise(function (resolve, reject) {
+                    fetch(`/static/html/components/varan-slider/template/${obj['slot']}.html`)
+                        .then(function (response) {
+                            if (response.ok) {
+                                return response.text()
+                            }
+                        }).then(function (body) {
+                        let parser = new DOMParser()
+                        let doc = parser.parseFromString(body, 'text/html')
+                        obj['slider'] = doc.getElementsByTagName('template')[0].content.cloneNode(true)
+                        let slider = document.createElement('section')
+                        slider.className = 'slider'
+                        slider.slot = 'view'
+                        slider.appendChild(obj['slider'])
+                        obj['slider'] = slider
+                        obj['slider-template'] = slider
+                        for (let key = 0; key < obj['type'].length; key++) {
+                            if (obj['type'][key] === 'slider-one-text') {
+                                obj['verify']['sliderText'] = true
+                            }
+                        }
+                        // matcher['database']['request']['functions']['getObject'](obj)
+                        //     .then((obj) => {
+                        //       if (!obj['get']) {
+                        //         resolve(obj)
+                        //       } else {
+                        //         pagination['init'](obj)
+                        //         pagination['action'](obj)
+                        //             .then(obj => {
+                        //               resolve(obj)
+                        //             })
+                        //       }
+                        //     })
+                    })
+                        .catch(error => {
+                            return error
+                        })
+                })
+            }
+            function renderExternal (obj) {
+                return new Promise(function (resolve, reject) {
+                    obj['words-action'] = []
+                    let wordsAction = []
+                    for (let key = 0; key < obj['external-property'].length; key++) {
+                        for (let words = 0; words < obj['external-property'][key]['actions'].length; words++) {
+                            for (let verify = 0; verify < obj['words'].length; verify++) {
+                                if (obj['external-property'][key]['actions'][words].indexOf(obj['words'][verify]) !== -1) {
+                                    if (obj['words'][verify] === 'shadowRoot' || obj['words'][words] === 'shadow') {
+                                        wordsAction['shadow'] = true
+                                    }
+                                    if (obj['words'][verify] === 'light' || obj['words'][words] === 'лайт') {
+                                        wordsAction['light'] = true
+                                    }
+                                    if (obj['words'][verify] === 'editor') {
+                                        wordsAction['editor'] = true
+                                    }
+                                    if (obj['words'][verify] === 'слайдер') {
+                                        wordsAction['editor-slider'] = true
+                                    }
+                                    if (obj['words'][verify] === 'swap') {
+                                        wordsAction['swap'] = true
+                                    }
+                                }
+                            }
+                        }
+                        obj['words-action'] = wordsAction
+
+                        for (let key in obj['external-property']) {
+                            for (let type in obj['external-property'][key]) {
+                                switch (type) {
+                                    case 'id':
+                                        let doc = document.createElement(obj['external-property'][key][type])
+                                        doc.setAttribute('type', 'external')
+                                        obj['this'].appendChild(doc)
+                                        break
+                                    default:
+                                        // //console.log(`какой то неизвестный тип`, type)
+                                        break
+                                }
+                            }
+                        }
+                        resolve(obj)
+                    }
+                })
+            }
+
+            function external (obj) {
+                return new Promise(function (resolve, reject) {
+                    obj['path-external'] = `/static/html/components/${obj['component']}/external/${obj['component']}-external.html`
+                    fetch(obj['path-external'])
+                        .then(function (response) {
+                            if (response.ok === false) {
+                                return response.ok
+                            } else {
+                                return response.text()
+                            }
+                        })
+                        .then(function (data) {
+                            if (data === false) {
+                            } else {
+                                let parser = new DOMParser()
+                                let doc = parser.parseFromString(data, 'text/html')
+                                obj['external'] = doc.querySelectorAll('section')
+                                externalProperty(obj)
+                                    .then((obj) => {
+                                        if (obj['external-property'].length === 0) {
+                                            resolve(obj)
+                                        } else {
+                                            renderExternal(obj)
+                                                .then((obj) => {
+                                                    resolve(obj)
+                                                })
+                                        }
+                                    })
+                            }
+                        })
+                        .catch(error => {
+                            throw error
+                        })
+                })
+            }
+            function getElementsByClassName (obj, type) {
+                return new Promise(function (resolve, reject) {
+                    for (let state = 0; state < obj['state'].length; state++) {
+                        for (let key = 0; key < obj[`template-${obj['state'][state]}`].length; key++) {
+                            if (obj[`template-${obj['state'][state]}`][key].getElementsByClassName(type).length === 0) {
+
+                            } else {
+                                obj['slider'] = obj[`template-${obj['state'][state]}`][key].getElementsByClassName(type)[0]
+                                resolve(obj[`template-${obj['state'][state]}`][key].getElementsByClassName(type)[0])
+                            }
+                        }
+                    }
+                })
+            }
+            function setSlider (obj) {
+                return new Promise(function (resolve, reject) {
+                    // resolve(Peppermint(obj, {
+                    //   dots: false,
+                    //   slideshow: false,
+                    //   speed: 500,
+                    //   slideshowInterval: 5000,
+                    //   stopSlideshowAfterInteraction: true,
+                    //   onSetup: function (n) {
+                    //console.log('Peppermint setup done. Slides found: ' + n)
+                    // }
+                    // }))
+                })
+            }
+            function scriptTemplate (obj, parent) {
+                return new Promise(function (resolve, reject) {
+                    let verify = false
+                    for (let i = 0; i < document.querySelectorAll('script').length; i++) {
+                        if (document.querySelectorAll('script')[i].src.indexOf(obj.tagName.toLowerCase()) !== -1) {
+                            verify = true
+                        }
+                    }
+                    if (verify === true) {
+                        console.log('модуль загружен')
+                    } else {
+                        const script = document.createElement('script')
+                        script.type = 'module'
+                        script.src = `./static/html/components/${obj.tagName.toLowerCase()}/${obj.tagName.toLowerCase()}.mjs`
+                        script.setAttribute('async', '')
+                        script.onload = resolve
+                        script.onerror = reject
+                        parent['this'].appendChild(script)
+                    }
+                })
+            }
+            function setExternalComponent (obj, type) {
+                return new Promise(function (resolve, reject) {
+                    if (!type) {
+                        resolve(obj)
+                    } else {
+                        switch (type) {
+                            case 'slider': {
+                                getElementsByClassName(obj, 'peppermint')
+                                    .then((slider) => {
+                                        setSlider(slider)
+                                            .then((slider) => {
+                                                obj['slider'] = slider
+                                                resolve(obj)
+                                            })
+                                    })
+                            }
+                                break
+                            default:
+                                // //console.log(`какой то неизвестный тип`, type)
+                                break
+                        }
+                        resolve(obj)
+                    }
+                })
+            }
+            objectProperty(this)
+                .then((obj) => {
+                    template(obj)
+                        .then((obj) => {
+                            style(obj)
+                                .then((obj) => {
+                                    modules(obj)
+                                })
+                        })
+                })
+        }
+        connectedCallback() {
+            // console.log('connected callback');
+        }
+        disconnectedCallback() {
+            console.log('disconnected callback');
+        }
+        componentWillMount() {
+            console.log('component will mount');
+        }
+        componentDidMount() {
+            console.log('component did mount');
+        }
+        componentWillUnmount() {
+            console.log('component will unmount');
+        }
+        componentDidUnmount() {
+            console.log('component did unmount');
+        }
+    })
