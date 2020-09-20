@@ -2,7 +2,8 @@
     <div class="item">
         <form class="contract">
             <fieldset class="contract-customer">
-                <legend>customer</legend>
+                <legend class="contract-customer-legend">customer</legend>
+                <slot name="waves-game-user-customer"></slot>
             </fieldset>
             <fieldset class="contract-item">
                 <legend>contract</legend>
@@ -14,7 +15,8 @@
                 </fieldset>
             </fieldset>
             <fieldset class="contract-executor">
-                <legend>executor</legend>
+                <legend class="contract-executor-legend">executor</legend>
+                <slot name="waves-game-user-executor"></slot>
             </fieldset>
         </form>
         <slot name="varan-menu"></slot>
