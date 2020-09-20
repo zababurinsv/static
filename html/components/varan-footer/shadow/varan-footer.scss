@@ -1,0 +1,21 @@
+@import "./scss/interface.scss";
+@import "./scss/fonts.scss";
+@import "./scss/media.scss";
+
+section{
+    height: 5.6vw;
+footer{
+    font-family: Roboto, serif;
+@include fonts(4);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #343a40!important;
+    color: white;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 2vw;
+    z-index: 100000;
+}
+}
