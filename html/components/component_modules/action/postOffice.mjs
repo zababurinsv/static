@@ -1,5 +1,5 @@
 import colorlog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
-import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty_t.mjs'
+import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 function bestCopyEver(src) {
     return Object.assign({}, src);
 }

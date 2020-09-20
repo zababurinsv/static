@@ -1,5 +1,5 @@
 import emoji from '/static/html/components/component_modules/emoji/emoji.mjs';
-import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty_t.mjs'
+import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 import Waves from '/static/html/components/component_modules/waves/module/waves-bundle.mjs'
 export default (views,property,color,substrate,relation)=>{
     return  new Promise(async (resolve, reject) => {

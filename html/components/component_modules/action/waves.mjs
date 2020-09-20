@@ -1,5 +1,5 @@
 import colorlog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
-import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty_t.mjs'
+import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 import emoji from '/static/html/components/component_modules/emoji/emoji.mjs'
 import Recursion from '/static/html/components/component_modules/recursion/recursion.mjs'
 import treeBundle from '/static/html/components/component_modules/recursion/module/tree-bundle.mjs'

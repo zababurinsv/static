@@ -1030,6 +1030,7 @@ var WebContainer = {
   class: "webcontainer hidden",
   height: "100%",
   width: "100%",
+  border:"none",
   _update: function(background) {
     if (background.style) {
       this.style = background.style;

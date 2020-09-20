@@ -1,1 +1,17 @@
-import second from"/static/html/components/component_modules/router/orderbook/orderbooksecond.mjs";export default(o,e,t,c,r)=>new Promise(function(n,s){switch(c.path[3]){case"cancel":case"market":break;default:second(o,e,t,c,r)}});
+import  second from '/static/html/components/component_modules/router/orderbook/orderbooksecond.mjs'
+
+export default (view, property, color, substrate, relation)=>{
+    return new Promise(function(resolve, reject) {
+        switch (substrate.path[3]) {
+            case "cancel":
+
+                break
+                case "market":
+
+                break
+            default:
+                second(view, property, color, substrate, relation)
+                break
+        }
+    })
+}

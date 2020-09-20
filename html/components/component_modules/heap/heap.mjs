@@ -1,1 +1,123 @@
-import isEmpty from"/static/html/components/component_modules/isEmpty/isEmpty.mjs";import emoji from"/static/html/components/component_modules/emoji/emoji.mjs";import colorLog from"/static/html/components/component_modules/colorLog/colorLog.mjs";let source={},target={};source.staticProperty={},target.staticProperty={},source.staticProperty=new Proxy({},{get:(t,r)=>t[r],set:(t,r,o)=>(isEmpty(t[r])&&(t[r]=[]),t[r].push(o),!0)});export default(t,r,o,e,s,c,a)=>new Promise(async(a,i)=>{try{if("await"===r)if(isEmpty(target.staticProperty[`${s}`]))if(isEmpty(source.staticProperty[`${s}`]))target.staticProperty[`${s}`]={callback:c};else for(console.log(`${emoji("last_quarter_moon")}`,{relation:source.staticProperty[`${s}`][0].relation});!isEmpty(source.staticProperty[`${s}`][0]);)c({view:source.staticProperty[`${s}`][0].view,property:source.staticProperty[`${s}`][0].property,color:source.staticProperty[`${s}`][0].color,substrate:source.staticProperty[`${s}`][0].substrate,relation:source.staticProperty[`${s}`][0].relation,callback:source.staticProperty[`${s}`][0].callback}),source.staticProperty[`${s}`].shift();else console.assert(!1,"должен быть один таргет объект в heap");else if(isEmpty(target.staticProperty[`${s}`]))console.log(`${emoji("first_quarter_moon")}`,{property:r,substrate:e,relation:s}),source.staticProperty[`${s}`]={view:t,property:r,color:o,substrate:e,relation:s,callback:c};else for(console.log(`${emoji("waning_crescent_moon")}`,{property:r,substrate:e,relation:s}),source.staticProperty[`${s}`]={view:t,property:r,color:o,substrate:e,relation:s,callback:c};!isEmpty(source.staticProperty[`${s}`][0]);)target.staticProperty[`${s}`].callback({view:source.staticProperty[`${s}`][0].view,property:source.staticProperty[`${s}`][0].property,color:source.staticProperty[`${s}`][0].color,substrate:source.staticProperty[`${s}`][0].substrate,relation:source.staticProperty[`${s}`][0].relation,callback:source.staticProperty[`${s}`][0].callback}),source.staticProperty[`${s}`].shift();!function(t){a(t)}(!0)}catch(t){!function(t){i(t)}({_:"object",error:t})}});
+import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
+import emoji from '/static/html/components/component_modules/emoji/emoji.mjs'
+import colorLog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
+let source = {}
+let target = {}
+source.staticProperty = {}
+target.staticProperty = {}
+source.staticProperty = new Proxy({}, {
+    get: (obj, prop) => {
+        return obj[prop];
+    },
+    set: (obj, prop, value) => {
+        if(isEmpty(obj[prop])){
+            obj[prop] = []
+        }
+        obj[prop].push(value);
+        return true
+    }
+});
+
+export default (view,property,color,substrate,relation,callback,origin) =>{
+    return  new Promise(async (resolve, reject) => {
+        function out(obj) {
+            resolve(obj)
+        }
+        function err(obj) {
+            reject(obj)
+        }
+        try {
+            if(property === 'await'){
+                // concustomEventsole.assert(false, property, substrate)
+                if(!isEmpty(target.staticProperty[`${relation}`])){
+                   console.assert(false, 'должен быть один таргет объект в heap')
+                }else{
+                    if(isEmpty(source.staticProperty[`${relation}`])){
+                        // console.log(`${emoji('waxing_crescent_moon')}`, {
+                        //     relation: relation,
+                        // })
+                        // console.assert(false, source.staticProperty, target.staticProperty, '2')
+                        target.staticProperty[`${relation}`]= {
+                            callback: callback
+                        }
+                        out(true)
+                    }else{
+                        // console.assert(false, source.staticProperty, target.staticProperty, '2')
+                        console.log(`${emoji('last_quarter_moon')}`, {
+                            relation:source.staticProperty[`${relation}`][0]['relation']
+                        })
+
+                        while(!isEmpty(source.staticProperty[`${relation}`][0])){
+                           await callback({
+                                view:source.staticProperty[`${relation}`][0]['view'],
+                                property:source.staticProperty[`${relation}`][0]['property'],
+                                color: source.staticProperty[`${relation}`][0]['color'],
+                                substrate:source.staticProperty[`${relation}`][0]['substrate'],
+                                relation: source.staticProperty[`${relation}`][0]['relation'],
+                                callback: source.staticProperty[`${relation}`][0]['callback']
+                            })
+                             source.staticProperty[`${relation}`].shift()
+                        }
+                        out(true)
+                    }
+                }
+            }else{
+
+
+                if(isEmpty(target.staticProperty[`${relation}`])){
+                    // console.assert(false, target.staticProperty[`${relation}`],'----->')
+                    console.log(`${emoji('first_quarter_moon')}`, {
+                        property:property,
+                        substrate:substrate,
+                        relation:relation,
+                    })
+
+                    // console.assert(false, target.staticProperty[`${relation}`],'----->')
+                    source.staticProperty[`${relation}`] = {
+                        view:view,
+                        property:property,
+                        color:color,
+                        substrate:substrate,
+                        relation:relation,
+                        callback: callback
+                    }
+                    out(true)
+                }else{
+                    console.log(`${emoji('waning_crescent_moon')}`, {
+                        property:property,
+                        substrate:substrate,
+                        relation:relation,
+                    })
+
+                    source.staticProperty[`${relation}`] = {
+                        view:view,
+                        property:property,
+                        color:color,
+                        substrate:substrate,
+                        relation:relation,
+                        callback: callback
+                    }
+                    while(!isEmpty(source.staticProperty[`${relation}`][0])){
+                       target.staticProperty[`${relation}`].callback({
+                            view:source.staticProperty[`${relation}`][0]['view'],
+                            property:source.staticProperty[`${relation}`][0]['property'],
+                            color: source.staticProperty[`${relation}`][0]['color'],
+                            substrate:source.staticProperty[`${relation}`][0]['substrate'],
+                            relation: source.staticProperty[`${relation}`][0]['relation'],
+                            callback: source.staticProperty[`${relation}`][0]['callback']
+                        })
+                         source.staticProperty[`${relation}`].shift()
+                    }
+                    out(true)
+                }
+
+            }
+        }catch (e) {
+            err({
+                _:'object',
+                error: e
+            })
+        }
+        
+    })
+}

@@ -1,1 +1,17 @@
-import heap from"/static/html/components/component_modules/heap/heap.mjs";import emoji from"/static/html/components/component_modules/emoji/emoji.mjs";export default{set:(o,e,m,t,n)=>new Promise(function(s,p){console.log(`  ${emoji("new_moon")}`,t),heap(o,e,m,t,n,o=>{console.log(`   ${emoji("full_moon")}`,o),s(o)})}),get:(o,e,m,t,n,s)=>{console.log(`  ${emoji("sunny")}`,n),heap(o,"await",m,{property:e,substrate:t},n,s)}};
+import heap from '/static/html/components/component_modules/heap/heap.mjs'
+import emoji from '/static/html/components/component_modules/emoji/emoji.mjs'
+export default {
+    set:(view,property,color,substrate,relation)=>{
+        return new Promise(function (resolve, reject) {
+            console.log(`  ${emoji('new_moon')}`, substrate)
+            heap(view, property,color,substrate ,relation, (event)=>{
+                console.log(`   ${emoji('full_moon')}`, event)
+                resolve(event)
+            })
+        })
+    },
+    get:(view,property,color,substrate,relation, callback)=>{
+        console.log(`  ${emoji('sunny')}`, relation)
+        heap(view, 'await',color,{property, substrate} ,relation, callback)
+    }
+}

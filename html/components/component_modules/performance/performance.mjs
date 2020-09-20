@@ -1,4 +1,4 @@
-import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty_t.mjs'
+import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 import module from '/static/html/components/component_modules/performance/module-performance.mjs'
 let object = {}
 object.staticProperty = []

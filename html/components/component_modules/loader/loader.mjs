@@ -86,7 +86,6 @@ export default (url, name)=>{
                   resolve(window[name])
               })
             }else{
-                console.log('#####3#######', window[name])
                 resolve(window[name])
             }
         }

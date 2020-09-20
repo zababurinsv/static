@@ -1,4 +1,4 @@
-import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty_t.mjs'
+import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 import colorlog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
 // import SELECT from '/static/html/components/component_modules/json/module-select.mjs'
 // import Helper from '/static/html/components/component_modules/json/module-helper.mjs'

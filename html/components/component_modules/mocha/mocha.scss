@@ -308,43 +308,6 @@ body {
     height: 40px;
 }
 
-#mocha-report{
-    font-size: 2.5vw;
-}
-#mocha-report > li > ul > li > h2{
-    font-size: 2vw;
-}
-ul#mocha-stats > li.progress > canvas{
-    background: #cdcdcd;
-    border-radius: 50%;
-}
-ul#mocha-stats{
-    position: absolute;
-    background: black;
-    border-radius: 0.5vw;
-    display: flex;
-    color: white;
-    font-size: 2vw;
-    align-items: center;
-    box-sizing: border-box;
-    padding: 1vw;
-    top: auto;
-    margin-top: 1.5vw;
-}
-ul#mocha-stats > li{
-    padding: 0;
-    box-sizing: border-box;
-}
-ul#mocha-stats > li.progress{
-    display: flex;
-}
-#mocha-report > li > ul > li.suite > ul > li > h2{
-
-    font-size: 1.8vw;
-}
-ul#mocha-stats > li.passes > em, ul#mocha-stats > li.failures > em, ul#mocha-stats > li.duration > em{
-    color: white;
-}
 #mocha code .comment { color: #ddd; }
 #mocha code .init { color: #2f6fad; }
 #mocha code .string { color: #5890ad; }

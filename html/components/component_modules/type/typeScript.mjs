@@ -1,4 +1,4 @@
-import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty_t.mjs'
+import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 import Class from '/static/html/components/component_modules/type/module/class.mjs'
 export default (obj = {_:'type'})=>{
     return new Promise( async (resolve, reject) =>{

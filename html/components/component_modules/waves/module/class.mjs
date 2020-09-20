@@ -1,4 +1,4 @@
-import colorlog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
+// import colorlog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
 import queue from '/static/html/components/component_modules/queue/queue.mjs'
 import bundle from '/static/html/components/component_modules/waves/module/waves-bundle.mjs'
 let Class = class Waves {

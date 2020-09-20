@@ -31,7 +31,6 @@ export default (color)=>{
                 break
             case 'constructor':
                 color = '#7703fc'
-                break
             case '0':
                 color = '#ca0a74'
                 break
@@ -55,7 +54,6 @@ export default (color)=>{
                 break
             case '7':
                 color = '#7928d2'
-                break
             case '8':
                 color = '#921436'
                 break
@@ -67,51 +65,6 @@ export default (color)=>{
                 break
             case '11':
                 color = '#6b4c17'
-                break
-            case '12':
-                color = 'aqua'
-                break
-            case '13':
-                color = 'black'
-                break
-            case '14':
-                color = 'blue'
-                break
-            case '15':
-                color = 'fuchsia'
-                break
-            case '16':
-                color = 'gray'
-                break
-            case '17':
-                color = 'green'
-                break
-            case '18':
-                color = 'lime'
-                break
-            case '19':
-                color = 'maroon'
-                break
-            case '20':
-                color = 'navy'
-                break
-            case '21':
-                color = 'olive'
-                break
-            case '22':
-                color = 'orange'
-                break
-            case '23':
-                color = 'purple'
-                break
-            case '24':
-                color = 'silver'
-                break
-            case '25':
-                color = 'teal'
-                break
-            case '26':
-                color = 'yellow'
                 break
             default:
         }

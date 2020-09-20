@@ -12,7 +12,7 @@ config['now']['0.6'] = 'https://soundlane-b2b652bpi.now.sh'
 
 config['mongo'] = {}
 // config['mongo']['local'] = 'http://localhost:3003'
-config['mongo']['web'] = 'https://mongo.now.sh'
+config['mongo']['web'] = 'https://server-mongo.zababurinsv.now.sh'
 // config['mongo']['web'] = 'http://localhost:3003'
 // config['mongo']['web'] = 'http://localhost:3003'
 
@@ -25,7 +25,7 @@ config['waves']['web'] = 'https://waves.zababurinsv.now.sh'
 config['store'] = {}
 config['store']['local'] = 'http://localhost:4000'
 config['store']['localNow'] = 'http://localhost:3000'
-config['store']['web'] = 'https://webdav2.zababurinsv.now.sh'
+config['store']['web'] = 'https://server-webdav.now.sh'
 
 config['email'] = {}
 config['email']['local'] = 'http://localhost:3007'
