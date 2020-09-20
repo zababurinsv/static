@@ -18,7 +18,7 @@ customElements.define('music-one2one-deals',
         typeSupported.push('h1')
         typeSupported.push('innerText')
         words.push('shadowRoot')
-        words.push('head')
+        words.push(`head`)
         words.push('shadow')
         words.push('light')
         words.push('lightDom')

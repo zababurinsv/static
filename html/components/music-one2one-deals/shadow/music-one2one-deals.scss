@@ -13,6 +13,7 @@ fieldset {
 
 .item {
   @include display(column, nowrap, flex-start, center, stretch);
+  padding: 0.4vw;
 
   .contract {
     @include display(row, nowrap, space-evenly, stretch, stretch);
@@ -33,12 +34,14 @@ fieldset {
       &_property {
         padding: 0.4vw;
         height: 8vw;
+        box-sizing: border-box;
       }
 
       &_input {
         padding: 0.4vw;
         margin: 0.4vw;
         height: 8vw;
+        box-sizing: border-box;
       }
     }
 
