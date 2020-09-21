@@ -1,4 +1,5 @@
 import modules from '/static/html/components/waves-faucet/external/index.mjs'
+
 customElements.define('waves-faucet',
     class extends HTMLElement {
         static get observedAttributes () {
