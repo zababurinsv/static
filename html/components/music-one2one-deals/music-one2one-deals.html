@@ -15,13 +15,15 @@
             <div class="contract-account">
                 <fieldset class="contract-item">
                     <legend>Account</legend>
-                    <fieldset class="contract-item_property">
-                        <legend>Account Faucet</legend>
-                    </fieldset>
-                    <fieldset class="contract-item_input">
-                        <legend>Account Statistic</legend>
-                    </fieldset>
-
+                    <div class="contract-account-item">
+                        <fieldset class="contract-account-item_property">
+                            <legend>Account Faucet</legend>
+                                                    <slot name="waves-faucet"></slot>
+                        </fieldset>
+                        <fieldset class="contract-account-item_input">
+                            <legend>Account Statistic</legend>
+                        </fieldset>
+                    </div>
                     <fieldset class="contract-item">
                         <legend>contract</legend>
                         <fieldset class="contract-item_property">

@@ -38,24 +38,28 @@ fieldset {
         box-sizing: border-box;
       }
     }
+    &-account {
 
-    &-item {
-      @include display(column, nowrap, flex-start, center, stretch);
-      box-sizing: border-box;
-      padding: 0.4vw;
-      flex-grow: 1;
-
-      &_property {
-        padding: 0.4vw;
-        height: 8vw;
+      &-item {
+        @include display(row, nowrap, space-between, stretch, stretch);
         box-sizing: border-box;
-      }
+        flex-grow: 1;
+        padding: 0;
 
-      &_input {
-        padding: 0.4vw;
-        margin: 0.4vw;
-        height: 8vw;
-        box-sizing: border-box;
+        &_property {
+          padding: 0.4vw;
+          box-sizing: border-box;
+          flex-grow: 1;
+          max-width: 36%;
+        }
+
+        &_input {
+          padding: 0.4vw;
+          margin: 0.4vw;
+          box-sizing: border-box;
+          flex-grow: 1;
+          flex-shrink: 0;
+        }
       }
     }
   }
