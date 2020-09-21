@@ -9,7 +9,7 @@ section#waves-game div#player div#container div.player-external ul.player-game-i
     width: 100%;
     height: 100%;
     justify-content: space-between;
-    padding: 0.4vw;
+    padding: 0.2vw 0;
 }
 
 section#waves-game div#player div#container div.player-external ul.player-game-info li.player-game-info {
@@ -20,6 +20,7 @@ section#waves-game div#player div#container div.player-external ul.player-game-i
     display: flex;
     flex-direction: column;
     justify-content: center;
+    cursor: pointer;
 }
 section#waves-game div#player div#container div.player-external ul.player-game-info li.player-game-info:last-child {
     margin-bottom: 0;
