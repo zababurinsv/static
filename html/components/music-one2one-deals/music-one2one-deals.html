@@ -1,6 +1,7 @@
 <template>
     <div class="item">
-        <form class="contract">
+        <fieldset class="contract">
+            <legend class="contract-legend">Smart Contract</legend>
             <div class="contract-users">
                 <fieldset class="contract-users-customer">
                     <legend class="contract-users-customer-legend">customer</legend>
@@ -11,16 +12,28 @@
                     <slot name="waves-game-user-executor"></slot>
                 </fieldset>
             </div>
-            <fieldset class="contract-item">
-                <legend>contract</legend>
-                <fieldset class="contract-item_property">
-                    <legend>property</legend>
+            <div class="contract-account">
+                <fieldset class="contract-item">
+                    <legend>Account</legend>
+                    <fieldset class="contract-item_property">
+                        <legend>Account Faucet</legend>
+                    </fieldset>
+                    <fieldset class="contract-item_input">
+                        <legend>Account Statistic</legend>
+                    </fieldset>
+
+                    <fieldset class="contract-item">
+                        <legend>contract</legend>
+                        <fieldset class="contract-item_property">
+                            <legend>property</legend>
+                        </fieldset>
+                        <fieldset class="contract-item_input">
+                            <legend>data</legend>
+                        </fieldset>
+                    </fieldset>
                 </fieldset>
-                <fieldset class="contract-item_input">
-                    <legend>data</legend>
-                </fieldset>
-            </fieldset>
-        </form>
+            </div>
+        </fieldset>
         <slot name="varan-menu"></slot>
     </div>
 </template>
