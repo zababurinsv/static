@@ -19,6 +19,9 @@ section#waves  {
     flex-direction: row;
     margin-top: 1.2vw;
     justify-content: flex-start;
+    padding: 0;
+    border: none;
+    box-shadow:none;
 }
 section#waves fieldset.io-wrapper.io-wrapper-io  {
     display: flex;

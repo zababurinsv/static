@@ -46,12 +46,24 @@ fieldset {
         flex-grow: 1;
         padding: 0;
 
-        &_property {
-          padding: 0.4vw;
-          box-sizing: border-box;
-          flex-grow: 1;
-          max-width: 36%;
+        &-io {
+          width: min-content;
+          padding: 0;
+          &_property {
+            padding: 0.4vw;
+            box-sizing: border-box;
+            flex-grow: 1;
+            //max-width: 36%;
+          }
+
+          &_deposite {
+            padding: 0.4vw;
+            box-sizing: border-box;
+            flex-grow: 1;
+            //max-width: 36%;
+          }
         }
+
 
         &_input {
           padding: 0.4vw;
