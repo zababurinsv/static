@@ -1,6 +1,6 @@
-@import "/home/sergey/Desktop/telegram/css/fonts_new.scss";
-@import "/home/sergey/Desktop/telegram/css/util/media_new.scss";
-@import "/home/sergey/Desktop/telegram/css/util/interface";
+@import "./scss/interface.scss";
+@import "./scss/fonts.scss";
+@import "./scss/media.scss";
 
 @mixin h3(){
   @include border();
@@ -335,7 +335,6 @@ section#waves{
     }
     margin-bottom: 1vw;
   }
-  fieldset{
     @include display(row, nowrap, space-evenly, center, stretch);
     box-sizing: border-box;
     padding: 1vw;
@@ -380,5 +379,4 @@ section#waves{
         pointer-events: none;
       }
     }
-  }
 }

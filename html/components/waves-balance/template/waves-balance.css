@@ -17,10 +17,17 @@ section#waves fieldset.io-wrapper  {
 }
 section#waves  {
     flex-direction: row;
-    padding: 1.2vw 0 0;
+    margin-top: 1.2vw;
+    justify-content: flex-start;
 }
 section#waves fieldset.io-wrapper.io-wrapper-io  {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+}
+.io-wrapper-io {
+    padding-right: 2.4vw;
+}
+div.data {
+    align-self: stretch;
 }

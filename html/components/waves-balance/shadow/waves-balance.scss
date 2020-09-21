@@ -1,5 +1,6 @@
-@import "/home/sergey/Desktop/telegram/css/fonts_new.scss";
-@import "/home/sergey/Desktop/telegram/css/util/media_new.scss";
+@import "./scss/interface.scss";
+@import "./scss/fonts.scss";
+@import "./scss/media.scss";
 
 section#account{
   display: flex;
@@ -26,6 +27,7 @@ section#account{
       //margin-top: 0.4vw;
     }
     div.data{
+      align-self: stretch;
       div.balance{
         font-family: Roboto, serif;
         @include fonts(5);
