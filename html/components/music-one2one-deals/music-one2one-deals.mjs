@@ -33,11 +33,16 @@ customElements.define('music-one2one-deals',
             let styleS = document.createElement('style')
             let styleL = document.createElement('style')
             let name = {}
-            if (!obj['slot']) {
-              name = obj['parent']
+            if(obj['preset']) {
+              name = obj['preset']
             } else {
-              name = obj['slot']
+              if (!obj['slot']) {
+                name = obj['parent']
+              } else {
+                name = obj['slot']
+              }
             }
+
             if (!name) {
               console.assert(false, 'не установленны ни слот ни парент')
             }

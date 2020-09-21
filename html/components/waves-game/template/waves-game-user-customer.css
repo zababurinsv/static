@@ -5,6 +5,7 @@ section#waves-game {
 section#waves-game div#player {
     margin: 0;
 }
+
 section#waves-game div#player div#container div.player-external ul.player-game-info {
     width: 100%;
     height: 100%;
@@ -13,7 +14,6 @@ section#waves-game div#player div#container div.player-external ul.player-game-i
 }
 
 section#waves-game div#player div#container div.player-external ul.player-game-info li.player-game-info {
-    background-color: beige;
     flex-grow: 1;
     margin-bottom: 0.8vw;
     border-radius: 0.4vw;
@@ -21,7 +21,19 @@ section#waves-game div#player div#container div.player-external ul.player-game-i
     flex-direction: column;
     justify-content: center;
     cursor: pointer;
+    background-color: #67957f33;
+    padding-left: 0.4vw;
+    box-sizing: border-box;
 }
+
 section#waves-game div#player div#container div.player-external ul.player-game-info li.player-game-info:last-child {
     margin-bottom: 0;
+}
+
+section#waves-game div#player div#container div#player-game div.player-game {
+    background-color: #67957f33;
+}
+
+section#waves-game div#player div#container div.player-external {
+    background-color: transparent;
 }
