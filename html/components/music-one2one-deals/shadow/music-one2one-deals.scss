@@ -26,9 +26,9 @@ fieldset {
       padding: 0.4vw;
       box-sizing: border-box;
 
-      &-legend {
-        margin-left: 0.4vw;
-      }
+      //&-legend {
+      //  margin-left: 0.2vw;
+      //}
     }
 
     &-item {
@@ -36,6 +36,10 @@ fieldset {
       box-sizing: border-box;
       padding: 0.4vw;
       flex-grow: 1;
+
+      //&-legend {
+      //  margin-left: 0.2vw;
+      //}
 
       &_property {
         padding: 0.4vw;
@@ -56,9 +60,9 @@ fieldset {
       padding: 0.4vw;
       box-sizing: border-box;
 
-      &-legend {
-        margin-left: 0.4vw;
-      }
+      //&-legend {
+      //  margin-left: 0.2vw;
+      //}
     }
   }
 }
