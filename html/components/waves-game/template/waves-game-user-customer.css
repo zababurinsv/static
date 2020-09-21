@@ -24,6 +24,7 @@ section#waves-game div#player div#container div.player-external ul.player-game-i
     background-color: #67957f33;
     padding-left: 0.4vw;
     box-sizing: border-box;
+    font-size: 3vw;
 }
 
 section#waves-game div#player div#container div.player-external ul.player-game-info li.player-game-info:last-child {

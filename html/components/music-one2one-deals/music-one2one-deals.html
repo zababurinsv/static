@@ -1,10 +1,16 @@
 <template>
     <div class="item">
         <form class="contract">
-            <fieldset class="contract-customer">
-                <legend class="contract-customer-legend">customer</legend>
-                <slot name="waves-game-user-customer"></slot>
-            </fieldset>
+            <div class="contract-users">
+                <fieldset class="contract-users-customer">
+                    <legend class="contract-users-customer-legend">customer</legend>
+                    <slot name="waves-game-user-customer"></slot>
+                </fieldset>
+                <fieldset class="contract-users-executor">
+                    <legend class="contract-users-executor-legend">executor</legend>
+                    <slot name="waves-game-user-executor"></slot>
+                </fieldset>
+            </div>
             <fieldset class="contract-item">
                 <legend>contract</legend>
                 <fieldset class="contract-item_property">
@@ -13,10 +19,6 @@
                 <fieldset class="contract-item_input">
                     <legend>data</legend>
                 </fieldset>
-            </fieldset>
-            <fieldset class="contract-executor">
-                <legend class="contract-executor-legend">executor</legend>
-                <slot name="waves-game-user-executor"></slot>
             </fieldset>
         </form>
         <slot name="varan-menu"></slot>
