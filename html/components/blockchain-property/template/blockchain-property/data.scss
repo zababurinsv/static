@@ -1,0 +1,17 @@
+@import "./scss/interface.scss";
+@import "./scss/fonts.scss";
+@import "./scss/media.scss";
+
+.blockchain-property {
+  @include display(row, nowrap, space-evenly, center, stretch);
+
+  &-item {
+    flex-grow: 1;
+
+    &-list {
+      &-li {
+
+      }
+    }
+  }
+}

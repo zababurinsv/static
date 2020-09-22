@@ -1,5 +1,5 @@
-import modules from '/static/html/components/waves-faucet/external/index.mjs'
-customElements.define('waves-faucet',
+import modules from '/static/html/components/waves-contract/external/index.mjs'
+customElements.define('waves-contract',
     class extends HTMLElement {
         static get observedAttributes () {
             return ['feed']
@@ -33,10 +33,14 @@ customElements.define('waves-faucet',
                     let styleS = document.createElement('style')
                     let styleL = document.createElement('style')
                     let name = {}
-                    if (!obj['slot']) {
-                        name = obj['parent']
+                    if(obj['preset']) {
+                        name = obj['preset']
                     } else {
-                        name = obj['slot']
+                        if (!obj['slot']) {
+                            name = obj['parent']
+                        } else {
+                            name = obj['slot']
+                        }
                     }
                     if (!name) {
                         console.assert(false, 'не установленны ни слот ни парент')
@@ -53,18 +57,19 @@ customElements.define('waves-faucet',
                             }
                         }
                     }
+
                     for (let state = 0; state < obj['state'].length; state++) {
                         obj[`path-style-${obj['state'][state]}`] = `@import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}.css'; @import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}-custom.css';`
                         switch (obj['state'][state]) {
                             case 'shadow':
                                 if (obj['verify']['preset'] === true) {
-                                    obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${name}.css';`
+                                    obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${obj['preset']['dir']}/${obj['preset']['name']}.css';`
                                 }
                                 styleS.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
                                 break
                             case 'light':
                                 if (obj['verify']['preset'] === true) {
-                                    obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${name}.css';`
+                                    obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${obj['preset']['dir']}/${obj['preset']['name']}.css';`
                                 }
                                 styleL.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
                                 break
@@ -486,14 +491,59 @@ customElements.define('waves-faucet',
                     } else {
                         switch(obj['this'].getAttribute('preset')){
                             case 'default':
-                                obj['path-template'] = `/static/html/components/${obj['component']}/template/${obj['component']}.html`
-                                obj['preset'] = `${obj['this'].getAttribute('preset')}`
+                                obj['path-template'] = `/static/html/components/${obj['component']}/template/default/index.html`
+                                obj['preset'] = {
+                                    dir:'default',
+                                    name:'index',
+                                    dirName:`${obj['this'].getAttribute('preset')}`,
+                                    status:true
+                                }
                                 obj['verify']['preset'] = true
                                 break
                             default:
-                                obj['path-template'] = `/static/html/components/${obj['component']}/template/${obj['this'].getAttribute('preset')}.html`
-                                obj['preset'] = `${obj['this'].getAttribute('preset')}`
-                                obj['verify']['preset'] = true
+                                let substrate = (obj['this'].getAttribute('preset')).split('-')
+
+                                let dir = {}
+                                let name = {}
+                                if( substrate.length >= 3) {
+                                    dir = `${substrate[0]}-${substrate[1]}`
+                                    name = substrate.filter((word, index, arr)=>{
+                                         if(index > 1) {
+                                             return word
+                                         }
+                                    });
+                                    // console.assert(false,name, dir )
+                                    name = name.join('-')
+                                    obj['path-template'] = `/static/html/components/${obj['component']}/template/${dir}/${name}.html`
+                                    obj['verify']['preset'] = true
+                                    obj['preset'] = {
+                                        dir:dir,
+                                        name:name,
+                                        status:true
+                                    }
+                                }else if(substrate.length === 2){
+                                    dir = `${substrate[0]}-${substrate[1]}`
+                                    name =`index`
+                                    obj['path-template'] = `/static/html/components/${obj['component']}/template/${dir}/${name}.html`
+                                    obj['verify']['preset'] = true
+                                    obj['preset'] = {
+                                        dir:dir,
+                                        name:name,
+                                        status:true
+                                    }
+                                } else if(substrate.length === 1) {
+                                    dir = `${substrate[0]}`
+                                    name =`index`
+                                    obj['path-template'] = `/static/html/components/${obj['component']}/template/${dir}/${name}.html`
+                                    obj['verify']['preset'] = true
+                                    obj['preset'] = {
+                                        dir:dir,
+                                        name:name,
+                                        status:true
+                                    }
+                                }else {
+                                    console.assert(false, 'не загружается пресет')
+                                }
                                 break
                         }
                     }
@@ -677,7 +727,7 @@ customElements.define('waves-faucet',
                         .then((obj) => {
                             style(obj)
                                 .then((obj) => {
-                                    modules(true,0,'red',obj,'waves-faucet')
+                                    modules(true,0,'red',obj,'waves-game-card')
                                 })
                         })
                 })

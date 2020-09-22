@@ -1,0 +1,15 @@
+@import "./scss/interface.scss";
+@import "./scss/fonts.scss";
+@import "./scss/media.scss";
+
+:host{
+  width: 100%;
+  box-sizing: border-box;
+}
+.waves-contract {
+  @include display(column, nowrap, space-between, stretch, stretch);
+
+  &-property, &-input {
+
+  }
+}
