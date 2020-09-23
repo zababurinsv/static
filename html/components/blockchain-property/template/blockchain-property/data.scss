@@ -1,13 +1,20 @@
 @import "./scss/interface.scss";
 @import "./scss/fonts.scss";
 @import "./scss/media.scss";
-
+:host{
+  width: 100%;
+  box-sizing: border-box;
+}
+.wrapper {
+  @include display(row, nowrap, space-evenly, stretch, stretch);
+}
 .blockchain-property {
-  @include display(row, nowrap, space-evenly, center, stretch);
+  @include display(row, nowrap, space-evenly, stretch, stretch);
+  flex-grow: 1;
 
   &-item {
     flex-grow: 1;
-    min-width: 50%;
+    //min-width: 50%;
     box-sizing: border-box;
 
     &-list {

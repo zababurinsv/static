@@ -9,9 +9,11 @@
 
 .bus {
   @include display(row, nowrap, space-evenly, center, stretch);
+  flex-grow: 1;
 
-  &-customer, &-executor {
+  &-account {
     flex-grow: 1;
+    @include display(row, nowrap, space-between, center, stretch);
 
     &-label {
 
