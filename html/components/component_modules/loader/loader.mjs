@@ -23,15 +23,17 @@ export let style = (url='#', target = undefined) => {
     })
 }
 
-export let tests = (url, target)=>{
+export let tests = (url, target, obj)=>{
     return new Promise(function (resolve, reject) {
         let load = document.createElement('script');
         load.src = url
         load.type = 'module'
         if(isEmpty(target)){
             console.warn(`установите путь куда будет добавлен скрипт /n устанавливается в body `)
+            // obj.this.shadowRoot.appendChild(load)
             document.body.appendChild(load)
         }else{
+            // obj.this.shadowRoot.appendChild(load)
             document.body.querySelector(`#${target}`).appendChild(load)
         }
 
@@ -40,6 +42,7 @@ export let tests = (url, target)=>{
         }
     })
 }
+
 export let add = (url, target)=>{
     return new Promise(function (resolve, reject) {
         let load = document.createElement('script');
@@ -57,7 +60,7 @@ export let add = (url, target)=>{
     })
 }
 
-export default (url, name)=>{
+export default (url, name, obj)=>{
     return new Promise(function (resolve, reject) {
         let verifyScript = true
         let verifyName = name.toLowerCase()
@@ -69,13 +72,20 @@ export default (url, name)=>{
             }
         }
         if(verifyScript){
+            obj.script = undefined
+            if(isEmpty(obj.script)){
+                obj.script = {}
+                obj['script'][`${name}`] = {}
+            }
             if( isEmpty(window[name])){
-                let load = document.createElement('script');
-                load.src = url
-                document.body.appendChild(load)
-                load.onload = (out) =>{
-                    document.dispatchEvent( new CustomEvent(`${name}-loading`))
-                    resolve(window[name])
+                if( isEmpty(obj['script'][`${name}`])){
+                    let load = document.createElement('script');
+                    load.src = url
+                    obj['this']['shadowRoot'].appendChild(load)
+                    load.onload = (out) =>{
+                        document.dispatchEvent( new CustomEvent(`${name}-loading`))
+                        resolve(window[name])
+                    }
                 }
             }else{
                 resolve(window[name])

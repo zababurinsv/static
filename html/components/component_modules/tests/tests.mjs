@@ -10,6 +10,9 @@ export default ( obj ={ _:'default' } ) =>{
             sw =  location.pathname
         }
         switch (sw) {
+            case 'localhost:1111':
+                await tests('/tests/game/monopoly.mjs','tests')
+                break
             case 'localhost:6040':
                 await tests('/tests/game/monopoly.mjs','tests')
                 break
