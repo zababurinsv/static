@@ -20,9 +20,6 @@ export default ( obj ={ _:'default' } ) =>{
             case 'localhost:6040':
                 await tests('/tests/game/monopoly.mjs','tests')
                 break
-            case 'zababurinsv.github.io':
-                await tests('/tests/game/monopoly.mjs','tests')
-                break
             case 'localhost:4999':
                 await tests('/tests/wallet.mjs','tests')
                 break
