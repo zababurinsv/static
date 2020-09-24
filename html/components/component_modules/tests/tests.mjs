@@ -9,6 +9,7 @@ export default ( obj ={ _:'default' } ) =>{
         }else{
             sw =  location.pathname
         }
+        console.log('###################', sw)
         switch (sw) {
             case 'localhost:1111':
                 await tests('/tests/game/monopoly.mjs','tests')
