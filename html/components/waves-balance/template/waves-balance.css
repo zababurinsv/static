@@ -17,12 +17,11 @@ section#waves fieldset.io-wrapper  {
 }
 section#waves  {
     flex-direction: row;
-    margin-top: 1.2vw;
     justify-content: flex-start;
     padding: 0;
     border: none;
     box-shadow:none;
-    width: 32vw;
+    width: 28vw;
 }
 section#waves fieldset.io-wrapper.io-wrapper-io  {
     display: flex;

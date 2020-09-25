@@ -17,6 +17,7 @@
     border-radius: 0.4vw;
     height: auto;
     flex-direction: column;
+    padding: 1.2vw 0.4vw 0.4vw;
 
     &-users {
       display: flex;
@@ -35,10 +36,12 @@
         box-sizing: border-box;
       }
     }
+
     &-account {
       &-list {
-        padding: 1.2vw;
+        padding: 1.2vw 0.4vw 0.4vw;
       }
+
       &-item {
         @include display(row, nowrap, space-between, stretch, stretch);
         box-sizing: border-box;
@@ -56,8 +59,8 @@
           }
 
           &_deposite {
-            width: 32vw;
-            padding: 0vw;
+            min-width: 28vw;
+            padding: 0;
             box-sizing: border-box;
           }
         }
@@ -73,6 +76,7 @@
     &-item {
       padding-left: 0.4vw;
       padding-right: 0.4vw;
+      padding-bottom: 0.4vw;
     }
   }
 }
