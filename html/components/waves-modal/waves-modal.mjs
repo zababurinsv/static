@@ -1,1 +1,80 @@
-customElements.define("waves-modal",class extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"}).innerHTML='\n<div id="divModal" class="windowModal">\n    <div>\n        <a href="#close" title="Close" class="close">X</a>\n        <h2>Modal Dialog</h2>\n        <p>This example shows a modal window without using javascript only using html5 and css3, I try it it¡</p>\n        <p>Using javascript, with new versions of html5 and css3 is not necessary can do whatever we want without using js libraries.</p>\n    </div>\n</div>\n<style>\n.windowModal {\n    position: fixed;\n    font-family: Arial, Helvetica, sans-serif;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    left: 0;\n    background: rgba(0,0,0,0.8);\n    z-index: 99999;\n    opacity:0;\n    -webkit-transition: opacity 400ms ease-in;\n    -moz-transition: opacity 400ms ease-in;\n    transition: opacity 400ms ease-in;\n    pointer-events: none;\n}\n.active{\n    opacity:1;\n    pointer-events: auto;\n}\n.windowModal:target {\n    opacity:1;\n    pointer-events: auto;\n}\n\n.windowModal > div {\n    width: 400px;\n    position: relative;\n    margin: 10% auto;\n    padding: 5px 20px 13px 20px;\n    border-radius: 10px;\n    background: #fff;\n    background: -moz-linear-gradient(#fff, #999);\n    background: -webkit-linear-gradient(#fff, #999);\n    background: -o-linear-gradient(#fff, #999);\n}\n.close {\n    background: #606061;\n    color: #FFFFFF;\n    line-height: 25px;\n    position: absolute;\n    right: -12px;\n    text-align: center;\n    top: -10px;\n    width: 24px;\n    text-decoration: none;\n    font-weight: bold;\n    -webkit-border-radius: 12px;\n    -moz-border-radius: 12px;\n    border-radius: 12px;\n    -moz-box-shadow: 1px 1px 3px #000;\n    -webkit-box-shadow: 1px 1px 3px #000;\n    box-shadow: 1px 1px 3px #000;\n}\n\n.close:hover { background: #00d9ff; }\n</style>\n'}});
+// let tmpl = document.querySelector('#waves-modal');
+// If your code is inside of an HTML Import you'll need to change the above line to:
+// let tmpl = document.currentScript.ownerDocument.querySelector('#x-foo-from-template');
+
+
+customElements.define('waves-modal',
+    class extends HTMLElement {
+    constructor() {
+        super();
+        const shadow = this.attachShadow({mode: 'open'});
+        shadow.innerHTML =`
+<div id="divModal" class="windowModal">
+    <div>
+        <a href="#close" title="Close" class="close">X</a>
+        <h2>Modal Dialog</h2>
+        <p>This example shows a modal window without using javascript only using html5 and css3, I try it it¡</p>
+        <p>Using javascript, with new versions of html5 and css3 is not necessary can do whatever we want without using js libraries.</p>
+    </div>
+</div>
+<style>
+.windowModal {
+    position: fixed;
+    font-family: Arial, Helvetica, sans-serif;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 99999;
+    opacity:0;
+    -webkit-transition: opacity 400ms ease-in;
+    -moz-transition: opacity 400ms ease-in;
+    transition: opacity 400ms ease-in;
+    pointer-events: none;
+}
+.active{
+    opacity:1;
+    pointer-events: auto;
+}
+.windowModal:target {
+    opacity:1;
+    pointer-events: auto;
+}
+
+.windowModal > div {
+    width: 400px;
+    position: relative;
+    margin: 10% auto;
+    padding: 5px 20px 13px 20px;
+    border-radius: 10px;
+    background: #fff;
+    background: -moz-linear-gradient(#fff, #999);
+    background: -webkit-linear-gradient(#fff, #999);
+    background: -o-linear-gradient(#fff, #999);
+}
+.close {
+    background: #606061;
+    color: #FFFFFF;
+    line-height: 25px;
+    position: absolute;
+    right: -12px;
+    text-align: center;
+    top: -10px;
+    width: 24px;
+    text-decoration: none;
+    font-weight: bold;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    border-radius: 12px;
+    -moz-box-shadow: 1px 1px 3px #000;
+    -webkit-box-shadow: 1px 1px 3px #000;
+    box-shadow: 1px 1px 3px #000;
+}
+
+.close:hover { background: #00d9ff; }
+</style>
+`
+    
+    }
+})
