@@ -16,12 +16,11 @@
     @include display(row, nowrap, space-between, center, stretch);
 
     &-label {
-
-
+      @include display(column, nowrap, flex-start, center, stretch);
     }
+
     &-input {
-
-
+      width: 30vw;
     }
   }
 }

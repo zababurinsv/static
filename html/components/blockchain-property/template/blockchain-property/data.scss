@@ -9,8 +9,10 @@
   @include display(row, nowrap, space-evenly, stretch, stretch);
 }
 .blockchain-property {
-  @include display(row, nowrap, space-evenly, stretch, stretch);
+  @include display(row, wrap, space-evenly, stretch, stretch);
   flex-grow: 1;
+  padding-left: 0.4vw;
+  padding-right: 0.4vw;
 
   &-item {
     flex-grow: 1;
@@ -18,8 +20,10 @@
     box-sizing: border-box;
 
     &-list {
-      &-li {
+      padding-left: 1.2vw;
 
+      &-li {
+        @include fonts(7);
       }
     }
   }

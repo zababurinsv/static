@@ -1,6 +1,8 @@
 :host{
   width: 100%;
   box-sizing: border-box;
+  align-self: center;
+  padding: 0.4vw;
 }
 
 section.menu {
@@ -13,10 +15,9 @@ section.menu {
   border-radius: 3%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   width: 100%;
-  margin-top: 1vw;
   box-sizing: border-box;
-  div#toogle{
 
+  div#toogle {
     display: flex;
     margin: auto;
     width: 0vw;

@@ -9,7 +9,7 @@
 
 .item {
   @include display(column, nowrap, flex-start, center, stretch);
-  padding: 0.4vw;
+  padding: 0.4vw 0.4vw 0;
 
   .contract {
     @include display(row, nowrap, space-evenly, stretch, stretch);
@@ -17,6 +17,7 @@
     border-radius: 0.4vw;
     height: auto;
     flex-direction: column;
+
     &-users {
       display: flex;
       flex-direction: row;
@@ -35,6 +36,9 @@
       }
     }
     &-account {
+      &-list {
+        padding: 1.2vw;
+      }
       &-item {
         @include display(row, nowrap, space-between, stretch, stretch);
         box-sizing: border-box;
@@ -42,7 +46,7 @@
         padding: 0;
 
         &-io {
-          width: 40vw;
+          width: 32vw;
           padding: 0;
 
           &_property {
@@ -52,9 +56,9 @@
           }
 
           &_deposite {
-            padding: 0.4vw;
+            width: 32vw;
+            padding: 0vw;
             box-sizing: border-box;
-            flex-grow: 1;
           }
         }
 
@@ -65,6 +69,10 @@
           flex-shrink: 0;
         }
       }
+    }
+    &-item {
+      padding-left: 0.4vw;
+      padding-right: 0.4vw;
     }
   }
 }

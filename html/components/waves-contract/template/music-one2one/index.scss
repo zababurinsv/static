@@ -8,8 +8,10 @@
 }
 .waves-contract {
   @include display(column, nowrap, space-between, stretch, stretch);
+  width: 100%;
 
   &-property, &-input {
-
+    padding-left: 0.4vw;
+    padding-right: 0.4vw;
   }
 }

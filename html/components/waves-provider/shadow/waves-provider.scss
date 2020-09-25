@@ -5,6 +5,8 @@
 :host{
   width: 100%;
   box-sizing: border-box;
+  text-align: -webkit-center;
+  padding: 0.4vw;
 }
 
 @mixin label(){
@@ -74,12 +76,14 @@
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  border-radius: 0.5vw;
+  border-radius: 0.4vw;
 }
 
 fieldset#waves-login{
   @include display(row, nowrap, space-evenly, center, stretch);
   padding: 1vw;
+  border-radius: 0.4vw;
+
   div#login{
     @include display(column, nowrap, flex-start, center, stretch);
     width: 50vw;
