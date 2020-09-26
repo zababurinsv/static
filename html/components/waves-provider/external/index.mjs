@@ -4,11 +4,9 @@ import Account from '/static/html/components/component_modules/account/account.m
 import walletTemplate from '/static/html/components/waves-provider/template/wallet.mjs'
 import Waves from '/static/html/components/component_modules/waves/waves.mjs'
 import heap from '/static/html/components/component_modules/heap/heap.mjs'
-import psd from '/static/html/components/waves-provider/external/index-psd.mjs'
 let waves = Waves()
 
 export default async (v,p,c,obj,r) =>{
-    psd(v,p,c,obj,r)
     let objectWallet ={}
 await heap(true, 'await','4',{}, 'await-wallet',async (object)=>{
     if(isEmpty(objectWallet)){

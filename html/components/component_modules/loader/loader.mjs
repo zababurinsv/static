@@ -72,24 +72,40 @@ export default (url, name, obj)=>{
             }
         }
         if(verifyScript){
-            obj.script = undefined
-            if(isEmpty(obj.script)){
-                obj.script = {}
-                obj['script'][`${name}`] = {}
-            }
-            if( isEmpty(window[name])){
-                if( isEmpty(obj['script'][`${name}`])){
+          if(isEmpty(obj)){
+              if( isEmpty(window[name])){
                     let load = document.createElement('script');
                     load.src = url
-                    obj['this']['shadowRoot'].appendChild(load)
+                    document.body.appendChild(load)
                     load.onload = (out) =>{
-                        document.dispatchEvent( new CustomEvent(`${name}-loading`))
-                        resolve(window[name])
-                    }
-                }
-            }else{
-                resolve(window[name])
-            }
+                          console.log('~~~~name~', name)
+                          document.dispatchEvent( new CustomEvent(`${name}-loading`))
+                          resolve(window[name])
+                      }
+              }else{
+                  resolve(window[name])
+              }
+          } else {
+
+              obj.script = undefined
+              if(isEmpty(obj.script)){
+                  obj.script = {}
+                  obj['script'][`${name}`] = {}
+              }
+              if( isEmpty(window[name])){
+                  if( isEmpty(obj['script'][`${name}`])){
+                      let load = document.createElement('script');
+                      load.src = url
+                      obj['this']['shadowRoot'].appendChild(load)
+                      load.onload = (out) =>{
+                          document.dispatchEvent( new CustomEvent(`${name}-loading`))
+                          resolve(window[name])
+                      }
+                  }
+              }else{
+                  resolve(window[name])
+              }
+          }
         }else{
             if( isEmpty(window[name])){
               document.addEventListener(`${name}-loading`,()=>{

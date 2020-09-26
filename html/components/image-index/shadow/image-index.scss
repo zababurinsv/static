@@ -1,0 +1,34 @@
+@import "./scss/interface.scss";
+@import "./scss/fonts.scss";
+@import "./scss/media.scss";
+
+:host{
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.disaigen {
+  &-property {
+    //width: 97%;
+  }
+
+  &-relations {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    &-item {
+      min-width: content-box;
+      width: 20vw;
+
+      & > canvas {
+        width: 100%;
+      }
+    }
+  }
+
+  &-ide {
+    height: 48vw;
+  }
+}
