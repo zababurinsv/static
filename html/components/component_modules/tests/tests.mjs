@@ -12,10 +12,10 @@ export default ( obj ={ _:'default' } ) =>{
         console.log('hostname', sw)
         switch (sw) {
             case 'localhost:1111':
-                await tests('/tests/game/monopoly.mjs','tests')
+                await tests('/tests/core.mjs','tests')
                 break
             case '/contract-deals/':
-                await tests('/tests/game/monopoly.mjs','tests')
+                await tests('/tests/core.mjs','tests')
                 break
             case 'localhost:6040':
                 await tests('/tests/game/monopoly.mjs','tests')
