@@ -4,17 +4,17 @@
         <fieldset class="design-property">
             <legend>Property</legend>
         </fieldset>
-        <fieldset class="design-property">
+        <fieldset class="design-property" slot="design-property">
             <legend>Views</legend>
-            <div class="design-property-views">
+            <div class="design-property-views" slot="design-property-views">
                 <div class="design-property-views-header">
-                <slot name="items-views"></slot>
+                    <slot name="design-property-views-header"></slot>
                 </div>
                 <div class="design-property-views-body">
-
+                    <slot name="design-property-views-body"></slot>
                 </div>
                 <div class="design-property-views-footer">
-
+                    <slot name="design-property-views-footer"></slot>
                 </div>
             </div>
         </fieldset>
