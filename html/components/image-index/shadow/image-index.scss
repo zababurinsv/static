@@ -16,7 +16,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-evenly;
 
     &-item {
       min-width: content-box;
