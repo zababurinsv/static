@@ -4,11 +4,15 @@
         <fieldset class="design-property">
             <legend>Property</legend>
         </fieldset>
-        <div class="design-relations">
-            <legend>Property</legend>
-        </div>
-        <div class="design-ide">
-            <slot name="page-external"></slot>
-        </div>
+        <fieldset class="design-property">
+            <legend>Views</legend>
+        </fieldset>
+        <fieldset class="design-property">
+            <legend>Relation</legend>
+            <div class="design-relations"></div>
+            <div class="design-ide">
+                <slot name="page-external"></slot>
+            </div>
+        </fieldset>
     </fieldset>
 </template>
