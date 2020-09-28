@@ -711,7 +711,7 @@ customElements.define('varan-menu',
                 })
         }
         connectedCallback() {
-            // console.log('connected callback');
+            console.log('connected callback');
         }
         disconnectedCallback() {
             console.log('disconnected callback');

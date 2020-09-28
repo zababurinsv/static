@@ -6,21 +6,24 @@
         </fieldset>
         <fieldset class="design-property" slot="design-property">
             <legend>Views</legend>
-            <div class="design-property-views" slot="design-property-views">
-                <div class="design-property-views-header">
-                    <slot name="design-property-views-header"></slot>
-                </div>
-                <div class="design-property-views-body">
-                    <slot name="design-property-views-body"></slot>
-                </div>
-                <div class="design-property-views-footer">
-                    <slot name="design-property-views-footer"></slot>
-                </div>
+            <div class="design-property-views">
+                <fieldset class="design-property-views-header" slot="header">
+                    <legend>Header</legend>
+                </fieldset>
+                <fieldset class="design-property-views-body" slot="body">
+                    <legend>Body</legend>
+                </fieldset>
+                <fieldset class="design-property-views-footer" slot="footer">
+                    <legend>Footer</legend>
+                </fieldset>
             </div>
+        </fieldset>
+        <fieldset class="design-property" slot="components">
+            <legend>Components</legend>
+            <div class="design-relations"></div>
         </fieldset>
         <fieldset class="design-property">
             <legend>Relation</legend>
-            <div class="design-relations"></div>
             <div class="design-ide">
                 <slot name="page-external"></slot>
             </div>
