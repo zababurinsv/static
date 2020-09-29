@@ -7,15 +7,22 @@
         <fieldset class="design-property" slot="design-property">
             <legend>Views</legend>
             <div class="design-property-views">
-                <fieldset class="design-property-views-header" slot="header">
-                    <legend>Header</legend>
-                </fieldset>
-                <fieldset class="design-property-views-body" slot="body">
-                    <legend>Body</legend>
-                </fieldset>
-                <fieldset class="design-property-views-footer" slot="footer">
-                    <legend>Footer</legend>
-                </fieldset>
+                <div class="design-property-views-header" slot="header">
+                    <div class="root">
+                        <div class="root-item"><slot name="item-views-4"></slot></div>
+                        <div class="root-item"><slot name="items-views"></slot></div>
+                        <div class="root-item"><slot name="items-views"></slot></div>
+                        <style>@import'/static/html/components/image-index/shadow/image-index-custom.css'</style>
+                    </div>
+                </div>
+                <div class="design-property-views-body" slot="body">
+                    <div class="root">
+                    </div>
+                </div>
+                <div class="design-property-views-footer" slot="footer">
+                    <div class="root">
+                    </div>
+                </div>
             </div>
         </fieldset>
         <fieldset class="design-property" slot="components">

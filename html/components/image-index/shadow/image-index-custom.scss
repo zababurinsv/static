@@ -1,0 +1,10 @@
+@import "./scss/interface.scss";
+@import "./scss/fonts.scss";
+@import "./scss/media.scss";
+
+.root {
+  @include display(row, nowrap, space-between, stretch, stretch);
+  &-item {
+    width: 20vw;
+  }
+}

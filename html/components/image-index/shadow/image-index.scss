@@ -6,7 +6,9 @@
   width: 100%;
   box-sizing: border-box;
 }
-
+canvas {
+  width: 100%;
+}
 .design {
   &-property {
     //width: 97%;
