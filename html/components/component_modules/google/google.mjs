@@ -27,7 +27,7 @@ obj['gapi']['props'] = async (object) => obj.staticProperty.props = {
         authorizeButton: object.this.shadowRoot.querySelector('#authorizeButton'),
         signoutButton: object.this.shadowRoot.querySelector('#signoutButton'),
         pre: object.this.shadowRoot.querySelector('#content')
-    }
+}
 
 obj['gapi']['handleClientLoad'] = async function (folder) {
     gapi.load('client:auth2', obj['gapi']['initClient']);
@@ -44,7 +44,7 @@ obj['gapi']['initClient'] = async () => {
         obj.staticProperty.props.authorizeButton.onclick = obj['gapi']['handleAuthClick'];
         obj.staticProperty.props.signoutButton.onclick = obj['gapi']['handleSignoutClick'];
     }, function(error) {
-        obj['gapi']['appendPre'](JSON.stringify(error, null, 2));
+        console.assert(false, JSON.stringify(error, null, 2))
     });
 }
 

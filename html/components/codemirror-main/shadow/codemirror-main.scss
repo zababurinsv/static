@@ -1,0 +1,17 @@
+@import "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/codemirror.css";
+@import "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/addon/dialog/dialog.css";
+@import "https://cdn.rawgit.com/developit/39e7a58ed3e8bc5e8eb4/raw/7a98859141909389879aadffaa0a0ebf2437473e/one-dark.css";
+hr{
+  width: 100%;
+  box-shadow: inset 0vw 0vw 1vw 0px #7694f4;
+  box-sizing: border-box;
+  padding: 0.25vw;
+  text-align: center;
+  cursor: pointer;
+  background-color: transparent;
+  position: relative;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  text-align-last:center;
+}

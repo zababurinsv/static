@@ -39,7 +39,14 @@ function isEmpty(val) {
     if ('function' == typeof val) return val.length === 0
 
     // Arrays...
-    if (Array.isArray(val)) return val.length === 0
+    if (Array.isArray(val)) {
+        let object = val instanceof Object
+        if(object) {
+            return Object.keys(val).length === 0
+        } else {
+            return val.length === 0
+        }
+    }
 
     // Errors...
     if (val instanceof Error) return val.message === ''

@@ -1,1 +1,815 @@
-import store from"/static/html/components/component_modules/staticProperty/staticProperty.mjs";import Codemirror from"/static/html/components/component_modules/codemirror/codemirror.mjs";customElements.define("codemirror-main",class extends HTMLElement{constructor(){super();let e=[],t=[],r=[],n=[];function l(e,t,r){return new Promise(function(t,r){e["template-shadow"]=[],e["template-light"]=[];let n=[];n.swap=!1,n.external=!1,n.light=!1,n.slider=!1,n.one=!1;for(let t=0;t<e.type.length;t++){if(-1!==e.type[t].indexOf("slider")&&e.type[t].split("-").length>1){n.slider=!0;for(let r in e.type[t].split("-"))switch(e.type[t].split("-")[r]){case"one":n.one=!0}}if(e.type[t].length)switch(e.type[t]){case"swap":n.swap=!0;break;case"external":n.external=!0;break;case"light":n.light=!0;break;case"slider":n.slider=!0}}if(!0===n.swap){for(let t=0;t<e.this.children.length;t++)1===e.this.children[t].tagName.split("-").length?("view"===e.this.children[t].slot&&(e.this.children[t].className="wall"),e["template-light"].push(e.this.children[t])):!0===e.getAttribute(e.this.children[t],"light","template")?(e.this.children[t].setAttribute("type",`${e.this.children[t].getAttribute("type")}-external`),o(e.this.children[t]),e["template-light"].push(e.this.children[t])):(e.this.children[t].setAttribute("type",`${e.this.children[t].getAttribute("type")}-external`),o(e.this.children[t]),e["template-shadow"].push(e.this.children[t]));for(let t=0;t<e.template.children.length;t++)1===e.template.children[t].tagName.split("-").length?("view"===e.template.children[t].slot&&(e.template.children[t].className="wall"),e["template-light"].push(e.template.children[t])):!0===e.getAttribute(e.template.children[t],"light","template")?(e.template.children[t].setAttribute("type",`${e.template.children[t].getAttribute("type")}-external`),o(e.template.children[t]),e["template-light"].push(e.template.children[t])):(e.template.children[t].setAttribute("type",`${e.template.children[t].getAttribute("type")}-external`),o(e.template.children[t]),e["template-shadow"].push(e.template.children[t]))}else{for(let t=0;t<e.this.children.length;t++)1===e.this.children[t].tagName.split("-").length?("view"===e.this.children[t].slot&&(e.this.children[t].className="wall"),e["template-shadow"].push(e.this.children[t])):!0===e.getAttribute(e.this.children[t],"light","template")?(o(e.this.children[t]),e["template-shadow"].push(e.this.children[t])):(o(e.this.children[t]),e["template-light"].push(e.this.children[t]));for(let t=0;t<e.template.children.length;t++)1===e.template.children[t].tagName.split("-").length?("view"===e.template.children[t].slot&&(e.template.children[t].className="wall"),e["template-shadow"].push(e.template.children[t])):!0===e.getAttribute(e.template.children[t],"light","template")?(o(e.template.children[t]),e["template-shadow"].push(e.template.children[t])):(o(e.template.children[t]),e["template-light"].push(e.template.children[t]))}for(let t in n)e.verify[t]=n[t];!0===e.verify.slider?function(e){return new Promise(function(t,r){fetch(`/static/html/components/varan-slider/template/${e.slot}.html`).then(function(e){if(e.ok)return e.text()}).then(function(r){let n=new DOMParser,l=n.parseFromString(r,"text/html");e.slider=l.getElementsByTagName("template")[0].content.cloneNode(!0);let i=document.createElement("section");if(i.className="slider",i.slot="view",i.appendChild(e.slider),e.slider=i,0===i.querySelectorAll(".ql-editor").length)t(e);else for(let e=0;e<i.querySelectorAll(".ql-editor").length;e++)if(0===i.querySelectorAll(".ql-editor")[e].children.length);else for(let t=0;t<i.querySelectorAll(".ql-editor")[e].children.length;t++)i.querySelectorAll(".ql-editor")[e].children[t].tagName.split("-").length>1&&o(i.querySelectorAll(".ql-editor")[e].children[t]);t(e)}).catch(e=>e)})}(e).then(e=>{e["template-light"].push(e.slider),e.this.appendChild(e.slider),function(e,t,r){return new Promise(function(r,n){if(t){switch(t){case"slider":(function(e,t){return new Promise(function(r,n){for(let n=0;n<e.state.length;n++)for(let l=0;l<e[`template-${e.state[n]}`].length;l++)0===e[`template-${e.state[n]}`][l].getElementsByClassName(t).length||(e.slider=e[`template-${e.state[n]}`][l].getElementsByClassName(t)[0],r(e[`template-${e.state[n]}`][l].getElementsByClassName(t)[0]))})})(e,"peppermint").then(t=>{(function(e){return new Promise(function(t,r){t(Peppermint(e,{dots:!1,slideshow:!1,speed:500,slideshowInterval:5e3,stopSlideshowAfterInteraction:!0,onSetup:function(e){}}))})})(t).then(t=>{e.slider=t,r(e)})})}r(e)}else r(e)})}(e,"slider").then(e=>{if(!0===e.verify.one)for(let r=0;r<e.state.length;r++)for(let n=0;n<e[`template-${e.state[r]}`].length;n++)"wall"===e[`template-${e.state[r]}`][n].className&&(e[`template-${e.state[r]}`].splice(n,1),t(e));else t(e)})}):t(e)})}function i(t,r){return new Promise(function(r,n){t.verify=[],t.this.getAttribute("preset")?(t["path-template"]=`/static/html/components/${t.component}/template/${t.this.getAttribute("preset")}/${t.component}-${t.this.getAttribute("preset")}.html`,t.preset=`${t.this.getAttribute("preset")}`,t.verify.preset=!0):(t["path-template"]=`/static/html/components/${t.component}/${t.component}.html`,t.verify.preset=!1),fetch(t["path-template"]).then(function(e){if(e.ok)return e.text()}).then(function(n){let i=(new DOMParser).parseFromString(n,"text/html");t.template=i.getElementsByTagName("template")[0].content.cloneNode(!0),function(t){return new Promise(function(r,n){t["path-external"]=`/static/html/components/${t.component}/external/${t.component}-external.html`,fetch(t["path-external"]).then(function(e){return!1===e.ok?e.ok:e.text()}).then(function(n){if(!1===n);else{let l=new DOMParser,i=l.parseFromString(n,"text/html");t.external=i.querySelectorAll("section"),function(t){return new Promise(function(r,n){t["external-property"]=e["external-property"];let l=[],i=[],o=[];for(let e=0;e<t.external.length;e++){for(let r=0;r<t.external[e].children.length;r++)switch(t.external[e].children[r].tagName){case"SCRIPT":t.external[e].getAttribute("id")&&(i.script=t.external[e].children[r]);break;case"COMPONENT-ID":i.id=t.external[e].children[r].innerText;break;case"COMPONENT-ACTION":for(let n=0;n<t.external[e].children[r].children.length;n++)o.push(t.external[e].children[r].children[n].innerText);i.actions=o}l.push(i),i=[]}t["external-property"]=l,r(t)}).catch(e=>{})}(t).then(e=>{0===e["external-property"].length?r(e):function(e){return new Promise(function(t,r){e["words-action"]=[];let n=[];for(let r=0;r<e["external-property"].length;r++){for(let t=0;t<e["external-property"][r].actions.length;t++)for(let l=0;l<e.words.length;l++)-1!==e["external-property"][r].actions[t].indexOf(e.words[l])&&("shadowRoot"!==e.words[l]&&"shadow"!==e.words[t]||(n.shadow=!0),"light"!==e.words[l]&&"лайт"!==e.words[t]||(n.light=!0),"editor"===e.words[l]&&(n.editor=!0),"слайдер"===e.words[l]&&(n["editor-slider"]=!0),"swap"===e.words[l]&&(n.swap=!0));e["words-action"]=n;for(let t in e["external-property"])for(let r in e["external-property"][t])switch(r){case"id":let n=document.createElement(e["external-property"][t][r]);n.setAttribute("type","external"),e.this.appendChild(n)}t(e)}})}(e).then(e=>{r(e)})})}}).catch(e=>{throw e})})}(t).then(e=>{l(e,e["type-swap"],e["type-external"]).then(e=>{if(!0===e.verify.swap){if(0!==e["template-shadow"].length){e.this.attachShadow({mode:"open"}),e.shadowRoot=!0;for(let t=0;t<e["template-shadow"].length;t++)e.this.shadowRoot.appendChild(e["template-shadow"][t])}if(0!==e["template-light"].length)for(let t=0;t<e["template-light"].length;t++)e.this.appendChild(e["template-light"][t])}else{if(0!==e["template-shadow"].length){e.this.attachShadow({mode:"open"}),e.shadowRoot=!0;for(let t in e["template-shadow"])e.this.shadowRoot.appendChild(e["template-shadow"][t])}if(0!==e["template-light"].length)for(let t in e["template-light"])e.this.appendChild(e["template-light"][t])}r(e)})})}).catch(e=>e)})}function o(e){return new Promise(function(t,r){const n=document.createElement("script");let l=!1;for(let t in document.head.getElementsByTagName("script"))"object"==typeof document.head.getElementsByTagName("script")[t]&&-1!==document.head.getElementsByTagName("script")[t].outerHTML.indexOf(e.tagName.toLowerCase())&&(l=!0);!0===l||(n.src=`/static/html/components/${e.tagName.toLowerCase()}/${e.tagName.toLowerCase()}.mjs`,n.type="module",n.onload=t,n.onerror=r,document.head.appendChild(n))})}var s;t.push("component-id"),t.push("script"),t.push("component-action"),r.push("h1"),r.push("innerText"),n.push("shadowRoot"),n.push("head"),n.push("shadow"),n.push("light"),n.push("lightDom"),n.push("editor"),n.push("слайдер"),n.push("swap"),e.this=this,e["type-supported"]=r,(s=this,new Promise(function(e,t){let r=[];r.state=[],r.state.push("shadow"),r.state.push("light"),r.words=n,r["type-swap"]=!1,r["type-external"]=!1,r["document-offsetWidth"]=document.body.offsetWidth;let l=!1;if(r.getAttribute=((e,t,r)=>{if("template"===r){if(!e.getAttribute("type"))return e.setAttribute("type","default"),!1;for(let r=0;r<e.getAttribute("type").split("-").length;r++)e.getAttribute("type").split("-")[r]===t&&(l=!0);return l}if(e[`verify-${t}`]=!1,0===e.this.getAttribute("type").split("-").length)return!1;for(let r=0;r<e.this.getAttribute("type").split("-").length;r++)e.this.getAttribute("type").split("-")[r]===t?e[`verify-${t}`]=!0:e[`verify-${t}`]=!1;return e[`verify-${t}`]}),s.tagName.toLowerCase()&&(r.component=s.tagName.toLowerCase()),"object"!=typeof s);else{if(s.getAttribute("type")){r.type=s.getAttribute("type").split("-");for(let e=0;e<r.type.length;e++)r.type[e]=r.type[e].replace(/:/g,"-");for(let e in r.type)switch(r.type[e]){case"swap":r["type-swap"]=!0;break;case"external":r["type-external"]=!0}}else r.type=["default"],s.setAttribute("type","default");if(s.slot?r.slot=s.slot:(s.slot=s.tagName.toLowerCase(),r.slot=s.slot),s.getAttribute("type")){let e=!1;for(let t in s.getAttribute("type").split("-"))-1!==s.getAttribute("type").split("-")[t].indexOf("style:")&&(e=!0);r["style-custom"]=!0===e?"not-default":"default"}}r.shadowRoot=!1,r.this=s,e(r)})).then(e=>(i(e).then(e=>(function(e){return new Promise(function(t,r){let n=document.createElement("style"),l=document.createElement("style");for(let t=0;t<e.type.length;t++)"swap"===e.type[t]?"scoped"===e.type[t]&&n.setAttribute("scoped",""):"scoped"===e.type[t]&&l.setAttribute("scoped","");for(let r=0;r<e.state.length;r++){switch(e[`path-style-${e.state[r]}`]=`@import '/static/html/components/${e.component}/${e.state[r]}/${e.component}.css'; @import '/static/html/components/${e.component}/${e.state[r]}/${e.component}-custom.css';`,e.state[r]){case"shadow":!0===e.verify.preset&&(e[`path-style-${e.state[r]}-preset`]=`@import '/static/html/components/${e.component}/template/${e.preset}/${e.component}-${e.preset}.css';`),n.innerText=e[`path-style-${e.state[r]}`]+e[`path-style-${e.state[r]}-preset`];break;case"light":!0===e.verify.preset&&(e[`path-style-${e.state[r]}-preset`]=`@import '/static/html/components/${e.component}/template/${e.preset}/${e.component}-${e.preset}.css';`),l.innerText=e[`path-style-${e.state[r]}`]+e[`path-style-${e.state[r]}-preset`]}"swap"===e.state[r]?!0===e.shadowRoot?(e.this.shadowRoot.appendChild(l),e.this.appendChild(n),t(e)):e.this.appendChild(n):!0===e.shadowRoot?(e.this.shadowRoot.appendChild(n),e.this.appendChild(l),t(e)):e.this.appendChild(l)}t(e)})}(e).then(e=>(async function(e){store({input:"page-scroll",this:e.this,obj:e,type:"obj"},"set","type");let t=new((await Codemirror({_:"codemirror",this:e.this.shadowRoot})).class),r=await t.init({_:"init",mode:"javascript",this:e.this.shadowRoot.querySelector("#code")}),n=e.this.shadowRoot.querySelector("#search"),l=e.this.shadowRoot.querySelector("#fnext"),i=e.this.shadowRoot.querySelector("#fprev"),o=e.this.shadowRoot.querySelector("#replace"),s=e.this.shadowRoot.querySelector("#replall"),a=e.this.shadowRoot.querySelector("#goto"),h=e.this.shadowRoot.querySelector("#undo"),p=e.this.shadowRoot.querySelector("#redo"),d=e.this.shadowRoot.querySelector("#save"),c=e.this.shadowRoot.querySelector("#getLast"),m=e.this.shadowRoot.querySelector("#run"),u=(e.this.shadowRoot.querySelector("#result"),e.this.shadowRoot.querySelector("#script")),f=(new((await Codemirror({_:"codemirror",this:e.this.shadowRoot})).class),await t.init({_:"init",mode:"application/json",this:e.this.shadowRoot.querySelector("#result")}));r.editor.on("drop",function(e,t){var r,n;if((n=t.dataTransfer.files).length>0)return t.preventDefault(),t.stopPropagation(),r=n[0],alert("File: "+r.name),!1}),n.addEventListener("click",function(){t.self.CodeMirror.commands.find(r.editor)},!1),l.addEventListener("click",function(){t.self.CodeMirror.commands.findNext(r.editor)},!1),i.addEventListener("click",function(){t.self.CodeMirror.commands.findPrev(r.editor)},!1),o.addEventListener("click",function(){t.self.CodeMirror.commands.replace(r.editor)},!1),s.addEventListener("click",function(){t.self.CodeMirror.commands.replaceAll(r.editor)},!1),a.addEventListener("click",function(){t.self.CodeMirror.commands.jumpToLine(r.editor)},!1),h.addEventListener("click",function(){r.editor.undo()},!1),p.addEventListener("click",function(){r.editor.redo()},!1),d.addEventListener("click",function(){let e=r.editor.getValue();sessionStorage.setItem("CodeMirror",e)},!1),c.addEventListener("click",function(){let e=sessionStorage.getItem("CodeMirror");r.editor.setValue(e)},!1),m.addEventListener("click",async()=>{let e=r.editor.getValue(),t=document.createElement("script");t.type="module";let n=`\n(async ()=>{\n    ${e}\n    let verifyData = false;\n    let verifyTemplate = false;\n    if(typeof data !== "undefined"){\n        verifyData = true;\n    }\n    if(typeof template !== "undefined"){\n        verifyTemplate = true\n    }\n    if(verifyData === true && verifyTemplate === true){\n\n        document.dispatchEvent(new CustomEvent('CodeMirror', {\n            detail: {\n                _:'transform',\n                data:data,\n                template:template\n            }\n        }))\n    }else{\n\n        document.dispatchEvent(new CustomEvent('CodeMirror', {\n            detail: {\n                _:'response',\n                data:${e}\n            }\n        }))\n        \n    }\n})()`;t.innerHTML=n,u.appendChild(t)},!1),document.addEventListener("CodeMirror",async e=>{"transform"===e.detail._?f.editor.setValue(JSON.stringify(root,null,4)):f.editor.setValue(`${e.detail.data()}`),u.innerHTML=""})}(e),e)),e)),e))}});
+import store from '/static/html/components/component_modules/staticProperty/staticProperty.mjs'
+import Codemirror from '/static/html/components/component_modules/codemirror/codemirror.mjs'
+// import Stjs from '/static/html/components/component_modules/json/st.mjs'
+// import Json from '/static/html/components/component_modules/json/json.mjs'
+customElements.define('codemirror-main',
+    class extends HTMLElement {
+        constructor () {
+            super()
+            let white = []
+            let property = []
+            let typeSupported = []
+            let words = []
+
+            property.push('component-id')
+            property.push('script')
+            property.push('component-action')
+            typeSupported.push('h1')
+            typeSupported.push('innerText')
+            words.push('shadowRoot')
+            words.push('head')
+            words.push('shadow')
+            words.push('light')
+            words.push('lightDom')
+            words.push('editor')
+            words.push('слайдер')
+            words.push('swap')
+            white['this'] = this
+            white['type-supported'] = typeSupported
+
+            function style (obj) {
+                return new Promise(function (resolve, reject) {
+                    let styleS = document.createElement('style')
+                    let styleL = document.createElement('style')
+                    for (let key = 0; key < obj['type'].length; key++) {
+                        if (obj['type'][key] === 'swap') {
+                            if (obj['type'][key] === 'scoped') {
+                                styleS.setAttribute('scoped', '')
+                            }
+                        } else {
+                            if (obj['type'][key] === 'scoped') {
+                                styleL.setAttribute('scoped', '')
+                            }
+                        }
+                    }
+                    for (let state = 0; state < obj['state'].length; state++) {
+                        obj[`path-style-${obj['state'][state]}`] = `@import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}.css'; @import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}-custom.css';`
+                        switch (obj['state'][state]) {
+                            case 'shadow':
+                                if (obj['verify']['preset'] === true) {
+                                    obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${obj['preset']}/${obj['component']}-${obj['preset']}.css';`
+                                }
+                                styleS.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
+                                break
+                            case 'light':
+                                if (obj['verify']['preset'] === true) {
+                                    obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${obj['preset']}/${obj['component']}-${obj['preset']}.css';`
+                                }
+                                styleL.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
+                                break
+                            default:
+                                //console.log(`новый тип`, obj['state'][state])
+                                break
+                        }
+                        if (obj['state'][state] === 'swap') {
+                            if (obj['shadowRoot'] === true) {
+                                obj['this']['shadowRoot'].appendChild(styleL)
+                                obj['this'].appendChild(styleS)
+                                resolve(obj)
+                            } else {
+                                obj['this'].appendChild(styleS)
+                            }
+                        } else {
+                            if (obj['shadowRoot'] === true) {
+                                obj['this']['shadowRoot'].appendChild(styleS)
+                                obj['this'].appendChild(styleL)
+                                resolve(obj)
+                            } else {
+                                obj['this'].appendChild(styleL)
+                            }
+                        }
+                    }
+                    resolve(obj)
+                })
+            }
+            function objectProperty (obj) {
+                return new Promise(function (resolve, reject) {
+                    let black = []
+                    black['state'] = []
+                    black['state'].push('shadow')
+                    black['state'].push('light')
+                    black['words'] = words
+                    black[`type-swap`] = false
+                    black[`type-external`] = false
+                    black[`document-offsetWidth`] = document['body'].offsetWidth
+                    let verifyLight = false
+                    black[`getAttribute`] = (obj, type, property) => {
+                        if (property === 'template') {
+                            if (!obj.getAttribute('type')) {
+                                //console.log('не установлен тип ставим default')
+                                obj.setAttribute('type', 'default')
+                                return false
+                            } else {
+                                for (let key = 0; key < obj.getAttribute('type').split('-').length; key++) {
+                                    if (obj.getAttribute('type').split('-')[key] === type) {
+                                        verifyLight = true
+                                    }
+                                }
+                            }
+                            return verifyLight
+                        } else {
+                            //console.log(obj['this'].getAttribute('type'))
+                            obj[`verify-${type}`] = false
+                            if (obj['this'].getAttribute('type').split('-').length === 0) {
+                                return false
+                            } else {
+                                for (let key = 0; key < obj['this'].getAttribute('type').split('-').length; key++) {
+                                    if (obj['this'].getAttribute('type').split('-')[key] === type) {
+                                        obj[`verify-${type}`] = true
+                                    } else {
+                                        obj[`verify-${type}`] = false
+                                    }
+                                }
+                            }
+                            return obj[`verify-${type}`]
+                        }
+                    }
+                    if (!obj.tagName.toLowerCase()) {
+                        //console.log('что то пошло не так middleware js objectProperty', '')
+                    } else {
+                        black[`component`] = obj.tagName.toLowerCase()
+                    }
+                    if (typeof (obj) !== 'object') {
+                        //console.log('objectProperty middleware.js пришёл не объект')
+                    } else {
+                        if (!obj.getAttribute('type')) {
+                            black[`type`] = ['default']
+                            //console.log('нет типа ставим default')
+                            obj.setAttribute('type', 'default')
+                        } else {
+                            black[`type`] = obj.getAttribute('type').split('-')
+                            for (let type = 0; type < black[`type`].length; type++) {
+                                black[`type`][type] = black[`type`][type].replace(/:/g, '-')
+                            }
+                            for (let key in black[`type`]) {
+                                switch (black[`type`][key]) {
+                                    case 'swap':
+                                        black[`type-swap`] = true
+                                        break
+                                    case 'external':
+                                        black[`type-external`] = true
+                                        break
+                                    default:
+                                        //console.log(`дополнительные типы`, black[`type`][key])
+                                        break
+                                }
+                            }
+                        }
+                        if (!obj.slot) {
+                            //console.log('отсутствует слот, ставится- по тегу ', obj.tagName.toLowerCase())
+                            obj.slot = obj.tagName.toLowerCase()
+                            black[`slot`] = obj.slot
+                        } else {
+                            black[`slot`] = obj.slot
+                        }
+                        if (!obj.getAttribute('type')) {
+                            //console.log(' почему то нет атрибутов')
+                        } else {
+                            let veryfiStyle = false
+                            for (let key in obj.getAttribute('type').split('-')) {
+                                if (obj.getAttribute('type').split('-')[key].indexOf('style:') !== -1) {
+                                    //console.log('устанавливаются пути к стилям')
+                                    veryfiStyle = true
+                                }
+                            }
+                            if (veryfiStyle === true) {
+                                black['style-custom'] = 'not-default'
+                            } else {
+                                //console.log('устанавливается стиль по default')
+                                black['style-custom'] = 'default'
+                            }
+                        }
+                    }
+                    black['shadowRoot'] = false
+                    black['this'] = obj
+
+                    //console.log(black['this'])
+                    resolve(black)
+                })
+            }
+
+            function externalProperty (obj) {
+                return new Promise(function (resolve, reject) {
+                    obj['external-property'] = white['external-property']
+                    let object = []
+                    let component = []
+                    let a = []
+                    for (let key = 0; key < obj['external'].length; key++) {
+                        for (let type = 0; type < obj['external'][key].children.length; type++) {
+                            switch (obj['external'][key].children[type].tagName) {
+                                case 'SCRIPT':
+                                    if (!obj['external'][key].getAttribute('id')) {
+                                        //console.log('у компонента нет id нужно в external property script  получить id для загрузки скрипта')
+                                    } else {
+                                        component['script'] = obj['external'][key]['children'][type]
+                                    }
+                                    break
+                                case 'COMPONENT-ID':
+                                    component['id'] = obj['external'][key]['children'][type].innerText
+                                    break
+                                case 'COMPONENT-ACTION':
+                                    for (let action = 0; action < obj['external'][key]['children'][type]['children'].length; action++) {
+                                        a.push(obj['external'][key]['children'][type]['children'][action].innerText)
+                                    }
+                                    component['actions'] = a
+                                    break
+                                default:
+                                    //console.log(`Не отслеживается, по мере надобности добавляются [${obj['external'][key].children[type].tagName.toLowerCase()}]`)
+                                    break
+                            }
+                        }
+                        object.push(component)
+                        component = []
+                    }
+                    obj['external-property'] = object
+                    resolve(obj)
+                })
+                    .catch(error => {
+                        return //console.log('здесь я перехватывал отсутствие страницы но это убрал', error)
+                    })
+            }
+
+            function getTemplate (obj, swap, external) {
+                return new Promise(function (resolve, reject) {
+                    obj['template-shadow'] = []
+                    obj['template-light'] = []
+                    let verify = []
+                    verify['swap'] = false
+                    verify['external'] = false
+                    verify['light'] = false
+                    verify['slider'] = false
+                    verify['one'] = false
+                    for (let type = 0; type < obj['type'].length; type++) {
+                        if (obj['type'][type].indexOf('slider') !== -1) {
+                            if (obj['type'][type].split('-').length > 1) {
+                                verify['slider'] = true
+                                for (let key in obj['type'][type].split('-')) {
+                                    switch (obj['type'][type].split('-')[key]) {
+                                        case 'one':
+                                            verify['one'] = true
+                                            break
+                                        default:
+                                            //console.log(`~~~дополнительное свойство~~~`, obj['type'][type].split('-')[key])
+                                            break
+                                    }
+                                }
+                            }
+                        }
+                        if (obj['type'][type].length) {
+                            switch (obj['type'][type]) {
+                                case 'swap':
+                                    verify['swap'] = true
+                                    break
+                                case 'external':
+                                    verify['external'] = true
+                                    break
+                                case 'light':
+                                    verify['light'] = true
+                                    break
+                                case 'slider':
+                                    verify['slider'] = true
+                                    break
+                                default:
+                                    //console.log(`типы не отслеживаются`, obj['type'][type])
+                                    break
+                            }
+                        }
+                    }
+                    /**
+                     * цикл this
+                     * цикл template
+                     */
+                    if (verify['swap'] === true) {
+                        for (let key = 0; key < obj['this'].children.length; key++) {
+                            //console.log('~~~~~~this~~~~~~~', obj['this'].children[key].tagName)
+                            if (obj['this'].children[key].tagName.split('-').length === 1) {
+                                if (obj['this'].children[key].slot === 'view') {
+                                    obj['this'].children[key].className = 'wall'
+                                }
+                                obj['template-light'].push(obj['this'].children[key])
+                            } else {
+                                if (obj['getAttribute'](obj['this'].children[key], 'light', 'template') === true) {
+                                    obj['this'].children[key].setAttribute('type', `${obj['this'].children[key].getAttribute('type')}-external`)
+                                    scriptTemplate(obj['this'].children[key])
+                                    obj['template-light'].push(obj['this'].children[key])
+                                } else {
+                                    obj['this'].children[key].setAttribute('type', `${obj['this'].children[key].getAttribute('type')}-external`)
+                                    scriptTemplate(obj['this'].children[key])
+                                    obj['template-shadow'].push(obj['this'].children[key])
+                                }
+                            }
+                        }
+                        for (let key = 0; key < obj['template'].children.length; key++) {
+                            //console.log('~~~~~~template~~~~~~~', obj['template'].children[key].tagName)
+                            if (obj['template'].children[key].tagName.split('-').length === 1) {
+                                if (obj['template'].children[key].slot === 'view') {
+                                    obj['template'].children[key].className = 'wall'
+                                }
+                                obj['template-light'].push(obj['template'].children[key])
+                            } else {
+                                if (obj['getAttribute'](obj['template'].children[key], 'light', 'template') === true) {
+                                    obj['template'].children[key].setAttribute('type', `${obj['template'].children[key].getAttribute('type')}-external`)
+                                    scriptTemplate(obj['template'].children[key])
+                                    obj['template-light'].push(obj['template'].children[key])
+                                } else {
+                                    obj['template'].children[key].setAttribute('type', `${obj['template'].children[key].getAttribute('type')}-external`)
+                                    scriptTemplate(obj['template'].children[key])
+                                    obj['template-shadow'].push(obj['template'].children[key])
+                                }
+                            }
+                        }
+                    } else {
+                        for (let key = 0; key < obj['this'].children.length; key++) {
+                            //console.log('~~~~~~this~~~~~~~', obj['this'].children[key].tagName)
+                            if (obj['this'].children[key].tagName.split('-').length === 1) {
+                                if (obj['this'].children[key].slot === 'view') {
+                                    obj['this'].children[key].className = 'wall'
+                                }
+                                obj['template-shadow'].push(obj['this'].children[key])
+                            } else {
+                                if (obj['getAttribute'](obj['this'].children[key], 'light', 'template') === true) {
+                                    scriptTemplate(obj['this'].children[key])
+                                    obj['template-shadow'].push(obj['this'].children[key])
+                                } else {
+                                    scriptTemplate(obj['this'].children[key])
+                                    obj['template-light'].push(obj['this'].children[key])
+                                }
+                            }
+                        }
+                        for (let key = 0; key < obj['template'].children.length; key++) {
+                            //console.log('~~~~~~template~~~~~~~', obj['template'].children[key].tagName)
+                            if (obj['template'].children[key].tagName.split('-').length === 1) {
+                                if (obj['template'].children[key].slot === 'view') {
+                                    obj['template'].children[key].className = 'wall'
+                                }
+                                obj['template-shadow'].push(obj['template'].children[key])
+                            } else {
+                                if (obj['getAttribute'](obj['template'].children[key], 'light', 'template') === true) {
+                                    scriptTemplate(obj['template'].children[key])
+                                    obj['template-shadow'].push(obj['template'].children[key])
+                                } else {
+                                    scriptTemplate(obj['template'].children[key])
+                                    obj['template-light'].push(obj['template'].children[key])
+                                }
+                            }
+                        }
+                    }
+                    for (let key in verify) {
+                        obj['verify'][key] = verify[key]
+                    }
+                    if (obj['verify']['slider'] === true) {
+                        getSliderTemplate(obj)
+                            .then((obj) => {
+                                obj['template-light'].push(obj['slider'])
+                                obj['this']['appendChild'](obj['slider'])
+                                setExternalComponent(obj, 'slider')
+                                    .then((obj) => {
+                                        if (obj['verify']['one'] === true) {
+                                            for (let state = 0; state < obj['state'].length; state++) {
+                                                for (let key = 0; key < obj[`template-${obj['state'][state]}`].length; key++) {
+                                                    //console.log(obj[`template-${obj['state'][state]}`][key])
+                                                    if (obj[`template-${obj['state'][state]}`][key]['className'] === 'wall') {
+                                                        obj[`template-${obj['state'][state]}`].splice(key, 1)
+                                                        resolve(obj)
+                                                    }
+                                                }
+                                            }
+                                        } else {
+                                            resolve(obj)
+                                        }
+                                    })
+                            })
+                    } else {
+                        resolve(obj)
+                    }
+                })
+            }
+            function template (obj, type) {
+                return new Promise(function (resolve, reject) {
+                    obj['verify'] = []
+                    if (!obj['this'].getAttribute('preset')) {
+                        obj['path-template'] = `/static/html/components/${obj['component']}/${obj['component']}.html`
+                        obj['verify']['preset'] = false
+                    } else {
+                        obj['path-template'] = `/static/html/components/${obj['component']}/template/${obj['this'].getAttribute('preset')}/${obj['component']}-${obj['this'].getAttribute('preset')}.html`
+                        obj['preset'] = `${obj['this'].getAttribute('preset')}`
+                        obj['verify']['preset'] = true
+                    }
+                    fetch(obj['path-template'])
+                        .then(function (response) {
+                            if (response.ok) {
+                                return response.text()
+                            }
+                        }).then(function (body) {
+                        let parser = new DOMParser()
+                        let doc = parser.parseFromString(body, 'text/html')
+                        obj['template'] = doc.getElementsByTagName('template')[0].content.cloneNode(true)
+                        external(obj)
+                            .then((obj) => {
+                                getTemplate(obj, obj['type-swap'], obj['type-external'])
+                                    .then((obj) => {
+                                        if (obj['verify']['swap'] === true) {
+                                            if (obj['template-shadow'].length !== 0) {
+                                                obj['this']['attachShadow']({mode: 'open'})
+                                                obj['shadowRoot'] = true
+                                                for (let key = 0; key < obj['template-shadow'].length; key++) {
+                                                    obj['this']['shadowRoot']['appendChild'](obj['template-shadow'][key])
+                                                }
+                                            }
+                                            if (obj['template-light'].length !== 0) {
+                                                for (let key = 0; key < obj['template-light'].length; key++) {
+                                                    //console.log('2222222222111111111111222222222222', obj['template-light'][key])
+                                                    obj['this']['appendChild'](obj['template-light'][key])
+                                                }
+                                            }
+                                        } else {
+                                            if (obj['template-shadow'].length !== 0) {
+                                                obj['this']['attachShadow']({mode: 'open'})
+                                                obj['shadowRoot'] = true
+                                                for (let key in obj['template-shadow']) {
+                                                    obj['this']['shadowRoot']['appendChild'](obj['template-shadow'][key])
+                                                }
+                                            }
+                                            if (obj['template-light'].length !== 0) {
+                                                for (let key in obj['template-light']) {
+                                                    obj['this']['appendChild'](obj['template-light'][key])
+                                                }
+                                            }
+                                        }
+                                        resolve(obj)
+                                    })
+                            })
+                    })
+                        .catch(error => {
+                            return error
+                        })
+                })
+            }
+
+            function getSliderTemplate (obj) {
+                return new Promise(function (resolve, reject) {
+                    fetch(`/static/html/components/varan-slider/template/${obj['slot']}.html`)
+                        .then(function (response) {
+                            if (response.ok) {
+                                return response.text()
+                            }
+                        }).then(function (body) {
+                        let parser = new DOMParser()
+                        let doc = parser.parseFromString(body, 'text/html')
+                        obj['slider'] = doc.getElementsByTagName('template')[0].content.cloneNode(true)
+                        let slider = document.createElement('section')
+                        slider.className = 'slider'
+                        slider.slot = 'view'
+                        slider.appendChild(obj['slider'])
+                        obj['slider'] = slider
+                        if (slider.querySelectorAll('.ql-editor').length === 0) {
+                            resolve(obj)
+                        } else {
+                            for (let key = 0; key < slider.querySelectorAll('.ql-editor').length; key++) {
+                                if (slider.querySelectorAll('.ql-editor')[key].children.length === 0) {
+
+                                } else {
+                                    for (let type = 0; type < slider.querySelectorAll('.ql-editor')[key].children.length; type++) {
+                                        if (slider.querySelectorAll('.ql-editor')[key].children[type].tagName.split('-').length > 1) {
+                                            scriptTemplate(slider.querySelectorAll('.ql-editor')[key].children[type])
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        resolve(obj)
+                    })
+                        .catch(error => {
+                            return error
+                        })
+                })
+            }
+            function renderExternal (obj) {
+                return new Promise(function (resolve, reject) {
+                    obj['words-action'] = []
+                    let wordsAction = []
+                    for (let key = 0; key < obj['external-property'].length; key++) {
+                        for (let words = 0; words < obj['external-property'][key]['actions'].length; words++) {
+                            for (let verify = 0; verify < obj['words'].length; verify++) {
+                                if (obj['external-property'][key]['actions'][words].indexOf(obj['words'][verify]) !== -1) {
+                                    if (obj['words'][verify] === 'shadowRoot' || obj['words'][words] === 'shadow') {
+                                        wordsAction['shadow'] = true
+                                    }
+                                    if (obj['words'][verify] === 'light' || obj['words'][words] === 'лайт') {
+                                        wordsAction['light'] = true
+                                    }
+                                    if (obj['words'][verify] === 'editor') {
+                                        wordsAction['editor'] = true
+                                    }
+                                    if (obj['words'][verify] === 'слайдер') {
+                                        wordsAction['editor-slider'] = true
+                                    }
+                                    if (obj['words'][verify] === 'swap') {
+                                        wordsAction['swap'] = true
+                                    }
+                                }
+                            }
+                        }
+                        obj['words-action'] = wordsAction
+
+                        //console.log('~~~~~~~~~~~~~~~renderExternal~~~~~~~~~~~~~~~~~~~~~', obj)
+
+                        for (let key in obj['external-property']) {
+                            for (let type in obj['external-property'][key]) {
+                                switch (type) {
+                                    case 'id':
+                                        let doc = document.createElement(obj['external-property'][key][type])
+                                        doc.setAttribute('type', 'external')
+                                        obj['this'].appendChild(doc)
+                                        break
+                                    default:
+                                        //console.log(`какой то неизвестный тип`, type)
+                                        break
+                                }
+                            }
+                        }
+                        resolve(obj)
+                    }
+                })
+            }
+
+            function external (obj) {
+                return new Promise(function (resolve, reject) {
+                    obj['path-external'] = `/static/html/components/${obj['component']}/external/${obj['component']}-external.html`
+                    fetch(obj['path-external'])
+                        .then(function (response) {
+                            if (response.ok === false) {
+                                return response.ok
+                            } else {
+                                return response.text()
+                            }
+                        })
+                        .then(function (data) {
+                            if (data === false) {
+                            } else {
+                                let parser = new DOMParser()
+                                let doc = parser.parseFromString(data, 'text/html')
+                                obj['external'] = doc.querySelectorAll('section')
+                                externalProperty(obj)
+                                    .then((obj) => {
+                                        if (obj['external-property'].length === 0) {
+                                            resolve(obj)
+                                        } else {
+                                            renderExternal(obj)
+                                                .then((obj) => {
+                                                    resolve(obj)
+                                                })
+                                        }
+                                    })
+                            }
+                        })
+                        .catch(error => {
+                            throw error
+                        })
+                })
+            }
+            function getElementsByClassName (obj, type) {
+                return new Promise(function (resolve, reject) {
+                    for (let state = 0; state < obj['state'].length; state++) {
+                        for (let key = 0; key < obj[`template-${obj['state'][state]}`].length; key++) {
+                            if (obj[`template-${obj['state'][state]}`][key].getElementsByClassName(type).length === 0) {
+
+                            } else {
+                                obj['slider'] = obj[`template-${obj['state'][state]}`][key].getElementsByClassName(type)[0]
+                                resolve(obj[`template-${obj['state'][state]}`][key].getElementsByClassName(type)[0])
+                            }
+                        }
+                    }
+                })
+            }
+            function setSlider (obj) {
+                return new Promise(function (resolve, reject) {
+                    resolve(Peppermint(obj, {
+                        dots: false,
+                        slideshow: false,
+                        speed: 500,
+                        slideshowInterval: 5000,
+                        stopSlideshowAfterInteraction: true,
+                        onSetup: function (n) {
+                            //console.log('Peppermint setup done. Slides found: ' + n)
+                        }
+                    }))
+                })
+            }
+            function scriptTemplate (obj) {
+                return new Promise(function (resolve, reject) {
+                    const script = document.createElement('script')
+                    let verify = false
+                    for (let key in document['head'].getElementsByTagName('script')) {
+                        if (typeof (document['head'].getElementsByTagName('script')[key]) === 'object') {
+                            if (document['head'].getElementsByTagName('script')[key].outerHTML.indexOf(obj.tagName.toLowerCase()) !== -1) {
+                                verify = true
+                            }
+                        }
+                    }
+                    if (verify === true) {
+                        //console.log('script уже загруже')
+                    } else {
+                        script.src = `/static/html/components/${obj.tagName.toLowerCase()}/${obj.tagName.toLowerCase()}.mjs`
+                        script.type ='module'
+                        script.onload = resolve
+                        script.onerror = reject
+                        document['head'].appendChild(script)
+                    }
+                })
+            }
+
+            function setExternalComponent (obj, type, nObj) {
+                return new Promise(function (resolve, reject) {
+                    if (!type) {
+                        resolve(obj)
+                    } else {
+                        switch (type) {
+                            case 'slider': {
+                                getElementsByClassName(obj, 'peppermint')
+                                    .then((slider) => {
+                                        setSlider(slider)
+                                            .then((slider) => {
+                                                obj['slider'] = slider
+                                                resolve(obj)
+                                            })
+                                    })
+                            }
+                                break
+                            default:
+                                //console.log(`какой то неизвестный тип`, type)
+                                break
+                        }
+                        resolve(obj)
+                    }
+                })
+            }
+            objectProperty(this)
+                .then((obj) => {
+                    template(obj)
+                        .then((obj) => {
+                            style(obj)
+                                .then((obj) => {
+                                    listener(obj)
+                                    return obj
+                                })
+                            return obj
+                        })
+                    return obj
+                })
+            async function listener (obj) {
+                store({
+                    input:'page-scroll',
+                    this:obj['this'],
+                    obj: obj,
+                    type:'obj'
+                }, 'set', 'type')
+
+
+                let codemirror = new (await Codemirror({_:'codemirror', this:obj.this.shadowRoot}))['class']()
+                let editor = await codemirror.init({_:'init', mode:'javascript',this:obj.this.shadowRoot.querySelector('#code')})
+                let btnsearch = obj.this.shadowRoot.querySelector('#search'),
+                    fnext = obj.this.shadowRoot.querySelector('#fnext'),
+                    fprev = obj.this.shadowRoot.querySelector('#fprev'),
+                    repl = obj.this.shadowRoot.querySelector('#replace'),
+                    replall = obj.this.shadowRoot.querySelector('#replall'),
+                    goto = obj.this.shadowRoot.querySelector('#goto'),
+                    undo = obj.this.shadowRoot.querySelector('#undo'),
+                    redo = obj.this.shadowRoot.querySelector('#redo'),
+                    save = obj.this.shadowRoot.querySelector('#save'),
+                    getLast = obj.this.shadowRoot.querySelector('#getLast'),
+                    run = obj.this.shadowRoot.querySelector('#run'),
+                    result  = obj.this.shadowRoot.querySelector('#result'),
+                    script =  obj.this.shadowRoot.querySelector('#script');
+
+
+                let codemirrorResult = new (await Codemirror({_:'codemirror', this:obj.this.shadowRoot}))['class']()
+                let editorResult = await codemirror.init({_:'init',mode:'application/json', this:obj.this.shadowRoot.querySelector('#result')})
+                // let ST = await Stjs.ST({_:'ST', this:obj['this']})
+
+                // let json = new (await Json())['class']()
+
+                // console.assert(false)
+                // let selected = await json.select(data)
+                // let jsonTemplate = await json.transformWith(template, false, selected)
+                // console.assert(false, jsonTemplate)
+                // let root = await json.root(jsonTemplate)
+                // console.assert(false,root)
+                // JSON.stringify($scope.code, null, 4);
+                //  objects = sel.objects();
+                // console.assert(false, objects)
+
+
+                editor.editor.on('drop', function(data, e) {
+                    var file;
+                    var files;
+                    // Check if files were dropped
+                    files = e.dataTransfer.files;
+                    if (files.length > 0) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        file = files[0];
+                        alert('File: ' + file.name);
+                        return false;
+                    }
+                })
+                btnsearch.addEventListener('click', function() {
+                    codemirror.self.CodeMirror.commands.find(editor.editor)
+                }, false);
+                fnext.addEventListener('click', function() {
+                    codemirror.self.CodeMirror.commands.findNext(editor.editor);
+                }, false);
+                fprev.addEventListener('click', function() {
+                    codemirror.self.CodeMirror.commands.findPrev(editor.editor);
+                }, false);
+                repl.addEventListener('click', function() {
+                    codemirror.self.CodeMirror.commands.replace(editor.editor);
+                }, false);
+                replall.addEventListener('click', function() {
+                    codemirror.self.CodeMirror.commands.replaceAll(editor.editor);
+                }, false);
+                goto.addEventListener('click', function() {
+                    codemirror.self.CodeMirror.commands.jumpToLine(editor.editor);
+                }, false);
+                undo.addEventListener('click', function(){
+                    editor.editor.undo();
+                }, false);
+                redo.addEventListener('click', function(){
+                    editor.editor.redo();
+                },false);
+                save.addEventListener('click', function(){
+                    let value = editor.editor.getValue()
+                    sessionStorage.setItem('CodeMirror', value);
+
+                    // ST.select(data)
+                    //     .transformWith(template)
+                    //     .root()
+                },false);
+                getLast.addEventListener('click', function(){
+                    let value = sessionStorage.getItem('CodeMirror');
+                    editor.editor.setValue(value)
+                },false);
+                run.addEventListener('click', async ()=>{
+                    let value = editor.editor.getValue()
+                    let runScript = document.createElement('script');
+                    runScript.type = 'module';
+
+                    // let result = document.body.querySelector('codemirror-main').shadowRoot.querySelector('#result')
+                    // result.innerHTML = object
+
+                    let test = `
+(async ()=>{
+    ${value}
+    let verifyData = false;
+    let verifyTemplate = false;
+    if(typeof data !== "undefined"){
+        verifyData = true;
+    }
+    if(typeof template !== "undefined"){
+        verifyTemplate = true
+    }
+    if(verifyData === true && verifyTemplate === true){
+
+        document.dispatchEvent(new CustomEvent('CodeMirror', {
+            detail: {
+                _:'transform',
+                data:data,
+                template:template
+            }
+        }))
+    }else{
+
+        document.dispatchEvent(new CustomEvent('CodeMirror', {
+            detail: {
+                _:'response',
+                data:${value}
+            }
+        }))
+        
+    }
+})()`;
+                    runScript.innerHTML = test
+                    script.appendChild(runScript)
+
+                },false);
+
+                document.addEventListener('CodeMirror',async (event)=>{
+                  if(event.detail._ === 'transform'){
+                      // let selected = await json.select(event.detail.data)
+                      // let jsonTemplate = await json.transformWith(event.detail.template, false, selected)
+                      // let root = await json.root(jsonTemplate)
+                      editorResult.editor.setValue(JSON.stringify(root,null, 4))
+
+                  }else{
+                      editorResult.editor.setValue(`${event.detail.data()}`)
+                  }
+
+                    script.innerHTML = ''
+                })
+               // console.assert(false, editor)
+               // await Menu(obj)
+               // await monopoly(obj)
+
+            }
+        }
+    });
