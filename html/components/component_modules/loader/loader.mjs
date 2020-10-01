@@ -62,7 +62,6 @@ export let add = (url, target)=>{
 
 export default (url, name, obj)=>{
     return new Promise(function (resolve, reject) {
-        console.log('~~~~~~~>>>',url, name)
         let verifyScript = true
         let verifyName = name.toLowerCase()
         let Script = {}
@@ -79,7 +78,6 @@ export default (url, name, obj)=>{
                     load.src = url
                     document.body.appendChild(load)
                     load.onload = (out) =>{
-                          console.log('~~~~name~', name)
                           document.dispatchEvent( new CustomEvent(`${name}-loading`))
                           resolve(window[name])
                       }
