@@ -1,6 +1,7 @@
-@import "../../css/util/interface";
-@import "../../css/util/varan-style-media";
-@import "../../css/util/media";
+@import "./scss/interface.scss";
+@import "./scss/fonts.scss";
+@import "./scss/media.scss";
+
 [slot="view"],
 .ql-container,
 .peppermint-slides {

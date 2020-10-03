@@ -1,32 +1,55 @@
 let covert = {}
 covert = {}
-covert['pixelToVH'] = function (value) {
+
+export let pixelToVH = function (value) {
   // console.log('pixelToVH', value, `=>`, `${(100 * value) / window.innerHeight}vh`)
   return ((100 * value) / window.innerHeight)
 }
-covert['pixelToVW'] = function (value) {
+
+export let pixelToVW = function (value) {
   // console.log('pixelToVW', value, `=>`, `${(100 * value) / window.innerWidth}vw`)
   return ((100 * value) / window.innerWidth)
 }
-covert['vhToPixel'] = function (value) {
+
+export let customPixelToVW = function (value, width) {
+  // console.log('pixelToVW', value, `=>`, `${(100 * value) / window.innerWidth}vw`)
+  return ((100 * value) / width)
+}
+
+export let vhToPixel = function (value) {
   // console.log('vhToPixel', value, `=>`, `${(window.innerHeight * value) / 100}px`)
   return ((window.innerHeight * value) / 100)
 }
-covert['vwToPixel'] = function (value) {
+
+export let vwToPixel = function (value) {
   // console.log('vwToPixel', value, `=>`, `${(window.innerWidth * value) / 100}px`)
   return ((window.innerWidth * value) / 100)
 }
-covert['clearnPx'] = function (value) {
+
+export let clearnPx = function (value) {
   // console.log('clearnPx', value, `=>`, `${value}`)
   value = value.substr(0, value.length - 2)
   return value
 }
 
-async function init (obj) {
-  // console.log(`a{['system'])init-${obj}`, obj)
-  return covert
-}
-
 export default {
-  init: obj => { return init(obj) }
+  "author": "Zababurin Sergey",
+  "license": `
+    Copyright 2020 The Zababurin Authors.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.`,
+  "bugs": {
+    "url": "https://github.com/zababurinsv/template/issues",
+    "mail": "s.zababurin.v@gmail.com"
+  }
 }

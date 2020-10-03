@@ -1,33 +1,66 @@
 <template>
-    <fieldset class="design">
+    <div class="design-property-layout">
+        <div class="design-property-layout-main" slot="layout-main">
+            <slot name="layout-main"></slot>
+            <slot name="ide"></slot>
+            <slot name="Zababurin Sergey       email: s.zababurin.v@gmail.com       pho"></slot>
+            <slot name="DEV pressing"></slot>
+            <slot name="PROD pressing"></slot>
+            <slot name="LAB pressing"></slot>
+            <slot name="DEV aiming"></slot>
+            <slot name="PROD aiming"></slot>
+            <slot name="LAB aiming"></slot>
+            <slot name="DEV"></slot>
+            <slot name="PROD"></slot>
+            <slot name="LAB"></slot>
+
+
+            <slot name="HELP pressing"></slot>
+            <slot name="ERASE pressing"></slot>
+            <slot name="|"></slot>
+            <slot name="Web pressing"></slot>
+            <slot name="Dashboard aiming"></slot>
+            <slot name="line"></slot>
+            <slot name="ORG"></slot>
+            <slot name="red"></slot>
+            <slot name="green"></slot>
+            <slot name="Localhost pressing"></slot>
+            <slot name="yellow"></slot>
+            <slot name="LAB"></slot>
+
+            <!--            <div class="design-property-header" slot="header">-->
+<!--                <div class="root">-->
+<!--                    <div class="root-item"><slot name="items-views"></slot></div>-->
+<!--                    <style>@import'/static/html/components/image-index/shadow/image-index-custom.css'</style>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="design-property-body" slot="body">-->
+<!--                <div class="root">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="design-property-footer" slot="footer">-->
+<!--                <div class="root">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+            <style>
+                .design-property-layout-main {
+                    height: 100%;
+                    width: 100%;
+                }
+            </style>
+    </div>
+
+    <fieldset class="design" slot="ide">
         <legend>design</legend>
         <fieldset class="design-property">
             <legend>Property</legend>
         </fieldset>
-        <fieldset class="design-property" slot="design-property">
-            <legend>Views</legend>
-            <div class="design-property-views">
-                <div class="design-property-views-header" slot="header">
-                    <div class="root">
-                        <div class="root-item"><slot name="item-views-4"></slot></div>
-                        <div class="root-item"><slot name="items-views"></slot></div>
-                        <div class="root-item"><slot name="items-views"></slot></div>
-                        <style>@import'/static/html/components/image-index/shadow/image-index-custom.css'</style>
-                    </div>
-                </div>
-                <div class="design-property-views-body" slot="body">
-                    <div class="root">
-                    </div>
-                </div>
-                <div class="design-property-views-footer" slot="footer">
-                    <div class="root">
-                    </div>
-                </div>
-            </div>
-        </fieldset>
         <fieldset class="design-property" slot="components">
             <legend>Components</legend>
-            <div class="design-relations"></div>
+            <div class="design-relations">
+                <label for="psd-file">Photoshop file &nbsp<input id="psd-file" type="file" accept=".psd"/></label>
+            </div>
         </fieldset>
         <fieldset class="design-property">
             <legend>Relation</legend>
