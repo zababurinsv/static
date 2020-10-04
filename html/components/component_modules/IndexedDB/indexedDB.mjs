@@ -75,7 +75,7 @@ export default {
             }
             switch(obj['type']){
                 case 'dictionary':
-                   await (async (obj, type, rest)=>{
+                    (async (obj, type, rest)=>{
                         await connect({name:'dictionary', version: 1, data:obj['data'] },async (db)=>{
                             let object = []
                             db.transaction(['dictionary'], "readwrite").objectStore('dictionary').openCursor().onsuccess = (e)=>{
@@ -92,7 +92,7 @@ export default {
                     })(obj, type, rest)
                     break
                 case 'id':
-                   await (async (obj, type, rest)=>{ await connect({name:'mirrors', version: 1 },async (db)=>{
+                    (async (obj, type, rest)=>{ await connect({name:'mirrors', version: 1 },async (db)=>{
                         // console.assert(false, obj['id'].length)
                         let object = []
                         if(obj['id'].length === 0 ){
@@ -117,7 +117,7 @@ export default {
                     })(obj, type, rest)
                     break
                 case 'getAll':
-                  await  (async (obj, type, rest)=>{
+                    (async (obj, type, rest)=>{
 
                         await connect({name:'mirrors', version: 1 },async (db)=>{
                             let object = []
@@ -136,7 +136,7 @@ export default {
                     })(obj, type, rest)
                     break
                 case 'index':
-                  await  (async (obj, type, rest)=>{ await connect({name:'mirrors', version: 1 },async (db)=>{
+                    (async (obj, type, rest)=>{ await connect({name:'mirrors', version: 1 },async (db)=>{
                         let index =    db.transaction(['mirrors'], "readwrite").objectStore('mirrors').index(`${obj['index']}`)
                         let object = []
                         if(obj['index'] === 'price'){
@@ -240,7 +240,7 @@ export default {
             }
             switch(obj['type']){
                 case 'data':
-                  await  (async (obj, type, rest)=>{
+                    (async (obj, type, rest)=>{
                         let data = await fetch('http://dev.work/api/item',{method: 'GET' }).then(obj => { return obj.json()})
                         await connect({name:'mirrors', version: 1 },async (db)=>{
                             for (let i in data) {
@@ -254,7 +254,7 @@ export default {
                     })(obj, type, rest)
                     break
                 case 'item':
-                   await (async (obj, type, rest)=>{
+                    (async (obj, type, rest)=>{
                         await connect({name:'mirrors', version: 1 },async (db)=>{
                             db.transaction(['mirrors'], "readwrite").objectStore('mirrors').put(obj['value']).onsuccess = (e)=>{
                                 out(true)
@@ -279,7 +279,7 @@ export default {
             }
             switch(obj['type']){
                 case 'test':
-                  await  (async (obj, type, rest)=>{
+                    (async (obj, type, rest)=>{
                         await connect({name:'mirrors', version: 1 },async (db)=>{
                             (db.transaction(['mirrors'], "readwrite").objectStore('mirrors').delete('144')).onsuccess = (e)=>{
 
@@ -306,7 +306,7 @@ export default {
             }
             switch(obj['type']){
                 case 'dictionary':
-                 await   (async (obj, type, rest)=>{
+                    (async (obj, type, rest)=>{
                         await connect({name:'dictionary', version: 1, data:obj['data'] },async (db)=>{ out(true) })
                     })(obj, type, rest)
                     break
