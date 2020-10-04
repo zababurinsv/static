@@ -27,7 +27,7 @@ export default (v,p,c,obj,r) =>{
                     txt.style.whiteSpace = 'pre-wrap'
                     txt.innerText = item.text.text
                     txt.style.fontFamily = `${item.text.style.font.name}, serif`
-                    txt.style.fontSize = `${item.text.style.fontSize * 0.432}px`
+                    txt.style.fontSize = `${item.text.style.fontSize}px`
                     txt.setAttribute('slot',`${item['name']}`)
                 } else {
                     console.log(`<slot name=${item.name}> </slot>`)
