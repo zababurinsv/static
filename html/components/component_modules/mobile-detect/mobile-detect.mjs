@@ -3,8 +3,7 @@
 /*global module:false, define:false*/
 /*jshint latedef:false*/
 /*!@license Copyright 2013, Heinrich Goebl, License: MIT, see https://github.com/hgoebl/mobile-detect.js*/
-(function (define, undefined) {
-    define(function () {
+export default () => {
         'use strict';
 
         var impl = {};
@@ -989,16 +988,4 @@
         MobileDetect.version = '1.4.4 2019-09-21';
 
         return MobileDetect;
-    }); // end of call of define()
-})((function (undefined) {
-    if (typeof module !== 'undefined' && module.exports) {
-        return function (factory) { module.exports = factory(); };
-    } else if (typeof define === 'function' && define.amd) {
-        return define;
-    } else if (typeof window !== 'undefined') {
-        return function (factory) { window.MobileDetect = factory(); };
-    } else {
-        // please file a bug if you get this error!
-        throw new Error('unknown environment');
     }
-})());
