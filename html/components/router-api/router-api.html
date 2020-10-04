@@ -1,5 +1,5 @@
 <template>
-<section id="router-api">
+<section id="router-api" style="display: none">
     <div class="router-api">
         <div class="api">
             <div class="api-matcher">
@@ -39,16 +39,33 @@
                 <input class="api-matcher" id="api-orderbook-set" type="button">
             </div>
             <div class="api-matcher">
-                <label class="api-matcher" for="api-signature-get">
-                    /assets/signature/{assetId}
+                <label class="api-matcher" for="api-item-get">
+                    /storage/get/item
                 </label>
-                <input class="api-matcher" id="api-signature-get" type="button">
+                <input class="api-matcher" id="api-item-get" type="button">
             </div>
-
+            <div class="api-matcher">
+                <label class="api-matcher" for="api-item-set">
+                    /storage/set/item
+                </label>
+                <input class="api-matcher" id="api-item-set" type="button">
+            </div>
+            <div class="api-matcher">
+                <label class="api-matcher" for="api-item-delete">
+                    /storage/delete/item
+                </label>
+                <input class="api-matcher" id="api-item-delete" type="button">
+            </div>
+            <div class="api-matcher">
+                <label class="api-matcher" for="api-item-update">
+                    /storage/delete/item
+                </label>
+                <input class="api-matcher" id="api-item-update" type="button">
+            </div>
         </div>
     </div>
     <div  class="router-api-wallet">
-        <slot name="waves-provider"></slot>
+        <slot name="crypto-dex"></slot>
     </div>
 </section>
 </template>

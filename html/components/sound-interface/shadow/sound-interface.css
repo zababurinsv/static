@@ -1,0 +1,10 @@
+pre {
+    background-color: eeeeee;
+}
+
+#can {
+    width: 100%;
+    height: 24vw;
+    border: 1px solid black;
+    overflow: hidden;
+}
