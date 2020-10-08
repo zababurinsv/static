@@ -17,7 +17,7 @@ async function uploadEvent (event) {
 async function saveEditor (events) {
     await action({
         input:'customEvent',
-        id: event['detail']['id'],
+        id: events['detail']['id'],
         type: 'editor'
     }, `save`, 'type')
 }
