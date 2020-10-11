@@ -1,4 +1,4 @@
-import isEmpty from "../isEmpty/isEmpty";
+import isEmpty from "/static/html/components/component_modules/isEmpty/isEmpty.mjs";
 
 function color(item) {
     let txt = false
@@ -21,27 +21,31 @@ function color(item) {
 
 function element(v,item,c,obj,r) {
     let out = {}
-    if(item._ === 'txt') {
-        let txt = document.createElement('p')
-        out = txt
-        txt.style.whiteSpace = 'pre-wrap'
-        txt.innerText = item.text
-        txt.style.fontFamily = item.style.fontFamily
-        txt.style.fontSize = item.style.fontSize
-        txt.setAttribute('slot',`${item['slot']}`)
-        txt.style.color = `rgb(${item.style.color})`
-    } else if (item._ === 'image') {
-        out = item.canvas
+    if(isEmpty(obj['preset']['action'])) {
+        console.warn('не выбран action для preset -а')
+    } else {
+        obj['preset']['action'](v,item,c,obj,r)
     }
-    out.setAttribute('slot',`${item['slot']}`)
-    out.style.marginLeft = item.marginLeft
-    out.style.width = item.width
-    out.style.position = 'absolute'
-    out.style.left = '0'
-    out.style.top = item.top
-    obj['PSD']['container'].appendChild(out)
+    // if(item._ === 'txt') {
+    //     let txt = document.createElement('p')
+    //     out = txt
+    //     txt.style.whiteSpace = 'pre-wrap'
+    //     txt.innerText = item.text
+    //     txt.style.fontFamily = item.style.fontFamily
+    //     txt.style.fontSize = item.style.fontSize
+    //     txt.setAttribute('slot',`${item['slot']}`)
+    //     txt.style.color = `rgb(${item.style.color})`
+    // } else if (item._ === 'image') {
+    //     out = item.canvas
+    // }
+    // out.setAttribute('slot',`${item['slot']}`)
+    // out.style.marginLeft = item.marginLeft
+    // out.style.width = item.width
+    // out.style.position = 'absolute'
+    // out.style.left = '0'
+    // out.style.top = item.top
+    // obj['PSD']['container'].appendChild(out)
 }
-
 export default (v,p,c,obj,r) =>{
     return new Promise(async (resolve, reject)=>{
         for(let item of p) {

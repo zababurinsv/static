@@ -1,8 +1,18 @@
 @import "./scss/interface.scss";
 @import "./scss/fonts.scss";
 @import "./scss/media.scss";
-@import "./docs/css/GothamPro-Bold/styles.css";
-@import "./docs/css/GothamPro-Light/styles.css";
+
+
+
+@font-face {
+  font-family: 'GothamPro';
+  src: url('GothamPro-Regular.eot');
+  src: url('GothamPro-Regular.eot?#iefix') format('embedded-opentype'),
+  url('GothamPro-Regular.woff') format('woff'),
+  url('GothamPro-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 :host{
   width: 100%;

@@ -756,7 +756,7 @@ customElements.define('directory-list',
                     })
                     break
                   default:
-                    console.assert(false, 'неизвестный тип данных', object)
+                    console.warn('~~~~~ неизвестный тип данных ~~~~~', object)
                     break
                 }
 
@@ -802,7 +802,7 @@ customElements.define('directory-list',
                   })
                    break
                  default:
-                   console.assert(false, 'неизвестный тип данных', event.detail.files[key]['mimeType'])
+                   console.warn('~~~~~ неизвестный тип данных ~~~~~', event.detail.files[key]['mimeType'])
                    break
                }
             }
