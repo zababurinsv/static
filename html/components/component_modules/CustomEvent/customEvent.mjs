@@ -1,9 +1,7 @@
 import emoji from '/static/html/components/component_modules/emoji/emoji.mjs'
-import colorLog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
 export default (view = true,property='',color = 'black', substrate={},relation=''  )=>{
     return new Promise(function (resolve, reject) {
         document.addEventListener(`${relation}-end`, async (event)=>{
-
             resolve(event.detail)
         })
         //colorLog(view, property, color, substrate, relation)

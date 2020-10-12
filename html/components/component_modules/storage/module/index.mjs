@@ -1,5 +1,4 @@
 import IndexedDB from "/static/html/components/component_modules/storage/module/IndexedDB/IndexedDB.mjs";
-import localStorage from '/static/html/components/component_modules/storage/module/localStorage/localStorage.mjs'
 import mongodb from '/static/html/components/component_modules/storage/module/mongoDb/mongodb.mjs'
 import webdav from '/static/html/components/component_modules/storage/module/webdav/webdav.mjs'
 export default {
@@ -8,11 +7,11 @@ export default {
             switch (property) {
                 case '/storage/set/item':
                     let item = await IndexedDB(view, relation, color, substrate,property)
-                    item = mongodb(view, relation, color, item,property)
-                    item.then((item)=>{
-                        IndexedDB(view, relation, color, item,'/storage/set/mongoIdToIndexeddb')
-                        webdav(view, relation, color, item,property)
-                    })
+                    // item = mongodb(view, relation, color, item,property)
+                    // item.then((item)=>{
+                    //     IndexedDB(view, relation, color, item,'/storage/set/mongoIdToIndexeddb')
+                    //     webdav(view, relation, color, item,property)
+                    // })
                     resolve(item)
                     break
                 default:

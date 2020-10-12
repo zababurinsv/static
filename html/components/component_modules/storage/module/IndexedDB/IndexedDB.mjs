@@ -13,6 +13,7 @@ function connectDB (view, property, color, substrate, relation, callback) {
             let self = event.target.result
             if (!self.objectStoreNames.contains('monopoly')) {
                 property = self.createObjectStore('monopoly', { keyPath: 'id', autoIncrement: true })
+                // property = self.createObjectStore('monopoly', { unique: false })
                 property.createIndex('relation', 'relation', { unique: false })
                 property.createIndex('substrate', 'substrate', { unique: false })
                 property.createIndex('property', 'property', { unique: false })
@@ -31,6 +32,22 @@ function setFiles (view, property, color, substrate, relation) {
                let timestamp = Date.now()
                let utc = new Date(timestamp).toUTCString()
                let iso = new Date(timestamp).toString()
+               // let out= {
+               //     _id:undefined,
+               //     __v:undefined,
+               //     view:view,
+               //     color:color,
+               //     timestamp: timestamp,
+               //     utc:utc,
+               //     iso:iso,
+               //     id:substrate.id,
+               //     object:{
+               //         substrate:substrate,
+               //         relation:relation,
+               //         property:property,
+               //     },
+               // }
+               delete property['canvas']
                let out= {
                    _id:undefined,
                    __v:undefined,
@@ -39,13 +56,16 @@ function setFiles (view, property, color, substrate, relation) {
                    timestamp: timestamp,
                    utc:utc,
                    iso:iso,
-                   id:substrate.id,
                    object:{
-                       substrate:substrate,
+                       substrate:'',
                        relation:relation,
-                       property:property,
+                       property:{
+                           txt:'test'
+                       },
                    },
                }
+
+               // console.assert(false, property)
                let request = store.add(out)
 
                request.onsuccess = function (evt) {
@@ -152,11 +172,6 @@ function updateMongoId(view, property, color, substrate, relation) {
         })
     })
 }
-            /*
-
-             */
-
-
 export default async (view, property, color, substrate, relation)=>{
     switch (relation) {
         case '/storage/delete/all':
