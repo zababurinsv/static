@@ -56,11 +56,6 @@ export default async (v,p,c,obj,r) => {
             `)
             image.classList.add(`${p.class}`)
             image.setAttribute('slot',`${p['slot']}`)
-            // image.style.marginLeft = `${pixelToVW(p.marginLeft)}vw`
-            // image.style.width = `${pixelToVW(p.width)}vw`
-            // image.style.position = 'absolute'
-            // image.style.left = '0'
-            // image.style.top = `${pixelToVW(p.top)}vw`
             if(p.name !== 'bg') {
                 obj.PSD.container.appendChild(image)
                 slot(v,p,c,obj,r)
@@ -85,25 +80,6 @@ export default async (v,p,c,obj,r) => {
                 left:${pixelToVW(p.marginLeft)}vw;
                 }
             `)
-            console.log({
-                "class":p.class,
-                "white-space":"pre-wrap",
-                "font-family":`${p.style.fontFamily}`,
-                "font-size":`${pixelToVW(p.style.fontSize)}vw`,
-                "color": p.style.color,
-                "position":'absolute',
-                "top":`${pixelToVW(p.top)}vw`,
-                "left":`${pixelToVW(p.marginLeft)}vw`
-
-            })
-            // paragraph.style.whiteSpace = 'pre-wrap'
-            // paragraph.style.fontFamily = p.style.fontFamily
-            // paragraph.style.fontSize = `${pixelToVW(p.style.fontSize)}vw`
-            // paragraph.style.color = p.style.color
-            // paragraph.style.marginLeft =
-            // paragraph.style.position = 'absolute'
-            // paragraph.style.left = `${pixelToVW(p.marginLeft)}vw`
-            // paragraph.style.top = `${pixelToVW(p.top)}vw`
             slot(v,p,c,obj,r)
             break
         default:
