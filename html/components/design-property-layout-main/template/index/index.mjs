@@ -1,5 +1,5 @@
 import colorLog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
-
+import {pixelToVW} from '/static/html/components/component_modules/convert/convert.mjs'
 export default async (v,p,c,obj,r) => {
     switch (p._) {
         case 'image':
@@ -8,18 +8,18 @@ export default async (v,p,c,obj,r) => {
             let imageSlot = document.createElement('slot')
             imageSlot.name = `${p.name}`
             image.setAttribute('slot',`${p['slot']}`)
-            image.style.marginLeft = p.marginLeft
-            image.style.width = p.width
+            image.style.marginLeft = `${pixelToVW(p.marginLeft)}vw`
+            image.style.width = `${pixelToVW(p.width)}vw`
             image.style.position = 'absolute'
             image.style.left = '0'
-            image.style.top = p.top
+            image.style.top = `${pixelToVW(p.top)}vw`
             if(p.name !== 'bg') {
                 obj.PSD.container.appendChild(image)
                 obj.preset.container.appendChild(imageSlot)
             }
             break
         case 'txt':
-            colorLog(v,p.class,'green',obj,r)
+            colorLog(v,p.class,'green',p,r)
             let paragraphSlot = document.createElement('slot')
             paragraphSlot.name = `${p.name}`
             let paragraph = document.createElement('p')
@@ -27,14 +27,14 @@ export default async (v,p,c,obj,r) => {
             paragraph.style.whiteSpace = 'pre-wrap'
             paragraph.innerText = p.text
             paragraph.style.fontFamily = p.style.fontFamily
-            paragraph.style.fontSize = p.style.fontSize
+            paragraph.style.fontSize = `${pixelToVW(p.style.fontSize)}vw`
             paragraph.setAttribute('slot',`${p['slot']}`)
-            paragraph.style.color = `rgb(${p.style.color})`
-            paragraph.style.marginLeft = p.marginLeft
+            paragraph.style.color = p.style.color
+            paragraph.style.marginLeft = `${pixelToVW(p.marginLeft)}vw`
             paragraph.style.width = p.width
             paragraph.style.position = 'absolute'
             paragraph.style.left = '0'
-            paragraph.style.top = p.top
+            paragraph.style.top = `${pixelToVW(p.top)}vw`
             obj.preset.container.appendChild(paragraphSlot)
             obj.PSD.container.appendChild(paragraph)
             break
