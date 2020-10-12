@@ -16,7 +16,7 @@ obj.preset.container.insertAdjacentHTML('beforeend',`
 <input
      id="${p.name}"
      type="submit"
-     onclick="window.location='https://zababurinsv.github.io/ide-design/test';"
+     onclick="window.location='https://zababurinsv.github.io/ide-design/';"
      style="display: none"
 />
 </label>
