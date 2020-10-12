@@ -1,12 +1,44 @@
 import colorLog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
 import {pixelToVW} from '/static/html/components/component_modules/convert/convert.mjs'
+
+let slot = async (v,p,c,obj,r) => {
+    let imageSlot = {}
+    switch (p._) {
+        case 'image':
+            imageSlot = document.createElement('slot')
+            imageSlot.name = `${p.name}`
+            obj.preset.container.appendChild(imageSlot)
+            break
+        case 'txt':
+obj.preset.container.insertAdjacentHTML('beforeend',`
+<label for="${p.name}">
+<slot name="${p.name}"></slot>
+<input
+     id="${p.name}"
+     type="submit"
+     onclick="window.location='https://zababurinsv.github.io/ide-design/test';"
+     style="display: none"
+/>
+</label>
+            
+            `)
+
+            // imageSlot = document.createElement('slot')
+            // imageSlot.name = `${p.name}`
+            // obj.preset.container.appendChild(imageSlot)
+            break
+        default:
+            console.warn('неисвестный тип данных', p)
+            break
+    }
+    return true
+}
+
 export default async (v,p,c,obj,r) => {
     switch (p._) {
         case 'image':
             colorLog(v,p.class,'orange',p,r)
             let image = p.canvas
-            let imageSlot = document.createElement('slot')
-            imageSlot.name = `${p.name}`
             image.setAttribute('slot',`${p['slot']}`)
             image.style.marginLeft = `${pixelToVW(p.marginLeft)}vw`
             image.style.width = `${pixelToVW(p.width)}vw`
@@ -15,13 +47,11 @@ export default async (v,p,c,obj,r) => {
             image.style.top = `${pixelToVW(p.top)}vw`
             if(p.name !== 'bg') {
                 obj.PSD.container.appendChild(image)
-                obj.preset.container.appendChild(imageSlot)
+                slot(v,p,c,obj,r)
             }
             break
         case 'txt':
             colorLog(v,p.class,'green',p,r)
-            let paragraphSlot = document.createElement('slot')
-            paragraphSlot.name = `${p.name}`
             let paragraph = document.createElement('p')
             paragraph.classList.add(`${p.class.split(' ')[0]}`)
             paragraph.style.whiteSpace = 'pre-wrap'
@@ -35,8 +65,8 @@ export default async (v,p,c,obj,r) => {
             paragraph.style.position = 'absolute'
             paragraph.style.left = '0'
             paragraph.style.top = `${pixelToVW(p.top)}vw`
-            obj.preset.container.appendChild(paragraphSlot)
             obj.PSD.container.appendChild(paragraph)
+            slot(v,p,c,obj,r)
             break
         default:
             colorLog(v,p,'yellow',obj,r)
