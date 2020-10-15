@@ -13,10 +13,9 @@ function connectDB (view, property, color, substrate, relation, callback) {
             let self = event.target.result
             if (!self.objectStoreNames.contains('monopoly')) {
                 property = self.createObjectStore('monopoly', { keyPath: 'id', autoIncrement: true })
-                // property = self.createObjectStore('monopoly', { unique: false })
-                property.createIndex('relation', 'relation', { unique: false })
-                property.createIndex('substrate', 'substrate', { unique: false })
-                property.createIndex('property', 'property', { unique: false })
+                property.createIndex('_id', '_id', { unique: false })
+                property.createIndex('__v', '__v', { unique: false })
+                property.createIndex('timestamp', 'timestamp', { unique: false })
             }
       connectDB(view, property, color, substrate, relation, callback)
     }
@@ -47,7 +46,6 @@ function setFiles (view, property, color, substrate, relation) {
                //         property:property,
                //     },
                // }
-               delete property['canvas']
                let out= {
                    _id:undefined,
                    __v:undefined,
@@ -57,15 +55,11 @@ function setFiles (view, property, color, substrate, relation) {
                    utc:utc,
                    iso:iso,
                    object:{
-                       substrate:'',
-                       relation:relation,
-                       property:{
-                           txt:'test'
-                       },
+                       s:substrate,
+                       r:relation,
+                       p:property,
                    },
                }
-
-               // console.assert(false, property)
                let request = store.add(out)
 
                request.onsuccess = function (evt) {

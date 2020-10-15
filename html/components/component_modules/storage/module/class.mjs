@@ -8,7 +8,7 @@ import database from '/static/html/components/component_modules/storage/module/i
 
 let Class = class Storage {
     constructor() {
-        this.customEvent = this.customEvent.bind(this)
+        this.set = this.set.bind(this)
         events.eventListener.get(true, 'await', '5', '','/storage/set/item',async (object)=>{
             await database.set(object.view, object.relation, object.color, object.substrate, object.property)
             return    object.callback(object)
@@ -42,8 +42,8 @@ let Class = class Storage {
             return   object.callback(object)
         })
     }
-    customEvent(v,p,c,obj,r) {
-        return events.eventListener.set(v,p,c,obj,r)
+    set(v,p,c,obj,r) {
+        return events.eventListener.set(v,p,c,obj,'/storage/set/item')
     }
 }
 
