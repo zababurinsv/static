@@ -152,8 +152,8 @@ export default async (v,p,c,obj,r) => {
            storage.set(true, {
                style:style.innerHTML,
                html:html.outerHTML,
-               template: imgT.outerHTML,
-               views: imgV.outerHTML
+               template: imgT,
+               views: imgV
            },'green',html.className,'set')
            console.log()
            download(`${imgV}`,'index.html', "txt")
@@ -166,18 +166,20 @@ export default async (v,p,c,obj,r) => {
             let image = p.canvas
             let styleImage = obj['this'].querySelector('style')
             let styleShadowImage = obj['this']['shadowRoot'].querySelector('style')
-            style.insertAdjacentHTML('beforeend',`.${p.class} {
-                    position:absolute;
-                    width:${pixelToVW(p.width)}vw;
-                    top:${pixelToVW(p.top)}vw;
-                    left:${pixelToVW(p.marginLeft)}vw;
-                }`)
-            styleImage.insertAdjacentHTML('beforeend',`.${p.class} {
-                    position:absolute;
-                    width:${pixelToVW(p.width)}vw;
-                    top:${pixelToVW(p.top)}vw;
-                    left:${pixelToVW(p.marginLeft)}vw;
-                }`)
+            style.insertAdjacentHTML('beforeend',`
+            .${p.class} {
+                position:absolute;
+                width:${pixelToVW(p.width)}vw;
+                top:${pixelToVW(p.top)}vw;
+                left:${pixelToVW(p.marginLeft)}vw;
+            }`)
+            styleImage.insertAdjacentHTML('beforeend',`
+            .${p.class} {
+                position:absolute;
+                width:${pixelToVW(p.width)}vw;
+                top:${pixelToVW(p.top)}vw;
+                left:${pixelToVW(p.marginLeft)}vw;
+            }`)
             image.classList.add(`${p.class}`)
 
             if(p.name !== "background") {
