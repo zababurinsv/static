@@ -10,10 +10,10 @@ let style = document.createElement('style')
 style.insertAdjacentHTML('beforeend',`
 @font-face {
     font-family: 'GothamPro';
-    src: url('GothamPro-Regular.eot');
-    src: url('GothamPro-Regular.eot?#iefix') format('embedded-opentype'),
-    url('GothamPro-Regular.woff') format('woff'),
-    url('GothamPro-Regular.ttf') format('truetype');
+    src: url('GothamPro.eot');
+    src: url('GothamPro.eot?#iefix') format('embedded-opentype'),
+    url('GothamPro.woff') format('woff'),
+    url('GothamPro.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -71,9 +71,6 @@ async function imgTag(v,p,c,obj,r) {
     let dataURL = p.canvas.toDataURL();
     img.src = dataURL
     img.classList.add(`${p.class}`)
-    // if(r === 'background') {
-    //     img.style.zIndex = '-1'
-    // }
     img.setAttribute('slot',`${p['slot']}`)
     return img
 }
@@ -113,17 +110,18 @@ let slot = async (v,p,c,obj,r) => {
             obj.preset.container.appendChild(imageSlot)
             break
         case 'txt':
-obj.preset.container.insertAdjacentHTML('beforeend',`
+            // onclick="window.location='https://zababurinsv.github.io/ide-design/';"
+
+            obj.preset.container.insertAdjacentHTML('beforeend',`
                 <label for="${p.name}" class="${p.class}">
                     <slot name="${p.name}"></slot>
-                         <select  style="display: none">
+                         <select>
                              <option>text</option>
                              <option>link</option>
                          </select>
                         <input
                              id="${p.name}"
                              type="submit"
-                             onclick="window.location='https://zababurinsv.github.io/ide-design/';"
                              style="display: none"
                         />
                 </label>`)
@@ -132,7 +130,6 @@ obj.preset.container.insertAdjacentHTML('beforeend',`
             console.warn('неисвестный тип данных', p)
             break
     }
-    console.log('--------------------------------------------+-*',html,html.class )
     return true
 }
 
@@ -155,33 +152,27 @@ export default async (v,p,c,obj,r) => {
                template: imgT,
                views: imgV
            },'green',html.className,'set')
-           console.log()
            download(`${imgV}`,'index.html', "txt")
        })
        buttonTogle = false
    }
     switch (p._) {
         case 'image':
-            colorLog(v,p.class,'orange',p,r)
-            let image = p.canvas
-            let styleImage = obj['this'].querySelector('style')
-            let styleShadowImage = obj['this']['shadowRoot'].querySelector('style')
+            let styleLight = obj['this'].querySelector('style')
             style.insertAdjacentHTML('beforeend',`
             .${p.class} {
                 position:absolute;
                 width:${pixelToVW(p.width)}vw;
                 top:${pixelToVW(p.top)}vw;
-                left:${pixelToVW(p.marginLeft)}vw;
+                left:${pixelToVW(p.left)}vw;
             }`)
-            styleImage.insertAdjacentHTML('beforeend',`
+            styleLight.insertAdjacentHTML('beforeend',`
             .${p.class} {
                 position:absolute;
                 width:${pixelToVW(p.width)}vw;
                 top:${pixelToVW(p.top)}vw;
-                left:${pixelToVW(p.marginLeft)}vw;
+                left:${pixelToVW(p.left)}vw;
             }`)
-            image.classList.add(`${p.class}`)
-
             if(p.name !== "background") {
                 let img = await imgTag(v,{
                     canvas:p.canvas,
@@ -190,13 +181,13 @@ export default async (v,p,c,obj,r) => {
                 },c,obj,p.name)
                 obj.PSD.container.appendChild(img)
                 if(downloads) {
-                    html.appendChild(img)
+                    let out = img.cloneNode(true);
+                    html.appendChild(out)
                 }
                 slot(v,p,c,obj,r)
             }
             break
         case 'txt':
-            colorLog(v,p.class,'green',p,r)
             let paragraph = document.createElement('p')
             paragraph.classList.add(`${p.class}`)
             paragraph.setAttribute('slot',`${p['slot']}`)
@@ -211,7 +202,7 @@ export default async (v,p,c,obj,r) => {
                 color: ${p.style.color};
                 position:absolute;
                 top:${pixelToVW(p.top)}vw;
-                left:${pixelToVW(p.marginLeft)}vw;
+                left:${pixelToVW(p.left)}vw;
             }`)
             styleShadow.insertAdjacentHTML('beforeend',`
             .${p.class} {
@@ -221,16 +212,40 @@ export default async (v,p,c,obj,r) => {
                 color: ${p.style.color};
                 position:absolute;
                 top:${pixelToVW(p.top)}vw;
-                left:${pixelToVW(p.marginLeft)}vw;
+                left:${pixelToVW(p.left)}vw;
             }`)
-
             if(downloads) {
-                html.appendChild(paragraph)
+                let out = paragraph.cloneNode(true);
+                html.appendChild(out)
             }
             slot(v,p,c,obj,r)
             break
+        case 'hover':
+            style.insertAdjacentHTML('beforeend',`
+            .${p.class} {
+                filter:${p.dropShadow};
+                cursor: pointer;
+            }`)
+            let filterCss = obj['this'].querySelector('style')
+            filterCss.insertAdjacentHTML('beforeend',`
+            .${p.class} {
+                filter:${p.dropShadow};
+                cursor: pointer;
+            }`)
+            break
+        case 'active':
+            style.insertAdjacentHTML('beforeend',`
+            .${p.class} {
+                filter:${p.dropShadow};
+                cursor: pointer;
+            }`)
+            let filterCssActive = obj['this'].querySelector('style')
+            filterCssActive.insertAdjacentHTML('beforeend',`
+            .${p.class} {
+                filter:${p.dropShadow};
+            }`)
+            break
         default:
-            colorLog(v,p,'yellow',obj,r)
             console.warn('неисвестный тип данных', p)
             break
     }
