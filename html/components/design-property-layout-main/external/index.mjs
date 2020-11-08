@@ -1,4 +1,4 @@
-import psd from '/static/html/components/component_modules/bundle/psd/docs.mjs'
+import psd from '/static/html/components/component_modules/bundle/psd/psd.index.mjs'
 import index from '/static/html/components/design-property-layout-main/template/index/index.mjs'
 export default async (v,p,c,obj,r) => {
     if(obj['preset']['status']) {
@@ -12,5 +12,5 @@ export default async (v,p,c,obj,r) => {
                 break
         }
     }
-    await psd.write(true,'','red',obj,'design-property-layout-main')
+    await psd.write(true,'','red',obj,'main')
 }

@@ -57,41 +57,45 @@ customElements.define('design-property-layout-main',
                             }
                         }
                     }
-
-                    for (let state = 0; state < obj['state'].length; state++) {
-                        obj[`path-style-${obj['state'][state]}`] = `@import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}.css'; @import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}-custom.css';`
-                        switch (obj['state'][state]) {
-                            case 'shadow':
-                                if (obj['verify']['preset'] === true) {
-                                    obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${obj['preset']['dir']}/${obj['preset']['name']}.css';`
-                                }
-                                styleS.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
-                                break
-                            case 'light':
-                                if (obj['verify']['preset'] === true) {
-                                    obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${obj['preset']['dir']}/${obj['preset']['name']}.css';`
-                                }
-                                styleL.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
-                                break
-                            default:
-                                // //console.log(`новый тип`, obj['state'][state])
-                                break
-                        }
-                        if (obj['state'][state] === 'swap') {
-                            if (obj['shadowRoot'] === true) {
-                                obj['this']['shadowRoot'].appendChild(styleL)
-                                obj['this'].appendChild(styleS)
-                                resolve(obj)
-                            } else {
-                                obj['this'].appendChild(styleS)
+                    if(obj['this'].dataset.css === "false") {
+                        obj['this']['shadowRoot'].appendChild(styleS)
+                        obj['this'].appendChild(styleL)
+                    } else {
+                        for (let state = 0; state < obj['state'].length; state++) {
+                            obj[`path-style-${obj['state'][state]}`] = `@import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}.css'; @import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}-custom.css';`
+                            switch (obj['state'][state]) {
+                                case 'shadow':
+                                    if (obj['verify']['preset'] === true) {
+                                        obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${obj['preset']['dir']}/${obj['preset']['name']}.css';`
+                                    }
+                                    styleS.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
+                                    break
+                                case 'light':
+                                    if (obj['verify']['preset'] === true) {
+                                        obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${obj['preset']['dir']}/${obj['preset']['name']}.css';`
+                                    }
+                                    styleL.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
+                                    break
+                                default:
+                                    // //console.log(`новый тип`, obj['state'][state])
+                                    break
                             }
-                        } else {
-                            if (obj['shadowRoot'] === true) {
-                                obj['this']['shadowRoot'].appendChild(styleS)
-                                obj['this'].appendChild(styleL)
-                                resolve(obj)
+                            if (obj['state'][state] === 'swap') {
+                                if (obj['shadowRoot'] === true) {
+                                    obj['this']['shadowRoot'].appendChild(styleL)
+                                    obj['this'].appendChild(styleS)
+                                    resolve(obj)
+                                } else {
+                                    obj['this'].appendChild(styleS)
+                                }
                             } else {
-                                obj['this'].appendChild(styleL)
+                                if (obj['shadowRoot'] === true) {
+                                    obj['this']['shadowRoot'].appendChild(styleS)
+                                    obj['this'].appendChild(styleL)
+                                    resolve(obj)
+                                } else {
+                                    obj['this'].appendChild(styleL)
+                                }
                             }
                         }
                     }
@@ -652,7 +656,7 @@ customElements.define('design-property-layout-main',
 
             function external (obj) {
                 return new Promise(function (resolve, reject) {
-                    obj['path-external'] = `/static/html/components/${obj['component']}/external/${obj['component']}-external.html`
+                    obj['path-external'] = `/static/html/components/${obj['component']}/external/${obj['component']}-external.xml`
                     fetch(obj['path-external'])
                         .then(function (response) {
                             if (response.ok === false) {

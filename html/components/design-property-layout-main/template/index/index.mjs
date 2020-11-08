@@ -1,14 +1,11 @@
 import colorLog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
 import {pixelToVW} from '/static/html/components/component_modules/convert/convert.mjs'
 import Storage from '/static/html/components/component_modules/storage/index.mjs'
+import Zip from '/static/html/components/component_modules/bundle/zip/zip.index.mjs'
 let storage = Storage()
-let downloads = true
 let buttonTogle = true
-let html =  document.createElement('div')
-html.classList.add(`design-property-layout-main`)
-let style = document.createElement('style')
-style.insertAdjacentHTML('beforeend',`
-@font-face {
+let styleFonts = (v,p,c,obj,r) => {
+return`@font-face {
     font-family: 'GothamPro';
     src: url('GothamPro.eot');
     src: url('GothamPro.eot?#iefix') format('embedded-opentype'),
@@ -17,7 +14,6 @@ style.insertAdjacentHTML('beforeend',`
     font-weight: normal;
     font-style: normal;
 }
-
 @font-face {
     font-family: 'GothamPro-Bold';
     src: url('GothamPro-Bold.eot?') format('eot'),
@@ -29,43 +25,142 @@ style.insertAdjacentHTML('beforeend',`
 body {
     margin:0;
 }
-p {
+`
+}
+let output = {
+    out: false,
+    light: false,
+    shadow: false,
+    html: document.createElement('div'),
+    parent: (v,p,c,obj,r) => {
+        return`p {
     margin:0;
 }
 p:first-letter {
     margin-left: -0.06em;
 }
-.design-property-layout-main {
+.${obj.PSD.layout.parentClass} {
     width: 100%;
     position: relative;
-}`)
+}
+`}
+}
 
-function download(data, filename, type) {
-    var file = new Blob([data], {type: type});
-    if (window.navigator.msSaveOrOpenBlob) // IE10+
-        window.navigator.msSaveOrOpenBlob(file, filename);
-    else { // Others
-        var a = document.createElement("a"),
-            url = URL.createObjectURL(file);
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(function() {
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
-        }, 0);
+let pseudo = {
+    elements: [
+        "after",
+        "before",
+        "cue",
+        "cueRegion",
+        "firstLetter",
+        "firstLine",
+        "fileSelectorButton",
+        "selection",
+        "slotted",
+    ],
+    classes: [
+        "active",
+        "left",
+        "link",
+        "checked",
+        "not",
+        "default",
+        "defined",
+        "disabled",
+        "empty",
+        "enabled",
+        "focus",
+        "aiming",
+        "focusWithin",
+        "host",
+        "hover",
+        "indeterminate",
+        "inRange",
+        "invalid",
+        "lang",
+        "valid",
+        "visited",
+        "target",
+    ]
+}
+
+async function pseudoElement(v,p,c,obj,r) {
+    if(pseudo.elements.some(item => (p.name.indexOf(item) > -1))) {
+        return true
+    } else {
+        return false
     }
 }
-async function imgTemplate(v,p,c,obj,r) {
-    return `
-<template>
-${obj.html}
-<style>
-${obj.style}
-</style>
-</template>`
+
+async function pseudoClass(v,p,c,obj,r) {
+    if(pseudo.classes.some(item => (p.name.indexOf(item) > -1 ))) {
+        return true
+    } else {
+        return false
+    }
 }
+
+async function style(v,p,c,obj,r) {
+    if(!output.out) {
+        output.out = output.parent(v,p,c,obj,r)
+    }
+    if(!output.light) {
+        output.light = obj['this'].querySelector('style')
+    }
+    if(!output.shadow) {
+        output.shadow = obj['this']['shadowRoot'].querySelector('style')
+    }
+    switch (r) {
+        case 'light':
+            output.light.insertAdjacentHTML('beforeend',
+                `.${p.class} {
+                position:absolute;
+                width:${pixelToVW(p.width)}vw;
+                top:${pixelToVW(p.top)}vw;
+                left:${pixelToVW(p.left)}vw;
+                z-index:${(p.name === "background")?-1:10};
+            }
+            `)
+            output.out = output.out +
+`.${p.class} {
+    position:absolute;
+    width:${pixelToVW(p.width)}vw;
+    top:${pixelToVW(p.top)}vw;
+    left:${pixelToVW(p.left)}vw;
+    z-index:${(p.name === "background")?-1:10};
+}
+`
+            break
+        case 'shadow':
+            output.shadow.insertAdjacentHTML('beforeend',
+                `.${p.class} {
+                white-space:${(p.name === "contacts") ?'pre-wrap':'unset'};
+                font-family:${p.style.fontFamily};
+                font-size:${pixelToVW(p.style.fontSize)}vw;
+                color: ${p.style.color};
+                position:absolute;
+                top:${pixelToVW(p.top)}vw;
+                left:${pixelToVW(p.left)}vw;
+            }`)
+            output.out = output.out +
+`.${p.class} {
+    white-space:${(p.name === "contacts") ?'pre-wrap':'unset'};
+    font-family:${p.style.fontFamily};
+    font-size:${pixelToVW(p.style.fontSize)}vw;
+    color: ${p.style.color};
+    position:absolute;
+    top:${pixelToVW(p.top)}vw;
+    left:${pixelToVW(p.left)}vw;
+}
+`
+            break
+        default:
+            console.warn('неизвестное состояние', r)
+            break
+    }
+    return true
+}
+
 async function imgTag(v,p,c,obj,r) {
     let img = document.createElement('img')
     let dataURL = p.canvas.toDataURL();
@@ -74,7 +169,18 @@ async function imgTag(v,p,c,obj,r) {
     img.setAttribute('slot',`${p['slot']}`)
     return img
 }
-async function imgViews(v,p,c,obj,r) {
+
+async function outputTemplate(v,p,c,obj,r) {
+    return`
+<template>
+${obj.html}
+<style>
+${obj.style}
+</style>
+</template>
+`}
+
+async function outputViews(v,p,c,obj,r) {
 return `
 <!DOCTYPE html>
 <html lang="ru">
@@ -96,10 +202,42 @@ return `
 ${obj.html}
 </body>
 <style>
-${obj.style}
+${obj.style.fonts}${obj.style.import}
 </style>
-</html>`
+</html>
+`}
+
+async function duplicateChildNodesAndCreateViewsAndCreateTemplate (v,p,c,obj,r) {
+    output.html.classList.add(`${obj.parentClass}`);
+    NodeList.prototype.forEach = Array.prototype.forEach;
+    let removePageExternal = obj.html.querySelector('page-external')
+    removePageExternal.remove()
+    let removeStyle = obj.html.querySelector('style')
+    removeStyle.remove()
+    let children = obj.html.childNodes;
+    children.forEach(function(item){
+        let cln = item.cloneNode(true);
+        if(cln.tagName !== undefined) {
+            output.html.appendChild(cln);
+        }
+    });
+    let views = await outputViews(v,p,c,{
+        style:{
+            fonts: obj.style.fonts,
+            import: obj.style.import
+        },
+        html: output.html.outerHTML,
+    })
+    let template = await outputTemplate(v,p,c,{
+        style: obj.style.import,
+        html: output.html.outerHTML,
+    })
+    return {
+        template: template,
+        views: views,
+    }
 }
+
 let slot = async (v,p,c,obj,r) => {
     let imageSlot = {}
     switch (p._) {
@@ -110,8 +248,6 @@ let slot = async (v,p,c,obj,r) => {
             obj.preset.container.appendChild(imageSlot)
             break
         case 'txt':
-            // onclick="window.location='https://zababurinsv.github.io/ide-design/';"
-
             obj.preset.container.insertAdjacentHTML('beforeend',`
                 <label for="${p.name}" class="${p.class}">
                     <slot name="${p.name}"></slot>
@@ -137,95 +273,72 @@ export default async (v,p,c,obj,r) => {
    if(buttonTogle){
        let button = obj['this']['shadowRoot'].querySelector('.design-property-layout_button')
        button.addEventListener('click',async (event)=>{
-           storage = await storage
-           let imgV = await imgViews(v,p,c,{
-               style:style.innerHTML,
-               html:html.outerHTML,
-           })
-           let imgT = await imgTemplate(v,p,c,{
-               style:style.innerHTML,
-               html:html.outerHTML,
-           })
-           storage.set(true, {
-               style:style.innerHTML,
-               html:html.outerHTML,
-               template: imgT,
-               views: imgV
-           },'green',html.className,'set')
-           download(`${imgV}`,'index.html', "txt")
+           let zip = new Zip['default']['JSZip']
+           zip.file("index.css", output.out);
+           let fonts = await fetch('/css/GothamPro/GothamPro.ttf')
+           fonts = fonts.blob()
+           zip.file("GothamPro.ttf", fonts);
+           fonts = await fetch('/css/GothamPro-Bold/GothamPro-Bold.ttf')
+           fonts = fonts.blob()
+           zip.file("GothamPro-Bold.ttf", fonts);
+           let html = obj['this'].cloneNode(true);
+           let out = await duplicateChildNodesAndCreateViewsAndCreateTemplate(v,p,c,{
+               parentClass:obj.PSD.layout.parentClass,
+               style:{
+                   fonts: styleFonts(v,p,c, obj, r),
+                   import: output.out
+               },
+               html: html,
+           }, r)
+           zip.file("template", out.template);
+           zip.file("index.html", out.views);
+           zip.generateAsync({type: "blob"}).then(function(content) {
+               Zip['default']['FileSaver'].saveAs(content, "download.zip");
+           });
+           // storage = await storage
+           // storage.set(true, {
+           //     style:style.innerHTML,
+           //     html:html.outerHTML,
+           //     template: imgT,
+           //     views: imgV
+           // },'green',html.className,'set')
+           // download(`${imgV}`,'index.html', "txt")
        })
        buttonTogle = false
    }
+    pseudo.elements.some(item => p.name.indexOf(item) )
+    console.log('------------------',{
+        all:p.name,
+        elements: pseudo.elements.some(item => (p.name.indexOf(item) > -1)),
+        classes: pseudo.classes.some(item => (p.name.indexOf(item) > -1 ))
+    })
     switch (p._) {
         case 'image':
-            let styleLight = obj['this'].querySelector('style')
-            style.insertAdjacentHTML('beforeend',`
-            .${p.class} {
-                position:absolute;
-                width:${pixelToVW(p.width)}vw;
-                top:${pixelToVW(p.top)}vw;
-                left:${pixelToVW(p.left)}vw;
-            }`)
-            styleLight.insertAdjacentHTML('beforeend',`
-            .${p.class} {
-                position:absolute;
-                width:${pixelToVW(p.width)}vw;
-                top:${pixelToVW(p.top)}vw;
-                left:${pixelToVW(p.left)}vw;
-            }`)
-            if(p.name !== "background") {
-                let img = await imgTag(v,{
-                    canvas:p.canvas,
-                    class: `${p.class}`,
-                    slot: `${p.slot}`
-                },c,obj,p.name)
-                obj.PSD.container.appendChild(img)
-                if(downloads) {
-                    let out = img.cloneNode(true);
-                    html.appendChild(out)
-                }
+            style(v,p,c,obj,'light')
+            let img = await imgTag(v,{
+                canvas:p.canvas,
+                class: `${p.class}`,
+                slot: `${p.slot}`
+            },c,obj,p.name)
+            obj.PSD.container.appendChild(img)
+            slot(v,p,c,obj,r)
+            break
+        case 'txt':
+          let pseudoEl = await pseudoElement(v,p,c,obj,r)
+          let pseudoCl = await pseudoClass(v,p,c,obj,r)
+            if(pseudoEl || pseudoCl) {
+                console.log('~~~~~~~~~~~~~>', p)
+            } else {
+                let paragraph = document.createElement('p')
+                paragraph.classList.add(`${p.class}`)
+                paragraph.setAttribute('slot',`${p['slot']}`)
+                paragraph.innerText = p.text
+                obj.PSD.container.appendChild(paragraph)
+                style(v,p,c,obj,'shadow')
                 slot(v,p,c,obj,r)
             }
             break
-        case 'txt':
-            let paragraph = document.createElement('p')
-            paragraph.classList.add(`${p.class}`)
-            paragraph.setAttribute('slot',`${p['slot']}`)
-            paragraph.innerText = p.text
-            obj.PSD.container.appendChild(paragraph)
-            let styleShadow = obj['this']['shadowRoot'].querySelector('style')
-            style.insertAdjacentHTML('beforeend',`
-            .${p.class} {
-                white-space:${(p.name === "contacts") ?'pre-wrap':'none'};
-                font-family:${p.style.fontFamily};
-                font-size:${pixelToVW(p.style.fontSize)}vw;
-                color: ${p.style.color};
-                position:absolute;
-                top:${pixelToVW(p.top)}vw;
-                left:${pixelToVW(p.left)}vw;
-            }`)
-            styleShadow.insertAdjacentHTML('beforeend',`
-            .${p.class} {
-                white-space:${(p.name === "contacts") ?'pre-wrap':'none'};
-                font-family:${p.style.fontFamily};
-                font-size:${pixelToVW(p.style.fontSize)}vw;
-                color: ${p.style.color};
-                position:absolute;
-                top:${pixelToVW(p.top)}vw;
-                left:${pixelToVW(p.left)}vw;
-            }`)
-            if(downloads) {
-                let out = paragraph.cloneNode(true);
-                html.appendChild(out)
-            }
-            slot(v,p,c,obj,r)
-            break
         case 'hover':
-            style.insertAdjacentHTML('beforeend',`
-            .${p.class} {
-                filter:${p.dropShadow};
-                cursor: pointer;
-            }`)
             let filterCss = obj['this'].querySelector('style')
             filterCss.insertAdjacentHTML('beforeend',`
             .${p.class} {
@@ -234,11 +347,6 @@ export default async (v,p,c,obj,r) => {
             }`)
             break
         case 'active':
-            style.insertAdjacentHTML('beforeend',`
-            .${p.class} {
-                filter:${p.dropShadow};
-                cursor: pointer;
-            }`)
             let filterCssActive = obj['this'].querySelector('style')
             filterCssActive.insertAdjacentHTML('beforeend',`
             .${p.class} {
