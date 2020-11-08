@@ -310,7 +310,7 @@ export default async (v,p,c,obj,r) => {
            zip.file("template", out.template);
            zip.file("index.html", out.views);
            zip.generateAsync({type: "blob"}).then(function(content) {
-               Zip['default']['FileSaver'].saveAs(content, "download.zip");
+               Zip['default']['FileSaver'].saveAs(content, `${obj.PSD.layout.parentClass}.zip`);
            });
            // storage = await storage
            // storage.set(true, {
