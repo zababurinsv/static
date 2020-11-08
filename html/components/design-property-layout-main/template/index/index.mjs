@@ -70,7 +70,6 @@ let pseudo = {
         "empty",
         "enabled",
         "focus",
-        "aiming",
         "focusWithin",
         "host",
         "hover",
@@ -84,19 +83,37 @@ let pseudo = {
     ]
 }
 
-async function pseudoElement(v,p,c,obj,r) {
+async function verifyPseudo(v,p,c,obj,r) {
+    let pseudoCl = false
     if(pseudo.elements.some(item => (p.name.indexOf(item) > -1))) {
-        return true
+        if(p.name.split('_').length > 2) {
+            console.warn('pseudo-element есть возможно есть pseudo-class', p.name, p.name.split('_').length)
+            pseudoCl = await pseudoClass(v,p,c,obj,"true")
+        } else {
+            console.warn('########1##########', p.name, p.name.split('_').length)
+            return true
+        }
     } else {
-        return false
+        if(p.name.split('_').length > 1) {
+            // console.warn('pseudo-element -а нет возможно есть pseudo-class', p.name, p.name.split('_').length)
+            pseudoCl = await pseudoClass(v,p,c,obj,"false")
+            return pseudoCl
+        } else {
+            return false
+        }
     }
 }
 
 async function pseudoClass(v,p,c,obj,r) {
-    if(pseudo.classes.some(item => (p.name.indexOf(item) > -1 ))) {
-        return true
-    } else {
+    if(r === "true") {
         return false
+    } else {
+        if(pseudo.classes.some(item => (p.name.indexOf(item) > -1 ))) {
+            return true
+        } else {
+            console.error('pseudo-element -а нет, pseudo-class -a нет НЕИЗВЕСТНОЕ СВОЙСТВО', p.name, p.name.split('_').length)
+            return false
+        }
     }
 }
 
@@ -306,7 +323,6 @@ export default async (v,p,c,obj,r) => {
        })
        buttonTogle = false
    }
-    pseudo.elements.some(item => p.name.indexOf(item) )
     console.log('------------------',{
         all:p.name,
         elements: pseudo.elements.some(item => (p.name.indexOf(item) > -1)),
@@ -324,9 +340,8 @@ export default async (v,p,c,obj,r) => {
             slot(v,p,c,obj,r)
             break
         case 'txt':
-          let pseudoEl = await pseudoElement(v,p,c,obj,r)
-          let pseudoCl = await pseudoClass(v,p,c,obj,r)
-            if(pseudoEl || pseudoCl) {
+          let verifyPs = await verifyPseudo(v,p,c,obj,r)
+            if(verifyPs) {
                 console.log('~~~~~~~~~~~~~>', p)
             } else {
                 let paragraph = document.createElement('p')
