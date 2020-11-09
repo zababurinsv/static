@@ -16,10 +16,11 @@ export default async (v,p,c,obj,r) => {
         reader.readAsArrayBuffer(event.path[0].files[0]);
     })
     obj.this.shadowRoot.querySelector('#psd-block').addEventListener('input',async (event)=>{
-        var regex = new RegExp("^[a-zA-Z\\-]+$");
+        let regex = new RegExp("^[a-zA-Z\\-]+$");
         if(regex.test(event.target.value)) {
             PSD.block = event.target.value
         } else {
+            console.warn('Возможны только кирилические символы и тире')
             PSD.block = false
         }
     })
