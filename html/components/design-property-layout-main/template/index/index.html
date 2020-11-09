@@ -8,6 +8,9 @@
             <legend>Components</legend>
             <div class="design-relations" >
                 <label for="psd-file">Photoshop file &nbsp<input id="psd-file" type="file" accept=".psd"/></label>
+                <label for="psd-block">Block &nbsp<input type="text" pattern="^[a-zA-Z]+$" id="psd-block"  placeholder="Enter block name" name="name"/></label>
+                <label for="psd-render">Render &nbsp<input type="button" id="psd-render" value="PSD file" /></label>
+                <label for="psd-save">Save &nbsp<input type="button" id="psd-save" class="design-property-layout_button" value="Zip archive" /></label>
             </div>
         </fieldset>
         <fieldset class="design-property" slot="relation">
@@ -20,7 +23,6 @@
         </fieldset>
     </fieldset>
     <div class="design-property-layout">
-        <button class="design-property-layout_button"> save file</button>
         <div class="design-property-layout-main"></div>
     </div>
 </template>

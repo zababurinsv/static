@@ -285,10 +285,9 @@ let slot = async (v,p,c,obj,r) => {
     }
     return true
 }
-
 export default async (v,p,c,obj,r) => {
    if(buttonTogle){
-       let button = obj['this']['shadowRoot'].querySelector('.design-property-layout_button')
+       let button = obj['this']['shadowRoot'].querySelector('#psd-save')
        button.addEventListener('click',async (event)=>{
            let zip = new Zip['default']['JSZip']
            zip.file("index.css", output.out);
@@ -311,7 +310,9 @@ export default async (v,p,c,obj,r) => {
            zip.file("index.html", out.views);
            zip.generateAsync({type: "blob"}).then(function(content) {
                Zip['default']['FileSaver'].saveAs(content, `${obj.PSD.layout.parentClass}.zip`);
+               document.location.reload();
            });
+           // console.log('~~~~~~~~~~~~~~~~>>>', obj['this'])
            // storage = await storage
            // storage.set(true, {
            //     style:style.innerHTML,
