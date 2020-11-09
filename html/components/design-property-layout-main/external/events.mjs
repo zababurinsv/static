@@ -16,7 +16,12 @@ export default async (v,p,c,obj,r) => {
         reader.readAsArrayBuffer(event.path[0].files[0]);
     })
     obj.this.shadowRoot.querySelector('#psd-block').addEventListener('input',async (event)=>{
-        PSD.block = event.target.value
+        var regex = new RegExp("^[a-zA-Z\\-]+$");
+        if(regex.test(event.target.value)) {
+            PSD.block = event.target.value
+        } else {
+            PSD.block = false
+        }
     })
     obj.this.shadowRoot.querySelector('#psd-render').addEventListener('click',async (event)=>{
         if(!PSD.file || !PSD.block) {
