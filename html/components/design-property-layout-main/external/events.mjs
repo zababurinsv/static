@@ -20,7 +20,7 @@ export default async (v,p,c,obj,r) => {
         if(regex.test(event.target.value)) {
             PSD.block = event.target.value
         } else {
-            console.warn('!!! Возможны только кирилические символы и тире !!!')
+            console.error('!!! Возможны только кирилические символы и тире !!!')
             PSD.block = false
         }
     })
