@@ -123,26 +123,33 @@ async function pseudoClass(v,p,c,obj,r) {
 async function pseudoStyle(v,p,c,obj,r) {
         switch (r){
             case 'hover':
+                console.log('SSSSSSSSSSSSSSSSSSSSSSSS', p.style.dropShadow)
                 console.log('&&&&&&&&&&&&&&1&&&&&', `${p.class.split('_')[0]}:hover`)
 output.out = output.out +`.${p.class.split('_')[0]}:hover {
-    filter:${p.dropShadow};
+    box-shadow:inset ${p.style.shadow.boxInset},${p.style.shadow.box};
+    text-shadow:${p.style.shadow.text};
     cursor: pointer;
 }
 `
         output.light.insertAdjacentHTML('beforeend',`.${p.class.split('_')[0]}:hover {
-                filter:${p.dropShadow};
+                box-shadow:inset ${p.style.shadow.boxInset},${p.style.shadow.box};
+                text-shadow:${p.style.shadow.text};
                 cursor: pointer;
             }`)
                 break
             case 'active':
                 console.log('&&&&&&&&&&&&&&2&&&&&', p.class)
 output.out = output.out +`.${p.class.split('_')[0]}:active {
-    filter:${p.dropShadow};
+    box-shadow:inset ${p.style.shadow.boxInset},${p.style.shadow.box};
+    text-shadow:${p.style.shadow.text};
     cursor: pointer;
 }
 `
+
         output.light.insertAdjacentHTML('beforeend',`.${p.class.split('_')[0]}:active {
-                filter:${p.dropShadow};
+                 box-shadow:inset ${p.style.shadow.boxInset},${p.style.shadow.box};
+                 text-shadow:${p.style.shadow.text};
+                 cursor: pointer;
             }`)
                 break
             default:
