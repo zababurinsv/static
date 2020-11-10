@@ -89,6 +89,7 @@ async function verifyPseudo(v,p,c,obj,r) {
         if(p.name.split('_').length > 2) {
             console.warn('pseudo-element есть возможно есть pseudo-class', p.name, p.name.split('_').length)
             pseudoCl = await pseudoClass(v,p,c,obj,"true")
+            return true
         } else {
             console.warn('########1##########', p.name, p.name.split('_').length)
             return true
@@ -109,12 +110,46 @@ async function pseudoClass(v,p,c,obj,r) {
         return false
     } else {
         if(pseudo.classes.some(item => (p.name.indexOf(item) > -1 ))) {
+            await pseudoStyle(v,p,c,obj,p.name.split('_')[1])
+            console.log('pseudo class ----->',p.name,'--', p.name.split('_')[1], )
             return true
         } else {
             console.error('pseudo-element -а нет, pseudo-class -a нет НЕИЗВЕСТНОЕ СВОЙСТВО', p.name, p.name.split('_').length)
             return false
         }
     }
+}
+
+async function pseudoStyle(v,p,c,obj,r) {
+        switch (r){
+            case 'hover':
+                console.log('&&&&&&&&&&&&&&1&&&&&', `${p.class.split('_')[0]}:hover`)
+output.out = output.out +`.${p.class.split('_')[0]}:hover {
+    filter:${p.dropShadow};
+    cursor: pointer;
+}
+`
+        output.light.insertAdjacentHTML('beforeend',`.${p.class.split('_')[0]}:hover {
+                filter:${p.dropShadow};
+                cursor: pointer;
+            }`)
+                break
+            case 'active':
+                console.log('&&&&&&&&&&&&&&2&&&&&', p.class)
+output.out = output.out +`.${p.class.split('_')[0]}:active {
+    filter:${p.dropShadow};
+    cursor: pointer;
+}
+`
+        output.light.insertAdjacentHTML('beforeend',`.${p.class.split('_')[0]}:active {
+                filter:${p.dropShadow};
+            }`)
+                break
+            default:
+                console.error('неизвестный псевдо стиль', p.name)
+                break
+
+        }
 }
 
 async function style(v,p,c,obj,r) {
@@ -353,21 +388,6 @@ export default async (v,p,c,obj,r) => {
                 style(v,p,c,obj,'shadow')
                 slot(v,p,c,obj,r)
             }
-            break
-        case 'hover':
-            let filterCss = obj['this'].querySelector('style')
-            filterCss.insertAdjacentHTML('beforeend',`
-            .${p.class} {
-                filter:${p.dropShadow};
-                cursor: pointer;
-            }`)
-            break
-        case 'active':
-            let filterCssActive = obj['this'].querySelector('style')
-            filterCssActive.insertAdjacentHTML('beforeend',`
-            .${p.class} {
-                filter:${p.dropShadow};
-            }`)
             break
         default:
             console.warn('неисвестный тип данных', p)

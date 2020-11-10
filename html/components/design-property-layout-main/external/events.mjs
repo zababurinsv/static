@@ -7,7 +7,37 @@ let PSD = {
     render: false,
     save: false
 }
+async function init(v,p,c,obj,r) {
+    if(obj['preset']['status']) {
+        switch (obj['preset']['name']) {
+            case 'index':
+                obj['preset']['action'] = index
+                obj['preset']['container'] = obj['this']['shadowRoot'].querySelector('.design-property-layout-main')
+                break
+            default:
+                console.warn('пресет не обрабатывается', obj['preset']['name'])
+                break
+        }
+    }
+    return {v,p,c,obj,r}
+}
+async function render(v,p,c,obj,r) {
+    if(!PSD.file) {
+        // if(window.confirm('загрузить default psd ?')) {
+        if(true) {
+            await init(v,p,c,obj,r)
+            await psd.write(true,'','red',obj,`${PSD.block}`)
+        } else {
+            console.error('загрузите psd файл')
+        }
+    } else {
+        await init(v,p,c,obj,r)
+        await psd.write(true,PSD.file,'red',obj,`${PSD.block}`)
+    }
+    return {v,p,c,obj,r}
+}
 export default async (v,p,c,obj,r) => {
+
     obj.this.shadowRoot.querySelector('#psd-file').addEventListener('input',async (event)=>{
         let reader = new FileReader();
         reader.onload = function() {
@@ -15,6 +45,9 @@ export default async (v,p,c,obj,r) => {
         }
         reader.readAsArrayBuffer(event.path[0].files[0]);
     })
+    obj.this.shadowRoot.querySelector('#psd-block').onfocus = function() {
+        obj.this.shadowRoot.querySelector('#psd-block').value = ''
+    };
     obj.this.shadowRoot.querySelector('#psd-block').addEventListener('input',async (event)=>{
         let regex = new RegExp("^[a-zA-Z\\-]+$");
         if(regex.test(event.target.value)) {
@@ -25,21 +58,12 @@ export default async (v,p,c,obj,r) => {
         }
     })
     obj.this.shadowRoot.querySelector('#psd-render').addEventListener('click',async (event)=>{
-        if(!PSD.file || !PSD.block) {
-            console.warn('выберете файл для обработки и введите название блока')
+        if(!PSD.block) {
+            console.error('название блока небыло введено, устанавливается default значение', obj.this.shadowRoot.querySelector('#psd-block').value)
+            PSD.block = 'default-component'
+            await render(v,p,c,obj,r)
         } else {
-            if(obj['preset']['status']) {
-                switch (obj['preset']['name']) {
-                    case 'index':
-                        obj['preset']['action'] = index
-                        obj['preset']['container'] = obj['this']['shadowRoot'].querySelector('.design-property-layout-main')
-                        break
-                    default:
-                        console.warn('пресет не обрабатывается', obj['preset']['name'])
-                        break
-                }
-            }
-            await psd.write(true,PSD.file,'red',obj,`${PSD.block}`)
+           await render(v,p,c,obj,r)
         }
     })
 }
