@@ -66,4 +66,15 @@ export default async (v,p,c,obj,r) => {
            await render(v,p,c,obj,r)
         }
     })
+    obj.this.shadowRoot.querySelector('#psd-download').addEventListener('click',async (event)=>{
+        let response =  await fetch('/images/core/psd/desktop.psd')
+        let blob = await response.blob()
+        let url = window.URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = "default.psd";
+        document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+        a.click();
+        a.remove();
+    })
 }
