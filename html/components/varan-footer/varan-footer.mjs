@@ -1,3 +1,4 @@
+import modules from '/static/html/components/varan-footer/external/index.mjs'
 customElements.define('varan-footer',
     class extends HTMLElement {
       static get observedAttributes () {
@@ -32,10 +33,14 @@ customElements.define('varan-footer',
             let styleS = document.createElement('style')
             let styleL = document.createElement('style')
             let name = {}
-            if (!obj['slot']) {
-              name = obj['parent']
+            if(obj['preset']) {
+              name = obj['preset']
             } else {
-              name = obj['slot']
+              if (!obj['slot']) {
+                name = obj['parent']
+              } else {
+                name = obj['slot']
+              }
             }
             if (!name) {
               console.assert(false, 'не установленны ни слот ни парент')
@@ -52,40 +57,45 @@ customElements.define('varan-footer',
                 }
               }
             }
-            for (let state = 0; state < obj['state'].length; state++) {
-              obj[`path-style-${obj['state'][state]}`] = `@import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}.css'; @import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}-custom.css';`
-              switch (obj['state'][state]) {
-                case 'shadow':
-                  if (obj['verify']['preset'] === true) {
-                    obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${name}.css';`
-                  }
-                  styleS.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
-                  break
-                case 'light':
-                  if (obj['verify']['preset'] === true) {
-                    obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${name}.css';`
-                  }
-                  styleL.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
-                  break
-                default:
-                  // //console.log(`новый тип`, obj['state'][state])
-                  break
-              }
-              if (obj['state'][state] === 'swap') {
-                if (obj['shadowRoot'] === true) {
-                  obj['this']['shadowRoot'].appendChild(styleL)
-                  obj['this'].appendChild(styleS)
-                  resolve(obj)
-                } else {
-                  obj['this'].appendChild(styleS)
+            if(obj['this'].dataset.css === "false") {
+              obj['this']['shadowRoot'].appendChild(styleS)
+              obj['this'].appendChild(styleL)
+            } else {
+              for (let state = 0; state < obj['state'].length; state++) {
+                obj[`path-style-${obj['state'][state]}`] = `@import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}.css'; @import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}-custom.css';`
+                switch (obj['state'][state]) {
+                  case 'shadow':
+                    if (obj['verify']['preset'] === true) {
+                      obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${obj['preset']['dir']}/${obj['preset']['name']}.css';`
+                    }
+                    styleS.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
+                    break
+                  case 'light':
+                    if (obj['verify']['preset'] === true) {
+                      obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${obj['preset']['dir']}/${obj['preset']['name']}.css';`
+                    }
+                    styleL.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
+                    break
+                  default:
+                    // //console.log(`новый тип`, obj['state'][state])
+                    break
                 }
-              } else {
-                if (obj['shadowRoot'] === true) {
-                  obj['this']['shadowRoot'].appendChild(styleS)
-                  obj['this'].appendChild(styleL)
-                  resolve(obj)
+                if (obj['state'][state] === 'swap') {
+                  if (obj['shadowRoot'] === true) {
+                    obj['this']['shadowRoot'].appendChild(styleL)
+                    obj['this'].appendChild(styleS)
+                    resolve(obj)
+                  } else {
+                    obj['this'].appendChild(styleS)
+                  }
                 } else {
-                  obj['this'].appendChild(styleL)
+                  if (obj['shadowRoot'] === true) {
+                    obj['this']['shadowRoot'].appendChild(styleS)
+                    obj['this'].appendChild(styleL)
+                    resolve(obj)
+                  } else {
+                    obj['this'].appendChild(styleL)
+                  }
                 }
               }
             }
@@ -238,6 +248,7 @@ customElements.define('varan-footer',
               })
         }
 
+
         function getTemplate (obj, swap, external) {
           return new Promise(function (resolve, reject) {
             obj['template-shadow'] = []
@@ -313,6 +324,9 @@ customElements.define('varan-footer',
              * устанавливается свойство parent если его нет у родителя ставится по родителю
              *
              */
+            if(obj['this'].getAttribute('parent')){
+              obj['parent'] = obj['this'].getAttribute('parent')
+            }
             if (verify['swap'] === true) {
               for (let key = 0; key < obj['this'].children.length; key++) {
                 // //console.log('~~~~~~this~~~~~~~', obj['this'].children[key].tagName)
@@ -474,25 +488,67 @@ customElements.define('varan-footer',
         function template (obj, type) {
           return new Promise(function (resolve, reject) {
             obj['verify'] = []
-            // изменил
-            let name = {}
-            if (!obj['slot']) {
-              name = obj['parent']
-            } else {
-              name = obj['slot']
-            }
-            if (!obj['this'].hasAttribute('preset')) {
+
+            if (!obj['this'].getAttribute('preset')) {
               obj['path-template'] = `/static/html/components/${obj['component']}/${obj['component']}.html`
               obj['verify']['preset'] = false
             } else {
-              if (obj['this'].getAttribute('preset').length === 0) {
-                obj['path-template'] = `/static/html/components/${obj['component']}/template/${name}.html`
-                obj['preset'] = `default`
-                obj['verify']['preset'] = true
-              } else {
-                obj['path-template'] = `/static/html/components/${obj['component']}/template/${obj['this'].getAttribute('preset')}.html`
-                obj['preset'] = `${obj['this'].getAttribute('preset')}`
-                obj['verify']['preset'] = true
+              switch(obj['this'].getAttribute('preset')){
+                case 'default':
+                  obj['path-template'] = `/static/html/components/${obj['component']}/template/default/index.html`
+                  obj['preset'] = {
+                    dir:'default',
+                    name:'index',
+                    dirName:`${obj['this'].getAttribute('preset')}`,
+                    status:true
+                  }
+                  obj['verify']['preset'] = true
+                  break
+                default:
+                  let substrate = (obj['this'].getAttribute('preset')).split('-')
+
+                  let dir = {}
+                  let name = {}
+                  if( substrate.length >= 3) {
+                    dir = `${substrate[0]}-${substrate[1]}`
+                    name = substrate.filter((word, index, arr)=>{
+                      if(index > 1) {
+                        return word
+                      }
+                    });
+                    // console.assert(false,name, dir )
+                    name = name.join('-')
+                    obj['path-template'] = `/static/html/components/${obj['component']}/template/${dir}/${name}.html`
+                    obj['verify']['preset'] = true
+                    obj['preset'] = {
+                      dir:dir,
+                      name:name,
+                      status:true
+                    }
+                  }else if(substrate.length === 2){
+                    dir = `${substrate[0]}-${substrate[1]}`
+                    name =`index`
+                    obj['path-template'] = `/static/html/components/${obj['component']}/template/${dir}/${name}.html`
+                    obj['verify']['preset'] = true
+                    obj['preset'] = {
+                      dir:dir,
+                      name:name,
+                      status:true
+                    }
+                  } else if(substrate.length === 1) {
+                    dir = `${substrate[0]}`
+                    name =`index`
+                    obj['path-template'] = `/static/html/components/${obj['component']}/template/${dir}/${name}.html`
+                    obj['verify']['preset'] = true
+                    obj['preset'] = {
+                      dir:dir,
+                      name:name,
+                      status:true
+                    }
+                  }else {
+                    console.assert(false, 'не загружается пресет')
+                  }
+                  break
               }
             }
             fetch(obj['path-template'])
@@ -504,51 +560,42 @@ customElements.define('varan-footer',
               let parser = new DOMParser()
               let doc = parser.parseFromString(body, 'text/html')
               obj['template'] = doc.getElementsByTagName('template')[0].content.cloneNode(true)
-
               external(obj)
                   .then((obj) => {
                     getTemplate(obj, obj['type-swap'], obj['type-external'])
                         .then((obj) => {
-                          let menu = {}
-                          for (let key = 0; key < obj['template-light'].length; key++) {
-                            if (obj['template-light'][key].tagName === 'VARAN-MENU') {
-                              menu = obj['template-light'].splice(key, 1)
-                              obj['template-light'].push(menu[0])
-                            }
-                          }
                           if (obj['verify']['swap'] === true) {
-                            if (obj['template-shadow'].length !== 0) {
-                              obj['this']['attachShadow']({ mode: 'open' })
-                              obj['shadowRoot'] = true
-                              for (let key = 0; key < obj['template-shadow'].length; key++) {
-                                obj['this']['shadowRoot']['appendChild'](obj['template-shadow'][key])
-                              }
-                            }
+
                             if (obj['template-light'].length !== 0) {
                               for (let key = 0; key < obj['template-light'].length; key++) {
-                                // if (obj['template-light'][key].tagName === 'SECTION') {
-                                //   for (let i = 0; i < obj['template-light'][key].children.length; i++) {
-                                //     if (obj['template-light'][key].children[i].tagName.split('-').length > 1) {
-                                //       scriptTemplate(obj['template-light'][key].children[i], obj)
-                                //     }
-                                //   }
-                                // }
-                                obj['this']['appendChild'](obj['template-light'][key])
+                                //console.log('2222222222111111111111222222222222', obj['template-light'][key])
+                                obj['this']['prepend'](obj['template-light'][key])
+                                // console.assert(false, obj['template-light'][key])
                               }
                             }
-                          } else {
                             if (obj['template-shadow'].length !== 0) {
-                              obj['this']['attachShadow']({ mode: 'open' })
+                              obj['this']['attachShadow']({mode: 'open'})
                               obj['shadowRoot'] = true
-                              for (let key in obj['template-shadow']) {
+                              for (let key = 0; key < obj['template-shadow'].length; key++) {
+
                                 obj['this']['shadowRoot']['appendChild'](obj['template-shadow'][key])
                               }
                             }
+
+                          } else {
                             if (obj['template-light'].length !== 0) {
                               for (let key in obj['template-light']) {
                                 obj['this']['appendChild'](obj['template-light'][key])
                               }
                             }
+                            if (obj['template-shadow'].length !== 0) {
+                              obj['this']['attachShadow']({mode: 'open'})
+                              obj['shadowRoot'] = true
+                              for (let key in obj['template-shadow']) {
+                                obj['this']['shadowRoot']['appendChild'](obj['template-shadow'][key])
+                              }
+                            }
+
                           }
                           resolve(obj)
                         })
@@ -609,7 +656,7 @@ customElements.define('varan-footer',
 
         function external (obj) {
           return new Promise(function (resolve, reject) {
-            obj['path-external'] = `/static/html/components/${obj['component']}/external/${obj['component']}-external.html`
+            obj['path-external'] = `/static/html/components/${obj['component']}/external/${obj['component']}-external.xml`
             fetch(obj['path-external'])
                 .then(function (response) {
                   if (response.ok === false) {
@@ -684,12 +731,9 @@ customElements.define('varan-footer',
                   .then((obj) => {
                     style(obj)
                         .then((obj) => {
-                          modules(obj)
+                          modules(true,0,'red',obj,'waves-game-card')
                         })
                   })
             })
-        async function modules (obj) {
-
-        }
       }
     })

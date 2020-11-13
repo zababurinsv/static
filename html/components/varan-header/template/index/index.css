@@ -10,6 +10,7 @@ p:first-letter {
 .varan-header {
     width: 100%;
     position: relative;
+    height: 16vw;
 }
 .varan-header-background {
     position:absolute;
