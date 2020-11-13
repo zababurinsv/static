@@ -1,3 +1,4 @@
+import modules from '/static/html/components/varan-header/external/index.mjs'
 customElements.define('varan-header',
     class extends HTMLElement {
       static get observedAttributes () {
@@ -32,14 +33,19 @@ customElements.define('varan-header',
             let styleS = document.createElement('style')
             let styleL = document.createElement('style')
             let name = {}
-            if (!obj['slot']) {
-              name = obj['parent']
+            if(obj['preset']) {
+              name = obj['preset']
             } else {
-              name = obj['slot']
+              if (!obj['slot']) {
+                name = obj['parent']
+              } else {
+                name = obj['slot']
+              }
             }
             if (!name) {
               console.assert(false, 'не установленны ни слот ни парент')
             }
+
             for (let key = 0; key < obj['type'].length; key++) {
               if (obj['type'][key] === 'swap') {
                 if (obj['type'][key] === 'scoped') {
@@ -51,40 +57,45 @@ customElements.define('varan-header',
                 }
               }
             }
-            for (let state = 0; state < obj['state'].length; state++) {
-              obj[`path-style-${obj['state'][state]}`] = `@import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}.css'; @import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}-custom.css';`
-              switch (obj['state'][state]) {
-                case 'shadow':
-                  if (obj['verify']['preset'] === true) {
-                    obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${name}.css';`
-                  }
-                  styleS.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
-                  break
-                case 'light':
-                  if (obj['verify']['preset'] === true) {
-                    obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${name}.css';`
-                  }
-                  styleL.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
-                  break
-                default:
-                  // //console.log(`новый тип`, obj['state'][state])
-                  break
-              }
-              if (obj['state'][state] === 'swap') {
-                if (obj['shadowRoot'] === true) {
-                  obj['this']['shadowRoot'].appendChild(styleL)
-                  obj['this'].appendChild(styleS)
-                  resolve(obj)
-                } else {
-                  obj['this'].appendChild(styleS)
+            if(obj['this'].dataset.css === "false") {
+              obj['this']['shadowRoot'].appendChild(styleS)
+              obj['this'].appendChild(styleL)
+            } else {
+              for (let state = 0; state < obj['state'].length; state++) {
+                obj[`path-style-${obj['state'][state]}`] = `@import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}.css'; @import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}-custom.css';`
+                switch (obj['state'][state]) {
+                  case 'shadow':
+                    if (obj['verify']['preset'] === true) {
+                      obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${obj['preset']['dir']}/${obj['preset']['name']}.css';`
+                    }
+                    styleS.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
+                    break
+                  case 'light':
+                    if (obj['verify']['preset'] === true) {
+                      obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${obj['preset']['dir']}/${obj['preset']['name']}.css';`
+                    }
+                    styleL.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
+                    break
+                  default:
+                    // //console.log(`новый тип`, obj['state'][state])
+                    break
                 }
-              } else {
-                if (obj['shadowRoot'] === true) {
-                  obj['this']['shadowRoot'].appendChild(styleS)
-                  obj['this'].appendChild(styleL)
-                  resolve(obj)
+                if (obj['state'][state] === 'swap') {
+                  if (obj['shadowRoot'] === true) {
+                    obj['this']['shadowRoot'].appendChild(styleL)
+                    obj['this'].appendChild(styleS)
+                    resolve(obj)
+                  } else {
+                    obj['this'].appendChild(styleS)
+                  }
                 } else {
-                  obj['this'].appendChild(styleL)
+                  if (obj['shadowRoot'] === true) {
+                    obj['this']['shadowRoot'].appendChild(styleS)
+                    obj['this'].appendChild(styleL)
+                    resolve(obj)
+                  } else {
+                    obj['this'].appendChild(styleL)
+                  }
                 }
               }
             }
@@ -100,6 +111,7 @@ customElements.define('varan-header',
             black['state'].push('shadow')
             black['state'].push('light')
             black['words'] = words
+            black['parent'] = false
             black[`type-swap`] = false
             black[`type-external`] = false
             black[`document-offsetWidth`] = document['body'].offsetWidth
@@ -168,14 +180,12 @@ customElements.define('varan-header',
                 }
               }
               if (!obj.slot) {
-                // //console.log('отсутствует слот, ставится- по тегу ', obj.tagName.toLowerCase())
                 obj.slot = obj.tagName.toLowerCase()
                 black[`slot`] = obj.slot
               } else {
                 black[`slot`] = obj.slot
               }
               if (!obj.getAttribute('type')) {
-                // //console.log(' почему то нет атрибутов')
               } else {
                 let veryfiStyle = false
                 for (let key in obj.getAttribute('type').split('-')) {
@@ -187,15 +197,12 @@ customElements.define('varan-header',
                 if (veryfiStyle === true) {
                   black['style-custom'] = 'not-default'
                 } else {
-                  // //console.log('устанавливается стиль по default')
                   black['style-custom'] = 'default'
                 }
               }
             }
             black['shadowRoot'] = false
             black['this'] = obj
-
-            // //console.log(black['this'])
             resolve(black)
           })
         }
@@ -240,6 +247,7 @@ customElements.define('varan-header',
                 // //console.log('здесь я перехватывал отсутствие страницы но это убрал', error)
               })
         }
+
 
         function getTemplate (obj, swap, external) {
           return new Promise(function (resolve, reject) {
@@ -307,10 +315,18 @@ customElements.define('varan-header',
                 }
               }
             }
+
             /**
              * цикл this
              * цикл template
              */
+            /**
+             * устанавливается свойство parent если его нет у родителя ставится по родителю
+             *
+             */
+            if(obj['this'].getAttribute('parent')){
+              obj['parent'] = obj['this'].getAttribute('parent')
+            }
             if (verify['swap'] === true) {
               for (let key = 0; key < obj['this'].children.length; key++) {
                 // //console.log('~~~~~~this~~~~~~~', obj['this'].children[key].tagName)
@@ -322,10 +338,33 @@ customElements.define('varan-header',
                 } else {
                   if (obj['getAttribute'](obj['this'].children[key], 'light', 'template') === true) {
                     obj['this'].children[key].setAttribute('type', `${obj['this'].children[key].getAttribute('type')}-external`)
+                    if(obj['parent'] === false){
+                      if(!obj['slot']){
+                        obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                      }else{
+                        obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                      }
+                    }else{
+                      obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                    }
+
                     scriptTemplate(obj['this'].children[key], obj)
                     obj['template-light'].push(obj['this'].children[key])
                   } else {
                     obj['this'].children[key].setAttribute('type', `${obj['this'].children[key].getAttribute('type')}-external`)
+                    /**
+                     * устанавливается свойство parent если его нет у родителя ставится по родителю
+                     *
+                     */
+                    if(obj['parent'] === false){
+                      if(!obj['slot']){
+                        obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                      }else{
+                        obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                      }
+                    }else{
+                      obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                    }
                     scriptTemplate(obj['this'].children[key], obj)
                     obj['template-shadow'].push(obj['this'].children[key])
                   }
@@ -341,10 +380,28 @@ customElements.define('varan-header',
                 } else {
                   if (obj['getAttribute'](obj['template'].children[key], 'light', 'template') === true) {
                     obj['template'].children[key].setAttribute('type', `${obj['template'].children[key].getAttribute('type')}-external`)
+                    if(obj['parent'] === false){
+                      if(!obj['slot']){
+                        obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                      }else{
+                        obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                      }
+                    }else{
+                      obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                    }
                     scriptTemplate(obj['template'].children[key], obj)
                     obj['template-light'].push(obj['template'].children[key])
                   } else {
                     obj['template'].children[key].setAttribute('type', `${obj['template'].children[key].getAttribute('type')}-external`)
+                    if(obj['parent'] === false){
+                      if(!obj['slot']){
+                        obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                      }else{
+                        obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                      }
+                    }else{
+                      obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                    }
                     scriptTemplate(obj['template'].children[key], obj)
                     obj['template-shadow'].push(obj['template'].children[key])
                   }
@@ -360,9 +417,27 @@ customElements.define('varan-header',
                   obj['template-shadow'].push(obj['this'].children[key])
                 } else {
                   if (obj['getAttribute'](obj['this'].children[key], 'light', 'template') === true) {
+                    if(obj['parent'] === false){
+                      if(!obj['slot']){
+                        obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                      }else{
+                        obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                      }
+                    }else{
+                      obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                    }
                     scriptTemplate(obj['this'].children[key], obj)
                     obj['template-shadow'].push(obj['this'].children[key])
                   } else {
+                    if(obj['parent'] === false){
+                      if(!obj['slot']){
+                        obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                      }else{
+                        obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                      }
+                    }else{
+                      obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                    }
                     scriptTemplate(obj['this'].children[key], obj)
                     obj['template-light'].push(obj['this'].children[key])
                   }
@@ -377,9 +452,27 @@ customElements.define('varan-header',
                   obj['template-shadow'].push(obj['template'].children[key])
                 } else {
                   if (obj['getAttribute'](obj['template'].children[key], 'light', 'template') === true) {
+                    if(obj['parent'] === false){
+                      if(!obj['slot']){
+                        obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                      }else{
+                        obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                      }
+                    }else{
+                      obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                    }
                     scriptTemplate(obj['template'].children[key], obj)
                     obj['template-shadow'].push(obj['template'].children[key])
                   } else {
+                    if(obj['parent'] === false){
+                      if(!obj['slot']){
+                        obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                      }else{
+                        obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                      }
+                    }else{
+                      obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                    }
                     scriptTemplate(obj['template'].children[key], obj)
                     obj['template-light'].push(obj['template'].children[key])
                   }
@@ -389,54 +482,73 @@ customElements.define('varan-header',
             for (let key in verify) {
               obj['verify'][key] = verify[key]
             }
-            if (obj['verify']['slider'] === true) {
-              getSliderTemplate(obj)
-                  .then((obj) => {
-                    obj['template-light'].push(obj['slider'])
-                    obj['this']['appendChild'](obj['slider'])
-                    setExternalComponent(obj, 'slider')
-                        .then((obj) => {
-                          if (obj['verify']['one'] === true) {
-                            for (let state = 0; state < obj['state'].length; state++) {
-                              for (let key = 0; key < obj[`template-${obj['state'][state]}`].length; key++) {
-                                if (obj[`template-${obj['state'][state]}`][key]['className'] === 'wall') {
-                                  obj[`template-${obj['state'][state]}`].splice(key, 1)
-                                  resolve(obj)
-                                }
-                              }
-                            }
-                          } else {
-                            resolve(obj)
-                          }
-                        })
-                  })
-            } else {
-              resolve(obj)
-            }
+            resolve(obj)
           })
         }
         function template (obj, type) {
           return new Promise(function (resolve, reject) {
             obj['verify'] = []
-            // изменил
-            let name = {}
-            if (!obj['slot']) {
-              name = obj['parent']
-            } else {
-              name = obj['slot']
-            }
-            if (!obj['this'].hasAttribute('preset')) {
+
+            if (!obj['this'].getAttribute('preset')) {
               obj['path-template'] = `/static/html/components/${obj['component']}/${obj['component']}.html`
               obj['verify']['preset'] = false
             } else {
-              if (obj['this'].getAttribute('preset').length === 0) {
-                obj['path-template'] = `/static/html/components/${obj['component']}/template/${name}.html`
-                obj['preset'] = `default`
-                obj['verify']['preset'] = true
-              } else {
-                obj['path-template'] = `/static/html/components/${obj['component']}/template/${obj['this'].getAttribute('preset')}/${obj['component']}-${obj['this'].getAttribute('preset')}.html`
-                obj['preset'] = `${obj['this'].getAttribute('preset')}`
-                obj['verify']['preset'] = true
+              switch(obj['this'].getAttribute('preset')){
+                case 'default':
+                  obj['path-template'] = `/static/html/components/${obj['component']}/template/default/index.html`
+                  obj['preset'] = {
+                    dir:'default',
+                    name:'index',
+                    dirName:`${obj['this'].getAttribute('preset')}`,
+                    status:true
+                  }
+                  obj['verify']['preset'] = true
+                  break
+                default:
+                  let substrate = (obj['this'].getAttribute('preset')).split('-')
+
+                  let dir = {}
+                  let name = {}
+                  if( substrate.length >= 3) {
+                    dir = `${substrate[0]}-${substrate[1]}`
+                    name = substrate.filter((word, index, arr)=>{
+                      if(index > 1) {
+                        return word
+                      }
+                    });
+                    // console.assert(false,name, dir )
+                    name = name.join('-')
+                    obj['path-template'] = `/static/html/components/${obj['component']}/template/${dir}/${name}.html`
+                    obj['verify']['preset'] = true
+                    obj['preset'] = {
+                      dir:dir,
+                      name:name,
+                      status:true
+                    }
+                  }else if(substrate.length === 2){
+                    dir = `${substrate[0]}-${substrate[1]}`
+                    name =`index`
+                    obj['path-template'] = `/static/html/components/${obj['component']}/template/${dir}/${name}.html`
+                    obj['verify']['preset'] = true
+                    obj['preset'] = {
+                      dir:dir,
+                      name:name,
+                      status:true
+                    }
+                  } else if(substrate.length === 1) {
+                    dir = `${substrate[0]}`
+                    name =`index`
+                    obj['path-template'] = `/static/html/components/${obj['component']}/template/${dir}/${name}.html`
+                    obj['verify']['preset'] = true
+                    obj['preset'] = {
+                      dir:dir,
+                      name:name,
+                      status:true
+                    }
+                  }else {
+                    console.assert(false, 'не загружается пресет')
+                  }
+                  break
               }
             }
             fetch(obj['path-template'])
@@ -452,34 +564,30 @@ customElements.define('varan-header',
                   .then((obj) => {
                     getTemplate(obj, obj['type-swap'], obj['type-external'])
                         .then((obj) => {
-                          let menu = {}
-                          for (let key = 0; key < obj['template-light'].length; key++) {
-                            if (obj['template-light'][key].tagName === 'VARAN-MENU') {
-                              menu = obj['template-light'].splice(key, 1)
-                              obj['template-light'].push(menu[0])
-                            }
-                          }
                           if (obj['verify']['swap'] === true) {
+
+                            if (obj['template-light'].length !== 0) {
+                              for (let key = 0; key < obj['template-light'].length; key++) {
+                                //console.log('2222222222111111111111222222222222', obj['template-light'][key])
+                                obj['this']['prepend'](obj['template-light'][key])
+                                // console.assert(false, obj['template-light'][key])
+                              }
+                            }
                             if (obj['template-shadow'].length !== 0) {
                               obj['this']['attachShadow']({mode: 'open'})
                               obj['shadowRoot'] = true
                               for (let key = 0; key < obj['template-shadow'].length; key++) {
+
                                 obj['this']['shadowRoot']['appendChild'](obj['template-shadow'][key])
                               }
                             }
+
+                          } else {
                             if (obj['template-light'].length !== 0) {
-                              for (let key = 0; key < obj['template-light'].length; key++) {
-                                // if (obj['template-light'][key].tagName === 'SECTION') {
-                                //   for (let i = 0; i < obj['template-light'][key].children.length; i++) {
-                                //     if (obj['template-light'][key].children[i].tagName.split('-').length > 1) {
-                                //       scriptTemplate(obj['template-light'][key].children[i], obj)
-                                //     }
-                                //   }
-                                // }
+                              for (let key in obj['template-light']) {
                                 obj['this']['appendChild'](obj['template-light'][key])
                               }
                             }
-                          } else {
                             if (obj['template-shadow'].length !== 0) {
                               obj['this']['attachShadow']({mode: 'open'})
                               obj['shadowRoot'] = true
@@ -487,11 +595,7 @@ customElements.define('varan-header',
                                 obj['this']['shadowRoot']['appendChild'](obj['template-shadow'][key])
                               }
                             }
-                            if (obj['template-light'].length !== 0) {
-                              for (let key in obj['template-light']) {
-                                obj['this']['appendChild'](obj['template-light'][key])
-                              }
-                            }
+
                           }
                           resolve(obj)
                         })
@@ -502,46 +606,7 @@ customElements.define('varan-header',
                 })
           })
         }
-        function getSliderTemplate (obj) {
-          return new Promise(function (resolve, reject) {
-            fetch(`/static/html/components/varan-slider/template/${obj['slot']}.html`)
-                .then(function (response) {
-                  if (response.ok) {
-                    return response.text()
-                  }
-                }).then(function (body) {
-              let parser = new DOMParser()
-              let doc = parser.parseFromString(body, 'text/html')
-              obj['slider'] = doc.getElementsByTagName('template')[0].content.cloneNode(true)
-              let slider = document.createElement('section')
-              slider.className = 'slider'
-              slider.slot = 'view'
-              slider.appendChild(obj['slider'])
-              obj['slider'] = slider
-              obj['slider-template'] = slider
-              for (let key = 0; key < obj['type'].length; key++) {
-                if (obj['type'][key] === 'slider-one-text') {
-                  obj['verify']['sliderText'] = true
-                }
-              }
-              matcher['database']['request']['functions']['getObject'](obj)
-                  .then((obj) => {
-                    if (!obj['get']) {
-                      resolve(obj)
-                    } else {
-                      pagination['init'](obj)
-                      pagination['action'](obj)
-                          .then(obj => {
-                            resolve(obj)
-                          })
-                    }
-                  })
-            })
-                .catch(error => {
-                  return error
-                })
-          })
-        }
+
         function renderExternal (obj) {
           return new Promise(function (resolve, reject) {
             obj['words-action'] = []
@@ -591,7 +656,7 @@ customElements.define('varan-header',
 
         function external (obj) {
           return new Promise(function (resolve, reject) {
-            obj['path-external'] = `/static/html/components/${obj['component']}/external/${obj['component']}-external.html`
+            obj['path-external'] = `/static/html/components/${obj['component']}/external/${obj['component']}-external.xml`
             fetch(obj['path-external'])
                 .then(function (response) {
                   if (response.ok === false) {
@@ -638,20 +703,6 @@ customElements.define('varan-header',
             }
           })
         }
-        function setSlider (obj) {
-          return new Promise(function (resolve, reject) {
-            resolve(Peppermint(obj, {
-              dots: false,
-              slideshow: false,
-              speed: 500,
-              slideshowInterval: 5000,
-              stopSlideshowAfterInteraction: true,
-              onSetup: function (n) {
-                // //console.log('Peppermint setup done. Slides found: ' + n)
-              }
-            }))
-          })
-        }
         function scriptTemplate (obj, parent) {
           return new Promise(function (resolve, reject) {
             let verify = false
@@ -664,37 +715,13 @@ customElements.define('varan-header',
               console.log('модуль загружен')
             } else {
               const script = document.createElement('script')
+              script.src = `/static/html/components/${obj.tagName.toLowerCase()}/${obj.tagName.toLowerCase()}.mjs`
               script.type = 'module'
-              script.src = `./static/html/components/${obj.tagName.toLowerCase()}/${obj.tagName.toLowerCase()}.mjs`
               script.setAttribute('async', '')
               script.onload = resolve
               script.onerror = reject
+
               parent['this'].appendChild(script)
-            }
-          })
-        }
-        function setExternalComponent (obj, type) {
-          return new Promise(function (resolve, reject) {
-            if (!type) {
-              resolve(obj)
-            } else {
-              switch (type) {
-                case 'slider': {
-                  getElementsByClassName(obj, 'peppermint')
-                      .then((slider) => {
-                        setSlider(slider)
-                            .then((slider) => {
-                              obj['slider'] = slider
-                              resolve(obj)
-                            })
-                      })
-                }
-                  break
-                default:
-                  // //console.log(`какой то неизвестный тип`, type)
-                  break
-              }
-              resolve(obj)
             }
           })
         }
@@ -704,12 +731,9 @@ customElements.define('varan-header',
                   .then((obj) => {
                     style(obj)
                         .then((obj) => {
-                          modules(obj)
+                          modules(true,0,'red',obj,'waves-game-card')
                         })
                   })
             })
-      async function modules (obj) {
-
       }
-    }
   })
