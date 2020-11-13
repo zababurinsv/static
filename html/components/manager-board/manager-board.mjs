@@ -1,11 +1,14 @@
-import store from '/static/html/components/component_modules/staticProperty/staticProperty.mjs'
-import Net from '/static/html/components/component_modules/monopoly/net.mjs'
+import modules from '/static/html/components/manager-board/external/index.mjs'
 customElements.define('manager-board',
     class extends HTMLElement {
+        static get observedAttributes () {
+            return ['feed']
+        }
         constructor () {
             super()
             let white = []
             let property = []
+
             let typeSupported = []
             let words = []
 
@@ -29,6 +32,20 @@ customElements.define('manager-board',
                 return new Promise(function (resolve, reject) {
                     let styleS = document.createElement('style')
                     let styleL = document.createElement('style')
+                    let name = {}
+                    if(obj['preset']) {
+                        name = obj['preset']
+                    } else {
+                        if (!obj['slot']) {
+                            name = obj['parent']
+                        } else {
+                            name = obj['slot']
+                        }
+                    }
+                    if (!name) {
+                        console.assert(false, 'не установленны ни слот ни парент')
+                    }
+
                     for (let key = 0; key < obj['type'].length; key++) {
                         if (obj['type'][key] === 'swap') {
                             if (obj['type'][key] === 'scoped') {
@@ -40,40 +57,45 @@ customElements.define('manager-board',
                             }
                         }
                     }
-                    for (let state = 0; state < obj['state'].length; state++) {
-                        obj[`path-style-${obj['state'][state]}`] = `@import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}.css'; @import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}-custom.css';`
-                        switch (obj['state'][state]) {
-                            case 'shadow':
-                                if (obj['verify']['preset'] === true) {
-                                    obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${obj['preset']}/${obj['component']}-${obj['preset']}.css';`
-                                }
-                                styleS.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
-                                break
-                            case 'light':
-                                if (obj['verify']['preset'] === true) {
-                                    obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${obj['preset']}/${obj['component']}-${obj['preset']}.css';`
-                                }
-                                styleL.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
-                                break
-                            default:
-                                //console.log(`новый тип`, obj['state'][state])
-                                break
-                        }
-                        if (obj['state'][state] === 'swap') {
-                            if (obj['shadowRoot'] === true) {
-                                obj['this']['shadowRoot'].appendChild(styleL)
-                                obj['this'].appendChild(styleS)
-                                resolve(obj)
-                            } else {
-                                obj['this'].appendChild(styleS)
+                    if(obj['this'].dataset.css === "false") {
+                        obj['this']['shadowRoot'].appendChild(styleS)
+                        obj['this'].appendChild(styleL)
+                    } else {
+                        for (let state = 0; state < obj['state'].length; state++) {
+                            obj[`path-style-${obj['state'][state]}`] = `@import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}.css'; @import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}-custom.css';`
+                            switch (obj['state'][state]) {
+                                case 'shadow':
+                                    if (obj['verify']['preset'] === true) {
+                                        obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${obj['preset']['dir']}/${obj['preset']['name']}.css';`
+                                    }
+                                    styleS.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
+                                    break
+                                case 'light':
+                                    if (obj['verify']['preset'] === true) {
+                                        obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${obj['preset']['dir']}/${obj['preset']['name']}.css';`
+                                    }
+                                    styleL.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
+                                    break
+                                default:
+                                    // //console.log(`новый тип`, obj['state'][state])
+                                    break
                             }
-                        } else {
-                            if (obj['shadowRoot'] === true) {
-                                obj['this']['shadowRoot'].appendChild(styleS)
-                                obj['this'].appendChild(styleL)
-                                resolve(obj)
+                            if (obj['state'][state] === 'swap') {
+                                if (obj['shadowRoot'] === true) {
+                                    obj['this']['shadowRoot'].appendChild(styleL)
+                                    obj['this'].appendChild(styleS)
+                                    resolve(obj)
+                                } else {
+                                    obj['this'].appendChild(styleS)
+                                }
                             } else {
-                                obj['this'].appendChild(styleL)
+                                if (obj['shadowRoot'] === true) {
+                                    obj['this']['shadowRoot'].appendChild(styleS)
+                                    obj['this'].appendChild(styleL)
+                                    resolve(obj)
+                                } else {
+                                    obj['this'].appendChild(styleL)
+                                }
                             }
                         }
                     }
@@ -83,10 +105,13 @@ customElements.define('manager-board',
             function objectProperty (obj) {
                 return new Promise(function (resolve, reject) {
                     let black = []
+                    black['staticProperty'] = []
+                    black['staticProperty']['c'] = 0
                     black['state'] = []
                     black['state'].push('shadow')
                     black['state'].push('light')
                     black['words'] = words
+                    black['parent'] = false
                     black[`type-swap`] = false
                     black[`type-external`] = false
                     black[`document-offsetWidth`] = document['body'].offsetWidth
@@ -94,7 +119,7 @@ customElements.define('manager-board',
                     black[`getAttribute`] = (obj, type, property) => {
                         if (property === 'template') {
                             if (!obj.getAttribute('type')) {
-                                //console.log('не установлен тип ставим default')
+                                // //console.log('не установлен тип ставим default')
                                 obj.setAttribute('type', 'default')
                                 return false
                             } else {
@@ -106,7 +131,7 @@ customElements.define('manager-board',
                             }
                             return verifyLight
                         } else {
-                            //console.log(obj['this'].getAttribute('type'))
+                            // //console.log(obj['this'].getAttribute('type'))
                             obj[`verify-${type}`] = false
                             if (obj['this'].getAttribute('type').split('-').length === 0) {
                                 return false
@@ -119,20 +144,21 @@ customElements.define('manager-board',
                                     }
                                 }
                             }
+                            console.assert(false, obj)
                             return obj[`verify-${type}`]
                         }
                     }
                     if (!obj.tagName.toLowerCase()) {
-                        //console.log('что то пошло не так middleware js objectProperty', '')
+                        // //console.log('что то пошло не так middleware js objectProperty', '')
                     } else {
                         black[`component`] = obj.tagName.toLowerCase()
                     }
                     if (typeof (obj) !== 'object') {
-                        //console.log('objectProperty middleware.js пришёл не объект')
+                        // //console.log('objectProperty middleware.js пришёл не объект')
                     } else {
                         if (!obj.getAttribute('type')) {
                             black[`type`] = ['default']
-                            //console.log('нет типа ставим default')
+                            // //console.log('нет типа ставим default')
                             obj.setAttribute('type', 'default')
                         } else {
                             black[`type`] = obj.getAttribute('type').split('-')
@@ -148,40 +174,35 @@ customElements.define('manager-board',
                                         black[`type-external`] = true
                                         break
                                     default:
-                                        //console.log(`дополнительные типы`, black[`type`][key])
+                                        // //console.log(`дополнительные типы`, black[`type`][key])
                                         break
                                 }
                             }
                         }
                         if (!obj.slot) {
-                            //console.log('отсутствует слот, ставится- по тегу ', obj.tagName.toLowerCase())
                             obj.slot = obj.tagName.toLowerCase()
                             black[`slot`] = obj.slot
                         } else {
                             black[`slot`] = obj.slot
                         }
                         if (!obj.getAttribute('type')) {
-                            //console.log(' почему то нет атрибутов')
                         } else {
                             let veryfiStyle = false
                             for (let key in obj.getAttribute('type').split('-')) {
                                 if (obj.getAttribute('type').split('-')[key].indexOf('style:') !== -1) {
-                                    //console.log('устанавливаются пути к стилям')
+                                    // //console.log('устанавливаются пути к стилям')
                                     veryfiStyle = true
                                 }
                             }
                             if (veryfiStyle === true) {
                                 black['style-custom'] = 'not-default'
                             } else {
-                                //console.log('устанавливается стиль по default')
                                 black['style-custom'] = 'default'
                             }
                         }
                     }
                     black['shadowRoot'] = false
                     black['this'] = obj
-
-                    //console.log(black['this'])
                     resolve(black)
                 })
             }
@@ -197,7 +218,7 @@ customElements.define('manager-board',
                             switch (obj['external'][key].children[type].tagName) {
                                 case 'SCRIPT':
                                     if (!obj['external'][key].getAttribute('id')) {
-                                        //console.log('у компонента нет id нужно в external property script  получить id для загрузки скрипта')
+                                        // //console.log('у компонента нет id нужно в external property script  получить id для загрузки скрипта')
                                     } else {
                                         component['script'] = obj['external'][key]['children'][type]
                                     }
@@ -212,7 +233,7 @@ customElements.define('manager-board',
                                     component['actions'] = a
                                     break
                                 default:
-                                    //console.log(`Не отслеживается, по мере надобности добавляются [${obj['external'][key].children[type].tagName.toLowerCase()}]`)
+                                    // //console.log(`Не отслеживается, по мере надобности добавляются [${obj['external'][key].children[type].tagName.toLowerCase()}]`)
                                     break
                             }
                         }
@@ -223,9 +244,10 @@ customElements.define('manager-board',
                     resolve(obj)
                 })
                     .catch(error => {
-                        return //console.log('здесь я перехватывал отсутствие страницы но это убрал', error)
+                        // //console.log('здесь я перехватывал отсутствие страницы но это убрал', error)
                     })
             }
+
 
             function getTemplate (obj, swap, external) {
                 return new Promise(function (resolve, reject) {
@@ -233,10 +255,13 @@ customElements.define('manager-board',
                     obj['template-light'] = []
                     let verify = []
                     verify['swap'] = false
+                    verify['blog'] = false
                     verify['external'] = false
                     verify['light'] = false
                     verify['slider'] = false
                     verify['one'] = false
+                    verify['sliderText'] = false
+                    verify['text'] = false
                     for (let type = 0; type < obj['type'].length; type++) {
                         if (obj['type'][type].indexOf('slider') !== -1) {
                             if (obj['type'][type].split('-').length > 1) {
@@ -247,39 +272,64 @@ customElements.define('manager-board',
                                             verify['one'] = true
                                             break
                                         default:
-                                            //console.log(`~~~дополнительное свойство~~~`, obj['type'][type].split('-')[key])
+                                            // //console.log(`~~~дополнительное свойство~~~`, obj['type'][type].split('-')[key])
                                             break
                                     }
                                 }
                             }
                         }
                         if (obj['type'][type].length) {
-                            switch (obj['type'][type]) {
-                                case 'swap':
-                                    verify['swap'] = true
-                                    break
-                                case 'external':
-                                    verify['external'] = true
-                                    break
-                                case 'light':
-                                    verify['light'] = true
-                                    break
-                                case 'slider':
-                                    verify['slider'] = true
-                                    break
-                                default:
-                                    //console.log(`типы не отслеживаются`, obj['type'][type])
-                                    break
+                            if (obj['type'][type].split('-').length > 1) {
+                                switch (obj['type'][type].split('-')[0]) {
+                                    case 'blog':
+                                        verify['blog'] = true
+                                        break
+                                    default:
+                                        console.log(`типы не отслеживаются`, obj['type'][type])
+                                        break
+                                }
+                            } else {
+                                switch (obj['type'][type]) {
+                                    case 'swap':
+                                        verify['swap'] = true
+                                        break
+                                    case 'external':
+                                        verify['external'] = true
+                                        break
+                                    case 'light':
+                                        verify['light'] = true
+                                        break
+                                    case 'slider':
+                                        verify['slider'] = true
+                                        break
+                                    case 'sliderText':
+                                        verify['sliderText'] = true
+                                        break
+                                    case 'text':
+                                        verify['text'] = true
+                                        break
+                                    default:
+                                        // //console.log(`типы не отслеживаются`, obj['type'][type])
+                                        break
+                                }
                             }
                         }
                     }
+
                     /**
                      * цикл this
                      * цикл template
                      */
+                    /**
+                     * устанавливается свойство parent если его нет у родителя ставится по родителю
+                     *
+                     */
+                    if(obj['this'].getAttribute('parent')){
+                        obj['parent'] = obj['this'].getAttribute('parent')
+                    }
                     if (verify['swap'] === true) {
                         for (let key = 0; key < obj['this'].children.length; key++) {
-                            //console.log('~~~~~~this~~~~~~~', obj['this'].children[key].tagName)
+                            // //console.log('~~~~~~this~~~~~~~', obj['this'].children[key].tagName)
                             if (obj['this'].children[key].tagName.split('-').length === 1) {
                                 if (obj['this'].children[key].slot === 'view') {
                                     obj['this'].children[key].className = 'wall'
@@ -288,17 +338,40 @@ customElements.define('manager-board',
                             } else {
                                 if (obj['getAttribute'](obj['this'].children[key], 'light', 'template') === true) {
                                     obj['this'].children[key].setAttribute('type', `${obj['this'].children[key].getAttribute('type')}-external`)
-                                    scriptTemplate(obj['this'].children[key])
+                                    if(obj['parent'] === false){
+                                        if(!obj['slot']){
+                                            obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                                        }else{
+                                            obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                                        }
+                                    }else{
+                                        obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                                    }
+
+                                    scriptTemplate(obj['this'].children[key], obj)
                                     obj['template-light'].push(obj['this'].children[key])
                                 } else {
                                     obj['this'].children[key].setAttribute('type', `${obj['this'].children[key].getAttribute('type')}-external`)
-                                    scriptTemplate(obj['this'].children[key])
+                                    /**
+                                     * устанавливается свойство parent если его нет у родителя ставится по родителю
+                                     *
+                                     */
+                                    if(obj['parent'] === false){
+                                        if(!obj['slot']){
+                                            obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                                        }else{
+                                            obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                                        }
+                                    }else{
+                                        obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                                    }
+                                    scriptTemplate(obj['this'].children[key], obj)
                                     obj['template-shadow'].push(obj['this'].children[key])
                                 }
                             }
                         }
                         for (let key = 0; key < obj['template'].children.length; key++) {
-                            //console.log('~~~~~~template~~~~~~~', obj['template'].children[key].tagName)
+                            // //console.log('~~~~~~template~~~~~~~', obj['template'].children[key].tagName)
                             if (obj['template'].children[key].tagName.split('-').length === 1) {
                                 if (obj['template'].children[key].slot === 'view') {
                                     obj['template'].children[key].className = 'wall'
@@ -307,18 +380,36 @@ customElements.define('manager-board',
                             } else {
                                 if (obj['getAttribute'](obj['template'].children[key], 'light', 'template') === true) {
                                     obj['template'].children[key].setAttribute('type', `${obj['template'].children[key].getAttribute('type')}-external`)
-                                    scriptTemplate(obj['template'].children[key])
+                                    if(obj['parent'] === false){
+                                        if(!obj['slot']){
+                                            obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                                        }else{
+                                            obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                                        }
+                                    }else{
+                                        obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                                    }
+                                    scriptTemplate(obj['template'].children[key], obj)
                                     obj['template-light'].push(obj['template'].children[key])
                                 } else {
                                     obj['template'].children[key].setAttribute('type', `${obj['template'].children[key].getAttribute('type')}-external`)
-                                    scriptTemplate(obj['template'].children[key])
+                                    if(obj['parent'] === false){
+                                        if(!obj['slot']){
+                                            obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                                        }else{
+                                            obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                                        }
+                                    }else{
+                                        obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                                    }
+                                    scriptTemplate(obj['template'].children[key], obj)
                                     obj['template-shadow'].push(obj['template'].children[key])
                                 }
                             }
                         }
                     } else {
                         for (let key = 0; key < obj['this'].children.length; key++) {
-                            //console.log('~~~~~~this~~~~~~~', obj['this'].children[key].tagName)
+                            // //console.log('~~~~~~this~~~~~~~', obj['this'].children[key].tagName)
                             if (obj['this'].children[key].tagName.split('-').length === 1) {
                                 if (obj['this'].children[key].slot === 'view') {
                                     obj['this'].children[key].className = 'wall'
@@ -326,16 +417,34 @@ customElements.define('manager-board',
                                 obj['template-shadow'].push(obj['this'].children[key])
                             } else {
                                 if (obj['getAttribute'](obj['this'].children[key], 'light', 'template') === true) {
-                                    scriptTemplate(obj['this'].children[key])
+                                    if(obj['parent'] === false){
+                                        if(!obj['slot']){
+                                            obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                                        }else{
+                                            obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                                        }
+                                    }else{
+                                        obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                                    }
+                                    scriptTemplate(obj['this'].children[key], obj)
                                     obj['template-shadow'].push(obj['this'].children[key])
                                 } else {
-                                    scriptTemplate(obj['this'].children[key])
+                                    if(obj['parent'] === false){
+                                        if(!obj['slot']){
+                                            obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                                        }else{
+                                            obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                                        }
+                                    }else{
+                                        obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                                    }
+                                    scriptTemplate(obj['this'].children[key], obj)
                                     obj['template-light'].push(obj['this'].children[key])
                                 }
                             }
                         }
                         for (let key = 0; key < obj['template'].children.length; key++) {
-                            //console.log('~~~~~~template~~~~~~~', obj['template'].children[key].tagName)
+                            // //console.log('~~~~~~template~~~~~~~', obj['template'].children[key].tagName)
                             if (obj['template'].children[key].tagName.split('-').length === 1) {
                                 if (obj['template'].children[key].slot === 'view') {
                                     obj['template'].children[key].className = 'wall'
@@ -343,10 +452,28 @@ customElements.define('manager-board',
                                 obj['template-shadow'].push(obj['template'].children[key])
                             } else {
                                 if (obj['getAttribute'](obj['template'].children[key], 'light', 'template') === true) {
-                                    scriptTemplate(obj['template'].children[key])
+                                    if(obj['parent'] === false){
+                                        if(!obj['slot']){
+                                            obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                                        }else{
+                                            obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                                        }
+                                    }else{
+                                        obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                                    }
+                                    scriptTemplate(obj['template'].children[key], obj)
                                     obj['template-shadow'].push(obj['template'].children[key])
                                 } else {
-                                    scriptTemplate(obj['template'].children[key])
+                                    if(obj['parent'] === false){
+                                        if(!obj['slot']){
+                                            obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                                        }else{
+                                            obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                                        }
+                                    }else{
+                                        obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                                    }
+                                    scriptTemplate(obj['template'].children[key], obj)
                                     obj['template-light'].push(obj['template'].children[key])
                                 }
                             }
@@ -355,43 +482,74 @@ customElements.define('manager-board',
                     for (let key in verify) {
                         obj['verify'][key] = verify[key]
                     }
-                    if (obj['verify']['slider'] === true) {
-                        getSliderTemplate(obj)
-                            .then((obj) => {
-                                obj['template-light'].push(obj['slider'])
-                                obj['this']['appendChild'](obj['slider'])
-                                setExternalComponent(obj, 'slider')
-                                    .then((obj) => {
-                                        if (obj['verify']['one'] === true) {
-                                            for (let state = 0; state < obj['state'].length; state++) {
-                                                for (let key = 0; key < obj[`template-${obj['state'][state]}`].length; key++) {
-                                                    //console.log(obj[`template-${obj['state'][state]}`][key])
-                                                    if (obj[`template-${obj['state'][state]}`][key]['className'] === 'wall') {
-                                                        obj[`template-${obj['state'][state]}`].splice(key, 1)
-                                                        resolve(obj)
-                                                    }
-                                                }
-                                            }
-                                        } else {
-                                            resolve(obj)
-                                        }
-                                    })
-                            })
-                    } else {
-                        resolve(obj)
-                    }
+                    resolve(obj)
                 })
             }
             function template (obj, type) {
                 return new Promise(function (resolve, reject) {
                     obj['verify'] = []
+
                     if (!obj['this'].getAttribute('preset')) {
                         obj['path-template'] = `/static/html/components/${obj['component']}/${obj['component']}.html`
                         obj['verify']['preset'] = false
                     } else {
-                        obj['path-template'] = `/static/html/components/${obj['component']}/template/${obj['this'].getAttribute('preset')}/${obj['component']}-${obj['this'].getAttribute('preset')}.html`
-                        obj['preset'] = `${obj['this'].getAttribute('preset')}`
-                        obj['verify']['preset'] = true
+                        switch(obj['this'].getAttribute('preset')){
+                            case 'default':
+                                obj['path-template'] = `/static/html/components/${obj['component']}/template/default/index.html`
+                                obj['preset'] = {
+                                    dir:'default',
+                                    name:'index',
+                                    dirName:`${obj['this'].getAttribute('preset')}`,
+                                    status:true
+                                }
+                                obj['verify']['preset'] = true
+                                break
+                            default:
+                                let substrate = (obj['this'].getAttribute('preset')).split('-')
+
+                                let dir = {}
+                                let name = {}
+                                if( substrate.length >= 3) {
+                                    dir = `${substrate[0]}-${substrate[1]}`
+                                    name = substrate.filter((word, index, arr)=>{
+                                        if(index > 1) {
+                                            return word
+                                        }
+                                    });
+                                    // console.assert(false,name, dir )
+                                    name = name.join('-')
+                                    obj['path-template'] = `/static/html/components/${obj['component']}/template/${dir}/${name}.html`
+                                    obj['verify']['preset'] = true
+                                    obj['preset'] = {
+                                        dir:dir,
+                                        name:name,
+                                        status:true
+                                    }
+                                }else if(substrate.length === 2){
+                                    dir = `${substrate[0]}-${substrate[1]}`
+                                    name =`index`
+                                    obj['path-template'] = `/static/html/components/${obj['component']}/template/${dir}/${name}.html`
+                                    obj['verify']['preset'] = true
+                                    obj['preset'] = {
+                                        dir:dir,
+                                        name:name,
+                                        status:true
+                                    }
+                                } else if(substrate.length === 1) {
+                                    dir = `${substrate[0]}`
+                                    name =`index`
+                                    obj['path-template'] = `/static/html/components/${obj['component']}/template/${dir}/${name}.html`
+                                    obj['verify']['preset'] = true
+                                    obj['preset'] = {
+                                        dir:dir,
+                                        name:name,
+                                        status:true
+                                    }
+                                }else {
+                                    console.assert(false, 'не загружается пресет')
+                                }
+                                break
+                        }
                     }
                     fetch(obj['path-template'])
                         .then(function (response) {
@@ -407,20 +565,29 @@ customElements.define('manager-board',
                                 getTemplate(obj, obj['type-swap'], obj['type-external'])
                                     .then((obj) => {
                                         if (obj['verify']['swap'] === true) {
+
+                                            if (obj['template-light'].length !== 0) {
+                                                for (let key = 0; key < obj['template-light'].length; key++) {
+                                                    //console.log('2222222222111111111111222222222222', obj['template-light'][key])
+                                                    obj['this']['prepend'](obj['template-light'][key])
+                                                    // console.assert(false, obj['template-light'][key])
+                                                }
+                                            }
                                             if (obj['template-shadow'].length !== 0) {
                                                 obj['this']['attachShadow']({mode: 'open'})
                                                 obj['shadowRoot'] = true
                                                 for (let key = 0; key < obj['template-shadow'].length; key++) {
+
                                                     obj['this']['shadowRoot']['appendChild'](obj['template-shadow'][key])
                                                 }
                                             }
+
+                                        } else {
                                             if (obj['template-light'].length !== 0) {
-                                                for (let key = 0; key < obj['template-light'].length; key++) {
-                                                    //console.log('2222222222111111111111222222222222', obj['template-light'][key])
+                                                for (let key in obj['template-light']) {
                                                     obj['this']['appendChild'](obj['template-light'][key])
                                                 }
                                             }
-                                        } else {
                                             if (obj['template-shadow'].length !== 0) {
                                                 obj['this']['attachShadow']({mode: 'open'})
                                                 obj['shadowRoot'] = true
@@ -428,11 +595,7 @@ customElements.define('manager-board',
                                                     obj['this']['shadowRoot']['appendChild'](obj['template-shadow'][key])
                                                 }
                                             }
-                                            if (obj['template-light'].length !== 0) {
-                                                for (let key in obj['template-light']) {
-                                                    obj['this']['appendChild'](obj['template-light'][key])
-                                                }
-                                            }
+
                                         }
                                         resolve(obj)
                                     })
@@ -444,44 +607,6 @@ customElements.define('manager-board',
                 })
             }
 
-            function getSliderTemplate (obj) {
-                return new Promise(function (resolve, reject) {
-                    fetch(`/static/html/components/varan-slider/template/${obj['slot']}.html`)
-                        .then(function (response) {
-                            if (response.ok) {
-                                return response.text()
-                            }
-                        }).then(function (body) {
-                        let parser = new DOMParser()
-                        let doc = parser.parseFromString(body, 'text/html')
-                        obj['slider'] = doc.getElementsByTagName('template')[0].content.cloneNode(true)
-                        let slider = document.createElement('section')
-                        slider.className = 'slider'
-                        slider.slot = 'view'
-                        slider.appendChild(obj['slider'])
-                        obj['slider'] = slider
-                        if (slider.querySelectorAll('.ql-editor').length === 0) {
-                            resolve(obj)
-                        } else {
-                            for (let key = 0; key < slider.querySelectorAll('.ql-editor').length; key++) {
-                                if (slider.querySelectorAll('.ql-editor')[key].children.length === 0) {
-
-                                } else {
-                                    for (let type = 0; type < slider.querySelectorAll('.ql-editor')[key].children.length; type++) {
-                                        if (slider.querySelectorAll('.ql-editor')[key].children[type].tagName.split('-').length > 1) {
-                                            scriptTemplate(slider.querySelectorAll('.ql-editor')[key].children[type])
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        resolve(obj)
-                    })
-                        .catch(error => {
-                            return error
-                        })
-                })
-            }
             function renderExternal (obj) {
                 return new Promise(function (resolve, reject) {
                     obj['words-action'] = []
@@ -510,8 +635,6 @@ customElements.define('manager-board',
                         }
                         obj['words-action'] = wordsAction
 
-                        //console.log('~~~~~~~~~~~~~~~renderExternal~~~~~~~~~~~~~~~~~~~~~', obj)
-
                         for (let key in obj['external-property']) {
                             for (let type in obj['external-property'][key]) {
                                 switch (type) {
@@ -521,7 +644,7 @@ customElements.define('manager-board',
                                         obj['this'].appendChild(doc)
                                         break
                                     default:
-                                        //console.log(`какой то неизвестный тип`, type)
+                                        // //console.log(`какой то неизвестный тип`, type)
                                         break
                                 }
                             }
@@ -533,7 +656,7 @@ customElements.define('manager-board',
 
             function external (obj) {
                 return new Promise(function (resolve, reject) {
-                    obj['path-external'] = `/static/html/components/${obj['component']}/external/${obj['component']}-external.html`
+                    obj['path-external'] = `/static/html/components/${obj['component']}/external/${obj['component']}-external.xml`
                     fetch(obj['path-external'])
                         .then(function (response) {
                             if (response.ok === false) {
@@ -580,65 +703,25 @@ customElements.define('manager-board',
                     }
                 })
             }
-            function setSlider (obj) {
+            function scriptTemplate (obj, parent) {
                 return new Promise(function (resolve, reject) {
-                    resolve(Peppermint(obj, {
-                        dots: false,
-                        slideshow: false,
-                        speed: 500,
-                        slideshowInterval: 5000,
-                        stopSlideshowAfterInteraction: true,
-                        onSetup: function (n) {
-                            //console.log('Peppermint setup done. Slides found: ' + n)
-                        }
-                    }))
-                })
-            }
-            function scriptTemplate (obj) {
-                return new Promise(function (resolve, reject) {
-                    const script = document.createElement('script')
                     let verify = false
-                    for (let key in document['head'].getElementsByTagName('script')) {
-                        if (typeof (document['head'].getElementsByTagName('script')[key]) === 'object') {
-                            if (document['head'].getElementsByTagName('script')[key].outerHTML.indexOf(obj.tagName.toLowerCase()) !== -1) {
-                                verify = true
-                            }
+                    for (let i = 0; i < document.querySelectorAll('script').length; i++) {
+                        if (document.querySelectorAll('script')[i].src.indexOf(obj.tagName.toLowerCase()) !== -1) {
+                            verify = true
                         }
                     }
                     if (verify === true) {
-                        //console.log('script уже загруже')
+                        console.log('модуль загружен')
                     } else {
+                        const script = document.createElement('script')
                         script.src = `/static/html/components/${obj.tagName.toLowerCase()}/${obj.tagName.toLowerCase()}.mjs`
-                        script.type ='module'
+                        script.type = 'module'
+                        script.setAttribute('async', '')
                         script.onload = resolve
                         script.onerror = reject
-                        document['head'].appendChild(script)
-                    }
-                })
-            }
 
-            function setExternalComponent (obj, type, nObj) {
-                return new Promise(function (resolve, reject) {
-                    if (!type) {
-                        resolve(obj)
-                    } else {
-                        switch (type) {
-                            case 'slider': {
-                                getElementsByClassName(obj, 'peppermint')
-                                    .then((slider) => {
-                                        setSlider(slider)
-                                            .then((slider) => {
-                                                obj['slider'] = slider
-                                                resolve(obj)
-                                            })
-                                    })
-                            }
-                                break
-                            default:
-                                //console.log(`какой то неизвестный тип`, type)
-                                break
-                        }
-                        resolve(obj)
+                        parent['this'].appendChild(script)
                     }
                 })
             }
@@ -648,24 +731,9 @@ customElements.define('manager-board',
                         .then((obj) => {
                             style(obj)
                                 .then((obj) => {
-                                    listener(obj)
-                                    return obj
+                                    modules(true,0,'red',obj,'waves-game-card')
                                 })
-                            return obj
                         })
-                    return obj
                 })
-            async function listener (obj) {
-                store({
-                    input:`${obj['slot']}`,
-                    this:obj['this'],
-                    obj: obj,
-                    type:'obj'
-                }, 'set', 'type')
-               // console.assert(false, new Menu.class(obj))
-               // await Menu(obj)
-               // await monopoly(obj)
-
-            }
         }
     })
