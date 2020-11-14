@@ -1,6 +1,6 @@
-@import "/home/sergey/Desktop/system/css/fonts_new.scss";
-@import "/home/sergey/Desktop/system/css/util/media_new.scss";
-@import "/home/sergey/Desktop/system/css/util/interface";
+@import "./docs/css/fonts.scss";
+@import "./docs/css/media.scss";
+@import "./docs/css/interface.scss";
 
 @mixin label(){
   @include display(column, nowrap, space-between, center, stretch);

@@ -1,6 +1,6 @@
-@import "/home/sergey/Desktop/telegram/css/fonts_new.scss";
-@import "/home/sergey/Desktop/telegram/css/util/media_new.scss";
-@import "/home/sergey/Desktop/telegram/css/util/interface";
+@import "./docs/css/fonts.scss";
+@import "./docs/css/media.scss";
+@import "./docs/css/interface.scss";
 
 @mixin borderClean() {
   width: 100%;
