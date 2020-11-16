@@ -1,1 +1,0 @@
-const isEmpty=t=>null==t||"object"==typeof t&&0===Object.keys(t).length||"string"==typeof t&&0===t.trim().length;export default isEmpty;

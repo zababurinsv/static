@@ -1,8 +1,8 @@
 // base file for including when performing theming
 // doesn't include at-rules or root selectors (like body) which allows for more comprehensive extending
 
-@import '../variables';
-@import 'mixins';
-@import 'toasts';
-@import 'body';
-@import 'core';
+@import '../variables.scss';
+@import 'mixins.scss';
+@import 'toasts.scss';
+@import 'body.scss';
+@import 'core.scss';

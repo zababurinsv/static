@@ -4,6 +4,9 @@ import Storage from '/static/html/components/component_modules/storage/index.mjs
 import Zip from '/static/html/components/component_modules/bundle/zip/zip.index.mjs'
 let storage = Storage()
 let buttonTogle = true
+// window.FS.syncfs( true, ()=>{
+//     window.FS.writeFile( "/data/layout.json", JSON.stringify(obj.PSD.layout));
+// });
 let styleFonts = (v,p,c,obj,r) => {
 return`@font-face {
     font-family: 'GothamPro';
@@ -42,6 +45,7 @@ p:first-letter {
 .${obj.PSD.layout.parentClass} {
     width: 100%;
     position: relative;
+    height:${pixelToVW(obj.PSD.layout.blockHeight)}vw;
 }
 `}
 }
@@ -123,8 +127,8 @@ async function pseudoClass(v,p,c,obj,r) {
 async function pseudoStyle(v,p,c,obj,r) {
         switch (r){
             case 'hover':
-                console.log('SSSSSSSSSSSSSSSSSSSSSSSS', p.style.dropShadow)
-                console.log('&&&&&&&&&&&&&&1&&&&&', `${p.class.split('_')[0]}:hover`)
+                // console.log('SSSSSSSSSSSSSSSSSSSSSSSS', p.style.dropShadow)
+                // console.log('&&&&&&&&&&&&&&1&&&&&', `${p.class.split('_')[0]}:hover`)
 output.out = output.out +`.${p.class.split('_')[0]}:hover {
     box-shadow:inset ${p.style.shadow.boxInset},${p.style.shadow.box};
     text-shadow:${p.style.shadow.text};
@@ -138,7 +142,7 @@ output.out = output.out +`.${p.class.split('_')[0]}:hover {
             }`)
                 break
             case 'active':
-                console.log('&&&&&&&&&&&&&&2&&&&&', p.class)
+                // console.log('&&&&&&&&&&&&&&2&&&&&', p.class)
 output.out = output.out +`.${p.class.split('_')[0]}:active {
     box-shadow:inset ${p.style.shadow.boxInset},${p.style.shadow.box};
     text-shadow:${p.style.shadow.text};
@@ -233,9 +237,6 @@ async function outputTemplate(v,p,c,obj,r) {
     return`
 <template>
 ${obj.html}
-<style>
-${obj.style}
-</style>
 </template>
 `}
 
@@ -348,7 +349,7 @@ export default async (v,p,c,obj,r) => {
                },
                html: html,
            }, r)
-           zip.file("template", out.template);
+           zip.file("template.html", out.template);
            zip.file("index.html", out.views);
            zip.generateAsync({type: "blob"}).then(function(content) {
                Zip['default']['FileSaver'].saveAs(content, `${obj.PSD.layout.parentClass}.zip`);
@@ -366,11 +367,11 @@ export default async (v,p,c,obj,r) => {
        })
        buttonTogle = false
    }
-    console.log('------------------',{
-        all:p.name,
-        elements: pseudo.elements.some(item => (p.name.indexOf(item) > -1)),
-        classes: pseudo.classes.some(item => (p.name.indexOf(item) > -1 ))
-    })
+    // console.log('------------------',{
+    //     all:p.name,
+    //     elements: pseudo.elements.some(item => (p.name.indexOf(item) > -1)),
+    //     classes: pseudo.classes.some(item => (p.name.indexOf(item) > -1 ))
+    // })
     switch (p._) {
         case 'image':
             style(v,p,c,obj,'light')

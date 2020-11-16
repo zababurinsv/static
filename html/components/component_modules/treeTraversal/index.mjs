@@ -1,4 +1,25 @@
-import isEmpty from "/static/html/components/component_modules/isEmpty/isEmpty.mjs";
+import isEmpty from "/home/sergey/PhpstormProjects/system/core/docs/static/html/components/component_modules/isEmpty/isEmpty.mjs";
+
+function photoshopDropShadow2CSSBoxShadow(color, opacity, angle, distance, spread, size) {
+    // convert the angle to radians
+    angle = (180 - angle) * Math.PI / 180;
+
+    // the color is just an rgba() color with the opacity.
+    // for simplicity this function expects color to be an rgb string
+    // in CSS, opacity is a decimal between 0 and 1 instead of a percentage
+    let outColor = "rgba(" + color + "," + opacity + ")";
+   let colorInset = "rgba(" + color + "," + opacity * 0.3 + ")";
+    // other calculations
+    var offsetX = Math.round(Math.cos(angle) * distance) + "px",
+        offsetY = Math.round(Math.sin(angle) * distance) + "px",
+        spreadRadius = (size * spread / 100) + "px",
+        blurRadius = (size - parseInt(spreadRadius, 10)) + "px";
+    return {
+        boxInset:offsetX + " " + offsetY + " " + blurRadius + " " + spreadRadius + " " + colorInset,
+        box:offsetX + " " + offsetY + " " + blurRadius + " " + spreadRadius + " " + outColor,
+        text:offsetX + " " + offsetY + " " + spreadRadius + " " + outColor
+    }
+}
 
 function color(item) {
     let txt = false
@@ -26,67 +47,71 @@ function element(v,item,c,obj,r) {
     } else {
         obj['preset']['action'](v,item,c,obj,r)
     }
-    // if(item._ === 'txt') {
-    //     let txt = document.createElement('p')
-    //     out = txt
-    //     txt.style.whiteSpace = 'pre-wrap'
-    //     txt.innerText = item.text
-    //     txt.style.fontFamily = item.style.fontFamily
-    //     txt.style.fontSize = item.style.fontSize
-    //     txt.setAttribute('slot',`${item['slot']}`)
-    //     txt.style.color = `rgb(${item.style.color})`
-    // } else if (item._ === 'image') {
-    //     out = item.canvas
-    // }
-    // out.setAttribute('slot',`${item['slot']}`)
-    // out.style.marginLeft = item.marginLeft
-    // out.style.width = item.width
-    // out.style.position = 'absolute'
-    // out.style.left = '0'
-    // out.style.top = item.top
-    // obj['PSD']['container'].appendChild(out)
 }
 export default (v,p,c,obj,r) =>{
     return new Promise(async (resolve, reject)=>{
-        for(let item of p) {
-            if(isEmpty(item.canvas)) {
-                console.warn('нет canvas', item)
-            } else {
-                let txt = color(item)
-                switch (item['name'].split(' ').length) {
-                    case 1:
-                        element(v, txt.status ? {
-                            _: 'txt',
-                            name:item['name'],
-                            text: item.text.text,
-                            slot:item['name'],
-                            class:`${r}-${item['name']}`,
-                            top:`${item.top * obj['PSD']['layout']['size']['WidthWindow']}px`,
-                            width:`${item.canvas.width}px`,
-                            marginLeft:`${item.left * obj['PSD']['layout']['size']['WidthWindow']}px`,
-                            style: {
-                                name:item.text.style.font.name,
-                                fontFamily:`${item.text.style.font.name}, serif`,
-                                fontSize: `${(item.text.style.fontSize * item.text.transform[0] * obj['PSD']['layout']['size']['WidthWindow']).toFixed(1)}px`,
-                                LineHeight: item.text.style.fontSize + (item.text.style.leading / 2),
-                                transform: item.text.transform,
-                                color: txt.color,
-                                whiteSpace:'pre-wrap'
-                            },
-                            orientation: item.text.orientation
-                        } : {
-                            _: 'image',
-                            name:item['name'],
-                            slot:item['name'],
-                            top:`${item.top * obj['PSD']['layout']['size']['WidthWindow']}px`,
-                            canvas:item.canvas,
-                            width:`${item.canvas.width}px`,
-                            marginLeft:`${item.left * obj['PSD']['layout']['size']['WidthWindow']}px`
-                        }, c, obj, r)
-                        break
-                    default:
-                        console.warn('нет обработчкика данных компонентов', item['name'])
-                        break
+            for(let item of p) {
+                if((item.top * obj['PSD']['layout']['relation'])<= (obj['PSD']['layout'].innerHeight * obj['PSD']['layout'].relation)) {
+
+                    console.log('$$~~~~~~~~~~ index.psd ~~~~~~~~~~$$>>>', {
+                        name: item['name'].toLowerCase(),
+                        origin: item,
+                        effects: item.effects,
+                        PSDheight:  obj['PSD']['layout'].innerHeight * obj['PSD']['layout'].relation,
+                        objectHeight: item.top * obj['PSD']['layout']['relation']
+                    })
+                if(isEmpty(item.canvas)) {
+                    console.warn('нет canvas', item)
+                } else {
+                    let shadow = {}
+                    if(!isEmpty(item.effects)) {
+                        shadow =  photoshopDropShadow2CSSBoxShadow(
+                            `${item.effects.dropShadow.color.r},${item.effects.dropShadow.color.g},${item.effects.dropShadow.color.b}`,
+                            item.effects.dropShadow.opacity,
+                            item.effects.dropShadow.angle,
+                            item.effects.dropShadow.distance.value,
+                            item.effects.dropShadow.choke.value,
+                            item.effects.dropShadow.size.value
+                        )
+                    }
+                    let txt = color(item)
+                    switch (item['name'].split(' ').length) {
+                        case 1:
+                            element(v, txt.status ? {
+                                _: 'txt',
+                                name:item['name'].toLowerCase(),
+                                text: item.text.text,
+                                slot:item['name'].toLowerCase(),
+                                class:`${r}-${item['name'].toLowerCase()}`,
+                                top:item.top * obj['PSD']['layout']['relation'],
+                                left:item.left * obj['PSD']['layout']['relation'],
+                                style: {
+                                    shadow: shadow,
+                                    name:item.text.style.font.name,
+                                    fontFamily:`${item.text.style.font.name}, serif`,
+                                    fontSize: parseFloat((item.text.style.fontSize * item.text.transform[0] * obj['PSD']['layout']['relation']).toFixed(1)),
+                                    LineHeight: item.text.style.fontSize + (item.text.style.leading / 2),
+                                    transform: item.text.transform,
+                                    color: `rgba(${txt.color})`,
+                                    top: item.top * obj['PSD']['layout']['relation'],
+                                    left: item.left * obj['PSD']['layout']['relation'],
+                                },
+                                orientation: item.text.orientation
+                            } : {
+                                _: 'image',
+                                name:item['name'].toLowerCase(),
+                                slot:item['name'].toLowerCase(),
+                                class:`${r}-${item['name'].toLowerCase()}`,
+                                top:item.top * obj['PSD']['layout']['relation'],
+                                left:item.left * obj['PSD']['layout']['relation'],
+                                canvas:item.canvas,
+                                width:item.canvas.width * obj['PSD']['layout']['relation']
+                            }, c, obj, r)
+                            break
+                        default:
+                            console.warn('нет обработчкика данных компонентов', item['name'])
+                            break
+                    }
                 }
             }
         }
