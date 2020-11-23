@@ -21,7 +21,7 @@ let config = async (v,p,c,obj,r) => {
     }
 }
 let count = -1
-function tr(v,p,c,obj,r){
+function tr(v,p,c,obj,r) {
     let tr = document.createElement('div')
     tr.classList.add('manager-board__item_tr')
     obj.managerBoard.appendChild(tr)
@@ -31,11 +31,25 @@ function tr(v,p,c,obj,r){
 let trTemp = {}
 let tdTemp = {}
 
-function td(v,p,c,obj,r){
+/*
+if(r === 'empty') {
+      //  p.tr.insertAdjacentHTML('beforeend',
+      //  `<div class="manager-board__item_td_empty manager-board__item_td_${p.coord.x}:${p.coord.y}"></div>`)
+   //     td.classList.add(`manager-board__item_td_empty manager-board__item_td_empty_${p.coord.x}:${p.coord.y}`);
+    } else {
+      //  p.tr.insertAdjacentHTML('beforeend',
+      //  `<div class="manager-board__item_td manager-board__item_td_${p.coord.x}:${p.coord.y}"></div>`)
+    }
+*/
+function td(v,p,c,obj,r) {
     let td = document.createElement('div')
+    td.classList.add(`${p.coord.y}:${p.coord.x}`);
     td.classList.add('manager-board__item_td');
+    td.dataset.item = `${p.coord.y}:${p.coord.x}`;
     if(r === 'empty') {
+        td.classList.add(`${p.coord.y}:${p.coord.x}`);
         td.classList.add('manager-board__item_td_empty');
+        td.dataset.item = `${p.coord.y}:${p.coord.x}`;
     }
     p.tr.appendChild(td)
     return td
@@ -43,7 +57,7 @@ function td(v,p,c,obj,r){
 
 function img(v,p,c,obj,r){
     p.td.insertAdjacentHTML('beforeend',
-    `<img class="manager-board__item_td_img ${p.class}_${p.coord.x}:${p.coord.y}" src="/static/html/components/manager-board/images/${p.class}.png">`)
+    `<img class="${p.coord.y}:${p.coord.x} manager-board__item_td_img  ${p.class}_${p.coord.y}:${p.coord.x}" data-item="${p.coord.y}:${p.coord.x}" src="/static/html/components/manager-board/images/${p.class}.png">`)
 }
 
 function output(v,p,c,obj,r) {
@@ -51,14 +65,20 @@ function output(v,p,c,obj,r) {
         count++
         trTemp = tr(v,p,c,obj,r)
     }
-    tdTemp = td(v,{ tr: trTemp },c,obj,p.item)
+    tdTemp = td(v,{ 
+        tr: trTemp, 
+        coord:{
+            x: p.index.toString().padStart(2, 0),
+            y: count.toString().padStart(2, 0)
+        }
+    },c,obj,p.item)
     if(p.item !== 'empty') {
         img(v,{
             td: tdTemp,
             class: p.item,
             coord:{
-                x: p.index,
-                y: count
+                x: p.index.toString().padStart(2, 0),
+                y: count.toString().padStart(2, 0)
             }
         },c,obj,r)
     }
