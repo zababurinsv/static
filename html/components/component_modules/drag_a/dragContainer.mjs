@@ -55,10 +55,22 @@ export default async (v,p,c,obj,r) => {
             let temp = target.cloneNode(true);
             target.innerHTML = this.draggingItem.innerHTML
             this.draggingItem.innerHTML = temp.innerHTML
-            console.log('~~~~~ coordinate ~~~~~~~~', this.draggingItem)
             if(this.draggingItem.querySelector('.manager-board__item_td_img') !== null) {
               this.draggingItem.querySelector('.manager-board__item_td_img').dataset.item = coordinate
             }
+
+            if(this.draggingItem.querySelector('.manager-board__item_td_img') !== null) {
+              this.draggingItem.classList.remove("manager-board__item_td_empty")
+            } else {
+              this.draggingItem.classList.add("manager-board__item_td_empty")
+            }
+            
+            if(target.querySelector('.manager-board__item_td_img') !== null) {
+              target.classList.remove("manager-board__item_td_empty")
+            } else {
+              target.classList.add("manager-board__item_td_empty")
+            }
+
           } else if (this.type == 'reorder') {
             console.log('reorder');
             console.log(this.items.index(event.target));
