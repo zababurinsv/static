@@ -7,7 +7,10 @@ export default async (v,p,c,obj,r) => {
         this.dragContainers.push(dragContainer);
     },
     handleEvent: function(event) {
-        if (event.type == 'dragstart') {
+        if (event.type == 'dragstart'  || event.type == 'touchstart') {
+            if(event.type == 'touchstart') {
+                event.preventDefault()
+            }
              let containers = this.dragContainers.filter(function(container) {
                 return container.contains(event.target);
             });
@@ -20,7 +23,8 @@ export default async (v,p,c,obj,r) => {
         if (this.currentContainer !== null) {
             this.currentContainer.handleEvent(event);
             
-            if (event.type == 'dragend') {
+           
+            if (event.type == 'dragend' || event.type == 'touchend') {
                     this.currentContainer.deactivate();
                     this.currentContainer = null;
                 }

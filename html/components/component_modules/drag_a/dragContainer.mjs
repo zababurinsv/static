@@ -1,9 +1,15 @@
 import dragManager from '/static/html/components/component_modules/drag_a/dragManager.mjs'
-
+import UserAgent from '/static/html/components/component_modules/bundle/ua/ua.index.mjs'
+import touch from '/static/html/components/component_modules/drag_a/dragTouch.mjs'
 export default async (v,p,c,obj,r) => {
     let manager = await dragManager()
         obj.this.shadowRoot.querySelector('.board').addEventListener('dragstart', manager);
         obj.this.shadowRoot.querySelector('.board').addEventListener('dragend', manager);
+        obj.this.shadowRoot.querySelector('.board').addEventListener("touchstart", manager, false);
+        obj.this.shadowRoot.querySelector('.board').addEventListener("touchend", manager, false);
+        
+        const userAgent = new UserAgent.item();
+        console.log(userAgent.data);
 
     function DragContainer(container, type) {
         this.element = container;
@@ -26,8 +32,21 @@ export default async (v,p,c,obj,r) => {
       }
       
       DragContainer.prototype.handleEvent =async function(event) {
-
+        let funcTouch = await touch()
         let $t = await this.item(event.target);
+        switch(event.type) {
+          case'touchstart':
+          funcTouch.touchstart(event, this, obj)
+            break
+          case'touchmove':
+          funcTouch.touchmove(event, this, obj)
+            break
+          case'touchend':
+          funcTouch.touchend(event, this, obj)
+            break
+          default:
+            break
+        }
         if (event.type == 'dragstart') {
           // console.log('ffffffffff this.element fffffffffff', this.element.querySelector('.manager-board__item_td_img').dataset.item)
           this.draggingItem = await this.item(this.element.querySelector('.manager-board__item_td_img'));
@@ -89,6 +108,8 @@ export default async (v,p,c,obj,r) => {
           this.items[i].addEventListener('dragover', this.handleEvent.bind(this));
           this.items[i].addEventListener('dragleave', this.handleEvent.bind(this));
           this.items[i].addEventListener('drop', this.handleEvent.bind(this));
+          this.items[i].addEventListener('touchcancel', this.handleEvent.bind(this));
+          this.items[i].addEventListener('touchmove', this.handleEvent.bind(this));
         }
        }
       
@@ -99,6 +120,8 @@ export default async (v,p,c,obj,r) => {
           this.items[i].removeEventListener('dragover', this.handleEvent);
           this.items[i].removeEventListener('dragleave', this.handleEvent);
           this.items[i].removeEventListener('drop', this.handleEvent);
+          this.items[i].removeEventListener('touchcancel', this.handleEvent);
+          this.items[i].removeEventListener('touchmove', this.handleEvent);
         }
       }
      return {
