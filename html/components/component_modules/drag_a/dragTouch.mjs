@@ -3,14 +3,23 @@ let object = {
     draggingItem: {},
     touchLocation: {},
     touchEl: {},
-    lastMove: {}
+    lastMove: {},
+    board: {
+        width:'',
+        height:''
+    },
+    dragging: {
+        conrainer: {},
+        image: {}
+    }
 }
 export default async (v,p,c,obj,r) => {
    async function touchstart(event, self, obj) {
     event.preventDefault();
 
         if(!isEmpty(self.element.querySelector('.manager-board__item_td_img'))) {
-            object.draggingItem = await self.item(self.element.querySelector('.manager-board__item_td_img'));
+            object.dragging.conrainer = await self.item(self.element.querySelector('.manager-board__item_td_img'));
+            object.dragging.image = object.dragging.conrainer.querySelector('.manager-board__item_td_img')
         } else {
             object.draggingItem = {}
         }
@@ -30,19 +39,25 @@ export default async (v,p,c,obj,r) => {
     var x = 1;
    async function touchmove(event, self, obj) {
         object.touchLocation = event.targetTouches[0]
-        let touchLocation = event.targetTouches[0],
-        w = this.offsetWidth,
-        h = this.offsetHeight;
+        let board =  obj['this'].shadowRoot.querySelector('.board')
+        // let touchLocation = event.targetTouches[0],
+        object.board.width = board.offsetWidth,
+        object.board.height = board.offsetHeight;
         let $t = await self.item(event.target);
+        console.log('~~~~~~~~~~~~~~',{
+            asdasd: self.element.offsetWidth,
+            afasdassss: $t
+        })
         object.lastMove = event;
         object.touchEl = self.element;
-
-        console.log('~~~~~~~~~!!~~~~~~', self.element.classList[0])
-    // this.style.width = w + 'px';
-    // this.style.height = h + 'px';
-    // this.style.position = 'fixed';
-    // this.style.left = touchLocation.clientX - w/2 + 'px';
-    // this.style.top = touchLocation.clientY - h/2 + 'px';
+// 
+        console.log('~~~~~~~~~!!~~~~~~', `${self.element.offsetWidth}px`)
+        console.log('~~~~~~~~~!!~~~~~~', `${self.element.offsetHeight}px`)
+        object.dragging.image.style.width = self.element.offsetWidth + 'px';
+        object.dragging.image.style.height = self.element.offsetHeight + 'px';
+        object.dragging.image.style.position = 'fixed';
+        object.dragging.image.style.left = object.touchLocation.clientX - self.element.offsetWidth/2 + 'px';
+        object.dragging.image.style.top = object.touchLocation.clientY - self.element.offsetHeight/2 + 'px';
 
     // if (touchLocation.clientY > window.innerHeight - h || touchLocation.clientY < 0 + h) {
         // if (x === 1) {
@@ -55,7 +70,8 @@ export default async (v,p,c,obj,r) => {
     // }
     }
 
-    function touchend(event) {
+    function touchend(event, self, obj) {
+        console.log('~~~~~~~~~~~~~~@@@@@@@@@@@@@@@~', self.element.getBoundingClientRect())
     // var box1 = this.getBoundingClientRect(),
         // x1 = box1.left,
         // y1 = box1.top,
