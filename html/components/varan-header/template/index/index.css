@@ -11,7 +11,7 @@ p:first-letter {
 }
 .main-header-background {
     position:absolute;
-    width:99.85358711566619vw;
+    width:100%;
     top:0vw;
     left:0vw;
     z-index:-1;

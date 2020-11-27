@@ -25,8 +25,7 @@ export default async (v,p,c,obj,r) => {
     function updateUI() {
         let output = markdownToHTML(self.value);
         html.innerHTML = output.join(" ");
-        // htmlstr.innerText = output.join("\n");
-    
+        htmlstr.innerText = output.join("\n");
     }
     obj.this.shadowRoot.querySelector('.markdown').addEventListener("input", updateUI);
     updateUI()
