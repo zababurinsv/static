@@ -1,0 +1,24 @@
+@import "./docs/css/interface.scss";
+@import "./docs/css/fonts.scss";
+@import "./docs/css/media.scss";
+
+:host {
+    display: grid;
+}
+
+.markdown {
+    display: grid;
+
+
+    &__self {
+
+    }
+
+    &__html {
+        
+    }
+
+    &__string {
+        
+    }
+}
