@@ -4,14 +4,20 @@
 
 :host {
     display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr;
+    box-sizing: border-box;
+    padding: 1vw;
 }
 
 .markdown {
     display: grid;
-
-
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
+ 
     &__self {
-
+        resize: vertical;
+        min-height: 12vw;
     }
 
     &__html {

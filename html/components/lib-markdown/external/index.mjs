@@ -3,6 +3,12 @@ import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.m
 import Markdown from '/static/html/components/lib-markdown/external/wasm/sundown.mjs'
 export default async (v,p,c,obj,r) => {
     let output = [];
+    let html = obj['this']['shadowRoot'].querySelector('.markdown__html')
+    let htmlstr = obj['this']['shadowRoot'].querySelector('.markdown__string')
+    let self = obj['this']['shadowRoot'].querySelector('.markdown__self')
+    let md = await fetch('https://zababurinsv.github.io/markdown/fs.md')
+    md = await md.text();
+    self.value = md
     let object=await Markdown({
         preInit() {},
         onRuntimeInitialized: updateUI,
@@ -16,14 +22,12 @@ export default async (v,p,c,obj,r) => {
         return output;
     }
 
-    function updateUI(markdown) {
-        let html = obj['this']['shadowRoot'].querySelector('.markdown__html')
-        let htmlstr = obj['this']['shadowRoot'].querySelector('.markdown__string')
-        let markdown = obj['this']['shadowRoot'].querySelector('.markdown__self')
-        let output = markdownToHTML(markdown.value);
+    function updateUI() {
+        let output = markdownToHTML(self.value);
         html.innerHTML = output.join(" ");
-        htmlstr.innerText = output.join("\n");
+        // htmlstr.innerText = output.join("\n");
+    
     }
-    obj.this.shadowRoot.querySelector('#markdown').addEventListener("input", updateUI);
+    obj.this.shadowRoot.querySelector('.markdown').addEventListener("input", updateUI);
     updateUI()
 }
