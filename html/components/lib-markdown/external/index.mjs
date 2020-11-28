@@ -9,16 +9,44 @@ export default async (v,p,c,obj,r) => {
     let md = await fetch('https://zababurinsv.github.io/markdown/fs.md')
     md = await md.text();
     self.value = md
+    
+    const fsLoad = () => {
+        return new Promise(async (resolve, reject) => {
+            window.FS.syncfs(true , (err) => {
+                console.log('file load')
+                resolve()
+            });
+        })
+    }
+    const fsSave = () => window.FS.syncfs(false, (err) => {
+        console.log('file save')
+    });
     let object=await Markdown({
         preInit() {},
-        onRuntimeInitialized: updateUI,
+        onRuntimeInitialized() {
+            try {
+                console.log('ssss', this.FS)
+                // this.FS.readFile()
+                isEmpty(window.FS)? window.FS = this.FS:window.FS 
+                
+                const fsSetup = path => {
+                    this.FS.mkdir(path);
+                    this.FS.mount(this.FS.filesystems.IDBFS, {}, path);
+                };
+                const fsSave = () => this.FS.syncfs(false, err => console.warn(err));
+                window.onbeforeunload = () => fsSave();
+                fsSetup("/data");
+            } catch (e) {
+                console.error('error', e)
+            }
+        },
         print: d => output.push(d),
     })
 
     function markdownToHTML(markdown) {
         output = [];
-        object.FS.writeFile('/tmp/data.md',markdown)
-        object.callMain(["/tmp/data.md"]);
+        object.FS.writeFile('/data/data.md',markdown)
+        object.callMain(["/data/data.md"]);
         return output;
     }
 
@@ -26,8 +54,11 @@ export default async (v,p,c,obj,r) => {
         let output = markdownToHTML(self.value);
         html.innerHTML = output.join(" ");
         htmlstr.innerText = output.join("\n");
+        fsSave()
     }
-    
-    obj.this.shadowRoot.querySelector('.markdown').addEventListener("input", updateUI);
+    await fsLoad()
+    let mdfs =  object.FS.readFile("/data/data.md",{ encoding: "utf8" });
+    if(!isEmpty(mdfs)) { self.value = mdfs }
     updateUI()
+    obj.this.shadowRoot.querySelector('.markdown').addEventListener("input", updateUI);
 }
