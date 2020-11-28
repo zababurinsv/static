@@ -5,18 +5,23 @@ let object = {
     touchEl: {},
     lastMove: {},
     board: {
+        self: {},
         width:'',
         height:''
     },
     dragging: {
         conrainer: {},
         image: {}
+    },
+    active: {
+        element: {},
+        coord: ''
     }
 }
 export default async (v,p,c,obj,r) => {
    async function touchstart(event, self, obj) {
     event.preventDefault();
-
+            console.log('sssssssssssssss', self.element)
         if(!isEmpty(self.element.querySelector('.manager-board__item_td_img'))) {
             object.dragging.conrainer = await self.item(self.element.querySelector('.manager-board__item_td_img'));
             object.dragging.image = object.dragging.conrainer.querySelector('.manager-board__item_td_img')
@@ -38,28 +43,35 @@ export default async (v,p,c,obj,r) => {
 
     var x = 1;
    async function touchmove(event, self, obj) {
-       console.log('############', event.targetTouches)
         object.touchLocation = event.targetTouches[0]
-        let board =  obj['this'].shadowRoot.querySelector('.board')
+        object.board.self = obj['this'].shadowRoot.querySelector('.board')
         // let touchLocation = event.targetTouches[0],
-        object.board.width = board.offsetWidth,
-        object.board.height = board.offsetHeight;
+        object.board.width = object.board.self.offsetWidth,
+        object.board.height = object.board.self.offsetHeight;
         let $t = await self.item(event.target);
-        // console.log('~~~~~~~~~~~~~~',{
-            // asdasd: self.element.offsetWidth,
-            // afasdassss: $t
-        // })
         object.lastMove = event;
-        object.touchEl = self.element;
-// 
-        // console.log('~~~~~~~~~!!~~~~~~', `${self.element.offsetWidth}px`)
-        // console.log('~~~~~~~~~!!~~~~~~', `${self.element.offsetHeight}px`)
+        object.touchEl = await self.item(event.target);
         object.dragging.image.style.width = self.element.offsetWidth + 'px';
         object.dragging.image.style.height = self.element.offsetHeight + 'px';
         object.dragging.image.style.position = 'fixed';
         object.dragging.image.style.left = object.touchLocation.clientX - self.element.offsetWidth/2 + 'px';
         object.dragging.image.style.top = object.touchLocation.clientY - self.element.offsetHeight/2 + 'px';
+        let element = obj['this']['shadowRoot'].elementsFromPoint(object.touchLocation.clientX - self.element.offsetWidth/12 , object.touchLocation.clientY - self.element.offsetHeight/12 )
+        if(!isEmpty(element[1].dataset.item)) {
+            if(object.active.coord !== element[1].dataset.item) {
+                if(!isEmpty(object.active.element)) {
+                    object.active.element.removeAttribute("style");
+                }
+                object.active.element = await self.item(element[1])
+                object.active.coord = element[1].dataset.item
+                object.active.element.style.background = 'blue'
+            } else {
 
+            }
+        } 
+        
+
+        // element.style.background = 'red'
     // if (touchLocation.clientY > window.innerHeight - h || touchLocation.clientY < 0 + h) {
         // if (x === 1) {
         // x = 0;
@@ -72,43 +84,54 @@ export default async (v,p,c,obj,r) => {
     }
 
     function touchend(event, self, obj) {
-        let box1 =  object.dragging.image.getBoundingClientRect(),
-        x1 = box1.left,
-        y1 = box1.top,
-        h1 = self.offsetHeight,
-        w1 = self.offsetWidth,
-        b1 = y1 + h1,
-        r1 = x1 + w1;
-        console.log('', box1);
-    [].forEach.call(self.items, function(target) {
-            let box2 = target.getBoundingClientRect(),
-            x2 = box2.left,
-            y2 = box2.top,
-            h2 = target.offsetHeight,
-            w2 = target.offsetWidth,
-            b2 = y2 + h2,
-            r2 = x2 + w2;
+        console.log('sssssss', object.touchEl)
+        if(!isEmpty(object.touchEl)) { 
 
-        if (b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2) {
-            return false;
-        } else {
-            if (object.touchEl.classList.contains('drag-item--prepend')) {
-                // console.log('~~~~~~~~~~~~~~~~~~~~~', target)
-                // target.prepend(object.touchEl);
-            } else {
-                // console.log('~~~~~~~~1~~~~~~~~~~~~~', target)
-                // console.log('~~~~~~~~~~2~~~~~~~~~~~', object.touchEl)
-                // target.appendChild(object.touchEl);
+            let swap = {
+                self: object.touchEl,
+                image: object.dragging.image,
+                selfActive: object.active.element,
+                active: (isEmpty(object.active.element.querySelector('.manager-board__item_td_img')))
+                ?''
+                :object.active.element.querySelector('.manager-board__item_td_img').cloneNode(true)
             }
+            if(!isEmpty(swap.active) && !isEmpty(swap.image)) {
+                swap.active.dataset.item = swap.self.dataset.item 
+                swap.image.dataset.item = object.active.element.dataset.item
+            } else {
+                if(!isEmpty(swap.active)) {
+                    swap.active.dataset.item = swap.self.dataset.item
+                }
+                if(!isEmpty(swap.image)) {
+                    swap.image.dataset.item = object.active.element.dataset.item
+                }
+            }
+            object.active.element.removeAttribute("style");
+            swap.self.innerHTML = ''
+         
+            if(!isEmpty(swap.active)) {
+                console.log('~~~~~~~~swap.active~~~~2~~~~~', swap.active)
+                swap.self.appendChild(swap.active)    
+            }
+            swap.selfActive.innerHTML = ''
+            if(!isEmpty(swap.image)) {
+                console.log('~~~~~~~~swap.image~~~~1~~~~~', swap.active)
+                swap.image.removeAttribute("style");
+                swap.selfActive.appendChild(swap.image)    
+            }
+            object.draggingItem = {}
+            object.touchLocation = {}
+            object.touchEl = {}
+            object.lastMove = {}
+            object.board.self = {}
+            object.board.width = ''
+            object.board.height = ''
+            object.dragging.conrainer = {}
+            object.dragging.image = {}
+            object.active.element = {}
+            object.active.coord = ''
+            object.touchEl = {}
         }
-    });
-    console.log('~~~~~~~~~~~~~~~~~~~~', object.dragging.image)
-    object.dragging.image.removeAttribute("style");
-    // this.removeAttribute('style');
-    // this.classList.remove('drag-item--touchmove');
-    // clearTimeout(scrollDelay);
-    // x = 1;
-    object.touchEl = {}
     }
 
 
