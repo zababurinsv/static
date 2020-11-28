@@ -38,6 +38,7 @@ export default async (v,p,c,obj,r) => {
 
     var x = 1;
    async function touchmove(event, self, obj) {
+       console.log('############', event.targetTouches)
         object.touchLocation = event.targetTouches[0]
         let board =  obj['this'].shadowRoot.querySelector('.board')
         // let touchLocation = event.targetTouches[0],
