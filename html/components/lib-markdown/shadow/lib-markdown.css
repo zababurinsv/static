@@ -1,1 +1,1 @@
-:host{display:grid;grid-template-rows:1fr;grid-template-columns:1fr;box-sizing:border-box;padding:1vw}.markdown{display:grid;grid-template-rows:1fr 1fr 1fr;grid-template-columns:1fr}.markdown__self{resize:vertical;min-height:12vw}
+:host{display:grid;grid-template-rows:1fr;grid-template-columns:1fr;box-sizing:border-box;padding:1vw}.markdown{display:grid;grid-template-rows:1fr 1fr 1fr;grid-template-columns:1fr}.markdown__self{resize:vertical;min-height:12vw}.markdown__html{background:#9bcec1}.markdown__string{background:#c6ce9b}

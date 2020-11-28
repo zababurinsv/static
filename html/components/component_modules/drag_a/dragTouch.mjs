@@ -44,15 +44,15 @@ export default async (v,p,c,obj,r) => {
         object.board.width = board.offsetWidth,
         object.board.height = board.offsetHeight;
         let $t = await self.item(event.target);
-        console.log('~~~~~~~~~~~~~~',{
-            asdasd: self.element.offsetWidth,
-            afasdassss: $t
-        })
+        // console.log('~~~~~~~~~~~~~~',{
+            // asdasd: self.element.offsetWidth,
+            // afasdassss: $t
+        // })
         object.lastMove = event;
         object.touchEl = self.element;
 // 
-        console.log('~~~~~~~~~!!~~~~~~', `${self.element.offsetWidth}px`)
-        console.log('~~~~~~~~~!!~~~~~~', `${self.element.offsetHeight}px`)
+        // console.log('~~~~~~~~~!!~~~~~~', `${self.element.offsetWidth}px`)
+        // console.log('~~~~~~~~~!!~~~~~~', `${self.element.offsetHeight}px`)
         object.dragging.image.style.width = self.element.offsetWidth + 'px';
         object.dragging.image.style.height = self.element.offsetHeight + 'px';
         object.dragging.image.style.position = 'fixed';
@@ -71,36 +71,38 @@ export default async (v,p,c,obj,r) => {
     }
 
     function touchend(event, self, obj) {
-        console.log('~~~~~~~~~~~~~~@@@@@@@@@@@@@@@~', self.element.getBoundingClientRect())
-    // var box1 = this.getBoundingClientRect(),
-        // x1 = box1.left,
-        // y1 = box1.top,
-        // h1 = this.offsetHeight,
-        // w1 = this.offsetWidth,
-        // b1 = y1 + h1,
-        // r1 = x1 + w1;
-// 
-    // var targets = document.querySelectorAll('.drag-container');
-    // [].forEach.call(targets, function(target) {
-        // var box2 = target.getBoundingClientRect(),
-            // x2 = box2.left,
-            // y2 = box2.top,
-            // h2 = target.offsetHeight,
-            // w2 = target.offsetWidth,
-            // b2 = y2 + h2,
-            // r2 = x2 + w2;
-// 
-        // if (b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2) {
-        // return false;
-        // } else {
-        // if (object.touchEl.classList.contains('drag-item--prepend')) {
-            // target.prepend(object.touchEl);
-        // } else {
-            // target.appendChild(object.touchEl);
-        // }
-        // }
-    // });
-//  
+        let box1 =  object.dragging.image.getBoundingClientRect(),
+        x1 = box1.left,
+        y1 = box1.top,
+        h1 = self.offsetHeight,
+        w1 = self.offsetWidth,
+        b1 = y1 + h1,
+        r1 = x1 + w1;
+        console.log('', box1);
+    [].forEach.call(self.items, function(target) {
+            let box2 = target.getBoundingClientRect(),
+            x2 = box2.left,
+            y2 = box2.top,
+            h2 = target.offsetHeight,
+            w2 = target.offsetWidth,
+            b2 = y2 + h2,
+            r2 = x2 + w2;
+
+        if (b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2) {
+            return false;
+        } else {
+            if (object.touchEl.classList.contains('drag-item--prepend')) {
+                // console.log('~~~~~~~~~~~~~~~~~~~~~', target)
+                // target.prepend(object.touchEl);
+            } else {
+                // console.log('~~~~~~~~1~~~~~~~~~~~~~', target)
+                // console.log('~~~~~~~~~~2~~~~~~~~~~~', object.touchEl)
+                // target.appendChild(object.touchEl);
+            }
+        }
+    });
+    console.log('~~~~~~~~~~~~~~~~~~~~', object.dragging.image)
+    object.dragging.image.removeAttribute("style");
     // this.removeAttribute('style');
     // this.classList.remove('drag-item--touchmove');
     // clearTimeout(scrollDelay);

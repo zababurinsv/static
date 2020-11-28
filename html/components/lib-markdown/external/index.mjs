@@ -27,6 +27,7 @@ export default async (v,p,c,obj,r) => {
         html.innerHTML = output.join(" ");
         htmlstr.innerText = output.join("\n");
     }
+    
     obj.this.shadowRoot.querySelector('.markdown').addEventListener("input", updateUI);
     updateUI()
 }
