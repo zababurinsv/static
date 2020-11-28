@@ -21,7 +21,6 @@ let object = {
 export default async (v,p,c,obj,r) => {
    async function touchstart(event, self, obj) {
     event.preventDefault();
-            console.log('sssssssssssssss', self.element)
         if(!isEmpty(self.element.querySelector('.manager-board__item_td_img'))) {
             object.dragging.conrainer = await self.item(self.element.querySelector('.manager-board__item_td_img'));
             object.dragging.image = object.dragging.conrainer.querySelector('.manager-board__item_td_img')
@@ -43,9 +42,9 @@ export default async (v,p,c,obj,r) => {
 
     var x = 1;
    async function touchmove(event, self, obj) {
+       if(!isEmpty(object.dragging.image)) {
         object.touchLocation = event.targetTouches[0]
         object.board.self = obj['this'].shadowRoot.querySelector('.board')
-        // let touchLocation = event.targetTouches[0],
         object.board.width = object.board.self.offsetWidth,
         object.board.height = object.board.self.offsetHeight;
         let $t = await self.item(event.target);
@@ -68,25 +67,12 @@ export default async (v,p,c,obj,r) => {
             } else {
 
             }
-        } 
-        
-
-        // element.style.background = 'red'
-    // if (touchLocation.clientY > window.innerHeight - h || touchLocation.clientY < 0 + h) {
-        // if (x === 1) {
-        // x = 0;
-        // pageScroll(touchLocation.clientY, h);
-        // }
-    // } else {
-        // clearTimeout(scrollDelay);
-        // x = 1;
-    // }
+          } 
+       }
     }
 
     function touchend(event, self, obj) {
-        console.log('sssssss', object.touchEl)
-        if(!isEmpty(object.touchEl)) { 
-
+        if(!isEmpty(object.dragging.image)) { 
             let swap = {
                 self: object.touchEl,
                 image: object.dragging.image,
@@ -108,14 +94,11 @@ export default async (v,p,c,obj,r) => {
             }
             object.active.element.removeAttribute("style");
             swap.self.innerHTML = ''
-         
             if(!isEmpty(swap.active)) {
-                console.log('~~~~~~~~swap.active~~~~2~~~~~', swap.active)
                 swap.self.appendChild(swap.active)    
             }
             swap.selfActive.innerHTML = ''
             if(!isEmpty(swap.image)) {
-                console.log('~~~~~~~~swap.image~~~~1~~~~~', swap.active)
                 swap.image.removeAttribute("style");
                 swap.selfActive.appendChild(swap.image)    
             }
