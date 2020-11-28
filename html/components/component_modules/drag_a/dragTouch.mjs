@@ -47,7 +47,6 @@ export default async (v,p,c,obj,r) => {
         object.board.self = obj['this'].shadowRoot.querySelector('.board')
         object.board.width = object.board.self.offsetWidth,
         object.board.height = object.board.self.offsetHeight;
-        let $t = await self.item(event.target);
         object.lastMove = event;
         object.touchEl = await self.item(event.target);
         object.dragging.image.style.width = self.element.offsetWidth + 'px';
@@ -95,13 +94,31 @@ export default async (v,p,c,obj,r) => {
             object.active.element.removeAttribute("style");
             swap.self.innerHTML = ''
             if(!isEmpty(swap.active)) {
-                swap.self.appendChild(swap.active)    
+                swap.self.appendChild(swap.active)
+                if(swap.self.classList.contains('manager-board__item_td_empty')){
+                    swap.self.classList.remove('manager-board__item_td_empty');
+                }    
+            } else {
+                if(!swap.self.classList.contains('manager-board__item_td_empty')){
+                    swap.self.classList.add('manager-board__item_td_empty');
+                }
             }
+
             swap.selfActive.innerHTML = ''
             if(!isEmpty(swap.image)) {
                 swap.image.removeAttribute("style");
-                swap.selfActive.appendChild(swap.image)    
+                swap.selfActive.appendChild(swap.image) 
+                if(swap.selfActive.classList.contains('manager-board__item_td_empty')){
+                    swap.selfActive.classList.remove('manager-board__item_td_empty');
+                }            
+            } else {
+                if(!swap.selfActive.classList.contains('manager-board__item_td_empty')){
+                    swap.selfActive.classList.add('manager-board__item_td_empty');
+                }
             }
+
+         
+
             object.draggingItem = {}
             object.touchLocation = {}
             object.touchEl = {}
