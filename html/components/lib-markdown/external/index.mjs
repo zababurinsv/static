@@ -63,7 +63,6 @@ export default async (v,p,c,obj,r) => {
     
     await fsLoad()
     let dir = object.FS.readdir("/data")
-    console.log('dddddddddddddddddddiiiiiiiiirrrrrrrrr', dir)
     if(!isEmpty(dir)) {
     let mdfs =  object.FS.readFile("/data/data.md",{ encoding: "utf8" });
     if(!isEmpty(mdfs)) { self.value = mdfs }
