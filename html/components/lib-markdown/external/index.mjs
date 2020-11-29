@@ -1,6 +1,7 @@
 import events from '/static/html/components/lib-markdown/external/events.mjs'
 import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 import Markdown from '/static/html/components/lib-markdown/external/wasm/sundown.mjs'
+import Parser from '/static/html/components/component_modules/bundle/html2json/html2json.index.mjs'
 export default async (v,p,c,obj,r) => {
     let output = [];
     let html = obj['this']['shadowRoot'].querySelector('.markdown__html')
@@ -53,7 +54,9 @@ export default async (v,p,c,obj,r) => {
     function updateUI() {
         let output = markdownToHTML(self.value);
         html.innerHTML = output.join(" ");
-        htmlstr.innerText = output.join("\n");
+        // htmlstr.innerText = output.join("\n");
+        htmlstr.innerText = Parser.json(Parser.parse(html.innerHTML))
+        console.log('Parser#####', Parser.parse(html.innerHTML))
         fsSave()
     }
     await fsLoad()

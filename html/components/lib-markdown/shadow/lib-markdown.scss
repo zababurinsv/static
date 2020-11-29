@@ -12,7 +12,7 @@
 
 .markdown {
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: 0.1fr 0.1fr 1fr;
     grid-template-columns: 1fr;
  
     &__self {
@@ -21,10 +21,11 @@
     }
 
     &__html {
-        background: rgb(155, 206, 193);
+        background: rgb(74, 84, 226);
     }
 
     &__string {
-        background: rgb(198, 206, 155);
+        background: rgb(243, 108, 108);
+        margin: 0;
     }
 }
