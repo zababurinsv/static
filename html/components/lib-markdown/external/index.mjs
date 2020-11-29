@@ -45,6 +45,22 @@ export default async (v,p,c,obj,r) => {
         print: d => output.push(d),
     })
 
+    function download() {
+        let dir = object.FS.readdir("/data")  
+        let filename = 'default.md'
+        let text = ''
+        if(dir.find(item => item === 'data.md')) {
+            text =  object.FS.readFile("/data/data.md",{ encoding: "utf8" });
+        }
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    }
+
     function markdownToHTML(markdown) {
         output = [];
         object.FS.writeFile('/data/data.md',markdown)
@@ -62,11 +78,12 @@ export default async (v,p,c,obj,r) => {
     }
     
     await fsLoad()
-    let dir = object.FS.readdir("/data")  
+        let dir = object.FS.readdir("/data")  
     if(dir.find(item => item === 'data.md')) {
-    let mdfs =  object.FS.readFile("/data/data.md",{ encoding: "utf8" });
-    if(!isEmpty(mdfs)) { self.value = mdfs }
+        let mdfs =  object.FS.readFile("/data/data.md",{ encoding: "utf8" });
+        if(!isEmpty(mdfs)) { self.value = mdfs }
     }
     updateUI()
     obj.this.shadowRoot.querySelector('.markdown').addEventListener("input", updateUI);
+    obj.this.shadowRoot.querySelector('.markdown__download').addEventListener("click", download);
 }
