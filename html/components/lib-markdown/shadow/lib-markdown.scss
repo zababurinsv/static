@@ -25,12 +25,14 @@ code {
         grid-template-rows: 1fr;
         grid-template-columns: 1fr 1fr 1fr;
         column-gap: 2vw;
+        margin: 1vw 0;
 
-        &__download {
+        &_download {
             cursor: pointer;
         }
-        &__upload {
+        &_upload {
             cursor: pointer;
+            text-align: center;
         }
     }
     
