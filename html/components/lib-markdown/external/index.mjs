@@ -45,9 +45,19 @@ export default async (v,p,c,obj,r) => {
         print: d => output.push(d),
     })
 
+   async function selected(event) {
+        event.preventDefault()
+        let md = await fetch(`${location.origin}/markdown/${event.target.value}.md`)  
+        md = await md.text()
+        self.innerText = md 
+        self.value = md
+        updateUI()
+
+    }
     function download() {
+        let name = prompt('Введите название файла', 'default');
         let dir = object.FS.readdir("/data")  
-        let filename = 'default.md'
+        let filename = `${name}.md`
         let text = ''
         if(dir.find(item => item === 'data.md')) {
             text =  object.FS.readFile("/data/data.md",{ encoding: "utf8" });
@@ -91,12 +101,10 @@ export default async (v,p,c,obj,r) => {
         html.innerHTML = output.join(" ");
         // htmlstr.innerText = output.join("\n");
         htmlstr.innerText = Parser.json(Parser.parse(html.innerHTML))
-        console.log('Parser#####', Parser.parse(html.innerHTML))
         fsSave()
     }
-    
     await fsLoad()
-        let dir = object.FS.readdir("/data")  
+    let dir = object.FS.readdir("/data")  
     if(dir.find(item => item === 'data.md')) {
         let mdfs =  object.FS.readFile("/data/data.md",{ encoding: "utf8" });
         if(!isEmpty(mdfs)) { self.value = mdfs }
@@ -105,4 +113,5 @@ export default async (v,p,c,obj,r) => {
     obj.this.shadowRoot.querySelector('.markdown').addEventListener("input", updateUI);
     obj.this.shadowRoot.querySelector('.markdown__button_download').addEventListener("click", download);
     obj.this.shadowRoot.querySelector('.markdown__button_upload').addEventListener("change", upload);
+    obj.this.shadowRoot.querySelector('.markdown__button_select').addEventListener("change", selected);
 }
