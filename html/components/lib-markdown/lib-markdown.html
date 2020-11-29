@@ -1,6 +1,9 @@
 <template>
     <div class="markdown">
-        <button class="markdown__download">Скачать MD файл</button>
+        <div class="markdown__button" >
+            <button class="markdown__button_download">Скачать MD файл</button>
+           <label for="upload">Загрузить MD файл <input type="file" id="upload" class="markdown__button_upload"></label>
+        </div>
         <textarea class="markdown__self"></textarea>
         <div class="markdown__html"></div>
         <pre class="markdown__string"></pre>

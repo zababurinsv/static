@@ -7,7 +7,7 @@ export default async (v,p,c,obj,r) => {
     let html = obj['this']['shadowRoot'].querySelector('.markdown__html')
     let htmlstr = obj['this']['shadowRoot'].querySelector('.markdown__string')
     let self = obj['this']['shadowRoot'].querySelector('.markdown__self')
-    let md = await fetch('https://zababurinsv.github.io/markdown/fs.md')
+    let md = await fetch('https://zababurinsv.github.io/markdown/index.md')
     md = await md.text();
     self.value = md
     
@@ -61,6 +61,24 @@ export default async (v,p,c,obj,r) => {
         document.body.removeChild(element);
     }
 
+    function upload(event) {
+  
+        console.log(event.path[0].files[0])
+        let reader = new FileReader();
+        reader.readAsText(event.path[0].files[0]);
+
+        reader.onload = function() {
+            self.innerText = reader.result 
+            self.value = reader.result 
+            updateUI()
+            // console.log(reader.result);
+          };
+        
+          reader.onerror = function() {
+            console.log(reader.error);
+          };
+    }
+
     function markdownToHTML(markdown) {
         output = [];
         object.FS.writeFile('/data/data.md',markdown)
@@ -85,5 +103,6 @@ export default async (v,p,c,obj,r) => {
     }
     updateUI()
     obj.this.shadowRoot.querySelector('.markdown').addEventListener("input", updateUI);
-    obj.this.shadowRoot.querySelector('.markdown__download').addEventListener("click", download);
+    obj.this.shadowRoot.querySelector('.markdown__button_download').addEventListener("click", download);
+    obj.this.shadowRoot.querySelector('.markdown__button_upload').addEventListener("change", upload);
 }
