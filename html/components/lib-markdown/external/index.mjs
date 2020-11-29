@@ -37,6 +37,7 @@ export default async (v,p,c,obj,r) => {
                 const fsSave = () => this.FS.syncfs(false, err => console.warn(err));
                 window.onbeforeunload = () => fsSave();
                 fsSetup("/data");
+                // fsSave()
             } catch (e) {
                 console.error('error', e)
             }
@@ -59,9 +60,14 @@ export default async (v,p,c,obj,r) => {
         console.log('Parser#####', Parser.parse(html.innerHTML))
         fsSave()
     }
+    
     await fsLoad()
+    let dir = object.FS.readdir("/data")
+    console.log('dddddddddddddddddddiiiiiiiiirrrrrrrrr', dir)
+    if(!isEmpty(dir)) {
     let mdfs =  object.FS.readFile("/data/data.md",{ encoding: "utf8" });
     if(!isEmpty(mdfs)) { self.value = mdfs }
+    }
     updateUI()
     obj.this.shadowRoot.querySelector('.markdown').addEventListener("input", updateUI);
 }
