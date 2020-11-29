@@ -10,7 +10,6 @@ export default async (v,p,c,obj,r) => {
     let md = await fetch('https://zababurinsv.github.io/markdown/index.md')
     md = await md.text();
     self.value = md
-    
     const fsLoad = () => {
         return new Promise(async (resolve, reject) => {
             window.FS.syncfs(true , (err) => {
@@ -22,29 +21,23 @@ export default async (v,p,c,obj,r) => {
     const fsSave = () => window.FS.syncfs(false, (err) => {
         console.log('file save')
     });
+    window.onbeforeunload = () => { fsSave(); }
     let object=await Markdown({
         preInit() {},
         onRuntimeInitialized() {
             try {
-                console.log('ssss', this.FS)
-                // this.FS.readFile()
                 isEmpty(window.FS)? window.FS = this.FS:window.FS 
-                
                 const fsSetup = path => {
                     this.FS.mkdir(path);
                     this.FS.mount(this.FS.filesystems.IDBFS, {}, path);
                 };
-                const fsSave = () => this.FS.syncfs(false, err => console.warn(err));
-                window.onbeforeunload = () => fsSave();
                 fsSetup("/data");
-                // fsSave()
             } catch (e) {
                 console.error('error', e)
             }
         },
         print: d => output.push(d),
     })
-
    async function selected(event) {
         event.preventDefault()
         let md = await fetch(`${location.origin}/markdown/${event.target.value}.md`)  
@@ -52,8 +45,8 @@ export default async (v,p,c,obj,r) => {
         self.innerText = md 
         self.value = md
         updateUI()
-
     }
+
     function download() {
         let name = prompt('Введите название файла', 'default');
         let dir = object.FS.readdir("/data")  
@@ -72,7 +65,6 @@ export default async (v,p,c,obj,r) => {
     }
 
     function upload(event) {
-  
         console.log(event.path[0].files[0])
         let reader = new FileReader();
         reader.readAsText(event.path[0].files[0]);
@@ -81,7 +73,6 @@ export default async (v,p,c,obj,r) => {
             self.innerText = reader.result 
             self.value = reader.result 
             updateUI()
-            // console.log(reader.result);
           };
         
           reader.onerror = function() {
@@ -95,13 +86,20 @@ export default async (v,p,c,obj,r) => {
         object.callMain(["/data/data.md"]);
         return output;
     }
-
-    function updateUI() {
+    function saveMd () {
         let output = markdownToHTML(self.value);
         html.innerHTML = output.join(" ");
-        // htmlstr.innerText = output.join("\n");
         htmlstr.innerText = Parser.json(Parser.parse(html.innerHTML))
         fsSave()
+    }
+    function updateUI(event = {}) {
+        if(!isEmpty(event.target)) {
+            if(event.target.tagName !== 'SELECT') {
+                saveMd()
+            }
+        } else {
+            saveMd()
+        }
     }
     await fsLoad()
     let dir = object.FS.readdir("/data")  
