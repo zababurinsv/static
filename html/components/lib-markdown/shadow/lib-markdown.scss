@@ -12,16 +12,18 @@
 }
 
 .markdown {
-    display: grid;
-    grid-template-rows: 0.02fr 0.3fr 0.3fr 1fr;
-    grid-template-columns: 1fr;
- 
+    display: flex;
+    flex-direction: column;
+    // display: grid;
+    // grid-template-rows: 0.02fr 0.3fr 0.3fr 1fr;
+    // grid-template-columns: 1fr;
+//  
     &__button {
-        display: grid;
-        grid-template-rows: 1fr;
-        grid-template-columns: 1fr 1fr 1fr;
-        column-gap: 2vw;
-        margin: 1vw 0;
+        // display: grid;
+        // grid-template-rows: 1fr;
+        // grid-template-columns: 1fr 1fr 1fr;
+        // column-gap: 2vw;
+        // margin: 1vw 0;
 
         &_download {
             cursor: pointer;
