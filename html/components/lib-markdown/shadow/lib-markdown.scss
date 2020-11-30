@@ -39,6 +39,7 @@
 
     &__self {
         resize: vertical;
+        white-space: pre-wrap;
     }
 
     &__html {
@@ -46,6 +47,7 @@
         border-width: 0.1vw;
         border-style: solid;
         border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+        white-space: pre-wrap;
     }
 
     &__string {
@@ -54,5 +56,6 @@
         border-style: solid;
         border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
         margin: 0;
+        white-space: pre-wrap;
     }
 }
