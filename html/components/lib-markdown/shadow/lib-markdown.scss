@@ -2,6 +2,7 @@
 @import "./docs/css/fonts.scss";
 @import "./docs/css/media.scss";
 
+
 :host {
     display: grid;
     grid-template-rows: 1fr;
@@ -9,14 +10,7 @@
     box-sizing: border-box;
     padding: 1vw;
 }
-pre {
-    padding: 16px;
-    overflow: auto;
-    font-size: 85%;
-    line-height: 1.45;
-    background-color: var(--aqua_haze);
-    border-radius: 6px;
-}
+
 .markdown {
     display: grid;
     grid-template-rows: 0.02fr 0.3fr 0.3fr 1fr;
@@ -41,7 +35,6 @@ pre {
 
     &__self {
         resize: vertical;
-        white-space: pre-wrap;
     }
 
     &__html {
@@ -49,7 +42,6 @@ pre {
         border-width: 0.1vw;
         border-style: solid;
         border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
-        white-space: pre-wrap;
     }
 
     &__string {
@@ -57,7 +49,6 @@ pre {
         border-width: 0.1vw;
         border-style: solid;
         border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
-        white-space: pre-wrap;
         margin: 0;
     }
 }
