@@ -1032,7 +1032,8 @@ var WebContainer = {
   height: "100%",
   width: "100%",
   frameborder:"0",
-  allow:"clipboard",
+  clipboard:"allow",
+  scrolling:"yes",
   _update: function(background) {
     if (background.style) {
       this.style = background.style;

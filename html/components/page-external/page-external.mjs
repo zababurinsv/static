@@ -747,13 +747,21 @@ div#external{
           this.HTMLElement = window.HTMLElement
           let Jason = await loader('/static/html/components/component_modules/cell-index/jason.mjs','Jason')
           let ST = await loader('/static/html/components/component_modules/cell-index/st.mjs','ST')
-          let url = {}
+          let url = ''
           if(obj.this.dataset.url){
             url =  obj.this.dataset.url
+            if(url.indexOf('${location.origin}') !== -1) {
+              if(location.origin.indexOf('localhost') !== -1) {
+                url = url.replace('${location.origin}', '')
+              } else {
+                url = url.replace('${location.origin}', `${location.origin}`)
+              }
+            }
           }else{
             url = 'https://zababurinsv.github.io/dashboard/'
           }
-          // console.assert(false, ST)
+
+          url = url.toString()
           let app = Jason({
             $cell: true,
             style: {
@@ -769,7 +777,7 @@ div#external{
               'body': {
                 'background': {
                   'type': 'html',
-                  'url':`${url}`
+                  'url':url
                 }
               }
             }
