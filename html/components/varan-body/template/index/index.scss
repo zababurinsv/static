@@ -1,14 +1,17 @@
 p {
     margin:0;
 }
+
 p:first-letter {
     margin-left: -0.06em;
 }
+
 .main-body {
     width: 100%;
     position: relative;
     height:28.404099560761345vw;
 }
+
 .main-body-background {
     position:absolute;
     width:100%;
@@ -16,21 +19,25 @@ p:first-letter {
     left:0vw;
     z-index:-1;
 }
+
 .main-body-dev:active {
     box-shadow:inset 0px 0px 117px 33px rgba(0,0,0,0.15),0px 0px 117px 33px rgba(0,0,0,0.5);
     text-shadow:0px 0px 33px rgba(0,0,0,0.5);
     cursor: pointer;
 }
+
 .main-body-prod:active {
     box-shadow:inset 0px 0px 117px 33px rgba(0,0,0,0.15),0px 0px 117px 33px rgba(0,0,0,0.5);
     text-shadow:0px 0px 33px rgba(0,0,0,0.5);
     cursor: pointer;
 }
+
 .main-body-lab:active {
     box-shadow:inset 0px 0px 117px 33px rgba(0,0,0,0.15),0px 0px 117px 33px rgba(0,0,0,0.5);
     text-shadow:0px 0px 33px rgba(0,0,0,0.5);
     cursor: pointer;
 }
+
 .main-body-dev:hover {
     box-shadow:inset 0px 0px 134px 16.5px rgba(0,0,0,0.09),0px 0px 134px 16.5px rgba(0,0,0,0.3);
     text-shadow:0px 0px 16.5px rgba(0,0,0,0.3);

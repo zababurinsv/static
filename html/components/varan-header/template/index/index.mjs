@@ -3,7 +3,6 @@ let element, bbox, inputX, inputY, offsetX, offsetY, raf;
 
 export default async (v,p,c,obj,r) => {
     let container = obj.this.shadowRoot.querySelector('div')
-    let dev = obj.this.shadowRoot.querySelector(`.${parent.className}-help_aiming`)
     let state = { distX: 0, distY: 0 };
 
     function userPressed(event) {
