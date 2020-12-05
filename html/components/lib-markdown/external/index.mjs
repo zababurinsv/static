@@ -173,7 +173,7 @@ export default async (v,p,c,obj,r) => {
         system.worker_main["html.iframe"].style.frameBorder = "0";
         system.worker_main["html.iframe"].sandbox = "allow-scripts";
         system.worker_main["markdown__string_views"].appendChild(system.worker_main["html.iframe"])
-        system.worker_main["markdown__string_views"].style.height = '60vw'
+        system.worker_main["markdown__string_views"].style.height = '54vw'
         system.worker_main["markdown__string_views"].style.whiteSpace = "initial"
     }
     function markdown__string_menu_change_false(event) {
@@ -222,7 +222,7 @@ export default async (v,p,c,obj,r) => {
             system.worker_main["markdown__string_views"].appendChild(system.worker_main["html.iframe"]);
             (code.innerText === '<pre></pre>')
             ? system.worker_main["markdown__string_views"].style.height = 'auto'
-            : system.worker_main["markdown__string_views"].style.height = '60vw'
+            : system.worker_main["markdown__string_views"].style.height = '54vw'
             resolve(fsSave()) 
         })
     }
