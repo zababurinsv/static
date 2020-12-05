@@ -115,8 +115,6 @@ export default async (v,p,c,obj,r) => {
             system.worker_main["html"].innerHTML = system.worker_main["output"];
             system.worker_main["html.innerText"] = system.worker_main["html"].querySelector('code').innerText;
             system.worker_main["src"] = 'data:text/html;charset=utf-8,' + encodeURIComponent(system.worker_main["html.innerText"])
-            
-            // console.assert(false, system.worker_main["html.innerText"])
             if(system.worker_main["markdown__string_views"].querySelector('iframe')) {
                 system.worker_main["markdown__string_views"].querySelector('iframe').remove()
             }
@@ -131,20 +129,6 @@ export default async (v,p,c,obj,r) => {
             system.worker_main["markdown__string_views"].style.height = '60vw'
             resolve(fsSave()) 
         })
-
-        // if(htmlstr.querySelector('iframe')) {
-            // htmlstr.querySelector('iframe').remove()
-        // }
-        // var iframe = document.createElement('iframe');
-        // iframe.src = 'data:text/html;charset=utf-8,' + encodeURI(html.querySelector('code').innerText)
-        // iframe.width = "100%";
-        // iframe.height = "100%";
-        // iframe.sandbox = "allow-scripts";
-        // htmlstr.appendChild(iframe);
-        // htmlstr.style.height = '115vw'
-        // htmlstr.insertAdjacentHTML('afterend', `${html.innerHTML}`)
-        // htmlstr.innerText = Parser.json(Parser.parse(html.innerHTML))
-     
     }
     function markdown__string_menu_change_true(event) {
         system.worker_main["markdown__string_views"].innerHTML = ''
@@ -177,7 +161,6 @@ export default async (v,p,c,obj,r) => {
         system.worker_main["event.target"] = event.target
         if(!isEmpty(event.target)) {
             if(event.target.tagName !== 'SELECT' && event.target.tagName !== 'INPUT') {
-                console.log('ddddddddddddddddd')
                 saveMd()
             } else {
                 switch(event.target.tagName) {
@@ -186,30 +169,6 @@ export default async (v,p,c,obj,r) => {
                         system.worker_main['checkbox.value']
                         ? markdown__string_menu_change_true()
                         : markdown__string_menu_change_false()
-                        // console.assert(false, system)
-                        
-                        // var iframe = document.createElement('iframe');
-                        // iframe.src = 
-                        // iframe.width = "100%";
-                        // iframe.height = "100%";
-                        // iframe.sandbox = "allow-scripts";
-                        // htmlstr.appendChild(iframe);
-                        // htmlstr.style.height = '115vw'
-                        // let htmlout = document.createElement('html')
-                        // htmlout.insertAdjacentHTML('afterbegin', )
-                        // console.log('ddddddddddddddddd', htmlout)  
-                        // htmlstr.shadowRoot.appendChild(htmlout)
-                        // console.log('ddddddddddddddddd', html)  
-                        // htmlstr.shadowRoot.
-                        // event.target.checked 
-                            // ?(
-                                //  = ,
-                                // htmlstr.shadowRoot.insertAdjacentHTML('afterbegin', html.querySelector('code').innerHTML)
-                            // ) 
-                            // :(
-                                // htmlstr.shadowRoot.innerText = Parser.json(Parser.parse(html.innerHTML))
-                            // )
-                            // console.log('event.target.dataset', event.target.dataset.value, event.target.id, event.target.checked)
                             break
                         default:
                             break
