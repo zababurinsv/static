@@ -114,6 +114,8 @@ export default async (v,p,c,obj,r) => {
         if(system.worker_main["markdown__string_views"].querySelector('iframe')) {
             system.worker_main["markdown__string_views"].querySelector('iframe').remove()
         }
+        system.worker_main["html"].innerHTML = ''
+        system.worker_main["html"].innerHTML = system.worker_main['html.innerHTML']
         system.worker_main["html.iframe"] = document.createElement('iframe');
         system.worker_main["html.iframe"].src = system.worker_main["src"] 
         system.worker_main["html.iframe"].width = "100%";
@@ -128,12 +130,16 @@ export default async (v,p,c,obj,r) => {
         if(system.worker_main["markdown__string_views"].querySelector('iframe')) {
             system.worker_main["markdown__string_views"].querySelector('iframe').remove()
         }
-        let json = Parser.parse(system.worker_main.output)
-        let key = json.findIndex(item => item.tagName === 'pre')
-        json[key]['children'][0]['children'][0]['content'] = Parser.parse(system.worker_main["html.innerText"])
-        system.worker_main["markdown__string_views"].innerText = Parser.json(json)
+      
+        let json = {
+            code: Parser.parse(system.worker_main['html.code']),
+            html: Parser.parse(system.worker_main['html.innerHTML'])
+        }
+        system.worker_main["html"].innerHTML = ''
+        system.worker_main["html"].innerText = Parser.json(json.html)
+        system.worker_main["markdown__string_views"].innerText = Parser.json(json.code)
         system.worker_main["markdown__string_views"].style.height = 'auto'
-     
+        system.worker_main["markdown__string_views"].style.color = '#0b6546'
     }
     function saveMd () {
         return new Promise(async (resolve, reject) => { 
