@@ -1034,6 +1034,7 @@ var WebContainer = {
   frameborder:"0",
   clipboard:"allow",
   scrolling:"yes",
+  sandbox:"allow-scripts allow-top-navigation-by-user-activation",
   _update: function(background) {
     if (background.style) {
       this.style = background.style;

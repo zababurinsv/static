@@ -749,19 +749,18 @@ div#external{
           let ST = await loader('/static/html/components/component_modules/cell-index/st.mjs','ST')
           let url = ''
           if(obj.this.dataset.url){
-            url =  obj.this.dataset.url
-            if(url.indexOf('${location.origin}') !== -1) {
-              if(location.origin.indexOf('localhost') !== -1) {
-                url = url.replace('${location.origin}', '')
-              } else {
-                url = url.replace('${location.origin}', `${location.origin}`)
+              url =  obj.this.dataset.url
+              if(url.indexOf('${location.origin}') !== -1) {
+                if(location.origin.indexOf('localhost') !== -1) {
+                  url = url.replace('${location.origin}', '')
+                } else {
+                  url = url.replace('${location.origin}', `${location.origin}`)
+                }
               }
-            }
+              url = url.toString()
           }else{
-            url = 'https://zababurinsv.github.io/dashboard/'
+            url = obj.this.dataset.innerHTML
           }
-
-          url = url.toString()
           let app = Jason({
             $cell: true,
             style: {
@@ -777,23 +776,28 @@ div#external{
               'body': {
                 'background': {
                   'type': 'html',
-                  'url':url
+                  'url': url
                 }
               }
             }
           })
           this.app = app
           obj['function']['create'](obj)
-            let host = this.dataset.url.replace('/import','')
-            let ifr = obj['this'].querySelector('iframe')
-            iframe.set(host, ifr, obj['this'])
-            ifr.onload = function () {
-              setTimeout(function() {
-                document.dispatchEvent( new CustomEvent(`iframe`,{
-                  detail:host
-                }))
-              }, 0);
-            }
+          if(!this.dataset.url) {
+            // console.log('ffgfgfdddd3')
+          } else {
+            // console.log('ffgfgf')
+            // let host = this.dataset.url.replace('/import','')
+            // let ifr = obj['this'].querySelector('iframe')
+            // iframe.set(host, ifr, obj['this'])
+            // ifr.onload = function () {
+              // setTimeout(function() {
+                // document.dispatchEvent( new CustomEvent(`iframe`,{
+                  // detail:host
+                // }))
+              // }, 0);
+            // }
+          }
         })(this)
       }
     })
