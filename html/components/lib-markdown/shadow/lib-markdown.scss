@@ -58,5 +58,8 @@
         border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
         margin: 0;
         white-space: pre-wrap;
+        &_menu {
+            white-space: initial;
+        }
     }
 }
