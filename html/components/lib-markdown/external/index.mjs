@@ -219,10 +219,7 @@ export default async (v,p,c,obj,r) => {
             system.worker_main["html.iframe"].style.border = "0";
             system.worker_main["html.iframe"].style.frameBorder = "0";
             system.worker_main["html.iframe"].sandbox = "allow-scripts";
-            console.log(system.worker_main)
             system.worker_main["markdown__string_views"].appendChild(system.worker_main["html.iframe"]);
-           
-            
             (code.innerText === '<pre></pre>')
             ? system.worker_main["markdown__string_views"].style.height = 'auto'
             : system.worker_main["markdown__string_views"].style.height = '60vw'
