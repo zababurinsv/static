@@ -238,8 +238,6 @@ export default async (v,p,c,obj,r) => {
                 }
             }
         } else {
-
-            console.log('RRRRRR222RRR', event.target)
             await saveMd()
             console.assert(true, system)
         }
