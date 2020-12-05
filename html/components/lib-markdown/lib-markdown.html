@@ -1,6 +1,7 @@
 <template>
     <div class="markdown">
-        <div class="markdown__button" >
+        <fieldset class="markdown__string_menu">
+            <legend>menu</legend>
             <button class="markdown__button_download">Скачать MD файл</button>
             <label class="markdown__button_upload" for="upload">Загрузить MD файл <input type="file" id="upload"></label>
             <select class="markdown__button_select">
@@ -12,7 +13,7 @@
                 <option value="grid">grid</option>
                 <option value="docs">docs</option>
             </select>
-        </div>
+        </fieldset>
         <textarea class="markdown__self"></textarea>
         <fieldset class="markdown__string">
             <legend>markdown__string</legend>
