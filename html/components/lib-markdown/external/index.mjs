@@ -5,14 +5,27 @@ import Parser from '/static/html/components/component_modules/bundle/html2json/h
 import * as md2html from  '/static/html/components/lib-markdown/external/wasm/markdown.es.mjs'
 export default async (v,p,c,obj,r) => {
     await md2html.ready
+    function hashtag(text) {
+        var repl = text.replace(/(^|\W)(#[a-z\d][\w-]*)/ig, '$1<a style = "color: #35ab52">$2</a>');
+        return(repl);
+    }
     let system = {
         ptr: {},
         worker_main: {},
         _scriptDir: import.meta.url
     }
+
+    let tag = hashtag(window.location.hash)
+    if(isEmpty(tag)) {
+        tag = undefined
+    } else {
+        tag = window.location.hash
+        tag = tag.replace('#','')
+    }
+  
     let self = {
         "pull": {
-            "resolve":  await fetch('https://zababurinsv.github.io/markdown/index.md').catch((e)=>{
+            "resolve":  await fetch(`https://zababurinsv.github.io/markdown/${tag? tag: 'index'}.md`).catch((e)=>{
                 console.warn({
                     "error":e
                 })
@@ -243,13 +256,23 @@ export default async (v,p,c,obj,r) => {
         }
     }
     await fsLoad()
-    let dir = idbfs.FS.readdir("/data")  
-    if(dir.find(item => item === 'data.md')) {
-        let mdfs =  idbfs.FS.readFile("/data/data.md",{ encoding: "utf8" });
-        if(!isEmpty(mdfs)) {
-            system.worker_main["md"]= mdfs
-            system.worker_main["self"].value= mdfs
-            system.worker_main["self.value"]= mdfs 
+    if(tag === undefined || !self.pull.resolve.ok) {
+        let dir = idbfs.FS.readdir("/data")  
+        if(dir.find(item => item === 'data.md')) {
+            let mdfs =  idbfs.FS.readFile("/data/data.md",{ encoding: "utf8" });
+            if(!isEmpty(mdfs)) {
+                system.worker_main["md"]= mdfs
+                system.worker_main["self"].value= mdfs
+                system.worker_main["self.value"]= mdfs 
+            } else {
+                system.worker_main["md"]= "# Empty"
+                system.worker_main["self"].value= "# Empty"
+                system.worker_main["self.value"]= "# Empty"
+            }
+        } else {
+            system.worker_main["md"]= "# Empty"
+            system.worker_main["self"].value= "# Empty"
+            system.worker_main["self.value"]= "# Empty"
         }
     }
     updateUI()
