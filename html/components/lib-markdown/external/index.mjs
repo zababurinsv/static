@@ -12,12 +12,22 @@ export default async (v,p,c,obj,r) => {
     }
     let self = {
         "pull": {
-            "resolve": await fetch('https://zababurinsv.github.io/markdown/index.md')
+            "resolve":  await fetch('https://zababurinsv.github.io/markdown/index.md').catch((e)=>{
+                console.warn({
+                    "error":e
+                })
+                return undefined
+
+            })
         },
         "value": ''
          
     }
-    self["value"] = await self["pull"]["resolve"].text()
+    if(!isEmpty(self["pull"]["resolve"])) {
+        self["value"] = await self["pull"]["resolve"].text()
+    } else {
+        self["value"] = "# Empty"
+    }
     system.worker_main = {
         "self":obj['this']['shadowRoot'].querySelector('.markdown__self'),
         "self.value": self["value"],
@@ -66,8 +76,31 @@ export default async (v,p,c,obj,r) => {
     })
    async function selected(event) {
         event.preventDefault()
-        system.worker_main["md"] = await fetch(`${location.origin}/markdown/${event.target.value}.md`)  
-        system.worker_main["md"] = await system.worker_main["md"].text()
+        system.worker_main["md"] = await fetch(`${location.origin}/markdown/${event.target.value}.md`)
+        .catch((e)=>{
+            console.warn({
+                "error":e
+            })
+            return undefined
+        })
+        if(!isEmpty(system.worker_main["md"])) {
+            system.worker_main["md"] = await system.worker_main["md"].text()
+        } else {
+            console.assert(false, '444')
+            let dir = idbfs.FS.readdir("/data")  
+         
+            if(dir.find(item => item === 'data.md')) {
+                let mdfs =  idbfs.FS.readFile("/data/data.md",{ encoding: "utf8" });
+                if(!isEmpty(mdfs)) {
+                    system.worker_main["md"]= mdfs
+                    system.worker_main["self"].value= mdfs
+                    system.worker_main["self.value"]= mdfs 
+                }
+            } else {
+                system.worker_main["md"]="# Empty"
+            }
+        }
+      
         system.worker_main["self"].value = system.worker_main["md"]
         system.worker_main["self.value"] = system.worker_main["md"]
         system.worker_main["checkbox.checked"] = true        
