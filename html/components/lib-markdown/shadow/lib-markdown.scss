@@ -48,7 +48,8 @@
         // border-width: 0.1vw;
         // border-style: solid;
         // border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
-        white-space: pre-wrap;
+        // white-space: pre-wrap;
+        white-space: initial;
     }
 
     &__string {
