@@ -141,8 +141,9 @@ export default async (v,p,c,obj,r) => {
         reader.readAsText(event.path[0].files[0]);
 
         reader.onload = function() {
-            system.worker_main["self"].innerText = reader.result 
-            system.worker_main["self"].value = reader.result 
+            system.worker_main["md"]= reader.result
+            system.worker_main["self"].value= reader.result
+            system.worker_main["self.value"]= reader.result
             updateUI()
           };
           reader.onerror = function() {
