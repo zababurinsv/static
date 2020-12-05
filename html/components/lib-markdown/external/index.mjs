@@ -137,9 +137,9 @@ export default async (v,p,c,obj,r) => {
         }
         system.worker_main["html"].innerHTML = ''
         system.worker_main["html"].innerText = Parser.json(json.html)
-        system.worker_main["markdown__string_views"].innerText = Parser.json(json.code)
         system.worker_main["markdown__string_views"].style.height = 'auto'
         system.worker_main["markdown__string_views"].style.color = '#0b6546'
+        system.worker_main["markdown__string_views"].innerText = Parser.json(json.code)
     }
     function saveMd () {
         return new Promise(async (resolve, reject) => { 
