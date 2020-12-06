@@ -44,12 +44,25 @@ export default async (v,p,c,obj,r) => {
                         window.zb.fs[`${path}`].mount(window.zb.fs[`${path}`].filesystems.IDBFS, {}, path);
                     };
                     fsSetup("/header");
+                  
                 } catch (e) {
                     console.error('error', e)
                 }
             },
             print: d => system.worker_main["output"].push(d),
         })
+        await fsLoad()
+        let dir = window.zb.fs['/header'].readdir('/header')
+        for(let item of dir) {
+            if(item !== '.' && item !== '..') {
+                let html = obj.this.shadowRoot.querySelector(`.${item}`)
+                let dataItem = JSON.parse(window.zb.fs[`/header`].readFile(`/header/${item}`,{ encoding: "utf8" }));
+                console.log(false, item, dataItem)
+                html.style.left = dataItem.left
+                html.style.top = dataItem.top
+            }
+        }
+    
         return system
     } catch (error) {
         system = {

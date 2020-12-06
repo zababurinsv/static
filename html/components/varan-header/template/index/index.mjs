@@ -22,11 +22,29 @@ export default async (v,p,c,obj,r) => {
         }
     
         function userMoved(event) {
+        
             element.style.left = (event.clientX + offsetX) + "px";
             element.style.top = (event.clientY + offsetY) + "px";
         }
     
         function userReleased(event) {
+            let dir = window.zb.fs['/header'].readdir('/header')
+            let key = dir.find(item => item ===  `${element.classList[0]}`)
+            if(key === undefined) {
+                window.zb.fs['/header'].createDataFile('/header',`${element.classList[0]}`, JSON.stringify({
+                    left: `${element.style.left}`,
+                    top: `${element.style.top}`
+                }), true,true);
+                window.zb.fs['/header'].syncfs(false , (err) => { console.log('header file load') });
+            } else {
+                // console.assert(false, key, element.style.left)
+                window.zb.fs['/header'].writeFile(`/header/${element.classList[0]}`,JSON.stringify({
+                    left: `${element.style.left}`,
+                    top: `${element.style.top}`
+                }));
+                window.zb.fs['/header'].syncfs(false , (err) => { console.log('header ggfile load') });
+            }
+
             container.removeEventListener('mousemove', userMoved, { passive: false });
             container.removeEventListener('mouseup', userReleased, { passive: false });
         }
