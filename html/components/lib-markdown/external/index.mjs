@@ -22,7 +22,10 @@ export default async (v,p,c,obj,r) => {
         tag = window.location.hash
         tag = tag.replace('#','')
     }
-  
+    let isLoading = {
+        window: false,
+        dir: false
+    }
     let self = {
         "pull": {
             "resolve":  await fetch(`https://zababurinsv.github.io/markdown/${tag? tag: 'index'}.md`).catch((e)=>{
@@ -48,6 +51,8 @@ export default async (v,p,c,obj,r) => {
         "html": obj['this']['shadowRoot'].querySelector('.markdown__html'),
         "html.innerText": false,
         "html.iframe": false,
+        "fs": undefined,
+        "fs.path": undefined,
         "checkbox": obj['this']['shadowRoot'].querySelector('#markdown__string_menu_change-views'), 
         "checkbox.checked": true, 
         "output":[],
@@ -56,7 +61,7 @@ export default async (v,p,c,obj,r) => {
     }
     const fsLoad = () => {
         return new Promise(async (resolve, reject) => {
-            window.FS.syncfs(true , (err) => {
+            window.zb.fs[`${system.worker_main['fs.path']}`].syncfs(true , (err) => {
                 console.log('file load')
                 resolve()
             });
@@ -64,21 +69,23 @@ export default async (v,p,c,obj,r) => {
     }
     const fsSave  = () => {
         return new Promise(async (resolve, reject) => {
-            window.FS.syncfs(false , (err) => {
+            window.zb.fs[`${system.worker_main['fs.path']}`].syncfs(false , (err) => {
                 console.log('file save')
                 resolve()
             });
         })
     }
     window.onbeforeunload = () => { fsSave(); }
-    let idbfs=await IDBFS({
-        preInit() {},
+    await IDBFS({
+        preInit() {  },
         onRuntimeInitialized() {
             try {
-                isEmpty(window.FS)? window.FS = this.FS:window.FS 
+                if(isEmpty(window.zb)) { window.zb = {}; window.zb.fs = {} }
                 const fsSetup = path => {
-                    this.FS.mkdir(path);
-                    this.FS.mount(this.FS.filesystems.IDBFS, {}, path);
+                    system.worker_main['fs.path'] = path
+                    window.zb.fs[`${path}`] = this.FS 
+                    window.zb.fs[`${path}`].mkdir(path);
+                    window.zb.fs[`${path}`].mount(window.zb.fs[`${path}`].filesystems.IDBFS, {}, path);
                 };
                 fsSetup("/data");
             } catch (e) {
@@ -99,11 +106,11 @@ export default async (v,p,c,obj,r) => {
         if(!isEmpty(system.worker_main["md"])) {
             system.worker_main["md"] = await system.worker_main["md"].text()
         } else {
-            console.assert(false, '444')
-            let dir = idbfs.FS.readdir("/data")  
+            let dir = window.zb.fs[`${system.worker_main['fs.path']}`].readdir("/data")  
          
+            console.assert(false, dir)
             if(dir.find(item => item === 'data.md')) {
-                let mdfs =  idbfs.FS.readFile("/data/data.md",{ encoding: "utf8" });
+                let mdfs =  window.zb.fs[`${system.worker_main['fs.path']}`].readFile("/data/data.md",{ encoding: "utf8" });
                 if(!isEmpty(mdfs)) {
                     system.worker_main["md"]= mdfs
                     system.worker_main["self"].value= mdfs
@@ -121,11 +128,11 @@ export default async (v,p,c,obj,r) => {
     }
     function download() {
         let name = prompt('Введите название файла', 'default');
-        let dir = idbfs.FS.readdir("/data")  
+        let dir = window.zb.fs[`${system.worker_main['fs.path']}`].readdir("/data")  
         let filename = `${name}.md`
         let text = ''
         if(dir.find(item => item === 'data.md')) {
-            text =  idbfs.FS.readFile("/data/data.md",{ encoding: "utf8" });
+            text =  window.zb.fs[`${system.worker_main['fs.path']}`].readFile("/data/data.md",{ encoding: "utf8" });
         }
         var element = document.createElement('a');
         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
@@ -153,7 +160,7 @@ export default async (v,p,c,obj,r) => {
     }
     function markdownToHTML(markdown) {
         system.worker_main["output"]  = [];
-        idbfs.FS.writeFile('/data/data.md',markdown)
+        window.zb.fs[`${system.worker_main['fs.path']}`].writeFile('/data/data.md',markdown)
         system.worker_main["output"] = md2html.parse(markdown)
         return system.worker_main["output"];
     }
@@ -255,14 +262,13 @@ export default async (v,p,c,obj,r) => {
             }
         } else {
             await saveMd()
-            console.assert(true, system)
         }
     }
     await fsLoad()
     if(tag === undefined || !self.pull.resolve.ok) {
-        let dir = idbfs.FS.readdir("/data")  
+        let dir = window.zb.fs[`${system.worker_main['fs.path']}`].readdir("/data")  
         if(dir.find(item => item === 'data.md')) {
-            let mdfs =  idbfs.FS.readFile("/data/data.md",{ encoding: "utf8" });
+            let mdfs = window.zb.fs[`${system.worker_main['fs.path']}`].readFile("/data/data.md",{ encoding: "utf8" });
             if(!isEmpty(mdfs)) {
                 system.worker_main["md"]= mdfs
                 system.worker_main["self"].value= mdfs

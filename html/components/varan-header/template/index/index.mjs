@@ -16,10 +16,6 @@ export default async (v,p,c,obj,r) => {
                 inputX = bbox.x
                 inputY = bbox.y
                 console.log(bbox.x, bbox.y, inputX, inputY)
-                // container.addEventListener('pointermove', userMoved, { passive: false });
-                // container.addEventListener('pointerup', userReleased, { passive: false });
-                // container.addEventListener('pointercancel', userReleased, { passive: false });
-    
                 container.addEventListener('mousemove', userMoved, { passive: false });
                 container.addEventListener('mouseup', userReleased, { passive: false });
             }
@@ -31,13 +27,8 @@ export default async (v,p,c,obj,r) => {
         }
     
         function userReleased(event) {
-            console.log('~~ userReleased ~~', event)
-    
             container.removeEventListener('mousemove', userMoved, { passive: false });
             container.removeEventListener('mouseup', userReleased, { passive: false });
-            // container.removeEventListener('pointermove', userMoved);
-            // container.removeEventListener('pointerup', userReleased);
-            // container.removeEventListener('pointercancel', userReleased);
         }
     
         container.addEventListener('pointerdown', userPressed, { passive: false });
