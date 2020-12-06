@@ -35,14 +35,14 @@ export default async (v,p,c,obj,r) => {
                     left: `${element.style.left}`,
                     top: `${element.style.top}`
                 }), true,true);
-                window.zb.fs['/header'].syncfs(false , (err) => { console.log('header file load') });
+                window.zb.fs['/header'].syncfs(false , (err) => { });
             } else {
                 // console.assert(false, key, element.style.left)
                 window.zb.fs['/header'].writeFile(`/header/${element.classList[0]}`,JSON.stringify({
                     left: `${element.style.left}`,
                     top: `${element.style.top}`
                 }));
-                window.zb.fs['/header'].syncfs(false , (err) => { console.log('header ggfile load') });
+                window.zb.fs['/header'].syncfs(false , (err) => {  });
             }
 
             container.removeEventListener('mousemove', userMoved, { passive: false });
