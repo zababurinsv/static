@@ -1,8 +1,9 @@
-import events from '/static/html/components/varan-header/external/events.mjs'
+import fs from '/static/html/components/varan-header/external/fs.mjs'
+
 export default async (v,p,c,obj,r) => {
-    events(v,p,c,obj,r)
+    fs(v,p,c,obj,r)
     if(obj.preset.status) {
-      let template = (await import(`/static/html/components/varan-header/template/${obj.preset.name}/${obj.preset.name}.mjs`))['default']
-        template(v,p,c,obj,r)
+      let template = await (await import(`/static/html/components/varan-header/template/${obj.preset.name}/${obj.preset.name}.mjs`))['default'](v,p,c,obj,r)
+      console.log(`(external-index.mjs*)${template}`,template)
     }
 }

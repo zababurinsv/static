@@ -1,4 +1,4 @@
-import events from '/static/html/components/varan-header/external/events.mjs'
+import fs from '/static/html/components/varan-footer/external/fs.mjs'
 export default async (v,p,c,obj,r) => {
-    events(v,p,c,obj,r)
+    fs(v,p,c,obj,r)
 }
