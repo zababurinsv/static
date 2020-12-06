@@ -57,7 +57,6 @@ export default async (v,p,c,obj,r) => {
             if(item !== '.' && item !== '..') {
                 let html = obj.this.shadowRoot.querySelector(`.${item}`)
                 let dataItem = JSON.parse(window.zb.fs[`/header`].readFile(`/header/${item}`,{ encoding: "utf8" }));
-                console.log(false, item, dataItem)
                 html.style.left = dataItem.left
                 html.style.top = dataItem.top
             }
