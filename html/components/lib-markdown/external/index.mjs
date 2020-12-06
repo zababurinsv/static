@@ -87,7 +87,7 @@ export default async (v,p,c,obj,r) => {
                     window.zb.fs[`${path}`].mkdir(path);
                     window.zb.fs[`${path}`].mount(window.zb.fs[`${path}`].filesystems.IDBFS, {}, path);
                 };
-                fsSetup("/data");
+                fsSetup("/body");
             } catch (e) {
                 console.error('error', e)
             }
@@ -106,11 +106,11 @@ export default async (v,p,c,obj,r) => {
         if(!isEmpty(system.worker_main["md"])) {
             system.worker_main["md"] = await system.worker_main["md"].text()
         } else {
-            let dir = window.zb.fs[`${system.worker_main['fs.path']}`].readdir("/data")  
+            let dir = window.zb.fs[`${system.worker_main['fs.path']}`].readdir("/body")  
          
             console.assert(false, dir)
             if(dir.find(item => item === 'data.md')) {
-                let mdfs =  window.zb.fs[`${system.worker_main['fs.path']}`].readFile("/data/data.md",{ encoding: "utf8" });
+                let mdfs =  window.zb.fs[`${system.worker_main['fs.path']}`].readFile("/body/data.md",{ encoding: "utf8" });
                 if(!isEmpty(mdfs)) {
                     system.worker_main["md"]= mdfs
                     system.worker_main["self"].value= mdfs
@@ -128,11 +128,11 @@ export default async (v,p,c,obj,r) => {
     }
     function download() {
         let name = prompt('Введите название файла', 'default');
-        let dir = window.zb.fs[`${system.worker_main['fs.path']}`].readdir("/data")  
+        let dir = window.zb.fs[`${system.worker_main['fs.path']}`].readdir("/body")  
         let filename = `${name}.md`
         let text = ''
         if(dir.find(item => item === 'data.md')) {
-            text =  window.zb.fs[`${system.worker_main['fs.path']}`].readFile("/data/data.md",{ encoding: "utf8" });
+            text =  window.zb.fs[`${system.worker_main['fs.path']}`].readFile("/body/data.md",{ encoding: "utf8" });
         }
         var element = document.createElement('a');
         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
@@ -160,7 +160,7 @@ export default async (v,p,c,obj,r) => {
     }
     function markdownToHTML(markdown) {
         system.worker_main["output"]  = [];
-        window.zb.fs[`${system.worker_main['fs.path']}`].writeFile('/data/data.md',markdown)
+        window.zb.fs[`${system.worker_main['fs.path']}`].writeFile('/body/data.md',markdown)
         system.worker_main["output"] = md2html.parse(markdown)
         return system.worker_main["output"];
     }
@@ -266,9 +266,9 @@ export default async (v,p,c,obj,r) => {
     }
     await fsLoad()
     if(tag === undefined || !self.pull.resolve.ok) {
-        let dir = window.zb.fs[`${system.worker_main['fs.path']}`].readdir("/data")  
+        let dir = window.zb.fs[`${system.worker_main['fs.path']}`].readdir("/body")  
         if(dir.find(item => item === 'data.md')) {
-            let mdfs = window.zb.fs[`${system.worker_main['fs.path']}`].readFile("/data/data.md",{ encoding: "utf8" });
+            let mdfs = window.zb.fs[`${system.worker_main['fs.path']}`].readFile("/body/data.md",{ encoding: "utf8" });
             if(!isEmpty(mdfs)) {
                 system.worker_main["md"]= mdfs
                 system.worker_main["self"].value= mdfs
