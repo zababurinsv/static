@@ -761,26 +761,45 @@ div#external{
           }else{
             url = obj.this.dataset.innerHTML
           }
-          let app = Jason({
-            $cell: true,
-            style: {
-              width: '100%',
-              height: '100%',
-              margin: '0 auto'
-            }
-          }, {
-            '$jason': {
-              'head': {
-                'title': 'Basic'
-              },
-              'body': {
-                'background': {
-                  'type': 'html',
-                  'url': url
-                }
-              }
-            }
-          })
+
+          let style = document.createElement('style')
+          style.innerText = '@import "/static/html/components/component_modules/cell-index/jason.css"'
+          obj.this.appendChild(style)
+          let json = await fetch(`${location.origin}/${obj.this.dataset.json}`)
+         json = await json.json() 
+         let app = Jason({
+          $cell: true,
+          style: {
+            width: '100%',
+            height: '100%',
+            margin: '0 auto'
+          }
+        }, 
+        {
+         '$jason': json['$jason']
+        })
+// 
+          // let app = Jason({
+            // $cell: true,
+            // style: {
+              // width: '100%',
+              // height: '100%',
+              // margin: '0 auto'
+            // }
+          // }, 
+          // {
+          //  '$jason': {
+              // 'head': {
+                // 'title': 'Basic'
+              // },
+              // 'body': {
+                // 'background': {
+                  // 'type': 'html',
+                  // 'url': url
+                // }
+              // }
+            // }
+          // })
           this.app = app
           obj['function']['create'](obj)
           if(!this.dataset.url) {
