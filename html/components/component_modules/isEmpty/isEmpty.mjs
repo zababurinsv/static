@@ -72,7 +72,7 @@ function isEmpty(val) {
             }
         }
     }
-
+   
     // Anything else...
     return false
 }

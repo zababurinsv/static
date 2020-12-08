@@ -4,61 +4,141 @@ import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.m
 import Parser from '/static/html/components/component_modules/bundle/html2json/html2json.index.mjs'
 import * as md2html from  '/static/html/components/lib-markdown/external/wasm/markdown.es.mjs'
 export default async (v,p,c,obj,r) => {
-    await md2html.ready
-    function hashtag(text) {
-        var repl = text.replace(/(^|\W)(#[a-z\d][\w-]*)/ig, '$1<a style = "color: #35ab52">$2</a>');
-        return(repl);
+    const target = {
+        notProxied: "original value",
+        proxied: "original value"
+      };
+    const handler = {
+    get: function(target, prop, receiver) {
+        if (prop === "proxied") {
+            return "replaced value";
+        }
+            return Reflect.get(...arguments);
+        }
+    };
+    
+    let backJson = (json) => {
+        return new Promise( async (resolve, reject)=>{
+            let Json = await fetch(`${location.origin}/static/html/components/lib-markdown/external/${(json)?json:'index'}.json`)
+            try {
+                Json = await Json.json()
+            } catch(e) {
+                Json = {
+                    status: false,
+                    ok: false,
+                    error:e
+                }
+            }
+            resolve(Json)
+        })
     }
+    await md2html.ready
     let system = {
+        _scriptDir: import.meta.url,
         ptr: {},
         worker_main: {},
-        _scriptDir: import.meta.url
-    }
-
-    let tag = hashtag(window.location.hash)
-    if(isEmpty(tag)) {
-        tag = undefined
-    } else {
-        tag = window.location.hash
-        tag = tag.replace('#','')
-    }
-    let isLoading = {
-        window: false,
-        dir: false
-    }
-    let self = {
-        "pull": {
-            "resolve":  await fetch(`https://zababurinsv.github.io/markdown/${tag? tag: 'index'}.md`).catch((e)=>{
-                console.warn({
-                    "error":e
-                })
-                return undefined
-
-            })
+        validation: {
+            key: (...args) =>{
+                console.assert(false, args)
+               return validation.value = {
+                 onhashchange:("onhashchange" in window)
+               }
+            },
+            value: { onhashchange:("onhashchange" in window)}
         },
-        "value": ''
-         
+        pull: {
+            "resolve": async (item) => {
+               let pull = await fetch(`https://zababurinsv.github.io/markdown/${item? item: 'index'}.md`)
+                .catch((e)=>{ console.warn({ "error":e }) })
+                pull = await pull.text();
+                system.value = pull
+                return pull
+            } 
+        },
+        location: location,
+        value: {},
+        json: {
+            "ok":false,
+            "status":false,
+            "type": "main",
+            "tagName": " main-html",
+            "attributes": [{ "key": "href", "value": "#" }],
+            "swap":[],
+            "children": await backJson()
+        },
+        proxy: new Proxy(target, handler)
     }
-    if(!isEmpty(self["pull"]["resolve"])) {
-        self["value"] = await self["pull"]["resolve"].text()
-    } else {
-        self["value"] = "# Empty"
+    let hash = async (event) =>{
+        await system.pull.resolve(system.location.hash.replace('#', ''))
+        system.worker_main["markdown__string_views"].innerHTML = ''
+        system.worker_main["md"]= system.value
+        system.worker_main["markdown__self"].value= system.value
+        system.worker_main["self.value"]= system.value
+        updateUI()
     }
+    system.json.ok = true; 
+    system.json.status = true; 
+    system.json.children.view = system.json.children.isMainThread.find(element => {
+        if(element.type === "element" && element.tagName === "h1") {
+            if(`#${element.children[1].content}` === system.location.hash) {
+                console.log('~~~~~~~~~~~',system.location.hash, element.children[0])
+                return true
+            }
+        }
+    });
     system.worker_main = {
-        "self":obj['this']['shadowRoot'].querySelector('.markdown__self'),
-        "self.value": self["value"],
+        "self.value": await system["pull"]["resolve"](),
         "src": false,
-        "html": obj['this']['shadowRoot'].querySelector('.markdown__html'),
-        "html.innerText": false,
-        "html.iframe": false,
+        "markdown__self":obj['this']['shadowRoot'].querySelector('.markdown__self'),
+        "markdown__self_menu": obj['this']['shadowRoot'].querySelector('.markdown__self_menu'),
+        "markdown__self_views": obj['this']['shadowRoot'].querySelector('.markdown__self_views'),
+        "markdown__self_html": obj['this']['shadowRoot'].querySelector('.markdown__self_html'),
+        "markdown__html": obj['this']['shadowRoot'].querySelector('.markdown__html'),
+        "markdown__html.innerText": false,
+        "markdown__html.iframe": false,
         "fs": undefined,
         "fs.path": undefined,
         "checkbox": obj['this']['shadowRoot'].querySelector('#markdown__string_menu_change-views'), 
         "checkbox.checked": true, 
         "output":[],
+        "markdown__string_menu":obj['this']['shadowRoot'].querySelectorAll('.markdown__string_menu'),
         "markdown__string_views": obj['this']['shadowRoot'].querySelector('#markdown__string_views'),
         "event.target": false
     }
+    
+    if(isEmpty(system.json.children.view) && !isEmpty(system.location.hash)) {
+        system.validation.value.external = false
+        // system.hashtag = system.hashtag.replace('#','')
+    } else {
+        system.validation.value.external = true
+        // console.log('@@@@@@@@@@@@@@@@@',  system.json.object)
+    }
+    if(system.validation.value.external) {
+        system.worker_main.markdown__self_views.innerHTML = ''
+        system.worker_main.markdown__self_views.innerHTML = Parser.stringify(system.json.children.isMainThread) 
+        system.json.children.isMainThread.forEach(element => {
+            switch(element.type) {
+                case"element":
+                system.worker_main.markdown__self_views.querySelector(`#${element.attributes[0].value}`).addEventListener('click',async (event) =>{
+                    event.preventDefault();
+                    location.hash = `#${event.target.id}`;
+                })
+                    break
+                default:
+                    break
+            }
+        });
+    } else {
+        // console.assert(false, system.location.hash, system.json.children.view)
+
+    }
+    
+    if(!isEmpty(system['value'])) {
+    } else {
+        self["value"] = "# Empty"
+    }
+
+  
     const fsLoad = () => {
         return new Promise(async (resolve, reject) => {
             window.zb.fs[`${system.worker_main['fs.path']}`].syncfs(true , (err) => {
@@ -113,7 +193,7 @@ export default async (v,p,c,obj,r) => {
                 let mdfs =  window.zb.fs[`${system.worker_main['fs.path']}`].readFile("/body/data.md",{ encoding: "utf8" });
                 if(!isEmpty(mdfs)) {
                     system.worker_main["md"]= mdfs
-                    system.worker_main["self"].value= mdfs
+                    system.worker_main["markdown__self"].value= mdfs
                     system.worker_main["self.value"]= mdfs 
                 }
             } else {
@@ -121,7 +201,7 @@ export default async (v,p,c,obj,r) => {
             }
         }
       
-        system.worker_main["self"].value = system.worker_main["md"]
+        system.worker_main["markdown__self"].value = system.worker_main["md"]
         system.worker_main["self.value"] = system.worker_main["md"]
         system.worker_main["checkbox.checked"] = true        
         updateUI()
@@ -150,13 +230,43 @@ export default async (v,p,c,obj,r) => {
         reader.onload = function() {
             system.worker_main["markdown__string_views"].innerHTML = ''
             system.worker_main["md"]= reader.result
-            system.worker_main["self"].value= reader.result
+            system.worker_main["markdown__self"].value= reader.result
             system.worker_main["self.value"]= reader.result
             updateUI()
           };
           reader.onerror = function() {
             console.log(reader.error);
           };
+    }
+    function changeViews(event) {
+        if(event.target.checked) {
+            system.worker_main["markdown__self_html"].innerHTML = ''
+            system.worker_main["markdown__self_html"].style.display = "none"
+            system.worker_main["markdown__self_html"].style.flexDirection = "column"
+            system.worker_main["markdown__self_html"].style.flexGrow = "9"
+            system.worker_main["markdown__self_menu"].style.height = "80vh"
+            system.worker_main["markdown__self"].style.display = "flex"
+            system.worker_main["markdown__html"].style.display = "block"
+            system.worker_main["markdown__string_menu"][1].style.display = "flex"
+            system.worker_main["markdown__self_views"].style.display = "block"
+        } else {
+            
+            system.worker_main["markdown__self_html"].innerHTML = ''
+            system.worker_main["markdown__self_html"].innerHTML = system.worker_main['markdown__html'].innerHTML
+            system.worker_main["markdown__self_html"].style.display = "flex"
+            system.worker_main["markdown__self_html"].style.flexDirection = "column"
+            system.worker_main["markdown__self_html"].style.flexGrow = "7.2"
+            system.worker_main["markdown__self_menu"].style.height = "auto"
+            system.worker_main["markdown__self"].style.display = "none"
+            system.worker_main["markdown__html"].style.display = "none"
+            system.worker_main["markdown__string_menu"][1].style.display = "none"
+            system.worker_main["markdown__self_views"].style.display = "none"
+            
+            // console.log('ssssssssss', system.worker_main['markdown__html'])
+            // system.worker_main['markdown__html'].appendChild()
+            // system.worker_main['markdown__html'].appendChild()
+            
+        }
     }
     function markdownToHTML(markdown) {
         system.worker_main["output"]  = [];
@@ -165,36 +275,38 @@ export default async (v,p,c,obj,r) => {
         return system.worker_main["output"];
     }
     function markdown__string_menu_change_true(event) {
+        console.log('~~~~~~~~~~1~~~~~~~~~~', event)
         system.worker_main["markdown__string_views"].innerHTML = ''
         if(system.worker_main["markdown__string_views"].querySelector('iframe')) {
             system.worker_main["markdown__string_views"].querySelector('iframe').remove()
         }
-        system.worker_main["html"].innerHTML = ''
-        system.worker_main["html"].innerHTML = system.worker_main['html.innerHTML']
-        system.worker_main["html"].style.whiteSpace = "initial"
-        system.worker_main["html.iframe"] = document.createElement('iframe');
-        system.worker_main["html.iframe"].src = system.worker_main["src"] 
-        system.worker_main["html.iframe"].width = "100%";
-        system.worker_main["html.iframe"].height = "100%";
-        system.worker_main["html.iframe"].style.border = "0";
-        system.worker_main["html.iframe"].style.frameBorder = "0";
-        system.worker_main["html.iframe"].sandbox = "allow-scripts";
-        system.worker_main["markdown__string_views"].appendChild(system.worker_main["html.iframe"])
-        system.worker_main["markdown__string_views"].style.height = '60vw'
+        system.worker_main["markdown__html"].innerHTML = ''
+        system.worker_main["markdown__html"].innerHTML = system.worker_main['markdown__html.innerHTML']
+        system.worker_main["markdown__html"].style.whiteSpace = "initial"
+        system.worker_main["markdown__html.iframe"] = document.createElement('iframe');
+        system.worker_main["markdown__html.iframe"].src = system.worker_main["src"] 
+        system.worker_main["markdown__html.iframe"].width = "100%";
+        system.worker_main["markdown__html.iframe"].height = "100%";
+        system.worker_main["markdown__html.iframe"].style.border = "0";
+        system.worker_main["markdown__html.iframe"].style.frameBorder = "0";
+        system.worker_main["markdown__html.iframe"].sandbox = "allow-scripts";
+        system.worker_main["markdown__string_views"].appendChild(system.worker_main["markdown__html.iframe"])
+        system.worker_main["markdown__string_views"].style.height = '75vw'
         system.worker_main["markdown__string_views"].style.whiteSpace = "initial"
     }
     function markdown__string_menu_change_false(event) {
+        console.log('~~~~~~~~~~2~~~~~~~~~~', event)
         if(system.worker_main["markdown__string_views"].querySelector('iframe')) {
             system.worker_main["markdown__string_views"].querySelector('iframe').remove()
         }
       
         let json = {
-            code: Parser.parse(system.worker_main['html.code']),
-            html: Parser.parse(system.worker_main['html.innerHTML'])
+            code: Parser.parse(system.worker_main['markdown__html.code']),
+            html: Parser.parse(system.worker_main['markdown__html.innerHTML'])
         }
-        system.worker_main["html"].innerHTML = ''
-        system.worker_main["html"].innerText = Parser.json(json.html)
-        system.worker_main["html"].style.whiteSpace = "pre-wrap"
+        system.worker_main["markdown__html"].innerHTML = ''
+        system.worker_main["markdown__html"].innerText = Parser.json(json.html)
+        system.worker_main["markdown__html"].style.whiteSpace = "pre-wrap"
         system.worker_main["markdown__string_views"].style.height = 'auto'
         system.worker_main["markdown__string_views"].style.color = '#0b6546'
         system.worker_main["markdown__string_views"].style.whiteSpace = "pre-wrap"
@@ -204,32 +316,32 @@ export default async (v,p,c,obj,r) => {
         return new Promise(async (resolve, reject) => { 
             // console.assert(false, system.worker_main["self.value"])
             let code = {}
-            system.worker_main["self"].innerHTML = system.worker_main["self.value"];
+            system.worker_main["markdown__self"].innerHTML = system.worker_main["self.value"];
             system.worker_main["output"] = markdownToHTML(system.worker_main["self.value"]);
-            system.worker_main["html"].innerHTML = system.worker_main["output"];
+            system.worker_main["markdown__html"].innerHTML = system.worker_main["output"];
             code = {}
             code.innerText = '<pre></pre>'
-            if(!isEmpty(system.worker_main["html"].querySelector('code'))) {
-                code = system.worker_main["html"].querySelector('code').cloneNode(true)
-                system.worker_main["html"].querySelector('code').remove()
+            if(!isEmpty(system.worker_main["markdown__html"].querySelector('code'))) {
+                code = system.worker_main["markdown__html"].querySelector('code').cloneNode(true)
+                system.worker_main["markdown__html"].querySelector('code').remove()
             }
-            system.worker_main["html.code"] = code.innerText;
-            system.worker_main["html.innerHTML"] = system.worker_main["html"].innerHTML;
-            system.worker_main["src"] = 'data:text/html;charset=utf-8,' + encodeURIComponent(system.worker_main["html.code"])
+            system.worker_main["markdown__html.code"] = code.innerText;
+            system.worker_main["markdown__html.innerHTML"] = system.worker_main["markdown__html"].innerHTML;
+            system.worker_main["src"] = 'data:text/html;charset=utf-8,' + encodeURIComponent(system.worker_main["markdown__html.code"])
             if(system.worker_main["markdown__string_views"].querySelector('iframe')) {
                 system.worker_main["markdown__string_views"].querySelector('iframe').remove()
             }
-            system.worker_main["html.iframe"] = document.createElement('iframe');
-            system.worker_main["html.iframe"].src = system.worker_main["src"] 
-            system.worker_main["html.iframe"].width = "100%";
-            system.worker_main["html.iframe"].height = "100%";
-            system.worker_main["html.iframe"].style.border = "0";
-            system.worker_main["html.iframe"].style.frameBorder = "0";
-            system.worker_main["html.iframe"].sandbox = "allow-scripts";
-            system.worker_main["markdown__string_views"].appendChild(system.worker_main["html.iframe"]);
+            system.worker_main["markdown__html.iframe"] = document.createElement('iframe');
+            system.worker_main["markdown__html.iframe"].src = system.worker_main["src"] 
+            system.worker_main["markdown__html.iframe"].width = "100%";
+            system.worker_main["markdown__html.iframe"].height = "100%";
+            system.worker_main["markdown__html.iframe"].style.border = "0";
+            system.worker_main["markdown__html.iframe"].style.frameBorder = "0";
+            system.worker_main["markdown__html.iframe"].sandbox = "allow-scripts";
+            system.worker_main["markdown__string_views"].appendChild(system.worker_main["markdown__html.iframe"]);
             (code.innerText === '<pre></pre>')
             ? system.worker_main["markdown__string_views"].style.height = 'auto'
-            : system.worker_main["markdown__string_views"].style.height = '60vw'
+            : system.worker_main["markdown__string_views"].style.height = '75vw'
             resolve(fsSave()) 
         })
     }
@@ -240,8 +352,8 @@ export default async (v,p,c,obj,r) => {
             if(event.target.tagName !== 'SELECT' && event.target.tagName !== 'INPUT') {
                 switch(event.target.tagName) {
                     case"TEXTAREA":
-                    system.worker_main["html.innerText"] = system.worker_main["html"].innerText
-                    system.worker_main["src"] = 'data:text/html;charset=utf-8,' + encodeURIComponent(system.worker_main["html.code"])
+                    system.worker_main["markdown__html.innerText"] =  system.worker_main["markdown__html"].innerText
+                    system.worker_main["src"] = 'data:text/html;charset=utf-8,' + encodeURIComponent(system.worker_main["markdown__html.code"])
                     system.worker_main["self.value"] = event.target.value
                         break
                     default:
@@ -251,12 +363,20 @@ export default async (v,p,c,obj,r) => {
             } else {
                 switch(event.target.tagName) {
                         case"INPUT":
-                        system.worker_main['checkbox.checked'] = event.target.checked
-                        system.worker_main['checkbox.checked']
-                        ? markdown__string_menu_change_true()
-                        : markdown__string_menu_change_false()
+                        switch(event.target.id) {
+                            case'markdown__button_views':
+                                changeViews(event)
+                                break
+                            default:
+                                system.worker_main['checkbox.checked'] = event.target.checked
+                                system.worker_main['checkbox.checked']
+                                ? markdown__string_menu_change_true('updateUI')
+                                : markdown__string_menu_change_false('updateUI')
+                                break
+                        }
                             break
                         default:
+                            console.log('input', event.target)
                             break
                 }
             }
@@ -265,26 +385,28 @@ export default async (v,p,c,obj,r) => {
         }
     }
     await fsLoad()
-    if(tag === undefined || !self.pull.resolve.ok) {
+ 
+    if(system.location.hash === undefined || !system.value) {
         let dir = window.zb.fs[`${system.worker_main['fs.path']}`].readdir("/body")  
         if(dir.find(item => item === 'data.md')) {
             let mdfs = window.zb.fs[`${system.worker_main['fs.path']}`].readFile("/body/data.md",{ encoding: "utf8" });
             if(!isEmpty(mdfs)) {
                 system.worker_main["md"]= mdfs
-                system.worker_main["self"].value= mdfs
+                system.worker_main["markdown__self"].value= mdfs
                 system.worker_main["self.value"]= mdfs 
             } else {
                 system.worker_main["md"]= "# Empty"
-                system.worker_main["self"].value= "# Empty"
+                system.worker_main["markdown__self"].value= "# Empty"
                 system.worker_main["self.value"]= "# Empty"
             }
         } else {
             system.worker_main["md"]= "# Empty"
-            system.worker_main["self"].value= "# Empty"
+            system.worker_main["markdown__self"].value= "# Empty"
             system.worker_main["self.value"]= "# Empty"
         }
     }
     updateUI()
+    window.addEventListener("hashchange", hash, false);
     obj.this.shadowRoot.querySelector('.markdown').addEventListener("input", updateUI);
     obj.this.shadowRoot.querySelector('.markdown__button_download').addEventListener("click", download);
     obj.this.shadowRoot.querySelector('.markdown__button_upload').addEventListener("change", upload);

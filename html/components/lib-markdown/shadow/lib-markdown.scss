@@ -36,11 +36,34 @@
         }
     }
     
-
-    &__self {
-        resize: vertical;
-        white-space: pre-wrap;
+    &__self_menu {
+        display: flex;
+        flex-direction: row;
         height: 80vh;
+        // display: grid;
+        // grid-template-rows: 1fr;
+        // grid-template-columns: 1fr 1fr;
+        // background-color: rgb(24, 88, 22);
+        
+        .markdown__self {
+            resize: vertical;
+            white-space: pre-wrap;
+            // height: 80vh;
+            flex-grow: 9;
+            &_views {
+                @include fonts(4);
+                flex-grow: 1;
+                height: auto;
+                box-sizing: border-box;
+                padding: 0.4vw;
+                h1 {
+                    margin: 0.4vw;
+                    cursor: pointer;
+                    background-color: burlywood;
+                    border-radius: 0.2vw;
+                }
+            }
+        }
     }
 
     &__html {
