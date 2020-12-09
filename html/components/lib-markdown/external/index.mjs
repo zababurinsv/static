@@ -57,7 +57,6 @@ export default async (v,p,c,obj,r) => {
                         return pull
                     }
                 }catch (e) {
-                    console.log('ddddddddddddddddddggg', e)
                     return false
                 }
 
@@ -77,7 +76,6 @@ export default async (v,p,c,obj,r) => {
         proxy: new Proxy(target, handler)
     }
     let hash = async (event) =>{
-        console.log('ddddddddddddddddddddddddddddddddddddddddd')
         await system.pull.resolve(system.location.hash.replace('#', ''))
         system.worker_main["markdown__string_views"].innerHTML = ''
         system.worker_main["md"]= system.value
