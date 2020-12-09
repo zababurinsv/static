@@ -43,11 +43,24 @@ export default async (v,p,c,obj,r) => {
         },
         pull: {
             "resolve": async (item) => {
-               let pull = await fetch(`https://zababurinsv.github.io/markdown/${item? item: 'index'}.md`)
-                .catch((e)=>{ console.warn({ "error":e }) })
-                pull = await pull.text();
-                system.value = pull
-                return pull
+                let pull = {}
+                try {
+                    pull = await fetch(`https://zababurinsv.github.io/markdown/${item? item: 'index'}.md`)
+                        .catch((e)=>{
+                            console.warn({ "error":e })
+                        })
+                    if(pull.status === 404) {
+                        return false
+                    } else {
+                        pull = await pull.text();
+                        system.value = pull
+                        return pull
+                    }
+                }catch (e) {
+                    console.log('ddddddddddddddddddggg', e)
+                    return false
+                }
+
             } 
         },
         location: location,
@@ -64,6 +77,7 @@ export default async (v,p,c,obj,r) => {
         proxy: new Proxy(target, handler)
     }
     let hash = async (event) =>{
+        console.log('ddddddddddddddddddddddddddddddddddddddddd')
         await system.pull.resolve(system.location.hash.replace('#', ''))
         system.worker_main["markdown__string_views"].innerHTML = ''
         system.worker_main["md"]= system.value
@@ -104,11 +118,13 @@ export default async (v,p,c,obj,r) => {
     
     if(isEmpty(system.json.children.view) && !isEmpty(system.location.hash)) {
         system.validation.value.fsRead = true
-        // system.hashtag = system.hashtag.replace('#','')
+        system.validation.value.hashRead = false
     } else {
         if(isEmpty(system.json.children.view) && isEmpty(system.location.hash)) {
             system.validation.value.fsRead = true
+            system.validation.value.hashRead = false
         } else {
+            system.validation.value.hashRead = true
             system.validation.value.fsRead = false
         }
     }
@@ -132,12 +148,7 @@ export default async (v,p,c,obj,r) => {
                 break
         }
     });
-    if(!isEmpty(system['value'])) {
-    } else {
-        self["value"] = "# Empty"
-    }
 
-  
     const fsLoad = () => {
         return new Promise(async (resolve, reject) => {
             window.zb.fs[`${system.worker_main['fs.path']}`].syncfs(true , (err) => {
@@ -222,7 +233,6 @@ export default async (v,p,c,obj,r) => {
         console.log(event.path[0].files[0])
         let reader = new FileReader();
         reader.readAsText(event.path[0].files[0]);
-
         reader.onload = function() {
             system.worker_main["markdown__string_views"].innerHTML = ''
             system.worker_main["md"]= reader.result
@@ -264,6 +274,7 @@ export default async (v,p,c,obj,r) => {
         return system.worker_main["output"];
     }
     function markdown__string_menu_change_true(event) {
+        console.log('~~~~~~~~~~markdown__string_menu_change_true~~~~~~~~~~', event)
         system.worker_main["markdown__string_views"].innerHTML = ''
         if(system.worker_main["markdown__string_views"].querySelector('iframe')) {
             system.worker_main["markdown__string_views"].querySelector('iframe').remove()
@@ -283,7 +294,7 @@ export default async (v,p,c,obj,r) => {
         system.worker_main["markdown__string_views"].style.whiteSpace = "initial"
     }
     function markdown__string_menu_change_false(event) {
-        console.log('~~~~~~~~~~2~~~~~~~~~~', event)
+        console.log('~~~~~~~~~~markdown__string_menu_change_false~~~~~~~~~~', event)
         if(system.worker_main["markdown__string_views"].querySelector('iframe')) {
             system.worker_main["markdown__string_views"].querySelector('iframe').remove()
         }
@@ -301,8 +312,7 @@ export default async (v,p,c,obj,r) => {
         system.worker_main["markdown__string_views"].innerText = Parser.json(json.code)
     }
     function saveMd () {
-        return new Promise(async (resolve, reject) => { 
-            // console.assert(false, system.worker_main["self.value"])
+        return new Promise(async (resolve, reject) => {
             let code = {}
             system.worker_main["markdown__self"].innerHTML = system.worker_main["self.value"];
             system.worker_main["output"] = markdownToHTML(system.worker_main["self.value"]);
@@ -375,7 +385,6 @@ export default async (v,p,c,obj,r) => {
     }
     await fsLoad()
     if(system.validation.value.fsRead) {
-        console.assert(false )
         let dir = window.zb.fs[`${system.worker_main['fs.path']}`].readdir("/body")  
         if(dir.find(item => item === 'data.md')) {
             let mdfs = window.zb.fs[`${system.worker_main['fs.path']}`].readFile("/body/data.md",{ encoding: "utf8" });
@@ -393,8 +402,11 @@ export default async (v,p,c,obj,r) => {
             system.worker_main["markdown__self"].value= "# Empty"
             system.worker_main["self.value"]= "# Empty"
         }
+    } else {
+        if(system.validation.value.hashRead) { hash() } else {
+            updateUI()
+        }
     }
-    updateUI()
     window.addEventListener("hashchange", hash, false);
     obj.this.shadowRoot.querySelector('.markdown').addEventListener("input", updateUI);
     obj.this.shadowRoot.querySelector('.markdown__button_download').addEventListener("click", download);
