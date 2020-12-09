@@ -112,31 +112,26 @@ export default async (v,p,c,obj,r) => {
             system.validation.value.fsRead = false
         }
     }
-    if(system.validation.value.external) {
-        system.worker_main.markdown__self_aside_1.innerHTML = ''
-        system.worker_main.markdown__self_aside_1.innerHTML = Parser.stringify(system.json.children.isMainThread)
-        system.worker_main.markdown__self_aside_2.innerHTML = ''
-        system.worker_main.markdown__self_aside_2.innerHTML = Parser.stringify(system.json.children.isMainThread)
-        system.json.children.isMainThread.forEach(element => {
-            switch(element.type) {
-                case"element":
-                    system.worker_main.markdown__self_aside_1.querySelector(`#${element.attributes[0].value}`).addEventListener('click',async (event) =>{
-                        event.preventDefault();
-                        location.hash = `#${event.target.id}`;
-                    })
-                    system.worker_main.markdown__self_aside_2.querySelector(`#${element.attributes[0].value}`).addEventListener('click',async (event) =>{
-                        event.preventDefault();
-                        location.hash = `#${event.target.id}`;
-                    })
-                    break
-                default:
-                    break
-            }
-        });
-    } else {
-        // console.assert(false, system.location.hash, system.json.children.view)
-    }
-    
+    system.worker_main.markdown__self_aside_1.innerHTML = ''
+    system.worker_main.markdown__self_aside_1.innerHTML = Parser.stringify(system.json.children.isMainThread)
+    system.worker_main.markdown__self_aside_2.innerHTML = ''
+    system.worker_main.markdown__self_aside_2.innerHTML = Parser.stringify(system.json.children.isMainThread)
+    system.json.children.isMainThread.forEach(element => {
+        switch(element.type) {
+            case"element":
+                system.worker_main.markdown__self_aside_1.querySelector(`#${element.attributes[0].value}`).addEventListener('click',async (event) =>{
+                    event.preventDefault();
+                    location.hash = `#${event.target.id}`;
+                })
+                system.worker_main.markdown__self_aside_2.querySelector(`#${element.attributes[0].value}`).addEventListener('click',async (event) =>{
+                    event.preventDefault();
+                    location.hash = `#${event.target.id}`;
+                })
+                break
+            default:
+                break
+        }
+    });
     if(!isEmpty(system['value'])) {
     } else {
         self["value"] = "# Empty"
@@ -269,7 +264,6 @@ export default async (v,p,c,obj,r) => {
         return system.worker_main["output"];
     }
     function markdown__string_menu_change_true(event) {
-        console.log('~~~~~~~~~~1~~~~~~~~~~', event)
         system.worker_main["markdown__string_views"].innerHTML = ''
         if(system.worker_main["markdown__string_views"].querySelector('iframe')) {
             system.worker_main["markdown__string_views"].querySelector('iframe').remove()
