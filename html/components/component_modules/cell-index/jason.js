@@ -1031,7 +1031,7 @@ var WebContainer = {
   height: "100%",
   width: "100%",
   border:"none",
-  sandbox:"allow-scripts",
+  sandbox:"allow-scripts, allow-same-origin",
   _update: function(background) {
     if (background.style) {
       this.style = background.style;

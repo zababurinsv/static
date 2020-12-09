@@ -765,7 +765,8 @@ div#external{
           let style = document.createElement('style')
           style.innerText = '@import "/static/html/components/component_modules/cell-index/jason.css"'
           obj.this.appendChild(style)
-          let json = await fetch(`${location.origin}/${obj.this.dataset.json}`)
+          console.log('ssssssssss', `${location.origin}${obj.this.dataset.json}`)
+          let json = await fetch(`${location.origin}${obj.this.dataset.json}`)
          json = await json.json() 
          let app = Jason({
           $cell: true,
