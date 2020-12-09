@@ -765,8 +765,12 @@ div#external{
           let style = document.createElement('style')
           style.innerText = '@import "/static/html/components/component_modules/cell-index/jason.css"'
           obj.this.appendChild(style)
-          console.log('ssssssssss', `${location.origin}${obj.this.dataset.json}`)
-          let json = await fetch(`${location.origin}${obj.this.dataset.json}`)
+          let json = {}
+          if(location.origin === 'http://localhost:9876') {
+            json = await fetch(`${location.origin}/android/index.localhost.json`)
+          } else {
+            json = await fetch(`${location.origin}${obj.this.dataset.json}`)
+          }
          json = await json.json() 
          let app = Jason({
           $cell: true,

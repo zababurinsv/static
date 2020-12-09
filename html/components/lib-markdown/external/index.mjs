@@ -38,12 +38,7 @@ export default async (v,p,c,obj,r) => {
         ptr: {},
         worker_main: {},
         validation: {
-            key: (...args) =>{
-                console.assert(false, args)
-               return validation.value = {
-                 onhashchange:("onhashchange" in window)
-               }
-            },
+            key: (...args) =>{ return validation.value },
             value: { onhashchange:("onhashchange" in window)}
         },
         pull: {
@@ -91,7 +86,8 @@ export default async (v,p,c,obj,r) => {
         "src": false,
         "markdown__self":obj['this']['shadowRoot'].querySelector('.markdown__self'),
         "markdown__self_menu": obj['this']['shadowRoot'].querySelector('.markdown__self_menu'),
-        "markdown__self_views": obj['this']['shadowRoot'].querySelector('.markdown__self_views'),
+        "markdown__self_aside_1": obj['this']['shadowRoot'].querySelectorAll('.markdown__self_aside')[0],
+        "markdown__self_aside_2": obj['this']['shadowRoot'].querySelectorAll('.markdown__self_aside')[1],
         "markdown__self_html": obj['this']['shadowRoot'].querySelector('.markdown__self_html'),
         "markdown__html": obj['this']['shadowRoot'].querySelector('.markdown__html'),
         "markdown__html.innerText": false,
@@ -107,22 +103,31 @@ export default async (v,p,c,obj,r) => {
     }
     
     if(isEmpty(system.json.children.view) && !isEmpty(system.location.hash)) {
-        system.validation.value.external = false
+        system.validation.value.fsRead = true
         // system.hashtag = system.hashtag.replace('#','')
     } else {
-        system.validation.value.external = true
-        // console.log('@@@@@@@@@@@@@@@@@',  system.json.object)
+        if(isEmpty(system.json.children.view) && isEmpty(system.location.hash)) {
+            system.validation.value.fsRead = true
+        } else {
+            system.validation.value.fsRead = false
+        }
     }
     if(system.validation.value.external) {
-        system.worker_main.markdown__self_views.innerHTML = ''
-        system.worker_main.markdown__self_views.innerHTML = Parser.stringify(system.json.children.isMainThread) 
+        system.worker_main.markdown__self_aside_1.innerHTML = ''
+        system.worker_main.markdown__self_aside_1.innerHTML = Parser.stringify(system.json.children.isMainThread)
+        system.worker_main.markdown__self_aside_2.innerHTML = ''
+        system.worker_main.markdown__self_aside_2.innerHTML = Parser.stringify(system.json.children.isMainThread)
         system.json.children.isMainThread.forEach(element => {
             switch(element.type) {
                 case"element":
-                system.worker_main.markdown__self_views.querySelector(`#${element.attributes[0].value}`).addEventListener('click',async (event) =>{
-                    event.preventDefault();
-                    location.hash = `#${event.target.id}`;
-                })
+                    system.worker_main.markdown__self_aside_1.querySelector(`#${element.attributes[0].value}`).addEventListener('click',async (event) =>{
+                        event.preventDefault();
+                        location.hash = `#${event.target.id}`;
+                    })
+                    system.worker_main.markdown__self_aside_2.querySelector(`#${element.attributes[0].value}`).addEventListener('click',async (event) =>{
+                        event.preventDefault();
+                        location.hash = `#${event.target.id}`;
+                    })
                     break
                 default:
                     break
@@ -130,7 +135,6 @@ export default async (v,p,c,obj,r) => {
         });
     } else {
         // console.assert(false, system.location.hash, system.json.children.view)
-
     }
     
     if(!isEmpty(system['value'])) {
@@ -186,9 +190,7 @@ export default async (v,p,c,obj,r) => {
         if(!isEmpty(system.worker_main["md"])) {
             system.worker_main["md"] = await system.worker_main["md"].text()
         } else {
-            let dir = window.zb.fs[`${system.worker_main['fs.path']}`].readdir("/body")  
-         
-            console.assert(false, dir)
+            let dir = window.zb.fs[`${system.worker_main['fs.path']}`].readdir("/body")
             if(dir.find(item => item === 'data.md')) {
                 let mdfs =  window.zb.fs[`${system.worker_main['fs.path']}`].readFile("/body/data.md",{ encoding: "utf8" });
                 if(!isEmpty(mdfs)) {
@@ -200,7 +202,6 @@ export default async (v,p,c,obj,r) => {
                 system.worker_main["md"]="# Empty"
             }
         }
-      
         system.worker_main["markdown__self"].value = system.worker_main["md"]
         system.worker_main["self.value"] = system.worker_main["md"]
         system.worker_main["checkbox.checked"] = true        
@@ -242,30 +243,23 @@ export default async (v,p,c,obj,r) => {
         if(event.target.checked) {
             system.worker_main["markdown__self_html"].innerHTML = ''
             system.worker_main["markdown__self_html"].style.display = "none"
-            system.worker_main["markdown__self_html"].style.flexDirection = "column"
-            system.worker_main["markdown__self_html"].style.flexGrow = "9"
-            system.worker_main["markdown__self_menu"].style.height = "80vh"
-            system.worker_main["markdown__self"].style.display = "flex"
+            system.worker_main["markdown__self_menu"].style.display = "grid"
+            system.worker_main["markdown__self"].style.display = "block"
             system.worker_main["markdown__html"].style.display = "block"
             system.worker_main["markdown__string_menu"][1].style.display = "flex"
-            system.worker_main["markdown__self_views"].style.display = "block"
+            system.worker_main["markdown__self_aside_1"].style.display = "block"
+            system.worker_main["markdown__self_aside_2"].style.display = "block"
         } else {
-            
             system.worker_main["markdown__self_html"].innerHTML = ''
             system.worker_main["markdown__self_html"].innerHTML = system.worker_main['markdown__html'].innerHTML
             system.worker_main["markdown__self_html"].style.display = "flex"
-            system.worker_main["markdown__self_html"].style.flexDirection = "column"
-            system.worker_main["markdown__self_html"].style.flexGrow = "7.2"
+            system.worker_main["markdown__self_menu"].style.display = "flex"
             system.worker_main["markdown__self_menu"].style.height = "auto"
             system.worker_main["markdown__self"].style.display = "none"
             system.worker_main["markdown__html"].style.display = "none"
             system.worker_main["markdown__string_menu"][1].style.display = "none"
-            system.worker_main["markdown__self_views"].style.display = "none"
-            
-            // console.log('ssssssssss', system.worker_main['markdown__html'])
-            // system.worker_main['markdown__html'].appendChild()
-            // system.worker_main['markdown__html'].appendChild()
-            
+            system.worker_main["markdown__self_aside_1"].style.display = "none"
+            system.worker_main["markdown__self_aside_2"].style.display = "none"
         }
     }
     function markdownToHTML(markdown) {
@@ -342,7 +336,8 @@ export default async (v,p,c,obj,r) => {
             (code.innerText === '<pre></pre>')
             ? system.worker_main["markdown__string_views"].style.height = 'auto'
             : system.worker_main["markdown__string_views"].style.height = '75vw'
-            resolve(fsSave()) 
+            system.worker_main["markdown__self_html"].innerHTML = system.worker_main["markdown__html"].innerHTML;
+            resolve(fsSave())
         })
     }
     let updateUI = async (event = {}) => {
@@ -385,8 +380,8 @@ export default async (v,p,c,obj,r) => {
         }
     }
     await fsLoad()
- 
-    if(system.location.hash === undefined || !system.value) {
+    if(system.validation.value.fsRead) {
+        console.assert(false )
         let dir = window.zb.fs[`${system.worker_main['fs.path']}`].readdir("/body")  
         if(dir.find(item => item === 'data.md')) {
             let mdfs = window.zb.fs[`${system.worker_main['fs.path']}`].readFile("/body/data.md",{ encoding: "utf8" });
