@@ -389,7 +389,8 @@ export default async (v,p,c,obj,r) => {
             if(!isEmpty(mdfs)) {
                 system.worker_main["md"]= mdfs
                 system.worker_main["markdown__self"].value= mdfs
-                system.worker_main["self.value"]= mdfs 
+                system.worker_main["self.value"]= mdfs
+                updateUI()
             } else {
                 system.worker_main["md"]= "# Empty"
                 system.worker_main["markdown__self"].value= "# Empty"
