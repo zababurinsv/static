@@ -789,16 +789,16 @@ div#external{
           // console.log('ffgfgfdddd3')
         } else {
           // console.log('ffgfgf')
-          let host = this.dataset.url.replace('/import','')
-          let ifr = obj['this'].querySelector('iframe')
-          iframe.set(host, ifr, obj['this'])
-          ifr.onload = function () {
-            setTimeout(function() {
-              document.dispatchEvent( new CustomEvent(`iframe`,{
-                detail:host
-              }))
-            }, 0);
-          }
+          // let host = this.dataset.url.replace('/import','')
+          // let ifr = obj['this'].querySelector('iframe')
+          // iframe.set(host, ifr, obj['this'])
+          // ifr.onload = function () {
+            // setTimeout(function() {
+              // document.dispatchEvent( new CustomEvent(`iframe`,{
+                // detail:host
+              // }))
+            // }, 0);
+          // }
         }
         })(this)
       }
