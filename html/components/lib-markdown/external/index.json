@@ -96,5 +96,21 @@
           },
           { "type": "text", "content": "fs" }
         ]
-      }]
+      },{
+      "type": "element",
+      "tagName": "h1",
+      "attributes": [{ "key": "id", "value": "design" }],
+      "children": [
+        {
+          "type": "element",
+          "tagName": "a",
+          "attributes": [
+            { "key": "aria-hidden", "value": "true" },
+            { "key": "href", "value": "#design" }
+          ],
+          "children": []
+        },
+        { "type": "text", "content": "design" }
+      ]
+    }]
 }
