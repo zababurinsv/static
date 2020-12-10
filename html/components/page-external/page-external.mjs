@@ -783,45 +783,23 @@ div#external{
         {
          '$jason': json['$jason']
         })
-// 
-          // let app = Jason({
-            // $cell: true,
-            // style: {
-              // width: '100%',
-              // height: '100%',
-              // margin: '0 auto'
-            // }
-          // }, 
-          // {
-          //  '$jason': {
-              // 'head': {
-                // 'title': 'Basic'
-              // },
-              // 'body': {
-                // 'background': {
-                  // 'type': 'html',
-                  // 'url': url
-                // }
-              // }
-            // }
-          // })
-          this.app = app
-          obj['function']['create'](obj)
-          if(!this.dataset.url) {
-            // console.log('ffgfgfdddd3')
-          } else {
-            // console.log('ffgfgf')
-            // let host = this.dataset.url.replace('/import','')
-            // let ifr = obj['this'].querySelector('iframe')
-            // iframe.set(host, ifr, obj['this'])
-            // ifr.onload = function () {
-              // setTimeout(function() {
-                // document.dispatchEvent( new CustomEvent(`iframe`,{
-                  // detail:host
-                // }))
-              // }, 0);
-            // }
+        this.app = app
+        obj['function']['create'](obj)
+        if(!this.dataset.url) {
+          // console.log('ffgfgfdddd3')
+        } else {
+          // console.log('ffgfgf')
+          let host = this.dataset.url.replace('/import','')
+          let ifr = obj['this'].querySelector('iframe')
+          iframe.set(host, ifr, obj['this'])
+          ifr.onload = function () {
+            setTimeout(function() {
+              document.dispatchEvent( new CustomEvent(`iframe`,{
+                detail:host
+              }))
+            }, 0);
           }
+        }
         })(this)
       }
     })
