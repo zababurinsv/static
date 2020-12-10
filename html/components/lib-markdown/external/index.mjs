@@ -3,9 +3,8 @@ import IDBFS from '/static/html/components/lib-markdown/external/wasm/idbfs.mjs'
 import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 import Parser from '/static/html/components/component_modules/bundle/html2json/html2json.index.mjs'
 import * as md2html from  '/static/html/components/lib-markdown/external/wasm/markdown.es.mjs'
-import OrbitDb from '/static/html/components/component_modules/bundle/orbit/orbit.index.mjs'
+// import OrbitDb from '/static/html/components/component_modules/bundle/orbit/orbit.index.mjs'
 export default async (v,p,c,obj,r) => {
-    console.log('ssssssssssssssssssss', OrbitDb)
     const target = {
         notProxied: "original value",
         proxied: "original value"
