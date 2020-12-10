@@ -78,12 +78,15 @@ export default async (v,p,c,obj,r) => {
         proxy: new Proxy(target, handler)
     }
     let hash = async (event) =>{
-        await system.pull.resolve(system.location.hash.replace('#', ''))
-        system.worker_main["markdown__string_views"].innerHTML = ''
-        system.worker_main["md"]= system.value
-        system.worker_main["markdown__self"].value= system.value
-        system.worker_main["self.value"]= system.value
-        updateUI()
+        if(!isEmpty(location.hash)){
+            await system.pull.resolve(system.location.hash.replace('#', ''))
+            location.hash = ''
+            system.worker_main["markdown__string_views"].innerHTML = ''
+            system.worker_main["md"]= system.value
+            system.worker_main["markdown__self"].value= system.value
+            system.worker_main["self.value"]= system.value
+            updateUI()
+        }
     }
     system.json.ok = true; 
     system.json.status = true; 
