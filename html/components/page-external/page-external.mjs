@@ -769,7 +769,7 @@ div#external{
           if(location.origin === 'http://localhost:9876') {
             json = await fetch(`${location.origin}/android/index.localhost.json`)
           } else {
-            json = await fetch(`${location.origin}/android/index.localhost.web.json`)
+            json = await fetch(`${location.origin}/android/index.web.json`)
           }
          json = await json.json() 
          let app = Jason({
