@@ -296,11 +296,9 @@ export default async (v,p,c,obj,r) => {
         system.worker_main["markdown__string_views"].style.whiteSpace = "initial"
     }
     function markdown__string_menu_change_false(event) {
-        console.log('~~~~~~~~~~markdown__string_menu_change_false~~~~~~~~~~', event)
         if(system.worker_main["markdown__string_views"].querySelector('iframe')) {
             system.worker_main["markdown__string_views"].querySelector('iframe').remove()
         }
-      
         let json = {
             code: Parser.parse(system.worker_main['markdown__html.code']),
             html: Parser.parse(system.worker_main['markdown__html.innerHTML'])
@@ -313,10 +311,14 @@ export default async (v,p,c,obj,r) => {
         system.worker_main["markdown__string_views"].style.whiteSpace = "pre-wrap"
         system.worker_main["markdown__string_views"].innerText = Parser.json(json.code)
     }
-    function asideitems (items = Array, item) {
+    function asideitems (items = Array, item, id) {
         for(let self of items) {
             let section = document.createElement('section')
+            section.classList.add(`${id}__list`);
             for(let paragraph of item) {
+                paragraph.addEventListener("click", async (event) => {
+                    system.worker_main["markdown__html"].querySelector(`#${event.target.querySelector('a').id}`).scrollIntoView({block: "start", behavior: "smooth"})
+                }, false);
                 section.prepend(paragraph)
             }
                 self.after(section)
@@ -325,7 +327,6 @@ export default async (v,p,c,obj,r) => {
     }
     function ucFirst(str) {
         if (!str) return str;
-
         return str[0].toLowerCase() + str.slice(1);
     }
     function saveMd () {
@@ -350,7 +351,8 @@ export default async (v,p,c,obj,r) => {
                     h1 = tags[i].querySelector('a').id
                 } else {
                     if(tags[i].tagName === 'H2' || tags[i].tagName === 'H3' || tags[i].tagName === 'H4' || tags[i].tagName === 'H5' ||tags[i].tagName === 'H6') {
-                        tags[i].querySelector('a').id = tags[i].innerText.replace(/\s/g, '')
+                        let str = ucFirst(tags[i].innerText.replace(/\s/g, ''))
+                        tags[i].querySelector('a').id = str
                         h.unshift(tags[i].cloneNode(true))
                     }
                 }
