@@ -103,11 +103,10 @@ export default async (v,p,c,obj,r) => {
         "src": false,
         "markdown__self":obj['this']['shadowRoot'].querySelector('.markdown__self'),
         "markdown__self_menu": obj['this']['shadowRoot'].querySelector('.markdown__self_menu'),
-        "markdown__self_aside_1": obj['this']['shadowRoot'].querySelectorAll('.markdown__self_aside')[0],
-        "markdown__self_aside_2": obj['this']['shadowRoot'].querySelectorAll('.markdown__self_aside')[1],
+        "markdown__self_aside_0": obj['this']['shadowRoot'].querySelectorAll('.markdown__self_aside')[0],
+        "markdown__self_aside_1": obj['this']['shadowRoot'].querySelectorAll('.markdown__self_aside')[1],
         "markdown__self_html": obj['this']['shadowRoot'].querySelector('.markdown__self_html'),
         "markdown__html": obj['this']['shadowRoot'].querySelector('.markdown__html'),
-        "markdown__html.innerText": false,
         "markdown__html.iframe": false,
         "fs": undefined,
         "fs.path": undefined,
@@ -131,18 +130,18 @@ export default async (v,p,c,obj,r) => {
             system.validation.value.fsRead = false
         }
     }
+    system.worker_main.markdown__self_aside_0.innerHTML = ''
+    system.worker_main.markdown__self_aside_0.innerHTML = Parser.stringify(system.json.children.isMainThread)
     system.worker_main.markdown__self_aside_1.innerHTML = ''
     system.worker_main.markdown__self_aside_1.innerHTML = Parser.stringify(system.json.children.isMainThread)
-    system.worker_main.markdown__self_aside_2.innerHTML = ''
-    system.worker_main.markdown__self_aside_2.innerHTML = Parser.stringify(system.json.children.isMainThread)
     system.json.children.isMainThread.forEach(element => {
         switch(element.type) {
             case"element":
-                system.worker_main.markdown__self_aside_1.querySelector(`#${element.attributes[0].value}`).addEventListener('click',async (event) =>{
+                system.worker_main.markdown__self_aside_0.querySelector(`#${element.attributes[0].value}`).addEventListener('click',async (event) =>{
                     event.preventDefault();
                     location.hash = `#${event.target.id}`;
                 })
-                system.worker_main.markdown__self_aside_2.querySelector(`#${element.attributes[0].value}`).addEventListener('click',async (event) =>{
+                system.worker_main.markdown__self_aside_1.querySelector(`#${element.attributes[0].value}`).addEventListener('click',async (event) =>{
                     event.preventDefault();
                     location.hash = `#${event.target.id}`;
                 })
@@ -255,8 +254,8 @@ export default async (v,p,c,obj,r) => {
             system.worker_main["markdown__self"].style.display = "block"
             system.worker_main["markdown__html"].style.display = "block"
             system.worker_main["markdown__string_menu"][1].style.display = "flex"
+            system.worker_main["markdown__self_aside_0"].style.display = "block"
             system.worker_main["markdown__self_aside_1"].style.display = "block"
-            system.worker_main["markdown__self_aside_2"].style.display = "block"
         } else {
             system.worker_main["markdown__self_html"].innerHTML = ''
             system.worker_main["markdown__self_html"].innerHTML = system.worker_main['markdown__html'].innerHTML
@@ -266,8 +265,8 @@ export default async (v,p,c,obj,r) => {
             system.worker_main["markdown__self"].style.display = "none"
             system.worker_main["markdown__html"].style.display = "none"
             system.worker_main["markdown__string_menu"][1].style.display = "none"
+            system.worker_main["markdown__self_aside_0"].style.display = "none"
             system.worker_main["markdown__self_aside_1"].style.display = "none"
-            system.worker_main["markdown__self_aside_2"].style.display = "none"
         }
     }
     function markdownToHTML(markdown) {
@@ -314,6 +313,16 @@ export default async (v,p,c,obj,r) => {
         system.worker_main["markdown__string_views"].style.whiteSpace = "pre-wrap"
         system.worker_main["markdown__string_views"].innerText = Parser.json(json.code)
     }
+    function asideitems (items = Array, item) {
+        for(let self of items) {
+            let section = document.createElement('section')
+            for(let paragraph of item) {
+                section.prepend(paragraph)
+            }
+                self.after(section)
+        }
+        return true
+    }
     function saveMd () {
         return new Promise(async (resolve, reject) => {
             let code = {}
@@ -325,6 +334,49 @@ export default async (v,p,c,obj,r) => {
             if(!isEmpty(system.worker_main["markdown__html"].querySelector('code'))) {
                 code = system.worker_main["markdown__html"].querySelector('code').cloneNode(true)
                 system.worker_main["markdown__html"].querySelector('code').remove()
+            }
+            let tags = system.worker_main["markdown__html"].children
+            let h1 = {}
+            let h = []
+            // console.assert(false, system.worker_main["markdown__html"].children)
+            for(let i =0; i < tags.length; i++ ) {
+                if(tags[i].tagName === 'H1') {
+                    tags[i].querySelector('a').id = tags[i].innerText.replace(/\s/g, '')
+                    h1 = tags[i].querySelector('a').id
+                } else {
+                    if(tags[i].tagName === 'H2' || tags[i].tagName === 'H3' || tags[i].tagName === 'H4' || tags[i].tagName === 'H5' ||tags[i].tagName === 'H6') {
+                        tags[i].querySelector('a').id = tags[i].innerText.replace(/\s/g, '')
+                        h.unshift(tags[i].cloneNode(true))
+                    }
+                }
+            }
+            if(isEmpty(h1)) {
+                h1 = "aside"
+            }
+            let section_1 = system.worker_main["markdown__self_aside_0"].querySelectorAll('section')
+            let section_2 = system.worker_main["markdown__self_aside_1"].querySelectorAll('section')
+
+            if(section_1.length !== 0) {
+                section_1[0].remove()
+            //     for(let i=0;i< section_1.length;i++){
+            //
+            //     }
+            }
+            if(section_2.length !== 0) {
+            //     for(let i=0;i< section_2.length;i++){
+                    section_2[0].remove()
+                // }
+            }
+            if(h1 === 'aside') {
+                asideitems([
+                    system.worker_main["markdown__self_aside_0"],
+                    system.worker_main["markdown__self_aside_1"],
+                ], h)
+            } else {
+                asideitems([
+                    system.worker_main["markdown__self_aside_0"].querySelector(`#${h1}`),
+                    system.worker_main["markdown__self_aside_1"].querySelector(`#${h1}`),
+                ], h)
             }
             system.worker_main["markdown__html.code"] = code.innerText;
             system.worker_main["markdown__html.innerHTML"] = system.worker_main["markdown__html"].innerHTML;
@@ -344,6 +396,7 @@ export default async (v,p,c,obj,r) => {
             ? system.worker_main["markdown__string_views"].style.height = 'auto'
             : system.worker_main["markdown__string_views"].style.height = '75vw'
             system.worker_main["markdown__self_html"].innerHTML = system.worker_main["markdown__html"].innerHTML;
+            system.worker_main["markdown__string_menu"][0].scrollIntoView()
             resolve(fsSave())
         })
     }
@@ -354,7 +407,6 @@ export default async (v,p,c,obj,r) => {
             if(event.target.tagName !== 'SELECT' && event.target.tagName !== 'INPUT') {
                 switch(event.target.tagName) {
                     case"TEXTAREA":
-                    system.worker_main["markdown__html.innerText"] =  system.worker_main["markdown__html"].innerText
                     system.worker_main["src"] = 'data:text/html;charset=utf-8,' + encodeURIComponent(system.worker_main["markdown__html.code"])
                     system.worker_main["self.value"] = event.target.value
                         break
