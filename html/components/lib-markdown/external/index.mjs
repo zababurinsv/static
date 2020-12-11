@@ -348,20 +348,23 @@ export default async (v,p,c,obj,r) => {
             let countH1 = 0
             for(let i =0; i < tags.length; i++ ) {
                 if(tags[i].tagName === 'H1') {
-                    let str = ucFirst(tags[i].innerText.replace(/\s/g, ''))
-                    tags[i].querySelector('a').id = str
-                   if(countH1 === 0) {
-                       h1 = tags[i].querySelector('a').id
-                       countH1++
-                   } else {
-                       if(tags[i].children.length !== 0){
-                           let str = ucFirst(tags[i].innerText.replace(/\s/g, ''))
-                           tags[i].querySelector('a').id = str
-                           h.unshift(tags[i].cloneNode(true))
-                       } else {
-                           h.unshift(tags[i].cloneNode(true))
-                       }
-                   }
+                    if(tags[i].children.length !== 0){
+                        let str = ucFirst(tags[i].innerText.replace(/\s/g, ''))
+                        tags[i].querySelector('a').id = str
+                        if(countH1 === 0) {
+                            h1 = tags[i].querySelector('a').id
+                            countH1++
+                        } else {
+                            if(tags[i].children.length !== 0){
+                                let str = ucFirst(tags[i].innerText.replace(/\s/g, ''))
+                                tags[i].querySelector('a').id = str
+                                h.unshift(tags[i].cloneNode(true))
+                            } else {
+                                h.unshift(tags[i].cloneNode(true))
+                            }
+                        }
+                    }
+
                 } else {
                     if(tags[i].tagName === 'H2' || tags[i].tagName === 'H3' || tags[i].tagName === 'H4' || tags[i].tagName === 'H5' ||tags[i].tagName === 'H6') {
                         if(tags[i].children.length !== 0){
