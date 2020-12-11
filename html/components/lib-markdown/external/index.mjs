@@ -315,6 +315,7 @@ export default async (v,p,c,obj,r) => {
         for(let self of items) {
             let section = document.createElement('section')
             section.classList.add(`${id}__list`);
+            section.classList.add(`aside-menu`);
             for(let paragraph of item) {
                 paragraph.addEventListener("click", async (event) => {
                     system.worker_main["markdown__html"].querySelector(`#${event.target.querySelector('a').id}`).scrollIntoView({block: "start", behavior: "smooth"})
@@ -374,12 +375,12 @@ export default async (v,p,c,obj,r) => {
                 asideitems([
                     system.worker_main["markdown__self_aside_0"],
                     system.worker_main["markdown__self_aside_1"],
-                ], h)
+                ], h, h1)
             } else {
                 asideitems([
                     system.worker_main["markdown__self_aside_0"].querySelector(`#${h1}`),
                     system.worker_main["markdown__self_aside_1"].querySelector(`#${h1}`),
-                ], h)
+                ], h, h1)
             }
             system.worker_main["markdown__html.code"] = code.innerText;
             system.worker_main["markdown__html.innerHTML"] = system.worker_main["markdown__html"].innerHTML;
