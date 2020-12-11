@@ -103,8 +103,8 @@ export default async (v,p,c,obj,r) => {
         "src": false,
         "markdown__self":obj['this']['shadowRoot'].querySelector('.markdown__self'),
         "markdown__self_menu": obj['this']['shadowRoot'].querySelector('.markdown__self_menu'),
-        "markdown__self_aside_0": obj['this']['shadowRoot'].querySelectorAll('.markdown__self_aside')[0],
-        "markdown__self_aside_1": obj['this']['shadowRoot'].querySelectorAll('.markdown__self_aside')[1],
+        "markdown__self_menu_aside_0": obj['this']['shadowRoot'].querySelector('#markdown__self_menu_aside_0'),
+        "markdown__self_menu_aside_1": obj['this']['shadowRoot'].querySelector('#markdown__self_menu_aside_1'),
         "markdown__self_html": obj['this']['shadowRoot'].querySelector('.markdown__self_html'),
         "markdown__html": obj['this']['shadowRoot'].querySelector('.markdown__html'),
         "markdown__html.iframe": false,
@@ -130,18 +130,18 @@ export default async (v,p,c,obj,r) => {
             system.validation.value.fsRead = false
         }
     }
-    system.worker_main.markdown__self_aside_0.innerHTML = ''
-    system.worker_main.markdown__self_aside_0.innerHTML = Parser.stringify(system.json.children.isMainThread)
-    system.worker_main.markdown__self_aside_1.innerHTML = ''
-    system.worker_main.markdown__self_aside_1.innerHTML = Parser.stringify(system.json.children.isMainThread)
+    system.worker_main.markdown__self_menu_aside_0.innerHTML = ''
+    system.worker_main.markdown__self_menu_aside_0.innerHTML = Parser.stringify(system.json.children.isMainThread)
+    system.worker_main.markdown__self_menu_aside_1.innerHTML = ''
+    system.worker_main.markdown__self_menu_aside_1.innerHTML = Parser.stringify(system.json.children.isMainThread)
     system.json.children.isMainThread.forEach(element => {
         switch(element.type) {
             case"element":
-                system.worker_main.markdown__self_aside_0.querySelector(`#${element.attributes[0].value}`).addEventListener('click',async (event) =>{
+                system.worker_main.markdown__self_menu_aside_0.querySelector(`#${element.attributes[0].value}`).addEventListener('click',async (event) =>{
                     event.preventDefault();
                     location.hash = `#${event.target.id}`;
                 })
-                system.worker_main.markdown__self_aside_1.querySelector(`#${element.attributes[0].value}`).addEventListener('click',async (event) =>{
+                system.worker_main.markdown__self_menu_aside_1.querySelector(`#${element.attributes[0].value}`).addEventListener('click',async (event) =>{
                     event.preventDefault();
                     location.hash = `#${event.target.id}`;
                 })
@@ -254,8 +254,8 @@ export default async (v,p,c,obj,r) => {
             system.worker_main["markdown__self"].style.display = "block"
             system.worker_main["markdown__html"].style.display = "block"
             system.worker_main["markdown__string_menu"][1].style.display = "flex"
-            system.worker_main["markdown__self_aside_0"].style.display = "block"
-            system.worker_main["markdown__self_aside_1"].style.display = "block"
+            system.worker_main["markdown__self_menu_aside_0"].style.display = "block"
+            system.worker_main["markdown__self_menu_aside_1"].style.display = "block"
         } else {
             system.worker_main["markdown__self_html"].innerHTML = ''
             system.worker_main["markdown__self_html"].innerHTML = system.worker_main['markdown__html'].innerHTML
@@ -265,8 +265,8 @@ export default async (v,p,c,obj,r) => {
             system.worker_main["markdown__self"].style.display = "none"
             system.worker_main["markdown__html"].style.display = "none"
             system.worker_main["markdown__string_menu"][1].style.display = "none"
-            system.worker_main["markdown__self_aside_0"].style.display = "none"
-            system.worker_main["markdown__self_aside_1"].style.display = "none"
+            system.worker_main["markdown__self_menu_aside_0"].style.display = "none"
+            system.worker_main["markdown__self_menu_aside_1"].style.display = "none"
         }
     }
     function markdownToHTML(markdown) {
@@ -345,41 +345,60 @@ export default async (v,p,c,obj,r) => {
             let tags = system.worker_main["markdown__html"].children
             let h1 = {}
             let h = []
+            let countH1 = 0
             for(let i =0; i < tags.length; i++ ) {
                 if(tags[i].tagName === 'H1') {
                     let str = ucFirst(tags[i].innerText.replace(/\s/g, ''))
                     tags[i].querySelector('a').id = str
-                    h1 = tags[i].querySelector('a').id
+                   if(countH1 === 0) {
+                       h1 = tags[i].querySelector('a').id
+                       countH1++
+                   } else {
+                       if(tags[i].children.length !== 0){
+                           let str = ucFirst(tags[i].innerText.replace(/\s/g, ''))
+                           tags[i].querySelector('a').id = str
+                           h.unshift(tags[i].cloneNode(true))
+                       } else {
+                           h.unshift(tags[i].cloneNode(true))
+                       }
+                   }
                 } else {
                     if(tags[i].tagName === 'H2' || tags[i].tagName === 'H3' || tags[i].tagName === 'H4' || tags[i].tagName === 'H5' ||tags[i].tagName === 'H6') {
-                        let str = ucFirst(tags[i].innerText.replace(/\s/g, ''))
-                        tags[i].querySelector('a').id = str
-                        h.unshift(tags[i].cloneNode(true))
+                        if(tags[i].children.length !== 0){
+                            let str = ucFirst(tags[i].innerText.replace(/\s/g, ''))
+                            tags[i].querySelector('a').id = str
+                            h.unshift(tags[i].cloneNode(true))
+                        } else {
+                            h.unshift(tags[i].cloneNode(true))
+                        }
                     }
                 }
             }
             if(isEmpty(h1)) {
                 h1 = "aside"
             }
-            let section_1 = system.worker_main["markdown__self_aside_0"].querySelectorAll('section')
-            let section_2 = system.worker_main["markdown__self_aside_1"].querySelectorAll('section')
+            let section_1 = system.worker_main["markdown__self_menu_aside_0"].querySelectorAll('section')
+            let section_2 = system.worker_main["markdown__self_menu_aside_1"].querySelectorAll('section')
 
             if(section_1.length !== 0) {
-                section_1[0].remove()
+                for (let i =0;i < section_1.length;i++){
+                    section_1[i].parentNode.removeChild(section_1[i])
+                }
             }
             if(section_2.length !== 0) {
-                section_2[0].remove()
+                for (let i =0;i < section_2.length;i++){
+                    section_2[i].parentNode.removeChild(section_2[i])
+                }
             }
-
             if(h1 === 'aside') {
                 asideitems([
-                    system.worker_main["markdown__self_aside_0"],
-                    system.worker_main["markdown__self_aside_1"],
+                    system.worker_main["markdown__self_menu_aside_0"],
+                    system.worker_main["markdown__self_menu_aside_1"],
                 ], h, h1)
             } else {
                 asideitems([
-                    system.worker_main["markdown__self_aside_0"].querySelector(`#${h1}`),
-                    system.worker_main["markdown__self_aside_1"].querySelector(`#${h1}`),
+                    system.worker_main["markdown__self_menu_aside_0"].querySelector(`#${h1}`),
+                    system.worker_main["markdown__self_menu_aside_1"].querySelector(`#${h1}`),
                 ], h, h1)
             }
             system.worker_main["markdown__html.code"] = code.innerText;
