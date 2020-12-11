@@ -323,6 +323,11 @@ export default async (v,p,c,obj,r) => {
         }
         return true
     }
+    function ucFirst(str) {
+        if (!str) return str;
+
+        return str[0].toLowerCase() + str.slice(1);
+    }
     function saveMd () {
         return new Promise(async (resolve, reject) => {
             let code = {}
@@ -338,10 +343,10 @@ export default async (v,p,c,obj,r) => {
             let tags = system.worker_main["markdown__html"].children
             let h1 = {}
             let h = []
-            // console.assert(false, system.worker_main["markdown__html"].children)
             for(let i =0; i < tags.length; i++ ) {
                 if(tags[i].tagName === 'H1') {
-                    tags[i].querySelector('a').id = tags[i].innerText.replace(/\s/g, '')
+                    let str = ucFirst(tags[i].innerText.replace(/\s/g, ''))
+                    tags[i].querySelector('a').id = str
                     h1 = tags[i].querySelector('a').id
                 } else {
                     if(tags[i].tagName === 'H2' || tags[i].tagName === 'H3' || tags[i].tagName === 'H4' || tags[i].tagName === 'H5' ||tags[i].tagName === 'H6') {
@@ -358,15 +363,11 @@ export default async (v,p,c,obj,r) => {
 
             if(section_1.length !== 0) {
                 section_1[0].remove()
-            //     for(let i=0;i< section_1.length;i++){
-            //
-            //     }
             }
             if(section_2.length !== 0) {
-            //     for(let i=0;i< section_2.length;i++){
-                    section_2[0].remove()
-                // }
+                section_2[0].remove()
             }
+
             if(h1 === 'aside') {
                 asideitems([
                     system.worker_main["markdown__self_aside_0"],
