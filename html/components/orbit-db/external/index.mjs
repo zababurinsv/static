@@ -93,7 +93,7 @@ export default async (v,p,c,obj,r) => {
         },
         print: d => system.worker_main["output"].push(d),
     })
-    obj.OrbitDB = await loader('/static/html/components/component_modules/ipfs/db/dist/orbitdb.js','OrbitDB')
+    obj.OrbitDB = await loader('/static/html/components/component_modules/ipfs/db/orbitdb.js','OrbitDB')
     obj.Ipfs = await loader('/static/html/components/component_modules/ipfs/ipfs/index.min.js','Ipfs')
     if(obj.preset.status) {
         let template = await (await import(`/static/html/components/${obj.this.tagName.toLowerCase()}/template/${obj.preset.name}/${obj.preset.name}.mjs`))['default'](v,p,c,obj,r)
