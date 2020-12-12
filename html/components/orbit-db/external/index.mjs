@@ -1,9 +1,6 @@
-// import events from '/static/html/components/lib-markdown/external/events.mjs'
-// import IDBFS from '/static/html/components/lib-markdown/external/wasm/idbfs.mjs'
-// import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
-// import Parser from '/static/html/components/component_modules/bundle/html2json/html2json.index.mjs'
-// import * as md2html from  '/static/html/components/lib-markdown/external/wasm/markdown.es.mjs'
-// import OrbitDb from '/static/html/components/component_modules/bundle/orbit/orbit.index.mjs'
+import events from '/static/html/components/lib-markdown/external/events.mjs'
+import IDBFS from '/static/html/components/component_modules/idbfs/idbfs.mjs'
+import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 import loader from '/static/html/components/component_modules/loader/loader.mjs'
 export default async (v,p,c,obj,r) => {
     const target = {
@@ -18,7 +15,6 @@ export default async (v,p,c,obj,r) => {
             return Reflect.get(...arguments);
         }
     };
-
     let system = {
         _scriptDir: import.meta.url,
         ptr: {},
@@ -61,6 +57,42 @@ export default async (v,p,c,obj,r) => {
         proxy: new Proxy(target, handler),
         worker_main: { }
     }
+    const fsLoad = () => {
+        return new Promise(async (resolve, reject) => {
+            window.zb.fs[`${system.worker_main['fs.path']}`].syncfs(true , (err) => {
+                console.log('file load')
+                resolve()
+            });
+        })
+    }
+    const fsSave  = () => {
+        return new Promise(async (resolve, reject) => {
+            window.zb.fs[`${system.worker_main['fs.path']}`].syncfs(false , (err) => {
+                console.log('file save')
+                resolve()
+            });
+        })
+    }
+    window.onbeforeunload = () => { fsSave(); }
+    await IDBFS({
+        preInit() {  },
+        onRuntimeInitialized() {
+            try {
+                if(isEmpty(window.zb)) { window.zb = {}; window.zb.fs = {} }
+                const fsSetup = path => {
+                    system.worker_main['fs.path'] = path
+                    window.zb.fs[`${path}`] = this.FS
+                    window.zb.fs[`${path}`].mkdir(path);
+                    window.zb.fs[`${path}`].mount(window.zb.fs[`${path}`].filesystems.IDBFS, {}, path);
+                };
+                fsSetup("/universe");
+                fsLoad();
+            } catch (e) {
+                console.error('error', e)
+            }
+        },
+        print: d => system.worker_main["output"].push(d),
+    })
     obj.OrbitDB = await loader('/static/html/components/component_modules/ipfs/db/dist/orbitdb.js','OrbitDB')
     obj.Ipfs = await loader('/static/html/components/component_modules/ipfs/ipfs/index.min.js','Ipfs')
     if(obj.preset.status) {
