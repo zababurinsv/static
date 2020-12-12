@@ -70,6 +70,10 @@ export default (url, name, obj)=>{
                 verifyScript =false
                 Script = item
             }
+            if(item.src.indexOf(`${verifyName}.js`) > 0){
+                verifyScript =false
+                Script = item
+            }
         }
         if(verifyScript){
           if(isEmpty(obj)){

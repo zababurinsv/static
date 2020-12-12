@@ -4,6 +4,7 @@
 // import Parser from '/static/html/components/component_modules/bundle/html2json/html2json.index.mjs'
 // import * as md2html from  '/static/html/components/lib-markdown/external/wasm/markdown.es.mjs'
 // import OrbitDb from '/static/html/components/component_modules/bundle/orbit/orbit.index.mjs'
+import loader from '/static/html/components/component_modules/loader/loader.mjs'
 export default async (v,p,c,obj,r) => {
     const target = {
         notProxied: "original value",
@@ -60,6 +61,11 @@ export default async (v,p,c,obj,r) => {
         proxy: new Proxy(target, handler),
         worker_main: { }
     }
-
+    obj.OrbitDB = await loader('/static/html/components/component_modules/ipfs/db/dist/orbitdb.js','OrbitDB')
+    obj.Ipfs = await loader('/static/html/components/component_modules/ipfs/ipfs/index.min.js','Ipfs')
+    if(obj.preset.status) {
+        let template = await (await import(`/static/html/components/${obj.this.tagName.toLowerCase()}/template/${obj.preset.name}/${obj.preset.name}.mjs`))['default'](v,p,c,obj,r)
+        console.log(`(external-index.mjs*)${template}`,template)
+    }
     console.log('system', system)
 }
