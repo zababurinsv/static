@@ -163,7 +163,7 @@ export default async (v,p,c,obj,r) => {
       })
 
       await load(db, 'Creating database...')
-      startWriter(db, interval)
+      // startWriter(db, interval)
     } catch (e) {
       console.error(e)
     }
