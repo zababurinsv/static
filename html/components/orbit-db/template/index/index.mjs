@@ -185,7 +185,7 @@ export default async (v,p,c,obj,r) => {
       await load(db, 'Loading database...')
 
       if (!readonlyCheckbox.checked) {
-        startWriter(db, interval)
+        // startWriter(db, interval)
       } else {
         writerText.innerHTML = `Listening for updates to the database...`
       }
