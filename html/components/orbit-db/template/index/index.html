@@ -4,7 +4,6 @@
       <meta charset="utf-8">
       <link href="https://fonts.googleapis.com/css?family=Abel" rel="stylesheet">
    </head>
-
    <body>
    <div id="logo">
       <pre>
@@ -14,29 +13,6 @@
       \___/|_|   \____/
       </pre>
    </div>
-   <h2>Open or Create Local Database</h2>
-   <i>Open a database locally and create it if the database doesn't exist.</i>
-   <br><br>
-   <input id="dbname" type="text" placeholder="Database name"/>
-   <button id="create" type="button" disabled>Open</button>
-   <select id="type">
-      <option value="eventlog">Eventlog</option>
-      <option value="feed">Feed</option>
-      <option value="keyvalue">Key-Value</option>
-      <option value="docstore">DocumentDB</option>
-      <option value="counter">Counter</option>
-   </select>
-   <input id="public" type="checkbox" checked> Public
-
-   <h2>Open Remote Database</h2>
-   <i>Open a database from an OrbitDB address, eg. /orbitdb/zdpuApCvxfEFug6uohbADwnsBvBBxSdHaq1WTD6ES8cKmxN14/web3</i>
-   <br>
-   <i><b>Note!</b> Open the remote database in an Incognito Window or in a different browser. It won't work if you don't.</i>
-   <br><br>
-   <input id="dbaddress" type="text" value='/orbitdb/zdpuApCvxfEFug6uohbADwnsBvBBxSdHaq1WTD6ES8cKmxN14/web3' placeholder="Address"/>
-   <button id="open" type="button" disabled>Open</button>
-   <input id="readonly" type="checkbox" checked> Read-only
-   <br><br>
    <div id="status">Init</div>
    <div>
       <header id="output-header"></header>

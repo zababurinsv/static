@@ -26,24 +26,18 @@ export default async (v,p,c,obj,r) => {
   let interval = Math.floor((Math.random() * 300) + (Math.random() * 2000))
   let updateInterval
   let dbType, dbAddress
-
   // If we're building with Webpack, use the injected IPFS module.
   // Otherwise use 'Ipfs' which is exposed by ipfs.min.js
-    let Ipfs =  obj.Ipfs
-
   // If we're building with Webpack, use the injected OrbitDB module.
   // Otherwise use 'OrbitDB' which is exposed by orbitdb.min.js
-
-    let OrbitDB =  obj.OrbitDB
-
   // Init UI
-  openButton.disabled = true
-  createButton.disabled = true
+  // openButton.disabled = true
+  // createButton.disabled = true
   statusElm.innerHTML = "Starting IPFS..."
 
   // Create IPFS instance
-  const ipfs = await Ipfs.create({
-    repo: '/orbitdb/examples/browser/new/ipfs/0.33.1',
+  const ipfs = await obj.Ipfs.create({
+    repo: '/db',
     start: true,
     preload: {
       enabled: false
@@ -68,12 +62,26 @@ export default async (v,p,c,obj,r) => {
     }
   })
 
-  openButton.disabled = false
-  createButton.disabled = false
+  // openButton.disabled = false
+  // createButton.disabled = false
+  statusElm.innerHTML = "IPFS Validate address"
+  let isValidAddress = OrbitDB.isValidAddress('/orbitdb/zdpuApCvxfEFug6uohbADwnsBvBBxSdHaq1WTD6ES8cKmxN14/web3')
+  console.log('isValidAddress', isValidAddress)
   statusElm.innerHTML = "IPFS Started"
-  orbitdb = await OrbitDB.createInstance(ipfs)
+  try {
+    //console.assert(false, obj.OrbitDB , ipfs)
+    orbitdb = await obj.OrbitDB.createInstance(ipfs)
+  } catch (e) {
+    console.error({
+      _:'status error',
+      data: e
+    })
+    orbitdb = await obj.OrbitDB.createInstance(ipfs)
+  }
+
 
   const load = async (db, statusText) => {
+
     // Set the status text
     statusElm.innerHTML = statusText
 
@@ -167,33 +175,24 @@ export default async (v,p,c,obj,r) => {
     } catch (e) {
       console.error(e)
     }
-    openButton.disabled = false
-    createButton.disabled = false
+    // openButton.disabled = false
+    // createButton.disabled = false
   }
 
-  const openDatabase = async () => {
-    const address = dbAddressField.value
-
-    await resetDatabase(db)
-
-    openButton.disabled = true
-    createButton.disabled = true
-
+  const openDatabase = async (dbAddressField) => {
+    const address = dbAddressField
     try {
       statusElm.innerHTML = "Connecting to peers..."
       db = await orbitdb.open(address, { sync: true })
+      await resetDatabase(db)
       await load(db, 'Loading database...')
-
-      if (!readonlyCheckbox.checked) {
-        // startWriter(db, interval)
-      } else {
-        writerText.innerHTML = `Listening for updates to the database...`
-      }
+      writerText.innerHTML = `Listening for updates to the database...`
     } catch (e) {
-      console.error(e)
+      console.error({
+        _:"status error",
+        data:e
+      })
     }
-    openButton.disabled = false
-    createButton.disabled = false
     // startWriter(db,'5000')
   }
 
@@ -271,8 +270,9 @@ export default async (v,p,c,obj,r) => {
       </div>
     `
   }
-  openButton.addEventListener('click', openDatabase)
-  createButton.addEventListener('click', createDatabase)
+  openDatabase('/orbitdb/zdpuApCvxfEFug6uohbADwnsBvBBxSdHaq1WTD6ES8cKmxN14/web3')
+  // openButton.addEventListener('click', openDatabase)
+  // createButton.addEventListener('click', createDatabase)
   return obj
 
 }
