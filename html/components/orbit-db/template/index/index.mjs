@@ -191,6 +191,7 @@ export default async (v,p,c,obj,r) => {
         await load(db, 'Loading database...')
         writerText.innerHTML = `Listening for updates to the database...`
       } else {
+        statusElm.innerHTML = "Connecting to peers..."
         db = await obj.orbitdb.open(address, { sync: true })
         await load(db, 'Loading database...')
         writerText.innerHTML = `Listening for updates to the database...`
