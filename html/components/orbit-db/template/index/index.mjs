@@ -155,7 +155,7 @@ export default async (v,p,c,obj,r) => {
         })
         //
         await load(db, 'Creating database...')
-        startWriter(db, interval)
+        // startWriter(db, interval)
       } catch (e) {
         console.error(e)
       }
@@ -181,7 +181,7 @@ export default async (v,p,c,obj,r) => {
           data:e
         })
       }
-      startWriter(db,'5000')
+      // startWriter(db,'5000')
     }
 
     const update = async (db) => {
