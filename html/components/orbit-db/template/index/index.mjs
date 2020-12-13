@@ -21,7 +21,7 @@ export default async (v,p,c,obj,r) => {
   const publicCheckbox = obj.this.shadowRoot.getElementById("public")
   const readonlyCheckbox = obj.this.shadowRoot.getElementById("readonly")
 
-  let orbitdb, db
+  let db
   let count = 0
   let interval = Math.floor((Math.random() * 300) + (Math.random() * 2000))
   let updateInterval
@@ -36,8 +36,8 @@ export default async (v,p,c,obj,r) => {
   statusElm.innerHTML = "Starting IPFS..."
 
   // Create IPFS instance
-  const ipfs = await obj.Ipfs.create({
-    repo: '/db',
+  let ipfs = await Ipfs.create({
+    repo: './db',
     start: true,
     preload: {
       enabled: false
@@ -68,17 +68,10 @@ export default async (v,p,c,obj,r) => {
   let isValidAddress = OrbitDB.isValidAddress('/orbitdb/zdpuApCvxfEFug6uohbADwnsBvBBxSdHaq1WTD6ES8cKmxN14/web3')
   console.log('isValidAddress', isValidAddress)
   statusElm.innerHTML = "IPFS Started"
-  try {
-    //console.assert(false, obj.OrbitDB , ipfs)
-    orbitdb = await obj.OrbitDB.createInstance(ipfs)
-  } catch (e) {
-    console.error({
-      _:'status error',
-      data: e
-    })
-    orbitdb = await obj.OrbitDB.createInstance(ipfs)
-  }
-
+  let orbitdb = await OrbitDB.createInstance(ipfs, {
+    directory:'./orbit-of-venus'
+  })
+  obj['orbitdb'] = orbitdb
 
   const load = async (db, statusText) => {
 
@@ -86,11 +79,22 @@ export default async (v,p,c,obj,r) => {
     statusElm.innerHTML = statusText
 
     // When the database is ready (ie. loaded), display results
-    db.events.on('ready', () => queryAndRender(db))
+    db.events.on('ready', () => {
+
+      console.log('~~~~~~~~~ ready ~~~~~~~~~~~')
+      return queryAndRender(db)
+    })
     // When database gets replicated with a peer, display results
-    db.events.on('replicated', () => queryAndRender(db))
+    db.events.on('replicated', () => {
+      console.log('~~~~~~~~~ replicated ~~~~~~~~~~~')
+     return queryAndRender(db)
+    })
     // When we update the database, display result
-    db.events.on('write', () => queryAndRender(db))
+    db.events.on('write', () => {
+
+      console.log('~~~~~~~~~ write ~~~~~~~~~~~')
+      return queryAndRender(db)
+    })
 
     db.events.on('replicate.progress', () => queryAndRender(db))
 
@@ -104,7 +108,7 @@ export default async (v,p,c,obj,r) => {
     })
 
     db.events.on('ready', () => {
-      // Set the status text
+      console.log('~~~~~~~~~ ready ~~~~~~~~~~~')
       setTimeout(() => {
         statusElm.innerHTML = 'Database is ready'
       }, 1000)
@@ -136,7 +140,6 @@ export default async (v,p,c,obj,r) => {
     outputHeaderElm.innerHTML = ""
 
     clearInterval(updateInterval)
-
     if (db) {
       await db.close()
     }
@@ -144,18 +147,17 @@ export default async (v,p,c,obj,r) => {
     interval = Math.floor((Math.random() * 300) + (Math.random() * 2000))
   }
 
-  const createDatabase = async () => {
+  const createDatabase = async (nameOfDatabase) => {
     await resetDatabase(db)
 
-    openButton.disabled = true
-    createButton.disabled = true
+    // openButton.disabled = true
+    // createButton.disabled = true
 
     try {
-      const name = dbnameField.value
-      const type = createType.value
-      const publicAccess = publicCheckbox.checked
-
-      db = await orbitdb.open(name, {
+      const name = nameOfDatabase
+      const type = 'docstore'
+      const publicAccess = true
+      db = await obj['orbitdb'].open(name, {
         // If database doesn't exist, create it
         create: true,
         overwrite: true,
@@ -182,11 +184,19 @@ export default async (v,p,c,obj,r) => {
   const openDatabase = async (dbAddressField) => {
     const address = dbAddressField
     try {
-      statusElm.innerHTML = "Connecting to peers..."
-      db = await orbitdb.open(address, { sync: true })
-      await resetDatabase(db)
-      await load(db, 'Loading database...')
-      writerText.innerHTML = `Listening for updates to the database...`
+      if(db) {
+        console.assert(false, db)
+        await resetDatabase(db)
+        statusElm.innerHTML = "Connecting to peers..."
+        db = await obj.orbitdb.open(address, { sync: true })
+        await load(db, 'Loading database...')
+        writerText.innerHTML = `Listening for updates to the database...`
+      } else {
+        db = await obj.orbitdb.open(address, { sync: true })
+        await load(db, 'Loading database...')
+        writerText.innerHTML = `Listening for updates to the database...`
+        // console.assert(false, db)
+      }
     } catch (e) {
       console.error({
         _:"status error",
@@ -271,6 +281,7 @@ export default async (v,p,c,obj,r) => {
     `
   }
   openDatabase('/orbitdb/zdpuApCvxfEFug6uohbADwnsBvBBxSdHaq1WTD6ES8cKmxN14/web3')
+  // createDatabase('orbit-of-venus')
   // openButton.addEventListener('click', openDatabase)
   // createButton.addEventListener('click', createDatabase)
   return obj
