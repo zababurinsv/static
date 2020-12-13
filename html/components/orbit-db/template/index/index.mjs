@@ -185,7 +185,6 @@ export default async (v,p,c,obj,r) => {
     const address = dbAddressField
     try {
       if(db) {
-        console.assert(false, db)
         await resetDatabase(db)
         statusElm.innerHTML = "Connecting to peers..."
         db = await obj.orbitdb.open(address, { sync: true })
@@ -195,7 +194,6 @@ export default async (v,p,c,obj,r) => {
         db = await obj.orbitdb.open(address, { sync: true })
         await load(db, 'Loading database...')
         writerText.innerHTML = `Listening for updates to the database...`
-        // console.assert(false, db)
       }
     } catch (e) {
       console.error({
