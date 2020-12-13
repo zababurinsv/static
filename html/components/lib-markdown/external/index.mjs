@@ -313,16 +313,30 @@ export default async (v,p,c,obj,r) => {
     }
     function asideitems (items = Array, item, id) {
         for(let self of items) {
+            let h1save = {}
             let section = document.createElement('section')
             section.classList.add(`${id}__list`);
             section.classList.add(`aside-menu`);
-            for(let paragraph of item) {
-                paragraph.addEventListener("click", async (event) => {
-                    system.worker_main["markdown__html"].querySelector(`#${event.target.querySelector('a').id}`).scrollIntoView({block: "start", behavior: "smooth"})
-                }, false);
-                section.prepend(paragraph)
+            // console.assert(false,items,  isEmpty(item),id )
+            if(!isEmpty(item)) {
+                for(let paragraph of item) {
+                    paragraph.addEventListener("click", async (event) => {
+                        system.worker_main["markdown__html"].querySelector(`#${event.target.querySelector('a').id}`).scrollIntoView({block: "start", behavior: "smooth"})
+                    }, false);
+                    section.prepend(paragraph)
+                }
+
+                h1save = self.cloneNode(true)
+                system.worker_main["markdown__self_menu_aside_1"].innerHTML = ''
+                system.worker_main["markdown__self_menu_aside_1"].appendChild(h1save)
+                system.worker_main["markdown__self_menu_aside_1"].appendChild(section)
+            } else {
+                h1save = self.cloneNode(true)
+                system.worker_main["markdown__self_menu_aside_1"].innerHTML = ''
+                system.worker_main["markdown__self_menu_aside_1"].appendChild(h1save)
             }
-                self.after(section)
+
+                // self.after(section)
         }
         return true
     }
@@ -364,7 +378,6 @@ export default async (v,p,c,obj,r) => {
                             }
                         }
                     }
-
                 } else {
                     if(tags[i].tagName === 'H2' || tags[i].tagName === 'H3' || tags[i].tagName === 'H4' || tags[i].tagName === 'H5' ||tags[i].tagName === 'H6') {
                         if(tags[i].children.length !== 0){
@@ -393,16 +406,17 @@ export default async (v,p,c,obj,r) => {
                     section_2[i].parentNode.removeChild(section_2[i])
                 }
             }
+            // console.assert(false, section_1,section_2 )
             if(h1 === 'aside') {
                 asideitems([
-                    system.worker_main["markdown__self_menu_aside_0"],
-                    system.worker_main["markdown__self_menu_aside_1"],
+                    [system.worker_main["markdown__self_menu_aside_0"]],
                 ], h, h1)
             } else {
-                asideitems([
-                    system.worker_main["markdown__self_menu_aside_0"].querySelector(`#${h1}`),
-                    system.worker_main["markdown__self_menu_aside_1"].querySelector(`#${h1}`),
-                ], h, h1)
+                asideitems(
+                  [system.worker_main["markdown__self_menu_aside_0"].querySelector(`#${h1}`)],
+                  h,
+                  h1
+                )
             }
             system.worker_main["markdown__html.code"] = code.innerText;
             system.worker_main["markdown__html.innerHTML"] = system.worker_main["markdown__html"].innerHTML;

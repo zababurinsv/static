@@ -94,7 +94,6 @@ export default async (v,p,c,obj,r) => {
     })
     await loader('/static/html/components/component_modules/ipfs/db/orbitdb.js','OrbitDB')
     await loader('/static/html/components/component_modules/ipfs/ipfs/index.js','Ipfs')
-
     if(obj.preset.status) {
         let template = await (await import(`/static/html/components/${obj.this.tagName.toLowerCase()}/template/${obj.preset.name}/${obj.preset.name}.mjs`))['default'](v,p,c,obj,r)
         console.log(`(external-index.mjs*)${template}`,template)
