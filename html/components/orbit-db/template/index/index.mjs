@@ -168,7 +168,7 @@ export default async (v,p,c,obj,r) => {
         // If "Public" flag is set, allow anyone to write to the database,
         // otherwise only the creator of the database can write
         accessController: {
-          write: publicAccess ? ['*'] : [orbitdb.identity.id],
+          write: publicAccess ? ['*'] : [obj.orbitdb.identity.id],
         }
       })
 
@@ -212,10 +212,10 @@ export default async (v,p,c,obj,r) => {
     const creature = creatures[idx]
 
     if (db.type === 'eventlog') {
-      const value = "GrEEtinGs from " + orbitdb.id + " " + creature + ": Hello #" + count + " (" + time + ")"
+      const value = "GrEEtinGs from " + obj.orbitdb.id + " " + creature + ": Hello #" + count + " (" + time + ")"
       await db.add(value)
     } else if (db.type === 'feed') {
-      const value = "GrEEtinGs from " + orbitdb.id + " " + creature + ": Hello #" + count + " (" + time + ")"
+      const value = "GrEEtinGs from " + obj.orbitdb.id + " " + creature + ": Hello #" + count + " (" + time + ")"
       await db.add(value)
     } else if (db.type === 'docstore') {
       const value = { _id: 'peer1', avatar: creature, updated: time }
