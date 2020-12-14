@@ -45,31 +45,31 @@
             margin-bottom: 0.4vw;
 
             &_aside {
-                & > h1 {
+                h1 {
                     @include fonts(6);
                     cursor: pointer;
                 }
-                & > h2 {
+                h2 {
                     @include fonts(5);
                     cursor: pointer;
                     background: violet;
                 }
-                & > h3 {
+                h3 {
                     @include fonts(4);
                     cursor: pointer;
                     background: #82eeaa;
                 }
-                & > h4 {
+                h4 {
                     @include fonts(3);
                     cursor: pointer;
                     background: #e8505c;
                 }
-                & > h5 {
+                h5 {
                     @include fonts(2);
                     cursor: pointer;
                     background: #55c1c1;
                 }
-                & > h6 {
+                h6 {
                     @include fonts(1);
                     cursor: pointer;
                     background: #c9bc4e;
