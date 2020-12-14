@@ -5,18 +5,42 @@ import Parser from '/static/html/components/component_modules/bundle/html2json/h
 import * as md2html from  '/static/html/components/lib-markdown/external/wasm/markdown.es.mjs'
 // import OrbitDb from '/static/html/components/component_modules/bundle/orbit/orbit.index.mjs'
 export default async (v,p,c,obj,r) => {
-    const target = {
-        notProxied: "original value",
-        proxied: "original value"
-      };
-    const handler = {
-    get: function(target, prop, receiver) {
-        if (prop === "proxied") {
-            return "replaced value";
+    const target = []
+
+    let handler = {
+        get: function(obj, prop) {
+            console.log('proxy-body-get', {
+                obj:obj,
+                prop:prop
+            })
+            return obj[prop];
+        },
+        set: function(obj, prop, value) {
+            obj[prop] = value;
+            console.log('proxy-body-set', prop ,value )
+            switch (prop) {
+                case 'length':
+                    if(obj.length === 1){
+                        let timerId = setTimeout(async function tick() {
+                            if(obj.length === 0){
+                                console.log('proxy-body-end')
+                                clearTimeout(timerId);
+                            }else{
+                                console.log('proxy-body-all',obj, obj.length)
+                                console.log('proxy-body-now',obj[0])
+                                obj.shift()
+                                timerId = setTimeout(tick, 10);
+                            }
+                        }, 0);
+                    }
+                    break
+                default:
+                    break
+            }
+            return true
+
         }
-            return Reflect.get(...arguments);
-        }
-    };
+    }
     
     let backJson = (json) => {
         return new Promise( async (resolve, reject)=>{
@@ -77,6 +101,7 @@ export default async (v,p,c,obj,r) => {
         },
         proxy: new Proxy(target, handler)
     }
+
     let hash = async (event) =>{
         if(!isEmpty(location.hash)){
             await system.pull.resolve(system.location.hash.replace('#', ''))
@@ -184,7 +209,7 @@ export default async (v,p,c,obj,r) => {
                 console.error('error', e)
             }
         },
-        print: d => system.worker_main["output"].push(d),
+        print: d => system.proxy.push(d),
     })
    async function selected(event) {
         event.preventDefault()
