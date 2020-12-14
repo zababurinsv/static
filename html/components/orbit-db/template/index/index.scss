@@ -1,3 +1,7 @@
+@import "./docs/css/interface.scss";
+@import "./docs/css/fonts.scss";
+@import "./docs/css/media.scss";
+
 body {
   font-family: 'Abel', sans-serif;
   font-size: 0.6vw;
@@ -5,7 +9,6 @@ body {
 
 #logo {
   border-top: 0.2vw dotted black;
-  //border-bottom: 0.2vw dotted black;
 }
 
 #status {
@@ -41,7 +44,12 @@ input {
 h2 {
   margin-bottom: 0.4vw;
 }
+
 h3 {
   margin-top: 0.6vw;
   margin-bottom: 0.2vw;
+}
+
+pre {
+  font-size: 0.4vw;
 }
