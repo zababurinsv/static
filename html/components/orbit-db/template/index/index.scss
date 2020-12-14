@@ -1,23 +1,24 @@
 body {
   font-family: 'Abel', sans-serif;
-  font-size: 0.8em;
+  font-size: 0.6vw;
 }
 
 #logo {
-  border-top: 1px dotted black;
-  border-bottom: 1px dotted black;
+  border-top: 0.2vw dotted black;
+  //border-bottom: 0.2vw dotted black;
 }
 
 #status {
-  border-top: 1px dotted black;
-  border-bottom: 1px dotted black;
-  padding: 0.5em 0em;
+  border-top: 0.2vw dotted black;
+  border-bottom: 0.2vw dotted black;
+  padding: 0.4vw 0;
   text-align: center;
 }
 
 #results {
-  border: 1px dotted black;
-  padding: 0.5em;
+  border: 0.2vw dotted black;
+  padding: 0.2vw;
+  overflow: hidden;
 }
 
 #output-header > p {
@@ -26,21 +27,21 @@ body {
 }
 
 #output {
-  padding-top: 1em;
+  padding-top: 1vw;
 }
 
 #writerText {
-  padding-top: 0.5em;
+  padding-top: 0.4vw;
 }
 
 input {
-  padding: 0.5em;
+  padding: 0.4vw;
 }
 
 h2 {
-  margin-bottom: 0.2em;
+  margin-bottom: 0.4vw;
 }
 h3 {
-  margin-top: 0.8em;
-  margin-bottom: 0.2em;
+  margin-top: 0.6vw;
+  margin-bottom: 0.2vw;
 }
