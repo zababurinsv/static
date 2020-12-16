@@ -249,7 +249,7 @@ export default async (v,p,c,obj,r) => {
       const databasePeers = await ipfs.pubsub.peers(db.address.toString())
       const result = query(db)
       window.zb.fs['/body'].writeFile("/body/external.md", result[0].md)
-      window.zb.fs['/body'].syncfs(false, err => console.warn(err));
+      // window.zb.fs['/body'].syncfs(false, err => console.warn(err));
       if (dbType !== db.type || dbAddress !== db.address) {
         dbType = db.type;
         dbAddress = db.address;
