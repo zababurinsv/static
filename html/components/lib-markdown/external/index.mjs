@@ -3,7 +3,7 @@ import IDBFS from '/static/html/components/lib-markdown/external/wasm/idbfs.mjs'
 import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 import Parser from '/static/html/components/component_modules/bundle/html2json/html2json.index.mjs'
 import * as md2html from  '/static/html/components/lib-markdown/external/wasm/markdown.es.mjs'
-// import OrbitDb from '/static/html/components/component_modules/bundle/orbit/orbit.index.mjs'
+import task from '/static/html/components/component_modules/heap/index.mjs'
 export default async (v,p,c,obj,r) => {
     const target = []
 
@@ -86,7 +86,36 @@ export default async (v,p,c,obj,r) => {
                     return false
                 }
 
-            } 
+            },
+            "orbitdb": async (item) => {
+                let pull = {}
+                try {
+                    let dir = window.zb.fs['/body'].readdir("/body")
+                    if(dir.find(item => item === 'external.md')) {
+                        let mdfs = window.zb.fs[`${system.worker_main['fs.path']}`].readFile("/body/external.md",{ encoding: "utf8" });
+                        if(!isEmpty(mdfs)) {
+                            system.value = mdfs
+                        } else {
+                            system.worker_main["md"]= "# Empty"
+                            system.worker_main["markdown__self"].value= "# Empty"
+                            system.worker_main["self.value"]= "# Empty"
+                        }
+                    } else {
+                        pull = await task.set(true,'t','green',{
+                            _:'get orbitdb',
+                            item: (item)?item:'external'
+                        },'/orbitdb')
+                        if(pull.status === 'ok') {
+                            system.value = pull.md[0]['md']
+                            return pull
+                        } else {
+                            return false
+                        }
+                    }
+                }catch (e) {
+                    return false
+                }
+            }
         },
         location: location,
         value: {},
@@ -102,9 +131,16 @@ export default async (v,p,c,obj,r) => {
         proxy: new Proxy(target, handler)
     }
 
-    let hash = async (event) =>{
+    let hash = async (event) => {
         if(!isEmpty(location.hash)){
-            await system.pull.resolve(system.location.hash.replace('#', ''))
+            switch (location.hash) {
+                case '#external':
+                    await system.pull.orbitdb(system.location.hash.replace('#', ''))
+                    break
+                default:
+                    await system.pull.resolve(system.location.hash.replace('#', ''))
+                    break
+            }
             location.hash = ''
             system.worker_main["markdown__string_views"].innerHTML = ''
             system.worker_main["md"]= system.value
@@ -351,17 +387,42 @@ export default async (v,p,c,obj,r) => {
                     section.prepend(paragraph)
                 }
 
-                h1save = self.cloneNode(true)
-                system.worker_main["markdown__self_menu_aside_1"].innerHTML = ''
-                system.worker_main["markdown__self_menu_aside_1"].appendChild(h1save)
-                system.worker_main["markdown__self_menu_aside_1"].appendChild(section)
+                if(!isEmpty(self)) {
+                    h1save = self.cloneNode(true)
+                    system.worker_main["markdown__self_menu_aside_1"].innerHTML = ''
+                    system.worker_main["markdown__self_menu_aside_1"].appendChild(h1save)
+                    system.worker_main["markdown__self_menu_aside_1"].appendChild(section)
+                } else {
+                    let component_h1 = document.createElement('h1')
+                    let component_a = document.createElement('a')
+                    let component_text = system.worker_main['markdown__html'].querySelector('h1').innerText
+                    component_h1.id = id
+                    component_h1.innerText = isEmpty(component_text)?'external': component_text
+                    component_a.setAttribute('aria-hidden', true)
+                    component_a.href = `#${id}`
+                    component_h1.appendChild(component_a)
+                    system.worker_main["markdown__self_menu_aside_1"].innerHTML = ''
+                    system.worker_main["markdown__self_menu_aside_1"].appendChild(component_h1)
+                    system.worker_main["markdown__self_menu_aside_1"].appendChild(section)
+                }
             } else {
-                h1save = self.cloneNode(true)
-                system.worker_main["markdown__self_menu_aside_1"].innerHTML = ''
-                system.worker_main["markdown__self_menu_aside_1"].appendChild(h1save)
+                if(!isEmpty(self)) {
+                    h1save = self.cloneNode(true)
+                    system.worker_main["markdown__self_menu_aside_1"].innerHTML = ''
+                    system.worker_main["markdown__self_menu_aside_1"].appendChild(h1save)
+                } else {
+                    let component_h1 = document.createElement('h1')
+                    let component_a = document.createElement('a')
+                    let component_text = system.worker_main['markdown__html'].querySelector('h1').innerText
+                    component_h1.id = id
+                    component_h1.innerText = isEmpty(component_text)?'external': component_text
+                    component_a.setAttribute('aria-hidden', true)
+                    component_a.href = `#${id}`
+                    component_h1.appendChild(component_a)
+                    system.worker_main["markdown__self_menu_aside_1"].innerHTML = ''
+                    system.worker_main["markdown__self_menu_aside_1"].appendChild(component_h1)
+                }
             }
-
-                // self.after(section)
         }
         return true
     }
@@ -431,7 +492,7 @@ export default async (v,p,c,obj,r) => {
                     section_2[i].parentNode.removeChild(section_2[i])
                 }
             }
-            // console.assert(false, section_1,section_2 )
+            // console.assert(false, h1 )
             if(h1 === 'aside') {
                 asideitems([
                     [system.worker_main["markdown__self_menu_aside_0"]],
@@ -528,8 +589,24 @@ export default async (v,p,c,obj,r) => {
             updateUI()
         }
     }
+   async function update(event) {
+       let status = await task.set(true,'','red',system['worker_main']['markdown__self'].innerHTML, '/orbitdb/set/:external')
+    }
+
+    async function query(event) {
+        let res = await task.set(true,'','red',system['worker_main']['markdown__self'].innerHTML, '/orbitdb/get/:external')
+        if(res.status === 'ok') {
+            window.zb.fs['/body'].writeFile("/body/external.md", res['md'][0]['md'])
+            window.zb.fs['/body'].syncfs(false, err => console.warn(err));
+            location.hash = 'external';
+        }
+
+    }
+
     window.addEventListener("hashchange", hash, false);
     obj.this.shadowRoot.querySelector('.markdown').addEventListener("input", updateUI);
+    obj.this.shadowRoot.querySelector('.markdown__button_update').addEventListener("click", update);
+    obj.this.shadowRoot.querySelector('.markdown__button_query').addEventListener("click", query);
     obj.this.shadowRoot.querySelector('.markdown__button_download').addEventListener("click", download);
     obj.this.shadowRoot.querySelector('.markdown__button_upload').addEventListener("change", upload);
     obj.this.shadowRoot.querySelector('.markdown__button_select').addEventListener("change", selected);

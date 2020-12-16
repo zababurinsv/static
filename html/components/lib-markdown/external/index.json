@@ -112,5 +112,21 @@
         },
         { "type": "text", "content": "design" }
       ]
+    },{
+      "type": "element",
+      "tagName": "h1",
+      "attributes": [{ "key": "id", "value": "external" }],
+      "children": [
+        {
+          "type": "element",
+          "tagName": "a",
+          "attributes": [
+            { "key": "aria-hidden", "value": "true" },
+            { "key": "href", "value": "#external" }
+          ],
+          "children": []
+        },
+        { "type": "text", "content": "external" }
+      ]
     }]
 }

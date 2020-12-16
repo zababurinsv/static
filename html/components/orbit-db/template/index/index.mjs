@@ -1,3 +1,5 @@
+import task from '/static/html/components/component_modules/heap/index.mjs'
+import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 const creatures = [
   '🐙', '🐷', '🐬', '🐞',
   '🐈', '🙉', '🐸', '🐓',
@@ -27,6 +29,7 @@ export default async (v,p,c,obj,r) => {
   let updateInterval
   let dbType, dbAddress
   window.IPFS = Ipfs
+
   const initIPFSInstance = async () => {
     return IPFS.create({
       repo: './db',
@@ -87,7 +90,6 @@ export default async (v,p,c,obj,r) => {
     const load = async (db, statusText) => {
       statusElm.innerHTML = statusText
       db.events.on('ready', () => {
-        console.log('~~~~~~~~~ ready ~~~~~~~~~~~')
         return queryAndRender(db)
       })
       db.events.on('replicated', () => {
@@ -107,13 +109,14 @@ export default async (v,p,c,obj,r) => {
         statusElm.innerHTML = `Loading database... ${maxTotal} / ${total}`
       })
       db.events.on('ready', () => {
-        console.log('~~~~~~~~~ ready ~~~~~~~~~~~')
+        console.log('~~~~~~~~~ ready 2~~~~~~~~~~~')
         setTimeout(() => {
           statusElm.innerHTML = 'Database is ready'
         }, 1000)
       })
       await db.load()
     }
+
     const startWriter = async (db, interval) => {
       writerText.innerHTML = `Writing to database every ${interval} milliseconds...`
       updateInterval = setInterval(async () => {
@@ -163,18 +166,33 @@ export default async (v,p,c,obj,r) => {
     const openDatabase = async (dbAddressField) => {
       const address = dbAddressField
       try {
+        let out = {}
         if(db) {
           await resetDatabase(db)
           statusElm.innerHTML = "Connecting to peers..."
           db = await obj.orbitdb.open(address, { sync: true })
-          await load(db, 'Loading database...')
+          out = await load(db, 'Loading database...')
           writerText.innerHTML = `Listening for updates to the database...`
         } else {
           statusElm.innerHTML = "Connecting to peers..."
           db = await obj.orbitdb.open(address, { sync: true })
-          await load(db, 'Loading database...')
+          out = await load(db, 'Loading database...')
           writerText.innerHTML = `Listening for updates to the database...`
         }
+        task.get(true, 'await', '5', '','/orbitdb', async (object)=>{
+          let md = query(db)
+          object.callback({status:'ok',md:md})
+        })
+        task.get(true, 'await', '5', '','/orbitdb/set/:external', async (object)=>{
+          update(db, object.substrate)
+          console.log('/orbitdb/set/:external', object.substrate)
+          object.callback({status:'ok'})
+        })
+        task.get(true, 'await', '5', '','/orbitdb/get/:external', async (object)=>{
+          let md = await query(db)
+          console.log('/orbitdb/get/:external', md)
+          object.callback({status:'ok', md:md})
+        })
       } catch (e) {
         console.error({
           _:"status error",
@@ -184,7 +202,7 @@ export default async (v,p,c,obj,r) => {
       // startWriter(db,'5000')
     }
 
-    const update = async (db) => {
+    const update = async (db, payload = '') => {
       count ++
       const time = new Date().toISOString()
       const idx = Math.floor(Math.random() * creatures.length)
@@ -196,7 +214,12 @@ export default async (v,p,c,obj,r) => {
         const value = "GrEEtinGs from " + obj.orbitdb.id + " " + creature + ": Hello #" + count + " (" + time + ")"
         await db.add(value)
       } else if (db.type === 'docstore') {
-        const value = { _id: 'peer1', avatar: creature, updated: time }
+        let value = {}
+        if(!isEmpty(payload)) {
+          value = { _id: 'external', avatar: creature, updated: time, md: payload }
+        } else {
+          value = { _id: 'external', avatar: creature, updated: time, md:'# empty' }
+        }
         await db.put(value)
       } else if (db.type === 'keyvalue') {
         await db.set('mykey', creature)
@@ -212,7 +235,7 @@ export default async (v,p,c,obj,r) => {
       else if (db.type === 'feed')
         return db.iterator({ limit: 5 }).collect()
       else if (db.type === 'docstore')
-        return db.get('peer1')
+        return db.get('external')
       else if (db.type === 'keyvalue')
         return db.get('mykey')
       else if (db.type === 'counter')
@@ -224,9 +247,9 @@ export default async (v,p,c,obj,r) => {
     const queryAndRender = async (db) => {
       const networkPeers = await ipfs.swarm.peers()
       const databasePeers = await ipfs.pubsub.peers(db.address.toString())
-
       const result = query(db)
-
+      window.zb.fs['/body'].writeFile("/body/external.md", result[0].md)
+      window.zb.fs['/body'].syncfs(false, err => console.warn(err));
       if (dbType !== db.type || dbAddress !== db.address) {
         dbType = db.type;
         dbAddress = db.address;
