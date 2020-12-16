@@ -597,7 +597,7 @@ export default async (v,p,c,obj,r) => {
         let res = await task.set(true,'','red',system['worker_main']['markdown__self'].innerHTML, '/orbitdb/get/:external')
         if(res.status === 'ok') {
             window.zb.fs['/body'].writeFile("/body/external.md", res['md'][0]['md'])
-            window.zb.fs['/body'].syncfs(false, err => console.warn(err));
+            // window.zb.fs['/body'].syncfs(false, err => console.warn(err));
             location.hash = 'external';
         }
 
