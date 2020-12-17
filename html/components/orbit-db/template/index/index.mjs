@@ -63,7 +63,7 @@ export default async (v,p,c,obj,r) => {
         directory:'./orbit-of-venus'
       }).then(( orbitdb )=>{
         statusElm.innerHTML = "Orbit DB Started"
-        obj.orbitdb = orbitdb
+        // obj.orbitdb = orbitdb
         resolve({
           status: true,
           data: orbitdb
@@ -81,13 +81,13 @@ export default async (v,p,c,obj,r) => {
     let id = await ipfs.id()
     console.log( 'id',id.id)
     statusElm.innerHTML = "IPFS Started"
-    let orbitdb = await initOrbitDB(ipfs, obj)
+    let orbitdb = await initOrbitDB(ipfs)
     while (!orbitdb.status) {
-    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~')
-      orbitdb = await initOrbitDB(ipfs, obj)
+      orbitdb = await initOrbitDB(ipfs)
     }
     obj.orbitdb = orbitdb.data
     const load = async (db, statusText) => {
+    console.log('DDDDDDDDDDDDDDDDDDDDDDDD', db)
       statusElm.innerHTML = statusText
       db.events.on('ready', () => {
         return queryAndRender(db)
@@ -96,9 +96,25 @@ export default async (v,p,c,obj,r) => {
         console.log('~~~~~~~~~ replicated ~~~~~~~~~~~')
         return queryAndRender(db)
       })
+      db.events.on('replicate', (address) => {
+        console.log('~~~~~~~~~ replicate ~~~~~~~~~~~', address)
+      })
+      db.events.on('replicate.progress', (address, hash, entry, progress, have) => {
+
+        console.log('~~~~~~~~~ replicate.progress ~~~~~~~~~~~', progress, have, hash)
+      })
+      db.events.on('load', (dbname) => {
+        console.log('~~~~~~~~~ load ~~~~~~~~~~~', dbname)
+      })
       db.events.on('write', () => {
         console.log('~~~~~~~~~ write ~~~~~~~~~~~')
         return queryAndRender(db)
+      })
+      db.events.on('peer', (peer) => {
+        console.log('~~~~~~~~~ peer ~~~~~~~~~~~', peer)
+      })
+      db.events.on('peer.exchanged', (peer, address, heads) => {
+        console.log('~~~~~~~~~ peer.exchanged ~~~~~~~~~~~', peer, address, heads)
       })
       db.events.on('replicate.progress', () => queryAndRender(db))
       let maxTotal = 0, loaded = 0
