@@ -4,6 +4,7 @@ import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.m
 import Parser from '/static/html/components/component_modules/bundle/html2json/html2json.index.mjs'
 import * as md2html from  '/static/html/components/lib-markdown/external/wasm/markdown.es.mjs'
 import task from '/static/html/components/component_modules/heap/index.mjs'
+import JQ from '/static/html/components/component_modules/jq/jq.mjs'
 export default async (v,p,c,obj,r) => {
     const target = []
 
@@ -228,7 +229,45 @@ export default async (v,p,c,obj,r) => {
             });
         })
     }
+    let outputJq = []
+    function jq(jsonStr, query)
+    {
+        var fileName = "/tmp/data.json";
+        // let fileName = "/body/jq.json";
+
+        // Create file from object
+        window.zb.jq.fs.writeFile(fileName, jsonStr);
+
+        // Launch jq's main() function
+        //   -M to disable colors
+        //   -r to output in raw format
+        //   -c to output in compressed format
+        outputJq = [];
+        window.zb.jq.self.callMain([ "-M", "-r", "-c", query, fileName ]);
+
+        // Re-open stdout/stderr after jq closes them
+        window.zb.fs['/body'].streams[1] = window.zb.fs['/body'].open("/dev/stdout", "w");
+        window.zb.fs['/body'].streams[2] = window.zb.fs['/body'].open("/dev/stderr", "w");
+
+        return outputJq;
+    }
     window.onbeforeunload = () => { fsSave(); }
+    JQ({
+        // Don't run main on page load
+        noInitialRun: true,
+
+        // Print functions
+        print: stdout => outputJq = stdout,
+        printErr: stderr => console.warn(stderr),
+
+        // When the module is ready
+        onRuntimeInitialized: async function() {
+            window.zb.jq = {}
+            window.zb.jq.self = this
+            window.zb.jq.fs = this.FS
+            obj.this.shadowRoot.querySelector("#btnRun").disabled = false;
+        }
+    })
     await IDBFS({
         preInit() {  },
         onRuntimeInitialized() {
@@ -604,6 +643,16 @@ export default async (v,p,c,obj,r) => {
     }
 
     window.addEventListener("hashchange", hash, false);
+
+    obj.this.shadowRoot.querySelector("#btnRun").addEventListener("click", function()
+    {
+        let out = jq(
+          obj.this.shadowRoot.querySelector("#input").value,
+          obj.this.shadowRoot.querySelector("#query").value
+        );
+          console.log('@@@@@@@@@@@@@@@@@@@@', out)
+        obj.this.shadowRoot.querySelector("#output").value = out
+    });
     obj.this.shadowRoot.querySelector('.markdown').addEventListener("input", updateUI);
     obj.this.shadowRoot.querySelector('.markdown__button_update').addEventListener("click", update);
     obj.this.shadowRoot.querySelector('.markdown__button_query').addEventListener("click", query);
