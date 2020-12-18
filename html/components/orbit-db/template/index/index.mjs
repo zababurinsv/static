@@ -87,7 +87,6 @@ export default async (v,p,c,obj,r) => {
     }
     obj.orbitdb = orbitdb.data
     const load = async (db, statusText) => {
-    console.log('DDDDDDDDDDDDDDDDDDDDDDDD', db)
       statusElm.innerHTML = statusText
       db.events.on('ready', () => {
         return queryAndRender(db)

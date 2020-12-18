@@ -1,815 +1,739 @@
-import store from '/static/html/components/component_modules/staticProperty/staticProperty.mjs'
-import Codemirror from '/static/html/components/component_modules/codemirror/codemirror.mjs'
-// import Stjs from '/static/html/components/component_modules/json/st.mjs'
-// import Json from '/static/html/components/component_modules/json/json.mjs'
+import modules from '/static/html/components/codemirror-main/external/index.mjs'
 customElements.define('codemirror-main',
-    class extends HTMLElement {
-        constructor () {
-            super()
-            let white = []
-            let property = []
-            let typeSupported = []
-            let words = []
+  class extends HTMLElement {
+      static get observedAttributes () {
+          return ['feed']
+      }
+      constructor () {
+          super()
+          let white = []
+          let property = []
 
-            property.push('component-id')
-            property.push('script')
-            property.push('component-action')
-            typeSupported.push('h1')
-            typeSupported.push('innerText')
-            words.push('shadowRoot')
-            words.push('head')
-            words.push('shadow')
-            words.push('light')
-            words.push('lightDom')
-            words.push('editor')
-            words.push('слайдер')
-            words.push('swap')
-            white['this'] = this
-            white['type-supported'] = typeSupported
+          let typeSupported = []
+          let words = []
 
-            function style (obj) {
-                return new Promise(function (resolve, reject) {
-                    let styleS = document.createElement('style')
-                    let styleL = document.createElement('style')
-                    for (let key = 0; key < obj['type'].length; key++) {
-                        if (obj['type'][key] === 'swap') {
-                            if (obj['type'][key] === 'scoped') {
-                                styleS.setAttribute('scoped', '')
-                            }
-                        } else {
-                            if (obj['type'][key] === 'scoped') {
-                                styleL.setAttribute('scoped', '')
-                            }
-                        }
-                    }
-                    for (let state = 0; state < obj['state'].length; state++) {
-                        obj[`path-style-${obj['state'][state]}`] = `@import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}.css'; @import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}-custom.css';`
-                        switch (obj['state'][state]) {
-                            case 'shadow':
-                                if (obj['verify']['preset'] === true) {
-                                    obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${obj['preset']}/${obj['component']}-${obj['preset']}.css';`
-                                }
-                                styleS.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
-                                break
-                            case 'light':
-                                if (obj['verify']['preset'] === true) {
-                                    obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${obj['preset']}/${obj['component']}-${obj['preset']}.css';`
-                                }
-                                styleL.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
-                                break
-                            default:
-                                //console.log(`новый тип`, obj['state'][state])
-                                break
-                        }
-                        if (obj['state'][state] === 'swap') {
-                            if (obj['shadowRoot'] === true) {
-                                obj['this']['shadowRoot'].appendChild(styleL)
-                                obj['this'].appendChild(styleS)
-                                resolve(obj)
-                            } else {
-                                obj['this'].appendChild(styleS)
-                            }
-                        } else {
-                            if (obj['shadowRoot'] === true) {
-                                obj['this']['shadowRoot'].appendChild(styleS)
-                                obj['this'].appendChild(styleL)
-                                resolve(obj)
-                            } else {
-                                obj['this'].appendChild(styleL)
-                            }
-                        }
-                    }
-                    resolve(obj)
-                })
-            }
-            function objectProperty (obj) {
-                return new Promise(function (resolve, reject) {
-                    let black = []
-                    black['state'] = []
-                    black['state'].push('shadow')
-                    black['state'].push('light')
-                    black['words'] = words
-                    black[`type-swap`] = false
-                    black[`type-external`] = false
-                    black[`document-offsetWidth`] = document['body'].offsetWidth
-                    let verifyLight = false
-                    black[`getAttribute`] = (obj, type, property) => {
-                        if (property === 'template') {
-                            if (!obj.getAttribute('type')) {
-                                //console.log('не установлен тип ставим default')
-                                obj.setAttribute('type', 'default')
-                                return false
-                            } else {
-                                for (let key = 0; key < obj.getAttribute('type').split('-').length; key++) {
-                                    if (obj.getAttribute('type').split('-')[key] === type) {
-                                        verifyLight = true
-                                    }
-                                }
-                            }
-                            return verifyLight
-                        } else {
-                            //console.log(obj['this'].getAttribute('type'))
-                            obj[`verify-${type}`] = false
-                            if (obj['this'].getAttribute('type').split('-').length === 0) {
-                                return false
-                            } else {
-                                for (let key = 0; key < obj['this'].getAttribute('type').split('-').length; key++) {
-                                    if (obj['this'].getAttribute('type').split('-')[key] === type) {
-                                        obj[`verify-${type}`] = true
-                                    } else {
-                                        obj[`verify-${type}`] = false
-                                    }
-                                }
-                            }
-                            return obj[`verify-${type}`]
-                        }
-                    }
-                    if (!obj.tagName.toLowerCase()) {
-                        //console.log('что то пошло не так middleware js objectProperty', '')
-                    } else {
-                        black[`component`] = obj.tagName.toLowerCase()
-                    }
-                    if (typeof (obj) !== 'object') {
-                        //console.log('objectProperty middleware.js пришёл не объект')
-                    } else {
-                        if (!obj.getAttribute('type')) {
-                            black[`type`] = ['default']
-                            //console.log('нет типа ставим default')
-                            obj.setAttribute('type', 'default')
-                        } else {
-                            black[`type`] = obj.getAttribute('type').split('-')
-                            for (let type = 0; type < black[`type`].length; type++) {
-                                black[`type`][type] = black[`type`][type].replace(/:/g, '-')
-                            }
-                            for (let key in black[`type`]) {
-                                switch (black[`type`][key]) {
-                                    case 'swap':
-                                        black[`type-swap`] = true
-                                        break
-                                    case 'external':
-                                        black[`type-external`] = true
-                                        break
-                                    default:
-                                        //console.log(`дополнительные типы`, black[`type`][key])
-                                        break
-                                }
-                            }
-                        }
-                        if (!obj.slot) {
-                            //console.log('отсутствует слот, ставится- по тегу ', obj.tagName.toLowerCase())
-                            obj.slot = obj.tagName.toLowerCase()
-                            black[`slot`] = obj.slot
-                        } else {
-                            black[`slot`] = obj.slot
-                        }
-                        if (!obj.getAttribute('type')) {
-                            //console.log(' почему то нет атрибутов')
-                        } else {
-                            let veryfiStyle = false
-                            for (let key in obj.getAttribute('type').split('-')) {
-                                if (obj.getAttribute('type').split('-')[key].indexOf('style:') !== -1) {
-                                    //console.log('устанавливаются пути к стилям')
-                                    veryfiStyle = true
-                                }
-                            }
-                            if (veryfiStyle === true) {
-                                black['style-custom'] = 'not-default'
-                            } else {
-                                //console.log('устанавливается стиль по default')
-                                black['style-custom'] = 'default'
-                            }
-                        }
-                    }
-                    black['shadowRoot'] = false
-                    black['this'] = obj
+          property.push('component-id')
+          property.push('script')
+          property.push('component-action')
+          typeSupported.push('h1')
+          typeSupported.push('innerText')
+          words.push('shadowRoot')
+          words.push('head')
+          words.push('shadow')
+          words.push('light')
+          words.push('lightDom')
+          words.push('editor')
+          words.push('слайдер')
+          words.push('swap')
+          white['this'] = this
+          white['type-supported'] = typeSupported
 
-                    //console.log(black['this'])
-                    resolve(black)
-                })
-            }
-
-            function externalProperty (obj) {
-                return new Promise(function (resolve, reject) {
-                    obj['external-property'] = white['external-property']
-                    let object = []
-                    let component = []
-                    let a = []
-                    for (let key = 0; key < obj['external'].length; key++) {
-                        for (let type = 0; type < obj['external'][key].children.length; type++) {
-                            switch (obj['external'][key].children[type].tagName) {
-                                case 'SCRIPT':
-                                    if (!obj['external'][key].getAttribute('id')) {
-                                        //console.log('у компонента нет id нужно в external property script  получить id для загрузки скрипта')
-                                    } else {
-                                        component['script'] = obj['external'][key]['children'][type]
-                                    }
-                                    break
-                                case 'COMPONENT-ID':
-                                    component['id'] = obj['external'][key]['children'][type].innerText
-                                    break
-                                case 'COMPONENT-ACTION':
-                                    for (let action = 0; action < obj['external'][key]['children'][type]['children'].length; action++) {
-                                        a.push(obj['external'][key]['children'][type]['children'][action].innerText)
-                                    }
-                                    component['actions'] = a
-                                    break
-                                default:
-                                    //console.log(`Не отслеживается, по мере надобности добавляются [${obj['external'][key].children[type].tagName.toLowerCase()}]`)
-                                    break
-                            }
-                        }
-                        object.push(component)
-                        component = []
-                    }
-                    obj['external-property'] = object
-                    resolve(obj)
-                })
-                    .catch(error => {
-                        return //console.log('здесь я перехватывал отсутствие страницы но это убрал', error)
-                    })
-            }
-
-            function getTemplate (obj, swap, external) {
-                return new Promise(function (resolve, reject) {
-                    obj['template-shadow'] = []
-                    obj['template-light'] = []
-                    let verify = []
-                    verify['swap'] = false
-                    verify['external'] = false
-                    verify['light'] = false
-                    verify['slider'] = false
-                    verify['one'] = false
-                    for (let type = 0; type < obj['type'].length; type++) {
-                        if (obj['type'][type].indexOf('slider') !== -1) {
-                            if (obj['type'][type].split('-').length > 1) {
-                                verify['slider'] = true
-                                for (let key in obj['type'][type].split('-')) {
-                                    switch (obj['type'][type].split('-')[key]) {
-                                        case 'one':
-                                            verify['one'] = true
-                                            break
-                                        default:
-                                            //console.log(`~~~дополнительное свойство~~~`, obj['type'][type].split('-')[key])
-                                            break
-                                    }
-                                }
-                            }
-                        }
-                        if (obj['type'][type].length) {
-                            switch (obj['type'][type]) {
-                                case 'swap':
-                                    verify['swap'] = true
-                                    break
-                                case 'external':
-                                    verify['external'] = true
-                                    break
-                                case 'light':
-                                    verify['light'] = true
-                                    break
-                                case 'slider':
-                                    verify['slider'] = true
-                                    break
-                                default:
-                                    //console.log(`типы не отслеживаются`, obj['type'][type])
-                                    break
-                            }
-                        }
-                    }
-                    /**
-                     * цикл this
-                     * цикл template
-                     */
-                    if (verify['swap'] === true) {
-                        for (let key = 0; key < obj['this'].children.length; key++) {
-                            //console.log('~~~~~~this~~~~~~~', obj['this'].children[key].tagName)
-                            if (obj['this'].children[key].tagName.split('-').length === 1) {
-                                if (obj['this'].children[key].slot === 'view') {
-                                    obj['this'].children[key].className = 'wall'
-                                }
-                                obj['template-light'].push(obj['this'].children[key])
-                            } else {
-                                if (obj['getAttribute'](obj['this'].children[key], 'light', 'template') === true) {
-                                    obj['this'].children[key].setAttribute('type', `${obj['this'].children[key].getAttribute('type')}-external`)
-                                    scriptTemplate(obj['this'].children[key])
-                                    obj['template-light'].push(obj['this'].children[key])
-                                } else {
-                                    obj['this'].children[key].setAttribute('type', `${obj['this'].children[key].getAttribute('type')}-external`)
-                                    scriptTemplate(obj['this'].children[key])
-                                    obj['template-shadow'].push(obj['this'].children[key])
-                                }
-                            }
-                        }
-                        for (let key = 0; key < obj['template'].children.length; key++) {
-                            //console.log('~~~~~~template~~~~~~~', obj['template'].children[key].tagName)
-                            if (obj['template'].children[key].tagName.split('-').length === 1) {
-                                if (obj['template'].children[key].slot === 'view') {
-                                    obj['template'].children[key].className = 'wall'
-                                }
-                                obj['template-light'].push(obj['template'].children[key])
-                            } else {
-                                if (obj['getAttribute'](obj['template'].children[key], 'light', 'template') === true) {
-                                    obj['template'].children[key].setAttribute('type', `${obj['template'].children[key].getAttribute('type')}-external`)
-                                    scriptTemplate(obj['template'].children[key])
-                                    obj['template-light'].push(obj['template'].children[key])
-                                } else {
-                                    obj['template'].children[key].setAttribute('type', `${obj['template'].children[key].getAttribute('type')}-external`)
-                                    scriptTemplate(obj['template'].children[key])
-                                    obj['template-shadow'].push(obj['template'].children[key])
-                                }
-                            }
-                        }
-                    } else {
-                        for (let key = 0; key < obj['this'].children.length; key++) {
-                            //console.log('~~~~~~this~~~~~~~', obj['this'].children[key].tagName)
-                            if (obj['this'].children[key].tagName.split('-').length === 1) {
-                                if (obj['this'].children[key].slot === 'view') {
-                                    obj['this'].children[key].className = 'wall'
-                                }
-                                obj['template-shadow'].push(obj['this'].children[key])
-                            } else {
-                                if (obj['getAttribute'](obj['this'].children[key], 'light', 'template') === true) {
-                                    scriptTemplate(obj['this'].children[key])
-                                    obj['template-shadow'].push(obj['this'].children[key])
-                                } else {
-                                    scriptTemplate(obj['this'].children[key])
-                                    obj['template-light'].push(obj['this'].children[key])
-                                }
-                            }
-                        }
-                        for (let key = 0; key < obj['template'].children.length; key++) {
-                            //console.log('~~~~~~template~~~~~~~', obj['template'].children[key].tagName)
-                            if (obj['template'].children[key].tagName.split('-').length === 1) {
-                                if (obj['template'].children[key].slot === 'view') {
-                                    obj['template'].children[key].className = 'wall'
-                                }
-                                obj['template-shadow'].push(obj['template'].children[key])
-                            } else {
-                                if (obj['getAttribute'](obj['template'].children[key], 'light', 'template') === true) {
-                                    scriptTemplate(obj['template'].children[key])
-                                    obj['template-shadow'].push(obj['template'].children[key])
-                                } else {
-                                    scriptTemplate(obj['template'].children[key])
-                                    obj['template-light'].push(obj['template'].children[key])
-                                }
-                            }
-                        }
-                    }
-                    for (let key in verify) {
-                        obj['verify'][key] = verify[key]
-                    }
-                    if (obj['verify']['slider'] === true) {
-                        getSliderTemplate(obj)
-                            .then((obj) => {
-                                obj['template-light'].push(obj['slider'])
-                                obj['this']['appendChild'](obj['slider'])
-                                setExternalComponent(obj, 'slider')
-                                    .then((obj) => {
-                                        if (obj['verify']['one'] === true) {
-                                            for (let state = 0; state < obj['state'].length; state++) {
-                                                for (let key = 0; key < obj[`template-${obj['state'][state]}`].length; key++) {
-                                                    //console.log(obj[`template-${obj['state'][state]}`][key])
-                                                    if (obj[`template-${obj['state'][state]}`][key]['className'] === 'wall') {
-                                                        obj[`template-${obj['state'][state]}`].splice(key, 1)
-                                                        resolve(obj)
-                                                    }
-                                                }
-                                            }
-                                        } else {
-                                            resolve(obj)
-                                        }
-                                    })
-                            })
-                    } else {
-                        resolve(obj)
-                    }
-                })
-            }
-            function template (obj, type) {
-                return new Promise(function (resolve, reject) {
-                    obj['verify'] = []
-                    if (!obj['this'].getAttribute('preset')) {
-                        obj['path-template'] = `/static/html/components/${obj['component']}/${obj['component']}.html`
-                        obj['verify']['preset'] = false
-                    } else {
-                        obj['path-template'] = `/static/html/components/${obj['component']}/template/${obj['this'].getAttribute('preset')}/${obj['component']}-${obj['this'].getAttribute('preset')}.html`
-                        obj['preset'] = `${obj['this'].getAttribute('preset')}`
-                        obj['verify']['preset'] = true
-                    }
-                    fetch(obj['path-template'])
-                        .then(function (response) {
-                            if (response.ok) {
-                                return response.text()
-                            }
-                        }).then(function (body) {
-                        let parser = new DOMParser()
-                        let doc = parser.parseFromString(body, 'text/html')
-                        obj['template'] = doc.getElementsByTagName('template')[0].content.cloneNode(true)
-                        external(obj)
-                            .then((obj) => {
-                                getTemplate(obj, obj['type-swap'], obj['type-external'])
-                                    .then((obj) => {
-                                        if (obj['verify']['swap'] === true) {
-                                            if (obj['template-shadow'].length !== 0) {
-                                                obj['this']['attachShadow']({mode: 'open'})
-                                                obj['shadowRoot'] = true
-                                                for (let key = 0; key < obj['template-shadow'].length; key++) {
-                                                    obj['this']['shadowRoot']['appendChild'](obj['template-shadow'][key])
-                                                }
-                                            }
-                                            if (obj['template-light'].length !== 0) {
-                                                for (let key = 0; key < obj['template-light'].length; key++) {
-                                                    //console.log('2222222222111111111111222222222222', obj['template-light'][key])
-                                                    obj['this']['appendChild'](obj['template-light'][key])
-                                                }
-                                            }
-                                        } else {
-                                            if (obj['template-shadow'].length !== 0) {
-                                                obj['this']['attachShadow']({mode: 'open'})
-                                                obj['shadowRoot'] = true
-                                                for (let key in obj['template-shadow']) {
-                                                    obj['this']['shadowRoot']['appendChild'](obj['template-shadow'][key])
-                                                }
-                                            }
-                                            if (obj['template-light'].length !== 0) {
-                                                for (let key in obj['template-light']) {
-                                                    obj['this']['appendChild'](obj['template-light'][key])
-                                                }
-                                            }
-                                        }
-                                        resolve(obj)
-                                    })
-                            })
-                    })
-                        .catch(error => {
-                            return error
-                        })
-                })
-            }
-
-            function getSliderTemplate (obj) {
-                return new Promise(function (resolve, reject) {
-                    fetch(`/static/html/components/varan-slider/template/${obj['slot']}.html`)
-                        .then(function (response) {
-                            if (response.ok) {
-                                return response.text()
-                            }
-                        }).then(function (body) {
-                        let parser = new DOMParser()
-                        let doc = parser.parseFromString(body, 'text/html')
-                        obj['slider'] = doc.getElementsByTagName('template')[0].content.cloneNode(true)
-                        let slider = document.createElement('section')
-                        slider.className = 'slider'
-                        slider.slot = 'view'
-                        slider.appendChild(obj['slider'])
-                        obj['slider'] = slider
-                        if (slider.querySelectorAll('.ql-editor').length === 0) {
-                            resolve(obj)
-                        } else {
-                            for (let key = 0; key < slider.querySelectorAll('.ql-editor').length; key++) {
-                                if (slider.querySelectorAll('.ql-editor')[key].children.length === 0) {
-
-                                } else {
-                                    for (let type = 0; type < slider.querySelectorAll('.ql-editor')[key].children.length; type++) {
-                                        if (slider.querySelectorAll('.ql-editor')[key].children[type].tagName.split('-').length > 1) {
-                                            scriptTemplate(slider.querySelectorAll('.ql-editor')[key].children[type])
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        resolve(obj)
-                    })
-                        .catch(error => {
-                            return error
-                        })
-                })
-            }
-            function renderExternal (obj) {
-                return new Promise(function (resolve, reject) {
-                    obj['words-action'] = []
-                    let wordsAction = []
-                    for (let key = 0; key < obj['external-property'].length; key++) {
-                        for (let words = 0; words < obj['external-property'][key]['actions'].length; words++) {
-                            for (let verify = 0; verify < obj['words'].length; verify++) {
-                                if (obj['external-property'][key]['actions'][words].indexOf(obj['words'][verify]) !== -1) {
-                                    if (obj['words'][verify] === 'shadowRoot' || obj['words'][words] === 'shadow') {
-                                        wordsAction['shadow'] = true
-                                    }
-                                    if (obj['words'][verify] === 'light' || obj['words'][words] === 'лайт') {
-                                        wordsAction['light'] = true
-                                    }
-                                    if (obj['words'][verify] === 'editor') {
-                                        wordsAction['editor'] = true
-                                    }
-                                    if (obj['words'][verify] === 'слайдер') {
-                                        wordsAction['editor-slider'] = true
-                                    }
-                                    if (obj['words'][verify] === 'swap') {
-                                        wordsAction['swap'] = true
-                                    }
-                                }
-                            }
-                        }
-                        obj['words-action'] = wordsAction
-
-                        //console.log('~~~~~~~~~~~~~~~renderExternal~~~~~~~~~~~~~~~~~~~~~', obj)
-
-                        for (let key in obj['external-property']) {
-                            for (let type in obj['external-property'][key]) {
-                                switch (type) {
-                                    case 'id':
-                                        let doc = document.createElement(obj['external-property'][key][type])
-                                        doc.setAttribute('type', 'external')
-                                        obj['this'].appendChild(doc)
-                                        break
-                                    default:
-                                        //console.log(`какой то неизвестный тип`, type)
-                                        break
-                                }
-                            }
-                        }
-                        resolve(obj)
-                    }
-                })
-            }
-
-            function external (obj) {
-                return new Promise(function (resolve, reject) {
-                    obj['path-external'] = `/static/html/components/${obj['component']}/external/${obj['component']}-external.html`
-                    fetch(obj['path-external'])
-                        .then(function (response) {
-                            if (response.ok === false) {
-                                return response.ok
-                            } else {
-                                return response.text()
-                            }
-                        })
-                        .then(function (data) {
-                            if (data === false) {
-                            } else {
-                                let parser = new DOMParser()
-                                let doc = parser.parseFromString(data, 'text/html')
-                                obj['external'] = doc.querySelectorAll('section')
-                                externalProperty(obj)
-                                    .then((obj) => {
-                                        if (obj['external-property'].length === 0) {
-                                            resolve(obj)
-                                        } else {
-                                            renderExternal(obj)
-                                                .then((obj) => {
-                                                    resolve(obj)
-                                                })
-                                        }
-                                    })
-                            }
-                        })
-                        .catch(error => {
-                            throw error
-                        })
-                })
-            }
-            function getElementsByClassName (obj, type) {
-                return new Promise(function (resolve, reject) {
-                    for (let state = 0; state < obj['state'].length; state++) {
-                        for (let key = 0; key < obj[`template-${obj['state'][state]}`].length; key++) {
-                            if (obj[`template-${obj['state'][state]}`][key].getElementsByClassName(type).length === 0) {
-
-                            } else {
-                                obj['slider'] = obj[`template-${obj['state'][state]}`][key].getElementsByClassName(type)[0]
-                                resolve(obj[`template-${obj['state'][state]}`][key].getElementsByClassName(type)[0])
-                            }
-                        }
-                    }
-                })
-            }
-            function setSlider (obj) {
-                return new Promise(function (resolve, reject) {
-                    resolve(Peppermint(obj, {
-                        dots: false,
-                        slideshow: false,
-                        speed: 500,
-                        slideshowInterval: 5000,
-                        stopSlideshowAfterInteraction: true,
-                        onSetup: function (n) {
-                            //console.log('Peppermint setup done. Slides found: ' + n)
-                        }
-                    }))
-                })
-            }
-            function scriptTemplate (obj) {
-                return new Promise(function (resolve, reject) {
-                    const script = document.createElement('script')
-                    let verify = false
-                    for (let key in document['head'].getElementsByTagName('script')) {
-                        if (typeof (document['head'].getElementsByTagName('script')[key]) === 'object') {
-                            if (document['head'].getElementsByTagName('script')[key].outerHTML.indexOf(obj.tagName.toLowerCase()) !== -1) {
-                                verify = true
-                            }
-                        }
-                    }
-                    if (verify === true) {
-                        //console.log('script уже загруже')
-                    } else {
-                        script.src = `/static/html/components/${obj.tagName.toLowerCase()}/${obj.tagName.toLowerCase()}.mjs`
-                        script.type ='module'
-                        script.onload = resolve
-                        script.onerror = reject
-                        document['head'].appendChild(script)
-                    }
-                })
-            }
-
-            function setExternalComponent (obj, type, nObj) {
-                return new Promise(function (resolve, reject) {
-                    if (!type) {
-                        resolve(obj)
-                    } else {
-                        switch (type) {
-                            case 'slider': {
-                                getElementsByClassName(obj, 'peppermint')
-                                    .then((slider) => {
-                                        setSlider(slider)
-                                            .then((slider) => {
-                                                obj['slider'] = slider
-                                                resolve(obj)
-                                            })
-                                    })
-                            }
-                                break
-                            default:
-                                //console.log(`какой то неизвестный тип`, type)
-                                break
-                        }
-                        resolve(obj)
-                    }
-                })
-            }
-            objectProperty(this)
-                .then((obj) => {
-                    template(obj)
-                        .then((obj) => {
-                            style(obj)
-                                .then((obj) => {
-                                    listener(obj)
-                                    return obj
-                                })
-                            return obj
-                        })
-                    return obj
-                })
-            async function listener (obj) {
-                store({
-                    input:'page-scroll',
-                    this:obj['this'],
-                    obj: obj,
-                    type:'obj'
-                }, 'set', 'type')
-
-
-                let codemirror = new (await Codemirror({_:'codemirror', this:obj.this.shadowRoot}))['class']()
-                let editor = await codemirror.init({_:'init', mode:'javascript',this:obj.this.shadowRoot.querySelector('#code')})
-                let btnsearch = obj.this.shadowRoot.querySelector('#search'),
-                    fnext = obj.this.shadowRoot.querySelector('#fnext'),
-                    fprev = obj.this.shadowRoot.querySelector('#fprev'),
-                    repl = obj.this.shadowRoot.querySelector('#replace'),
-                    replall = obj.this.shadowRoot.querySelector('#replall'),
-                    goto = obj.this.shadowRoot.querySelector('#goto'),
-                    undo = obj.this.shadowRoot.querySelector('#undo'),
-                    redo = obj.this.shadowRoot.querySelector('#redo'),
-                    save = obj.this.shadowRoot.querySelector('#save'),
-                    getLast = obj.this.shadowRoot.querySelector('#getLast'),
-                    run = obj.this.shadowRoot.querySelector('#run'),
-                    result  = obj.this.shadowRoot.querySelector('#result'),
-                    script =  obj.this.shadowRoot.querySelector('#script');
-
-
-                let codemirrorResult = new (await Codemirror({_:'codemirror', this:obj.this.shadowRoot}))['class']()
-                let editorResult = await codemirror.init({_:'init',mode:'application/json', this:obj.this.shadowRoot.querySelector('#result')})
-                // let ST = await Stjs.ST({_:'ST', this:obj['this']})
-
-                // let json = new (await Json())['class']()
-
-                // console.assert(false)
-                // let selected = await json.select(data)
-                // let jsonTemplate = await json.transformWith(template, false, selected)
-                // console.assert(false, jsonTemplate)
-                // let root = await json.root(jsonTemplate)
-                // console.assert(false,root)
-                // JSON.stringify($scope.code, null, 4);
-                //  objects = sel.objects();
-                // console.assert(false, objects)
-
-
-                editor.editor.on('drop', function(data, e) {
-                    var file;
-                    var files;
-                    // Check if files were dropped
-                    files = e.dataTransfer.files;
-                    if (files.length > 0) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        file = files[0];
-                        alert('File: ' + file.name);
-                        return false;
-                    }
-                })
-                btnsearch.addEventListener('click', function() {
-                    codemirror.self.CodeMirror.commands.find(editor.editor)
-                }, false);
-                fnext.addEventListener('click', function() {
-                    codemirror.self.CodeMirror.commands.findNext(editor.editor);
-                }, false);
-                fprev.addEventListener('click', function() {
-                    codemirror.self.CodeMirror.commands.findPrev(editor.editor);
-                }, false);
-                repl.addEventListener('click', function() {
-                    codemirror.self.CodeMirror.commands.replace(editor.editor);
-                }, false);
-                replall.addEventListener('click', function() {
-                    codemirror.self.CodeMirror.commands.replaceAll(editor.editor);
-                }, false);
-                goto.addEventListener('click', function() {
-                    codemirror.self.CodeMirror.commands.jumpToLine(editor.editor);
-                }, false);
-                undo.addEventListener('click', function(){
-                    editor.editor.undo();
-                }, false);
-                redo.addEventListener('click', function(){
-                    editor.editor.redo();
-                },false);
-                save.addEventListener('click', function(){
-                    let value = editor.editor.getValue()
-                    sessionStorage.setItem('CodeMirror', value);
-
-                    // ST.select(data)
-                    //     .transformWith(template)
-                    //     .root()
-                },false);
-                getLast.addEventListener('click', function(){
-                    let value = sessionStorage.getItem('CodeMirror');
-                    editor.editor.setValue(value)
-                },false);
-                run.addEventListener('click', async ()=>{
-                    let value = editor.editor.getValue()
-                    let runScript = document.createElement('script');
-                    runScript.type = 'module';
-
-                    // let result = document.body.querySelector('codemirror-main').shadowRoot.querySelector('#result')
-                    // result.innerHTML = object
-
-                    let test = `
-(async ()=>{
-    ${value}
-    let verifyData = false;
-    let verifyTemplate = false;
-    if(typeof data !== "undefined"){
-        verifyData = true;
-    }
-    if(typeof template !== "undefined"){
-        verifyTemplate = true
-    }
-    if(verifyData === true && verifyTemplate === true){
-
-        document.dispatchEvent(new CustomEvent('CodeMirror', {
-            detail: {
-                _:'transform',
-                data:data,
-                template:template
-            }
-        }))
-    }else{
-
-        document.dispatchEvent(new CustomEvent('CodeMirror', {
-            detail: {
-                _:'response',
-                data:${value}
-            }
-        }))
-        
-    }
-})()`;
-                    runScript.innerHTML = test
-                    script.appendChild(runScript)
-
-                },false);
-
-                document.addEventListener('CodeMirror',async (event)=>{
-                  if(event.detail._ === 'transform'){
-                      // let selected = await json.select(event.detail.data)
-                      // let jsonTemplate = await json.transformWith(event.detail.template, false, selected)
-                      // let root = await json.root(jsonTemplate)
-                      editorResult.editor.setValue(JSON.stringify(root,null, 4))
-
-                  }else{
-                      editorResult.editor.setValue(`${event.detail.data()}`)
+          function style (obj) {
+              return new Promise(function (resolve, reject) {
+                  let styleS = document.createElement('style')
+                  let styleL = document.createElement('style')
+                  let name = {}
+                  if(obj['preset']) {
+                      name = obj['preset']
+                  } else {
+                      if (!obj['slot']) {
+                          name = obj['parent']
+                      } else {
+                          name = obj['slot']
+                      }
+                  }
+                  if (!name) {
+                      console.assert(false, 'не установленны ни слот ни парент')
                   }
 
-                    script.innerHTML = ''
-                })
-               // console.assert(false, editor)
-               // await Menu(obj)
-               // await monopoly(obj)
+                  for (let key = 0; key < obj['type'].length; key++) {
+                      if (obj['type'][key] === 'swap') {
+                          if (obj['type'][key] === 'scoped') {
+                              styleS.setAttribute('scoped', '')
+                          }
+                      } else {
+                          if (obj['type'][key] === 'scoped') {
+                              styleL.setAttribute('scoped', '')
+                          }
+                      }
+                  }
+                  if(obj['this'].dataset.css === "false") {
+                      obj['this']['shadowRoot'].appendChild(styleS)
+                      obj['this'].appendChild(styleL)
+                  } else {
+                      for (let state = 0; state < obj['state'].length; state++) {
+                          obj[`path-style-${obj['state'][state]}`] = `@import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}.css'; @import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}-custom.css';`
+                          switch (obj['state'][state]) {
+                              case 'shadow':
+                                  if (obj['verify']['preset'] === true) {
+                                      obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${obj['preset']['dir']}/${obj['preset']['name']}.css';`
+                                  }
+                                  styleS.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
+                                  break
+                              case 'light':
+                                  if (obj['verify']['preset'] === true) {
+                                      obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${obj['preset']['dir']}/${obj['preset']['name']}.css';`
+                                  }
+                                  styleL.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
+                                  break
+                              default:
+                                  // //console.log(`новый тип`, obj['state'][state])
+                                  break
+                          }
+                          if (obj['state'][state] === 'swap') {
+                              if (obj['shadowRoot'] === true) {
+                                  obj['this']['shadowRoot'].appendChild(styleL)
+                                  obj['this'].appendChild(styleS)
+                                  resolve(obj)
+                              } else {
+                                  obj['this'].appendChild(styleS)
+                              }
+                          } else {
+                              if (obj['shadowRoot'] === true) {
+                                  obj['this']['shadowRoot'].appendChild(styleS)
+                                  obj['this'].appendChild(styleL)
+                                  resolve(obj)
+                              } else {
+                                  obj['this'].appendChild(styleL)
+                              }
+                          }
+                      }
+                  }
+                  resolve(obj)
+              })
+          }
+          function objectProperty (obj) {
+              return new Promise(function (resolve, reject) {
+                  let black = []
+                  black['staticProperty'] = []
+                  black['staticProperty']['c'] = 0
+                  black['state'] = []
+                  black['state'].push('shadow')
+                  black['state'].push('light')
+                  black['words'] = words
+                  black['parent'] = false
+                  black[`type-swap`] = false
+                  black[`type-external`] = false
+                  black[`document-offsetWidth`] = document['body'].offsetWidth
+                  let verifyLight = false
+                  black[`getAttribute`] = (obj, type, property) => {
+                      if (property === 'template') {
+                          if (!obj.getAttribute('type')) {
+                              // //console.log('не установлен тип ставим default')
+                              obj.setAttribute('type', 'default')
+                              return false
+                          } else {
+                              for (let key = 0; key < obj.getAttribute('type').split('-').length; key++) {
+                                  if (obj.getAttribute('type').split('-')[key] === type) {
+                                      verifyLight = true
+                                  }
+                              }
+                          }
+                          return verifyLight
+                      } else {
+                          // //console.log(obj['this'].getAttribute('type'))
+                          obj[`verify-${type}`] = false
+                          if (obj['this'].getAttribute('type').split('-').length === 0) {
+                              return false
+                          } else {
+                              for (let key = 0; key < obj['this'].getAttribute('type').split('-').length; key++) {
+                                  if (obj['this'].getAttribute('type').split('-')[key] === type) {
+                                      obj[`verify-${type}`] = true
+                                  } else {
+                                      obj[`verify-${type}`] = false
+                                  }
+                              }
+                          }
+                          console.assert(false, obj)
+                          return obj[`verify-${type}`]
+                      }
+                  }
+                  if (!obj.tagName.toLowerCase()) {
+                      // //console.log('что то пошло не так middleware js objectProperty', '')
+                  } else {
+                      black[`component`] = obj.tagName.toLowerCase()
+                  }
+                  if (typeof (obj) !== 'object') {
+                      // //console.log('objectProperty middleware.js пришёл не объект')
+                  } else {
+                      if (!obj.getAttribute('type')) {
+                          black[`type`] = ['default']
+                          // //console.log('нет типа ставим default')
+                          obj.setAttribute('type', 'default')
+                      } else {
+                          black[`type`] = obj.getAttribute('type').split('-')
+                          for (let type = 0; type < black[`type`].length; type++) {
+                              black[`type`][type] = black[`type`][type].replace(/:/g, '-')
+                          }
+                          for (let key in black[`type`]) {
+                              switch (black[`type`][key]) {
+                                  case 'swap':
+                                      black[`type-swap`] = true
+                                      break
+                                  case 'external':
+                                      black[`type-external`] = true
+                                      break
+                                  default:
+                                      // //console.log(`дополнительные типы`, black[`type`][key])
+                                      break
+                              }
+                          }
+                      }
+                      if (!obj.slot) {
+                          obj.slot = obj.tagName.toLowerCase()
+                          black[`slot`] = obj.slot
+                      } else {
+                          black[`slot`] = obj.slot
+                      }
+                      if (!obj.getAttribute('type')) {
+                      } else {
+                          let veryfiStyle = false
+                          for (let key in obj.getAttribute('type').split('-')) {
+                              if (obj.getAttribute('type').split('-')[key].indexOf('style:') !== -1) {
+                                  // //console.log('устанавливаются пути к стилям')
+                                  veryfiStyle = true
+                              }
+                          }
+                          if (veryfiStyle === true) {
+                              black['style-custom'] = 'not-default'
+                          } else {
+                              black['style-custom'] = 'default'
+                          }
+                      }
+                  }
+                  black['shadowRoot'] = false
+                  black['this'] = obj
+                  resolve(black)
+              })
+          }
 
-            }
-        }
-    });
+          function externalProperty (obj) {
+              return new Promise(function (resolve, reject) {
+                  obj['external-property'] = white['external-property']
+                  let object = []
+                  let component = []
+                  let a = []
+                  for (let key = 0; key < obj['external'].length; key++) {
+                      for (let type = 0; type < obj['external'][key].children.length; type++) {
+                          switch (obj['external'][key].children[type].tagName) {
+                              case 'SCRIPT':
+                                  if (!obj['external'][key].getAttribute('id')) {
+                                      // //console.log('у компонента нет id нужно в external property script  получить id для загрузки скрипта')
+                                  } else {
+                                      component['script'] = obj['external'][key]['children'][type]
+                                  }
+                                  break
+                              case 'COMPONENT-ID':
+                                  component['id'] = obj['external'][key]['children'][type].innerText
+                                  break
+                              case 'COMPONENT-ACTION':
+                                  for (let action = 0; action < obj['external'][key]['children'][type]['children'].length; action++) {
+                                      a.push(obj['external'][key]['children'][type]['children'][action].innerText)
+                                  }
+                                  component['actions'] = a
+                                  break
+                              default:
+                                  // //console.log(`Не отслеживается, по мере надобности добавляются [${obj['external'][key].children[type].tagName.toLowerCase()}]`)
+                                  break
+                          }
+                      }
+                      object.push(component)
+                      component = []
+                  }
+                  obj['external-property'] = object
+                  resolve(obj)
+              })
+                .catch(error => {
+                    // //console.log('здесь я перехватывал отсутствие страницы но это убрал', error)
+                })
+          }
+
+
+          function getTemplate (obj, swap, external) {
+              return new Promise(function (resolve, reject) {
+                  obj['template-shadow'] = []
+                  obj['template-light'] = []
+                  let verify = []
+                  verify['swap'] = false
+                  verify['blog'] = false
+                  verify['external'] = false
+                  verify['light'] = false
+                  verify['slider'] = false
+                  verify['one'] = false
+                  verify['sliderText'] = false
+                  verify['text'] = false
+                  for (let type = 0; type < obj['type'].length; type++) {
+                      if (obj['type'][type].indexOf('slider') !== -1) {
+                          if (obj['type'][type].split('-').length > 1) {
+                              verify['slider'] = true
+                              for (let key in obj['type'][type].split('-')) {
+                                  switch (obj['type'][type].split('-')[key]) {
+                                      case 'one':
+                                          verify['one'] = true
+                                          break
+                                      default:
+                                          // //console.log(`~~~дополнительное свойство~~~`, obj['type'][type].split('-')[key])
+                                          break
+                                  }
+                              }
+                          }
+                      }
+                      if (obj['type'][type].length) {
+                          if (obj['type'][type].split('-').length > 1) {
+                              switch (obj['type'][type].split('-')[0]) {
+                                  case 'blog':
+                                      verify['blog'] = true
+                                      break
+                                  default:
+                                      console.log(`типы не отслеживаются`, obj['type'][type])
+                                      break
+                              }
+                          } else {
+                              switch (obj['type'][type]) {
+                                  case 'swap':
+                                      verify['swap'] = true
+                                      break
+                                  case 'external':
+                                      verify['external'] = true
+                                      break
+                                  case 'light':
+                                      verify['light'] = true
+                                      break
+                                  case 'slider':
+                                      verify['slider'] = true
+                                      break
+                                  case 'sliderText':
+                                      verify['sliderText'] = true
+                                      break
+                                  case 'text':
+                                      verify['text'] = true
+                                      break
+                                  default:
+                                      // //console.log(`типы не отслеживаются`, obj['type'][type])
+                                      break
+                              }
+                          }
+                      }
+                  }
+
+                  /**
+                   * цикл this
+                   * цикл template
+                   */
+                  /**
+                   * устанавливается свойство parent если его нет у родителя ставится по родителю
+                   *
+                   */
+                  if(obj['this'].getAttribute('parent')){
+                      obj['parent'] = obj['this'].getAttribute('parent')
+                  }
+                  if (verify['swap'] === true) {
+                      for (let key = 0; key < obj['this'].children.length; key++) {
+                          // //console.log('~~~~~~this~~~~~~~', obj['this'].children[key].tagName)
+                          if (obj['this'].children[key].tagName.split('-').length === 1) {
+                              if (obj['this'].children[key].slot === 'view') {
+                                  obj['this'].children[key].className = 'wall'
+                              }
+                              obj['template-light'].push(obj['this'].children[key])
+                          } else {
+                              if (obj['getAttribute'](obj['this'].children[key], 'light', 'template') === true) {
+                                  obj['this'].children[key].setAttribute('type', `${obj['this'].children[key].getAttribute('type')}-external`)
+                                  if(obj['parent'] === false){
+                                      if(!obj['slot']){
+                                          obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                                      }else{
+                                          obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                                      }
+                                  }else{
+                                      obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                                  }
+
+                                  scriptTemplate(obj['this'].children[key], obj)
+                                  obj['template-light'].push(obj['this'].children[key])
+                              } else {
+                                  obj['this'].children[key].setAttribute('type', `${obj['this'].children[key].getAttribute('type')}-external`)
+                                  /**
+                                   * устанавливается свойство parent если его нет у родителя ставится по родителю
+                                   *
+                                   */
+                                  if(obj['parent'] === false){
+                                      if(!obj['slot']){
+                                          obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                                      }else{
+                                          obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                                      }
+                                  }else{
+                                      obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                                  }
+                                  scriptTemplate(obj['this'].children[key], obj)
+                                  obj['template-shadow'].push(obj['this'].children[key])
+                              }
+                          }
+                      }
+                      for (let key = 0; key < obj['template'].children.length; key++) {
+                          // //console.log('~~~~~~template~~~~~~~', obj['template'].children[key].tagName)
+                          if (obj['template'].children[key].tagName.split('-').length === 1) {
+                              if (obj['template'].children[key].slot === 'view') {
+                                  obj['template'].children[key].className = 'wall'
+                              }
+                              obj['template-light'].push(obj['template'].children[key])
+                          } else {
+                              if (obj['getAttribute'](obj['template'].children[key], 'light', 'template') === true) {
+                                  obj['template'].children[key].setAttribute('type', `${obj['template'].children[key].getAttribute('type')}-external`)
+                                  if(obj['parent'] === false){
+                                      if(!obj['slot']){
+                                          obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                                      }else{
+                                          obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                                      }
+                                  }else{
+                                      obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                                  }
+                                  scriptTemplate(obj['template'].children[key], obj)
+                                  obj['template-light'].push(obj['template'].children[key])
+                              } else {
+                                  obj['template'].children[key].setAttribute('type', `${obj['template'].children[key].getAttribute('type')}-external`)
+                                  if(obj['parent'] === false){
+                                      if(!obj['slot']){
+                                          obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                                      }else{
+                                          obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                                      }
+                                  }else{
+                                      obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                                  }
+                                  scriptTemplate(obj['template'].children[key], obj)
+                                  obj['template-shadow'].push(obj['template'].children[key])
+                              }
+                          }
+                      }
+                  } else {
+                      for (let key = 0; key < obj['this'].children.length; key++) {
+                          // //console.log('~~~~~~this~~~~~~~', obj['this'].children[key].tagName)
+                          if (obj['this'].children[key].tagName.split('-').length === 1) {
+                              if (obj['this'].children[key].slot === 'view') {
+                                  obj['this'].children[key].className = 'wall'
+                              }
+                              obj['template-shadow'].push(obj['this'].children[key])
+                          } else {
+                              if (obj['getAttribute'](obj['this'].children[key], 'light', 'template') === true) {
+                                  if(obj['parent'] === false){
+                                      if(!obj['slot']){
+                                          obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                                      }else{
+                                          obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                                      }
+                                  }else{
+                                      obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                                  }
+                                  scriptTemplate(obj['this'].children[key], obj)
+                                  obj['template-shadow'].push(obj['this'].children[key])
+                              } else {
+                                  if(obj['parent'] === false){
+                                      if(!obj['slot']){
+                                          obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                                      }else{
+                                          obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                                      }
+                                  }else{
+                                      obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                                  }
+                                  scriptTemplate(obj['this'].children[key], obj)
+                                  obj['template-light'].push(obj['this'].children[key])
+                              }
+                          }
+                      }
+                      for (let key = 0; key < obj['template'].children.length; key++) {
+                          // //console.log('~~~~~~template~~~~~~~', obj['template'].children[key].tagName)
+                          if (obj['template'].children[key].tagName.split('-').length === 1) {
+                              if (obj['template'].children[key].slot === 'view') {
+                                  obj['template'].children[key].className = 'wall'
+                              }
+                              obj['template-shadow'].push(obj['template'].children[key])
+                          } else {
+                              if (obj['getAttribute'](obj['template'].children[key], 'light', 'template') === true) {
+                                  if(obj['parent'] === false){
+                                      if(!obj['slot']){
+                                          obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                                      }else{
+                                          obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                                      }
+                                  }else{
+                                      obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                                  }
+                                  scriptTemplate(obj['template'].children[key], obj)
+                                  obj['template-shadow'].push(obj['template'].children[key])
+                              } else {
+                                  if(obj['parent'] === false){
+                                      if(!obj['slot']){
+                                          obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                                      }else{
+                                          obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                                      }
+                                  }else{
+                                      obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                                  }
+                                  scriptTemplate(obj['template'].children[key], obj)
+                                  obj['template-light'].push(obj['template'].children[key])
+                              }
+                          }
+                      }
+                  }
+                  for (let key in verify) {
+                      obj['verify'][key] = verify[key]
+                  }
+                  resolve(obj)
+              })
+          }
+          function template (obj, type) {
+              return new Promise(function (resolve, reject) {
+                  obj['verify'] = []
+
+                  if (!obj['this'].getAttribute('preset')) {
+                      obj['path-template'] = `/static/html/components/${obj['component']}/${obj['component']}.html`
+                      obj['verify']['preset'] = false
+                  } else {
+                      switch(obj['this'].getAttribute('preset')){
+                          case 'default':
+                              obj['path-template'] = `/static/html/components/${obj['component']}/template/default/index.html`
+                              obj['preset'] = {
+                                  dir:'default',
+                                  name:'index',
+                                  dirName:`${obj['this'].getAttribute('preset')}`,
+                                  status:true
+                              }
+                              obj['verify']['preset'] = true
+                              break
+                          default:
+                              let substrate = (obj['this'].getAttribute('preset')).split('-')
+
+                              let dir = {}
+                              let name = {}
+                              if( substrate.length >= 3) {
+                                  dir = `${substrate[0]}-${substrate[1]}`
+                                  name = substrate.filter((word, index, arr)=>{
+                                      if(index > 1) {
+                                          return word
+                                      }
+                                  });
+                                  // console.assert(false,name, dir )
+                                  name = name.join('-')
+                                  obj['path-template'] = `/static/html/components/${obj['component']}/template/${dir}/${name}.html`
+                                  obj['verify']['preset'] = true
+                                  obj['preset'] = {
+                                      dir:dir,
+                                      name:name,
+                                      status:true
+                                  }
+                              }else if(substrate.length === 2){
+                                  dir = `${substrate[0]}-${substrate[1]}`
+                                  name =`index`
+                                  obj['path-template'] = `/static/html/components/${obj['component']}/template/${dir}/${name}.html`
+                                  obj['verify']['preset'] = true
+                                  obj['preset'] = {
+                                      dir:dir,
+                                      name:name,
+                                      status:true
+                                  }
+                              } else if(substrate.length === 1) {
+                                  dir = `${substrate[0]}`
+                                  name =`index`
+                                  obj['path-template'] = `/static/html/components/${obj['component']}/template/${dir}/${name}.html`
+                                  obj['verify']['preset'] = true
+                                  obj['preset'] = {
+                                      dir:dir,
+                                      name:name,
+                                      status:true
+                                  }
+                              }else {
+                                  console.assert(false, 'не загружается пресет')
+                              }
+                              break
+                      }
+                  }
+                  fetch(obj['path-template'])
+                    .then(function (response) {
+                        if (response.ok) {
+                            return response.text()
+                        }
+                    }).then(function (body) {
+                      let parser = new DOMParser()
+                      let doc = parser.parseFromString(body, 'text/html')
+                      obj['template'] = doc.getElementsByTagName('template')[0].content.cloneNode(true)
+                      external(obj)
+                        .then((obj) => {
+                            getTemplate(obj, obj['type-swap'], obj['type-external'])
+                              .then((obj) => {
+                                  if (obj['verify']['swap'] === true) {
+
+                                      if (obj['template-light'].length !== 0) {
+                                          for (let key = 0; key < obj['template-light'].length; key++) {
+                                              //console.log('2222222222111111111111222222222222', obj['template-light'][key])
+                                              obj['this']['prepend'](obj['template-light'][key])
+                                              // console.assert(false, obj['template-light'][key])
+                                          }
+                                      }
+                                      if (obj['template-shadow'].length !== 0) {
+                                          obj['this']['attachShadow']({mode: 'open'})
+                                          obj['shadowRoot'] = true
+                                          for (let key = 0; key < obj['template-shadow'].length; key++) {
+
+                                              obj['this']['shadowRoot']['appendChild'](obj['template-shadow'][key])
+                                          }
+                                      }
+
+                                  } else {
+                                      if (obj['template-light'].length !== 0) {
+                                          for (let key in obj['template-light']) {
+                                              obj['this']['appendChild'](obj['template-light'][key])
+                                          }
+                                      }
+                                      if (obj['template-shadow'].length !== 0) {
+                                          obj['this']['attachShadow']({mode: 'open'})
+                                          obj['shadowRoot'] = true
+                                          for (let key in obj['template-shadow']) {
+                                              obj['this']['shadowRoot']['appendChild'](obj['template-shadow'][key])
+                                          }
+                                      }
+
+                                  }
+                                  resolve(obj)
+                              })
+                        })
+                  })
+                    .catch(error => {
+                        return error
+                    })
+              })
+          }
+
+          function renderExternal (obj) {
+              return new Promise(function (resolve, reject) {
+                  obj['words-action'] = []
+                  let wordsAction = []
+                  for (let key = 0; key < obj['external-property'].length; key++) {
+                      for (let words = 0; words < obj['external-property'][key]['actions'].length; words++) {
+                          for (let verify = 0; verify < obj['words'].length; verify++) {
+                              if (obj['external-property'][key]['actions'][words].indexOf(obj['words'][verify]) !== -1) {
+                                  if (obj['words'][verify] === 'shadowRoot' || obj['words'][words] === 'shadow') {
+                                      wordsAction['shadow'] = true
+                                  }
+                                  if (obj['words'][verify] === 'light' || obj['words'][words] === 'лайт') {
+                                      wordsAction['light'] = true
+                                  }
+                                  if (obj['words'][verify] === 'editor') {
+                                      wordsAction['editor'] = true
+                                  }
+                                  if (obj['words'][verify] === 'слайдер') {
+                                      wordsAction['editor-slider'] = true
+                                  }
+                                  if (obj['words'][verify] === 'swap') {
+                                      wordsAction['swap'] = true
+                                  }
+                              }
+                          }
+                      }
+                      obj['words-action'] = wordsAction
+
+                      for (let key in obj['external-property']) {
+                          for (let type in obj['external-property'][key]) {
+                              switch (type) {
+                                  case 'id':
+                                      let doc = document.createElement(obj['external-property'][key][type])
+                                      doc.setAttribute('type', 'external')
+                                      obj['this'].appendChild(doc)
+                                      break
+                                  default:
+                                      // //console.log(`какой то неизвестный тип`, type)
+                                      break
+                              }
+                          }
+                      }
+                      resolve(obj)
+                  }
+              })
+          }
+
+          function external (obj) {
+              return new Promise(function (resolve, reject) {
+                  obj['path-external'] = `/static/html/components/${obj['component']}/external/${obj['component']}-external.xml`
+                  fetch(obj['path-external'])
+                    .then(function (response) {
+                        if (response.ok === false) {
+                            return response.ok
+                        } else {
+                            return response.text()
+                        }
+                    })
+                    .then(function (data) {
+                        if (data === false) {
+                        } else {
+                            let parser = new DOMParser()
+                            let doc = parser.parseFromString(data, 'text/html')
+                            obj['external'] = doc.querySelectorAll('section')
+                            externalProperty(obj)
+                              .then((obj) => {
+                                  if (obj['external-property'].length === 0) {
+                                      resolve(obj)
+                                  } else {
+                                      renderExternal(obj)
+                                        .then((obj) => {
+                                            resolve(obj)
+                                        })
+                                  }
+                              })
+                        }
+                    })
+                    .catch(error => {
+                        throw error
+                    })
+              })
+          }
+          function getElementsByClassName (obj, type) {
+              return new Promise(function (resolve, reject) {
+                  for (let state = 0; state < obj['state'].length; state++) {
+                      for (let key = 0; key < obj[`template-${obj['state'][state]}`].length; key++) {
+                          if (obj[`template-${obj['state'][state]}`][key].getElementsByClassName(type).length === 0) {
+
+                          } else {
+                              obj['slider'] = obj[`template-${obj['state'][state]}`][key].getElementsByClassName(type)[0]
+                              resolve(obj[`template-${obj['state'][state]}`][key].getElementsByClassName(type)[0])
+                          }
+                      }
+                  }
+              })
+          }
+          function scriptTemplate (obj, parent) {
+              return new Promise(function (resolve, reject) {
+                  let verify = false
+                  for (let i = 0; i < document.querySelectorAll('script').length; i++) {
+                      if (document.querySelectorAll('script')[i].src.indexOf(obj.tagName.toLowerCase()) !== -1) {
+                          verify = true
+                      }
+                  }
+                  if (verify === true) {
+                      console.log('модуль загружен')
+                  } else {
+                      const script = document.createElement('script')
+                      script.src = `/static/html/components/${obj.tagName.toLowerCase()}/${obj.tagName.toLowerCase()}.mjs`
+                      script.type = 'module'
+                      script.setAttribute('async', '')
+                      script.onload = resolve
+                      script.onerror = reject
+
+                      parent['this'].appendChild(script)
+                  }
+              })
+          }
+          objectProperty(this)
+            .then((obj) => {
+                template(obj)
+                  .then((obj) => {
+                      style(obj)
+                        .then((obj) => {
+                            modules(true,0,'red',obj,'waves-game-card')
+                        })
+                  })
+            })
+      }
+  })

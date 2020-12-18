@@ -5,6 +5,7 @@ import Parser from '/static/html/components/component_modules/bundle/html2json/h
 import * as md2html from  '/static/html/components/lib-markdown/external/wasm/markdown.es.mjs'
 import task from '/static/html/components/component_modules/heap/index.mjs'
 import JQ from '/static/html/components/component_modules/jq/jq.mjs'
+import TextEditor from '/static/html/components/component_modules/codemirror/codemirror.mjs'
 export default async (v,p,c,obj,r) => {
     const target = []
 
@@ -412,54 +413,61 @@ export default async (v,p,c,obj,r) => {
         system.worker_main["markdown__string_views"].innerText = Parser.json(json.code)
     }
     function asideitems (items = Array, item, id) {
-        for(let self of items) {
-            let h1save = {}
-            let section = document.createElement('section')
-            section.classList.add(`${id}__list`);
-            section.classList.add(`aside-menu`);
-            // console.assert(false,items,  isEmpty(item),id )
-            if(!isEmpty(item)) {
-                for(let paragraph of item) {
-                    paragraph.addEventListener("click", async (event) => {
-                        system.worker_main["markdown__html"].querySelector(`#${event.target.querySelector('a').id}`).scrollIntoView({block: "start", behavior: "smooth"})
-                    }, false);
-                    section.prepend(paragraph)
-                }
+        if(id === 'aside') {
+            let component_h1 = document.createElement('h1')
+            component_h1.innerText = 'empty'
+            system.worker_main["markdown__self_menu_aside_1"].innerHTML = ''
+            system.worker_main["markdown__self_menu_aside_1"].appendChild(component_h1)
+        } else {
+            for(let self of items) {
+                let h1save = {}
+                let section = document.createElement('section')
+                section.classList.add(`${id}__list`);
+                section.classList.add(`aside-menu`);
+                // console.assert(false,items,  isEmpty(item),id )
+                if(!isEmpty(item)) {
+                    for(let paragraph of item) {
+                        paragraph.addEventListener("click", async (event) => {
+                            system.worker_main["markdown__html"].querySelector(`#${event.target.querySelector('a').id}`).scrollIntoView({block: "start", behavior: "smooth"})
+                        }, false);
+                        section.prepend(paragraph)
+                    }
 
-                if(!isEmpty(self)) {
-                    h1save = self.cloneNode(true)
-                    system.worker_main["markdown__self_menu_aside_1"].innerHTML = ''
-                    system.worker_main["markdown__self_menu_aside_1"].appendChild(h1save)
-                    system.worker_main["markdown__self_menu_aside_1"].appendChild(section)
+                    if(!isEmpty(self)) {
+                        h1save = self.cloneNode(true)
+                        system.worker_main["markdown__self_menu_aside_1"].innerHTML = ''
+                        system.worker_main["markdown__self_menu_aside_1"].appendChild(h1save)
+                        system.worker_main["markdown__self_menu_aside_1"].appendChild(section)
+                    } else {
+                        let component_h1 = document.createElement('h1')
+                        let component_a = document.createElement('a')
+                        let component_text = system.worker_main['markdown__html'].querySelector('h1').innerText
+                        component_h1.id = id
+                        component_h1.innerText = isEmpty(component_text)?'external': component_text
+                        component_a.setAttribute('aria-hidden', true)
+                        component_a.href = `#${id}`
+                        component_h1.appendChild(component_a)
+                        system.worker_main["markdown__self_menu_aside_1"].innerHTML = ''
+                        system.worker_main["markdown__self_menu_aside_1"].appendChild(component_h1)
+                        system.worker_main["markdown__self_menu_aside_1"].appendChild(section)
+                    }
                 } else {
-                    let component_h1 = document.createElement('h1')
-                    let component_a = document.createElement('a')
-                    let component_text = system.worker_main['markdown__html'].querySelector('h1').innerText
-                    component_h1.id = id
-                    component_h1.innerText = isEmpty(component_text)?'external': component_text
-                    component_a.setAttribute('aria-hidden', true)
-                    component_a.href = `#${id}`
-                    component_h1.appendChild(component_a)
-                    system.worker_main["markdown__self_menu_aside_1"].innerHTML = ''
-                    system.worker_main["markdown__self_menu_aside_1"].appendChild(component_h1)
-                    system.worker_main["markdown__self_menu_aside_1"].appendChild(section)
-                }
-            } else {
-                if(!isEmpty(self)) {
-                    h1save = self.cloneNode(true)
-                    system.worker_main["markdown__self_menu_aside_1"].innerHTML = ''
-                    system.worker_main["markdown__self_menu_aside_1"].appendChild(h1save)
-                } else {
-                    let component_h1 = document.createElement('h1')
-                    let component_a = document.createElement('a')
-                    let component_text = system.worker_main['markdown__html'].querySelector('h1').innerText
-                    component_h1.id = id
-                    component_h1.innerText = isEmpty(component_text)?'external': component_text
-                    component_a.setAttribute('aria-hidden', true)
-                    component_a.href = `#${id}`
-                    component_h1.appendChild(component_a)
-                    system.worker_main["markdown__self_menu_aside_1"].innerHTML = ''
-                    system.worker_main["markdown__self_menu_aside_1"].appendChild(component_h1)
+                    if(!isEmpty(self)) {
+                        h1save = self.cloneNode(true)
+                        system.worker_main["markdown__self_menu_aside_1"].innerHTML = ''
+                        system.worker_main["markdown__self_menu_aside_1"].appendChild(h1save)
+                    } else {
+                        let component_h1 = document.createElement('h1')
+                        let component_a = document.createElement('a')
+                        let component_text = system.worker_main['markdown__html'].querySelector('h1').innerText
+                        component_h1.id = id
+                        component_h1.innerText = isEmpty(component_text)?'external': component_text
+                        component_a.setAttribute('aria-hidden', true)
+                        component_a.href = `#${id}`
+                        component_h1.appendChild(component_a)
+                        system.worker_main["markdown__self_menu_aside_1"].innerHTML = ''
+                        system.worker_main["markdown__self_menu_aside_1"].appendChild(component_h1)
+                    }
                 }
             }
         }
@@ -642,8 +650,15 @@ export default async (v,p,c,obj,r) => {
 
     }
 
+    let codemirror = await TextEditor(system.worker_main["markdown__self"],'javascript')
+    codemirror.on('change',function(cMirror) {
+        let event = {}
+        event.target = {}
+        event.target.value = cMirror.getValue()
+        event.target.tagName ='TEXTAREA'
+        updateUI(event)
+    });
     window.addEventListener("hashchange", hash, false);
-
     obj.this.shadowRoot.querySelector("#btnRun").addEventListener("click", function()
     {
         let out = jq(
@@ -653,7 +668,7 @@ export default async (v,p,c,obj,r) => {
           console.log('@@@@@@@@@@@@@@@@@@@@', out)
         obj.this.shadowRoot.querySelector("#output").value = out
     });
-    obj.this.shadowRoot.querySelector('.markdown').addEventListener("input", updateUI);
+    // obj.this.shadowRoot.querySelector('.markdown').addEventListener("input", updateUI);
     obj.this.shadowRoot.querySelector('.markdown__button_update').addEventListener("click", update);
     obj.this.shadowRoot.querySelector('.markdown__button_query').addEventListener("click", query);
     obj.this.shadowRoot.querySelector('.markdown__button_download').addEventListener("click", download);

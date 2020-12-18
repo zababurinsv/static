@@ -2,6 +2,22 @@
 @import "./docs/css/fonts.scss";
 @import "./docs/css/media.scss";
 
+pre {
+    margin: 0;
+}
+
+hr {
+    margin-bottom: 0;
+}
+
+h1 {
+    cursor: pointer;
+    border-radius: 0.2vw;
+    background: gold;
+}
+
+#input { width: 50%; height: 200px; }
+#output { width: 50%; height: 200px; }
 
 :host {
     display: flex;
