@@ -169,8 +169,8 @@ export default async (v,p,c,obj,r) => {
         "markdown__self_menu_aside_0": obj['this']['shadowRoot'].querySelector('#markdown__self_menu_aside_0'),
         "markdown__self_menu_aside_1": obj['this']['shadowRoot'].querySelector('#markdown__self_menu_aside_1'),
         "markdown__self_html": obj['this']['shadowRoot'].querySelector('.markdown__self_html'),
-        "markdown__html": obj['this']['shadowRoot'].querySelector('.markdown__html'),
-        "markdown__html.iframe": false,
+        "markdown__string_html": obj['this']['shadowRoot'].querySelector('.markdown__string_html'),
+        "markdown__string_html.iframe": false,
         "fs": undefined,
         "fs.path": undefined,
         "checkbox": obj['this']['shadowRoot'].querySelector('#markdown__string_menu_change-views'), 
@@ -353,18 +353,18 @@ export default async (v,p,c,obj,r) => {
             system.worker_main["markdown__self_html"].style.display = "none"
             system.worker_main["markdown__self_menu"].style.display = "grid"
             system.worker_main["markdown__self"].style.display = "block"
-            system.worker_main["markdown__html"].style.display = "block"
+            system.worker_main["markdown__string_html"].style.display = "block"
             system.worker_main["markdown__string_menu"][1].style.display = "flex"
             system.worker_main["markdown__self_menu_aside_0"].style.display = "block"
             system.worker_main["markdown__self_menu_aside_1"].style.display = "block"
         } else {
             system.worker_main["markdown__self_html"].innerHTML = ''
-            system.worker_main["markdown__self_html"].innerHTML = system.worker_main['markdown__html'].innerHTML
+            system.worker_main["markdown__self_html"].innerHTML = system.worker_main['markdown__string_html'].innerHTML
             system.worker_main["markdown__self_html"].style.display = "flex"
             system.worker_main["markdown__self_menu"].style.display = "flex"
             system.worker_main["markdown__self_menu"].style.height = "auto"
             system.worker_main["markdown__self"].style.display = "none"
-            system.worker_main["markdown__html"].style.display = "none"
+            system.worker_main["markdown__string_html"].style.display = "none"
             system.worker_main["markdown__string_menu"][1].style.display = "none"
             system.worker_main["markdown__self_menu_aside_0"].style.display = "none"
             system.worker_main["markdown__self_menu_aside_1"].style.display = "none"
@@ -382,17 +382,17 @@ export default async (v,p,c,obj,r) => {
         if(system.worker_main["markdown__string_views"].querySelector('iframe')) {
             system.worker_main["markdown__string_views"].querySelector('iframe').remove()
         }
-        system.worker_main["markdown__html"].innerHTML = ''
-        system.worker_main["markdown__html"].innerHTML = system.worker_main['markdown__html.innerHTML']
-        system.worker_main["markdown__html"].style.whiteSpace = "initial"
-        system.worker_main["markdown__html.iframe"] = document.createElement('iframe');
-        system.worker_main["markdown__html.iframe"].src = system.worker_main["src"] 
-        system.worker_main["markdown__html.iframe"].width = "100%";
-        system.worker_main["markdown__html.iframe"].height = "100%";
-        system.worker_main["markdown__html.iframe"].style.border = "0";
-        system.worker_main["markdown__html.iframe"].style.frameBorder = "0";
-        system.worker_main["markdown__html.iframe"].sandbox = "allow-scripts";
-        system.worker_main["markdown__string_views"].appendChild(system.worker_main["markdown__html.iframe"])
+        system.worker_main["markdown__string_html"].innerHTML = ''
+        system.worker_main["markdown__string_html"].innerHTML = system.worker_main['markdown__string_html.innerHTML']
+        system.worker_main["markdown__string_html"].style.whiteSpace = "initial"
+        system.worker_main["markdown__string_html.iframe"] = document.createElement('iframe');
+        system.worker_main["markdown__string_html.iframe"].src = system.worker_main["src"]
+        system.worker_main["markdown__string_html.iframe"].width = "100%";
+        system.worker_main["markdown__string_html.iframe"].height = "100%";
+        system.worker_main["markdown__string_html.iframe"].style.border = "0";
+        system.worker_main["markdown__string_html.iframe"].style.frameBorder = "0";
+        system.worker_main["markdown__string_html.iframe"].sandbox = "allow-scripts";
+        system.worker_main["markdown__string_views"].appendChild(system.worker_main["markdown__string_html.iframe"])
         system.worker_main["markdown__string_views"].style.height = '75vw'
         system.worker_main["markdown__string_views"].style.whiteSpace = "initial"
     }
@@ -401,12 +401,12 @@ export default async (v,p,c,obj,r) => {
             system.worker_main["markdown__string_views"].querySelector('iframe').remove()
         }
         let json = {
-            code: Parser.parse(system.worker_main['markdown__html.code']),
-            html: Parser.parse(system.worker_main['markdown__html.innerHTML'])
+            code: Parser.parse(system.worker_main['markdown__string_html.code']),
+            html: Parser.parse(system.worker_main['markdown__string_html.innerHTML'])
         }
-        system.worker_main["markdown__html"].innerHTML = ''
-        system.worker_main["markdown__html"].innerText = Parser.json(json.html)
-        system.worker_main["markdown__html"].style.whiteSpace = "pre-wrap"
+        system.worker_main["markdown__string_html"].innerHTML = ''
+        system.worker_main["markdown__string_html"].innerText = Parser.json(json.html)
+        system.worker_main["markdown__string_html"].style.whiteSpace = "pre-wrap"
         system.worker_main["markdown__string_views"].style.height = 'auto'
         system.worker_main["markdown__string_views"].style.color = '#0b6546'
         system.worker_main["markdown__string_views"].style.whiteSpace = "pre-wrap"
@@ -428,7 +428,7 @@ export default async (v,p,c,obj,r) => {
                 if(!isEmpty(item)) {
                     for(let paragraph of item) {
                         paragraph.addEventListener("click", async (event) => {
-                            system.worker_main["markdown__html"].querySelector(`#${event.target.querySelector('a').id}`).scrollIntoView({block: "start", behavior: "smooth"})
+                            system.worker_main["markdown__string_html"].querySelector(`#${event.target.querySelector('a').id}`).scrollIntoView({block: "start", behavior: "smooth"})
                         }, false);
                         section.prepend(paragraph)
                     }
@@ -441,7 +441,7 @@ export default async (v,p,c,obj,r) => {
                     } else {
                         let component_h1 = document.createElement('h1')
                         let component_a = document.createElement('a')
-                        let component_text = system.worker_main['markdown__html'].querySelector('h1').innerText
+                        let component_text = system.worker_main['markdown__string_html'].querySelector('h1').innerText
                         component_h1.id = id
                         component_h1.innerText = isEmpty(component_text)?'external': component_text
                         component_a.setAttribute('aria-hidden', true)
@@ -459,7 +459,7 @@ export default async (v,p,c,obj,r) => {
                     } else {
                         let component_h1 = document.createElement('h1')
                         let component_a = document.createElement('a')
-                        let component_text = system.worker_main['markdown__html'].querySelector('h1').innerText
+                        let component_text = system.worker_main['markdown__string_html'].querySelector('h1').innerText
                         component_h1.id = id
                         component_h1.innerText = isEmpty(component_text)?'external': component_text
                         component_a.setAttribute('aria-hidden', true)
@@ -482,14 +482,14 @@ export default async (v,p,c,obj,r) => {
             let code = {}
             system.worker_main["markdown__self"].innerHTML = system.worker_main["self.value"];
             system.worker_main["output"] = markdownToHTML(system.worker_main["self.value"]);
-            system.worker_main["markdown__html"].innerHTML = system.worker_main["output"];
+            system.worker_main["markdown__string_html"].innerHTML = system.worker_main["output"];
             code = {}
             code.innerText = '<pre></pre>'
-            if(!isEmpty(system.worker_main["markdown__html"].querySelector('code'))) {
-                code = system.worker_main["markdown__html"].querySelector('code').cloneNode(true)
-                system.worker_main["markdown__html"].querySelector('code').remove()
+            if(!isEmpty(system.worker_main["markdown__string_html"].querySelector('code'))) {
+                code = system.worker_main["markdown__string_html"].querySelector('code').cloneNode(true)
+                system.worker_main["markdown__string_html"].querySelector('code').remove()
             }
-            let tags = system.worker_main["markdown__html"].children
+            let tags = system.worker_main["markdown__string_html"].children
             let h1 = {}
             let h = []
             let countH1 = 0
@@ -551,24 +551,24 @@ export default async (v,p,c,obj,r) => {
                   h1
                 )
             }
-            system.worker_main["markdown__html.code"] = code.innerText;
-            system.worker_main["markdown__html.innerHTML"] = system.worker_main["markdown__html"].innerHTML;
-            system.worker_main["src"] = 'data:text/html;charset=utf-8,' + encodeURIComponent(system.worker_main["markdown__html.code"])
+            system.worker_main["markdown__string_html.code"] = code.innerText;
+            system.worker_main["markdown__string_html.innerHTML"] = system.worker_main["markdown__string_html"].innerHTML;
+            system.worker_main["src"] = 'data:text/html;charset=utf-8,' + encodeURIComponent(system.worker_main["markdown__string_html.code"])
             if(system.worker_main["markdown__string_views"].querySelector('iframe')) {
                 system.worker_main["markdown__string_views"].querySelector('iframe').remove()
             }
-            system.worker_main["markdown__html.iframe"] = document.createElement('iframe');
-            system.worker_main["markdown__html.iframe"].src = system.worker_main["src"] 
-            system.worker_main["markdown__html.iframe"].width = "100%";
-            system.worker_main["markdown__html.iframe"].height = "100%";
-            system.worker_main["markdown__html.iframe"].style.border = "0";
-            system.worker_main["markdown__html.iframe"].style.frameBorder = "0";
-            system.worker_main["markdown__html.iframe"].sandbox = "allow-scripts";
-            system.worker_main["markdown__string_views"].appendChild(system.worker_main["markdown__html.iframe"]);
+            system.worker_main["markdown__string_html.iframe"] = document.createElement('iframe');
+            system.worker_main["markdown__string_html.iframe"].src = system.worker_main["src"]
+            system.worker_main["markdown__string_html.iframe"].width = "100%";
+            system.worker_main["markdown__string_html.iframe"].height = "100%";
+            system.worker_main["markdown__string_html.iframe"].style.border = "0";
+            system.worker_main["markdown__string_html.iframe"].style.frameBorder = "0";
+            system.worker_main["markdown__string_html.iframe"].sandbox = "allow-scripts";
+            system.worker_main["markdown__string_views"].appendChild(system.worker_main["markdown__string_html.iframe"]);
             (code.innerText === '<pre></pre>')
             ? system.worker_main["markdown__string_views"].style.height = 'auto'
             : system.worker_main["markdown__string_views"].style.height = '75vw'
-            system.worker_main["markdown__self_html"].innerHTML = system.worker_main["markdown__html"].innerHTML;
+            system.worker_main["markdown__self_html"].innerHTML = system.worker_main["markdown__string_html"].innerHTML;
             system.worker_main["markdown__string_menu"][0].scrollIntoView()
             resolve(fsSave())
         })
@@ -580,7 +580,7 @@ export default async (v,p,c,obj,r) => {
             if(event.target.tagName !== 'SELECT' && event.target.tagName !== 'INPUT') {
                 switch(event.target.tagName) {
                     case"TEXTAREA":
-                    system.worker_main["src"] = 'data:text/html;charset=utf-8,' + encodeURIComponent(system.worker_main["markdown__html.code"])
+                    system.worker_main["src"] = 'data:text/html;charset=utf-8,' + encodeURIComponent(system.worker_main["markdown__string_html.code"])
                     system.worker_main["self.value"] = event.target.value
                         break
                     default:
@@ -647,7 +647,6 @@ export default async (v,p,c,obj,r) => {
             // window.zb.fs['/body'].syncfs(false, err => console.warn(err));
             location.hash = 'external';
         }
-
     }
 
     let codemirror = await TextEditor(system.worker_main["markdown__self"],'javascript')
@@ -665,7 +664,6 @@ export default async (v,p,c,obj,r) => {
           obj.this.shadowRoot.querySelector("#input").value,
           obj.this.shadowRoot.querySelector("#query").value
         );
-          console.log('@@@@@@@@@@@@@@@@@@@@', out)
         obj.this.shadowRoot.querySelector("#output").value = out
     });
     // obj.this.shadowRoot.querySelector('.markdown').addEventListener("input", updateUI);
