@@ -566,11 +566,13 @@ export default async (v,p,c,obj,r) => {
         })
     }
     function markdown__string_menu_change_true(event) {
-        console.log('~~~~~~~~~~markdown__string_menu_change_true~~~~~~~~~~', event)
+        console.log('~~~~~~~~~~markdown__string_menu_change_true~~~~~~~~~~', system.worker_main['markdown__string_html.innerHTML'])
+
         system.worker_main["markdown__string_views"].innerHTML = ''
         if(system.worker_main["markdown__string_views"].querySelector('iframe')) {
             system.worker_main["markdown__string_views"].querySelector('iframe').remove()
         }
+        system.worker_main["markdown__string_html"].style.display= 'block'
         system.worker_main["markdown__string_html"].innerHTML = ''
         system.worker_main["markdown__string_html"].innerHTML = system.worker_main['markdown__string_html.innerHTML']
         system.worker_main["markdown__string_html"].style.whiteSpace = "initial"
@@ -601,22 +603,12 @@ export default async (v,p,c,obj,r) => {
             code: Parser.parse(system.worker_main['markdown__string_html.code']),
             html: Parser.parse(system.worker_main['markdown__string_html.innerHTML'])
         }
-        // system.worker_main["markdown__string_html"].innerHTML = ''
-        // system.worker_main["markdown__string_html"].innerText = Parser.json(json.html)
-        // system.worker_main["markdown__string_html"].style.whiteSpace = "pre-wrap"
         system.worker_main["markdown__string_html"].style.display = 'none'
         system.worker_main["markdown__string_html_json"].style.display = 'flex'
         codemirror_json_html.setValue(Parser.json(json.html))
-        // system.worker_main["markdown__string_html_json_input"].value = Parser.json(json.html)
-
-        // system.worker_main["markdown__string_views"].style.height = 'auto'
-        // system.worker_main["markdown__string_views"].style.color = '#0b6546'
-        // system.worker_main["markdown__string_views"].style.whiteSpace = "pre-wrap"
-        // system.worker_main["markdown__string_views"].innerText = Parser.json(json.code)
         system.worker_main["markdown__string_views"].style.display = 'none'
         system.worker_main["markdown__string_views_json"].style.display = 'flex'
         codemirror_json_code.setValue(Parser.json(json.code))
-        // system.worker_main["markdown__string_views_json_input"].value = Parser.json(json.code)
         system.worker_main["markdown__string_menu_json_html_run"].disabled = false;
         system.worker_main["markdown__string_menu_json_code_run"].disabled = false;
     }
