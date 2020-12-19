@@ -44,6 +44,8 @@ export default async (v,p,c,obj,r) => {
         }
     }
     let codemirror = await TextEditor(obj.this.shadowRoot.querySelector('.markdown__self'),'javascript')
+    let codemirror_json_html = await TextEditor(obj.this.shadowRoot.querySelector('.markdown__string_html_json_input'),'javascript')
+    let codemirror_json_code = await TextEditor(obj.this.shadowRoot.querySelector('.markdown__string_views_json_input'),'javascript')
     let backJson = (json) => {
         return new Promise( async (resolve, reject)=>{
             let Json = await fetch(`${location.origin}/static/html/components/lib-markdown/external/${(json)?json:'index'}.json`)
@@ -174,7 +176,11 @@ export default async (v,p,c,obj,r) => {
         "markdown__string_html": obj['this']['shadowRoot'].querySelector('.markdown__string_html'),
         "markdown__string_html.iframe": false,
         "markdown__string_html_json":obj['this']['shadowRoot'].querySelector('.markdown__string_html_json'),
+        "markdown__string_html_json_input":obj['this']['shadowRoot'].querySelector('.markdown__string_html_json_input'),
+        "markdown__string_html_json_output":obj['this']['shadowRoot'].querySelector('.markdown__string_html_json_output'),
         "markdown__string_views_json":obj['this']['shadowRoot'].querySelector('.markdown__string_views_json'),
+        "markdown__string_views_json_input":obj['this']['shadowRoot'].querySelector('.markdown__string_views_json_input'),
+        "markdown__string_views_json_output":obj['this']['shadowRoot'].querySelector('.markdown__string_views_json_output'),
         "fs": undefined,
         "fs.path": undefined,
         "checkbox": obj['this']['shadowRoot'].querySelector('#markdown__string_menu_change-views'), 
@@ -578,15 +584,22 @@ export default async (v,p,c,obj,r) => {
             code: Parser.parse(system.worker_main['markdown__string_html.code']),
             html: Parser.parse(system.worker_main['markdown__string_html.innerHTML'])
         }
-        system.worker_main["markdown__string_html"].innerHTML = ''
-        system.worker_main["markdown__string_html"].innerText = Parser.json(json.html)
-        system.worker_main["markdown__string_html"].style.whiteSpace = "pre-wrap"
+        // system.worker_main["markdown__string_html"].innerHTML = ''
+        // system.worker_main["markdown__string_html"].innerText = Parser.json(json.html)
+        // system.worker_main["markdown__string_html"].style.whiteSpace = "pre-wrap"
+        system.worker_main["markdown__string_html"].style.display = 'none'
         system.worker_main["markdown__string_html_json"].style.display = 'flex'
-        system.worker_main["markdown__string_views"].style.height = 'auto'
-        system.worker_main["markdown__string_views"].style.color = '#0b6546'
-        system.worker_main["markdown__string_views"].style.whiteSpace = "pre-wrap"
-        system.worker_main["markdown__string_views"].innerText = Parser.json(json.code)
+        codemirror_json_html.setValue(Parser.json(json.html))
+        // system.worker_main["markdown__string_html_json_input"].value = Parser.json(json.html)
+
+        // system.worker_main["markdown__string_views"].style.height = 'auto'
+        // system.worker_main["markdown__string_views"].style.color = '#0b6546'
+        // system.worker_main["markdown__string_views"].style.whiteSpace = "pre-wrap"
+        // system.worker_main["markdown__string_views"].innerText = Parser.json(json.code)
+        system.worker_main["markdown__string_views"].style.display = 'none'
         system.worker_main["markdown__string_views_json"].style.display = 'flex'
+        codemirror_json_code.setValue(Parser.json(json.code))
+        // system.worker_main["markdown__string_views_json_input"].value = Parser.json(json.code)
     }
     let updateUI = async (event = {}) => {
         system.ptr = system.worker_main
