@@ -16,8 +16,8 @@ h1 {
     background: gold;
 }
 
-#input { width: 50%; height: -webkit-fill-available; }
-#output { width: 50%; height: -webkit-fill-available; }
+.markdown__string_html_json_input, .markdown__string_views_json_input { width: 50%; height: -webkit-fill-available; }
+.markdown__string_html_json_output, .markdown__string_views_json_output { width: 50%; height: -webkit-fill-available; }
 
 :host {
     display: flex;

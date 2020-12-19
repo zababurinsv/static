@@ -173,6 +173,8 @@ export default async (v,p,c,obj,r) => {
         "markdown__self_html": obj['this']['shadowRoot'].querySelector('.markdown__self_html'),
         "markdown__string_html": obj['this']['shadowRoot'].querySelector('.markdown__string_html'),
         "markdown__string_html.iframe": false,
+        "markdown__string_html_json":obj['this']['shadowRoot'].querySelector('.markdown__string_html_json'),
+        "markdown__string_views_json":obj['this']['shadowRoot'].querySelector('.markdown__string_views_json'),
         "fs": undefined,
         "fs.path": undefined,
         "checkbox": obj['this']['shadowRoot'].querySelector('#markdown__string_menu_change-views'), 
@@ -381,42 +383,6 @@ export default async (v,p,c,obj,r) => {
         system.worker_main["output"] = md2html.parse(markdown)
         return system.worker_main["output"];
     }
-    function markdown__string_menu_change_true(event) {
-        console.log('~~~~~~~~~~markdown__string_menu_change_true~~~~~~~~~~', event)
-        system.worker_main["markdown__string_views"].innerHTML = ''
-        if(system.worker_main["markdown__string_views"].querySelector('iframe')) {
-            system.worker_main["markdown__string_views"].querySelector('iframe').remove()
-        }
-        system.worker_main["markdown__string_html"].innerHTML = ''
-        system.worker_main["markdown__string_html"].innerHTML = system.worker_main['markdown__string_html.innerHTML']
-        system.worker_main["markdown__string_html"].style.whiteSpace = "initial"
-        system.worker_main["markdown__string_html.iframe"] = document.createElement('iframe');
-        system.worker_main["markdown__string_html.iframe"].src = system.worker_main["src"]
-        system.worker_main["markdown__string_html.iframe"].width = "100%";
-        system.worker_main["markdown__string_html.iframe"].height = "100%";
-        system.worker_main["markdown__string_html.iframe"].style.border = "0";
-        system.worker_main["markdown__string_html.iframe"].style.frameBorder = "0";
-        system.worker_main["markdown__string_html.iframe"].sandbox = "allow-scripts";
-        system.worker_main["markdown__string_views"].appendChild(system.worker_main["markdown__string_html.iframe"])
-        system.worker_main["markdown__string_views"].style.height = '75vw'
-        system.worker_main["markdown__string_views"].style.whiteSpace = "initial"
-    }
-    function markdown__string_menu_change_false(event) {
-        if(system.worker_main["markdown__string_views"].querySelector('iframe')) {
-            system.worker_main["markdown__string_views"].querySelector('iframe').remove()
-        }
-        let json = {
-            code: Parser.parse(system.worker_main['markdown__string_html.code']),
-            html: Parser.parse(system.worker_main['markdown__string_html.innerHTML'])
-        }
-        system.worker_main["markdown__string_html"].innerHTML = ''
-        system.worker_main["markdown__string_html"].innerText = Parser.json(json.html)
-        system.worker_main["markdown__string_html"].style.whiteSpace = "pre-wrap"
-        system.worker_main["markdown__string_views"].style.height = 'auto'
-        system.worker_main["markdown__string_views"].style.color = '#0b6546'
-        system.worker_main["markdown__string_views"].style.whiteSpace = "pre-wrap"
-        system.worker_main["markdown__string_views"].innerText = Parser.json(json.code)
-    }
     function asideitems (items = Array, item, id) {
         if(id === 'aside') {
             let component_h1 = document.createElement('h1')
@@ -579,6 +545,49 @@ export default async (v,p,c,obj,r) => {
             resolve(fsSave())
         })
     }
+    function markdown__string_menu_change_true(event) {
+        console.log('~~~~~~~~~~markdown__string_menu_change_true~~~~~~~~~~', event)
+        system.worker_main["markdown__string_views"].innerHTML = ''
+        if(system.worker_main["markdown__string_views"].querySelector('iframe')) {
+            system.worker_main["markdown__string_views"].querySelector('iframe').remove()
+        }
+        system.worker_main["markdown__string_html"].innerHTML = ''
+        system.worker_main["markdown__string_html"].innerHTML = system.worker_main['markdown__string_html.innerHTML']
+        system.worker_main["markdown__string_html"].style.whiteSpace = "initial"
+
+        system.worker_main["markdown__string_html_json"].style.display = 'none'
+
+        system.worker_main["markdown__string_html.iframe"] = document.createElement('iframe');
+        system.worker_main["markdown__string_html.iframe"].src = system.worker_main["src"]
+        system.worker_main["markdown__string_html.iframe"].width = "100%";
+        system.worker_main["markdown__string_html.iframe"].height = "100%";
+        system.worker_main["markdown__string_html.iframe"].style.border = "0";
+        system.worker_main["markdown__string_html.iframe"].style.frameBorder = "0";
+        system.worker_main["markdown__string_html.iframe"].sandbox = "allow-scripts";
+        system.worker_main["markdown__string_views"].appendChild(system.worker_main["markdown__string_html.iframe"])
+        system.worker_main["markdown__string_views"].style.height = '75vw'
+        system.worker_main["markdown__string_views"].style.whiteSpace = "initial"
+
+        system.worker_main["markdown__string_views_json"].style.display = 'none'
+    }
+    function markdown__string_menu_change_false(event) {
+        if(system.worker_main["markdown__string_views"].querySelector('iframe')) {
+            system.worker_main["markdown__string_views"].querySelector('iframe').remove()
+        }
+        let json = {
+            code: Parser.parse(system.worker_main['markdown__string_html.code']),
+            html: Parser.parse(system.worker_main['markdown__string_html.innerHTML'])
+        }
+        system.worker_main["markdown__string_html"].innerHTML = ''
+        system.worker_main["markdown__string_html"].innerText = Parser.json(json.html)
+        system.worker_main["markdown__string_html"].style.whiteSpace = "pre-wrap"
+        system.worker_main["markdown__string_html_json"].style.display = 'flex'
+        system.worker_main["markdown__string_views"].style.height = 'auto'
+        system.worker_main["markdown__string_views"].style.color = '#0b6546'
+        system.worker_main["markdown__string_views"].style.whiteSpace = "pre-wrap"
+        system.worker_main["markdown__string_views"].innerText = Parser.json(json.code)
+        system.worker_main["markdown__string_views_json"].style.display = 'flex'
+    }
     let updateUI = async (event = {}) => {
         system.ptr = system.worker_main
         system.worker_main["event.target"] = event.target
@@ -601,6 +610,7 @@ export default async (v,p,c,obj,r) => {
                                 changeViews(event)
                                 break
                             default:
+                                console.log('~~~~~~markdown__string_menu_change_false~~~~~~~~~~')
                                 system.worker_main['checkbox.checked'] = event.target.checked
                                 system.worker_main['checkbox.checked']
                                 ? markdown__string_menu_change_true('updateUI')
