@@ -181,6 +181,11 @@ export default async (v,p,c,obj,r) => {
         "markdown__string_views_json":obj['this']['shadowRoot'].querySelector('.markdown__string_views_json'),
         "markdown__string_views_json_input":obj['this']['shadowRoot'].querySelector('.markdown__string_views_json_input'),
         "markdown__string_views_json_output":obj['this']['shadowRoot'].querySelector('.markdown__string_views_json_output'),
+        "markdown__string_menu_json_html_query":obj['this']['shadowRoot'].querySelector('.markdown__string_menu_json_html_query'),
+        "markdown__string_menu_json_html_run":obj['this']['shadowRoot'].querySelector('.markdown__string_menu_json_html_run'),
+        "markdown__string_menu_json_code_query":obj['this']['shadowRoot'].querySelector('.markdown__string_menu_json_code_query'),
+        "markdown__string_menu_json_code_run":obj['this']['shadowRoot'].querySelector('.markdown__string_menu_json_code_run'),
+        "CodeMirror":obj['this']['shadowRoot'].querySelectorAll('.CodeMirror'),
         "fs": undefined,
         "fs.path": undefined,
         "checkbox": obj['this']['shadowRoot'].querySelector('#markdown__string_menu_change-views'), 
@@ -276,7 +281,13 @@ export default async (v,p,c,obj,r) => {
             window.zb.jq = {}
             window.zb.jq.self = this
             window.zb.jq.fs = this.FS
-            obj.this.shadowRoot.querySelector("#btnRun").disabled = false;
+            if(!system.worker_main['checkbox.checked']) {
+                system.worker_main["markdown__string_menu_json_html_run"].disabled = false;
+                system.worker_main["markdown__string_menu_json_code_run"].disabled = false;
+            } else {
+                system.worker_main["markdown__string_menu_json_html_run"].disabled = true;
+                system.worker_main["markdown__string_menu_json_code_run"].disabled = true;
+            }
         }
     })
     await IDBFS({
@@ -361,22 +372,25 @@ export default async (v,p,c,obj,r) => {
           };
     }
     function changeViews(event) {
+        console.log('~~~~~~~~~~~~~~~~~~~~~changeViews~~~~~~~~~~~~~~~~~~', )
         if(event.target.checked) {
+            // system.worker_main["markdown__self"].style.display = "block"
             system.worker_main["markdown__self_html"].innerHTML = ''
             system.worker_main["markdown__self_html"].style.display = "none"
             system.worker_main["markdown__self_menu"].style.display = "grid"
-            system.worker_main["markdown__self"].style.display = "block"
-            system.worker_main["markdown__string_html"].style.display = "block"
-            system.worker_main["markdown__string_menu"][1].style.display = "flex"
             system.worker_main["markdown__self_menu_aside_0"].style.display = "block"
             system.worker_main["markdown__self_menu_aside_1"].style.display = "block"
+            system.worker_main["markdown__string_html"].style.display = "block"
+            system.worker_main["markdown__string_menu"][1].style.display = "flex"
+            system.worker_main['CodeMirror'][0].style.display = "block"
         } else {
+            system.worker_main["markdown__self"].style.display = "none"
             system.worker_main["markdown__self_html"].innerHTML = ''
             system.worker_main["markdown__self_html"].innerHTML = system.worker_main['markdown__string_html'].innerHTML
             system.worker_main["markdown__self_html"].style.display = "flex"
             system.worker_main["markdown__self_menu"].style.display = "flex"
             system.worker_main["markdown__self_menu"].style.height = "auto"
-            system.worker_main["markdown__self"].style.display = "none"
+            system.worker_main['CodeMirror'][0].style.display = "none"
             system.worker_main["markdown__string_html"].style.display = "none"
             system.worker_main["markdown__string_menu"][1].style.display = "none"
             system.worker_main["markdown__self_menu_aside_0"].style.display = "none"
@@ -575,6 +589,9 @@ export default async (v,p,c,obj,r) => {
         system.worker_main["markdown__string_views"].style.whiteSpace = "initial"
 
         system.worker_main["markdown__string_views_json"].style.display = 'none'
+
+        system.worker_main["markdown__string_menu_json_html_run"].disabled = true;
+        system.worker_main["markdown__string_menu_json_code_run"].disabled = true;
     }
     function markdown__string_menu_change_false(event) {
         if(system.worker_main["markdown__string_views"].querySelector('iframe')) {
@@ -600,6 +617,8 @@ export default async (v,p,c,obj,r) => {
         system.worker_main["markdown__string_views_json"].style.display = 'flex'
         codemirror_json_code.setValue(Parser.json(json.code))
         // system.worker_main["markdown__string_views_json_input"].value = Parser.json(json.code)
+        system.worker_main["markdown__string_menu_json_html_run"].disabled = false;
+        system.worker_main["markdown__string_menu_json_code_run"].disabled = false;
     }
     let updateUI = async (event = {}) => {
         system.ptr = system.worker_main
@@ -683,14 +702,6 @@ export default async (v,p,c,obj,r) => {
         }
     }
 
-
-    // codemirror.on('change',function(cMirror) {
-    //     let event = {}
-    //     event.target = {}
-    //     event.target.value = cMirror.getValue()
-    //     event.target.tagName ='TEXTAREA'
-    //     updateUI(event)
-    // });
     window.addEventListener("hashchange", hash, false);
     obj.this.shadowRoot.querySelector("#btnRun").addEventListener("click", function()
     {

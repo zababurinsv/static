@@ -15,7 +15,8 @@ export default (textNode, mode)=>{
             lineNumbers: true,
             smartIndent: true,
             searchMode: 'popup',
-            lineWrapping: true
+            lineWrapping: true,
+            gutters:['test333']
         });
         resolve(editor)
     })
