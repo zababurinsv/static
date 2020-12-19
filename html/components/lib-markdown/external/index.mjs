@@ -65,7 +65,6 @@ export default async (v,p,c,obj,r) => {
     await md2html.ready
     let system = {
         _scriptDir: import.meta.url,
-        ptr: {},
         worker_main: {},
         validation: {
             key: (...args) =>{ return validation.value },
@@ -135,24 +134,6 @@ export default async (v,p,c,obj,r) => {
         },
         proxy: new Proxy(target, handler)
     }
-
-    let hash = async (id) => {
-    console.log('~~~~~~~~~~~~~~~~~~~',event)
-            switch (id) {
-                case 'external':
-                    await system.pull.orbitdb(id)
-                    break
-                default:
-                    await system.pull.resolve(id)
-                    break
-            }
-            system.worker_main["markdown__string_views"].innerHTML = ''
-            system.worker_main["md"]= system.value
-            codemirror.setValue(system.value)
-            system.worker_main["markdown__self"].value= system.value
-            system.worker_main["self.value"]= system.value
-            updateUI()
-    }
     system.json.ok = true; 
     system.json.status = true; 
     system.json.children.view = system.json.children.isMainThread.find(element => {
@@ -191,7 +172,6 @@ export default async (v,p,c,obj,r) => {
         "output":[],
         "markdown__string_menu":obj['this']['shadowRoot'].querySelectorAll('.markdown__string_menu'),
         "markdown__string_views": obj['this']['shadowRoot'].querySelector('#markdown__string_views'),
-        "event.target": false
     }
     
     if(isEmpty(system.json.children.view) && !isEmpty(system.location.hash)) {
@@ -205,6 +185,22 @@ export default async (v,p,c,obj,r) => {
             system.validation.value.hashRead = true
             system.validation.value.fsRead = false
         }
+    }
+    let hash = async (id) => {
+        switch (id) {
+            case 'external':
+                await system.pull.orbitdb(id)
+                break
+            default:
+                await system.pull.resolve(id)
+                break
+        }
+        system.worker_main["markdown__string_views"].innerHTML = ''
+        system.worker_main["md"]= system.value
+        codemirror.setValue(system.value)
+        system.worker_main["markdown__self"].value= system.value
+        system.worker_main["self.value"]= system.value
+        updateUI()
     }
     system.worker_main.markdown__self_menu_aside_0.innerHTML = ''
     system.worker_main.markdown__self_menu_aside_0.innerHTML = Parser.stringify(system.json.children.isMainThread)
@@ -604,44 +600,33 @@ export default async (v,p,c,obj,r) => {
         system.worker_main["markdown__string_menu_json_html_run"].disabled = false;
         system.worker_main["markdown__string_menu_json_code_run"].disabled = false;
     }
-    let updateUI = async (event = {}) => {
-        console.log('~~~~~~~~~~~~~~~~~~~ updateUI ~~~~~~~~~~~~~~~~', event)
-        system.ptr = system.worker_main
-        system.worker_main["event.target"] = event.target
-        if(!isEmpty(event.target)) {
-            if(event.target.tagName !== 'SELECT' && event.target.tagName !== 'INPUT') {
-                switch(event.target.tagName) {
-                    case"TEXTAREA":
-                    system.worker_main["src"] = 'data:text/html;charset=utf-8,' + encodeURIComponent(system.worker_main["markdown__string_html.code"])
-                    system.worker_main["self.value"] = codemirror.getValue()
-                        break
-                    default:
-                        break
-                }
-               await saveMd()
-            } else {
-                switch(event.target.tagName) {
-                        case"INPUT":
-                        switch(event.target.id) {
-                            case'markdown__button_views':
-                                changeViews(event)
-                                break
-                            default:
-                                console.log('~~~~~~markdown__string_menu_change_false~~~~~~~~~~')
-                                system.worker_main['checkbox.checked'] = event.target.checked
-                                system.worker_main['checkbox.checked']
-                                ? markdown__string_menu_change_true('updateUI')
-                                : markdown__string_menu_change_false('updateUI')
-                                break
-                        }
-                            break
-                        default:
-                            console.log('input', event.target)
-                            break
-                }
-            }
+    let updateUI = async (event = {}, type) => {
+        console.log('~~~~~~~~~~~~~~~~~~~ updateUI ~~~~~~~~~~~~~~~~', type)
+        if(type === 'codeMirror') {
+                system.worker_main["src"] = 'data:text/html;charset=utf-8,' + encodeURIComponent(system.worker_main["markdown__string_html.code"])
+                system.worker_main["self.value"] = codemirror.getValue()
+                await saveMd()
         } else {
-            await saveMd()
+            console.log('~~~~~~~~~~~~~~',event, type)
+            // switch(event.target.tagName) {
+            //         case"INPUT":
+            //         switch(event.target.id) {
+            //             case'markdown__button_views':
+            //                 changeViews(event)
+            //                 break
+            //             default:
+            //                 console.log('~~~~~~markdown__string_menu_change_false~~~~~~~~~~')
+            //                 system.worker_main['checkbox.checked'] = event.target.checked
+            //                 system.worker_main['checkbox.checked']
+            //                 ? markdown__string_menu_change_true('updateUI')
+            //                 : markdown__string_menu_change_false('updateUI')
+            //                 break
+            //             }
+            //             break
+            //         default:
+            //             console.log('input', event.target)
+            //             break
+            // }
         }
     }
     await fsLoad()
@@ -686,10 +671,9 @@ export default async (v,p,c,obj,r) => {
             location.hash = 'external';
         }
     }
-    // codemirror.on('update', updateUI)
-    // window.addEventListener("hashchange", hash, {
-    //     defaultPrevented: true
-    // });
+    codemirror.on('update', (event)=>{
+        updateUI(event,'codeMirror')
+    })
     obj.this.shadowRoot.querySelector("#btnRun").addEventListener("click", function()
     {
         let out = jq(
@@ -698,7 +682,6 @@ export default async (v,p,c,obj,r) => {
         );
         obj.this.shadowRoot.querySelector("#output").value = out
     });
-    // obj.this.shadowRoot.querySelector('.markdown__self').addEventListener("input", updateUI);
     obj.this.shadowRoot.querySelector('.markdown__button_update').addEventListener("click", update);
     obj.this.shadowRoot.querySelector('.markdown__button_query').addEventListener("click", query);
     obj.this.shadowRoot.querySelector('.markdown__button_download').addEventListener("click", download);
