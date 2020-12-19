@@ -43,7 +43,7 @@ export default async (v,p,c,obj,r) => {
 
         }
     }
-    
+    let codemirror = await TextEditor(obj.this.shadowRoot.querySelector('.markdown__self'),'javascript')
     let backJson = (json) => {
         return new Promise( async (resolve, reject)=>{
             let Json = await fetch(`${location.origin}/static/html/components/lib-markdown/external/${(json)?json:'index'}.json`)
@@ -581,7 +581,7 @@ export default async (v,p,c,obj,r) => {
                 switch(event.target.tagName) {
                     case"TEXTAREA":
                     system.worker_main["src"] = 'data:text/html;charset=utf-8,' + encodeURIComponent(system.worker_main["markdown__string_html.code"])
-                    system.worker_main["self.value"] = event.target.value
+                    system.worker_main["self.value"] = codemirror.getValue()
                         break
                     default:
                         break
@@ -618,17 +618,20 @@ export default async (v,p,c,obj,r) => {
             let mdfs = window.zb.fs[`${system.worker_main['fs.path']}`].readFile("/body/data.md",{ encoding: "utf8" });
             if(!isEmpty(mdfs)) {
                 system.worker_main["md"]= mdfs
-                system.worker_main["markdown__self"].value= mdfs
+                codemirror.setValue(mdfs)
+                // system.worker_main["markdown__self"].value= mdfs
                 system.worker_main["self.value"]= mdfs
                 updateUI()
             } else {
                 system.worker_main["md"]= "# Empty"
-                system.worker_main["markdown__self"].value= "# Empty"
+                codemirror.setValue("# Empty")
+                // system.worker_main["markdown__self"].value= "# Empty"
                 system.worker_main["self.value"]= "# Empty"
             }
         } else {
             system.worker_main["md"]= "# Empty"
-            system.worker_main["markdown__self"].value= "# Empty"
+            codemirror.setValue("# Empty")
+            // system.worker_main["markdown__self"].value= "# Empty"
             system.worker_main["self.value"]= "# Empty"
         }
     } else {
@@ -636,7 +639,7 @@ export default async (v,p,c,obj,r) => {
             updateUI()
         }
     }
-   async function update(event) {
+    async function update(event) {
        let status = await task.set(true,'','red',system['worker_main']['markdown__self'].innerHTML, '/orbitdb/set/:external')
     }
 
@@ -649,14 +652,14 @@ export default async (v,p,c,obj,r) => {
         }
     }
 
-    let codemirror = await TextEditor(system.worker_main["markdown__self"],'javascript')
-    codemirror.on('change',function(cMirror) {
-        let event = {}
-        event.target = {}
-        event.target.value = cMirror.getValue()
-        event.target.tagName ='TEXTAREA'
-        updateUI(event)
-    });
+
+    // codemirror.on('change',function(cMirror) {
+    //     let event = {}
+    //     event.target = {}
+    //     event.target.value = cMirror.getValue()
+    //     event.target.tagName ='TEXTAREA'
+    //     updateUI(event)
+    // });
     window.addEventListener("hashchange", hash, false);
     obj.this.shadowRoot.querySelector("#btnRun").addEventListener("click", function()
     {
@@ -666,7 +669,7 @@ export default async (v,p,c,obj,r) => {
         );
         obj.this.shadowRoot.querySelector("#output").value = out
     });
-    // obj.this.shadowRoot.querySelector('.markdown').addEventListener("input", updateUI);
+    obj.this.shadowRoot.querySelector('.markdown').addEventListener("input", updateUI);
     obj.this.shadowRoot.querySelector('.markdown__button_update').addEventListener("click", update);
     obj.this.shadowRoot.querySelector('.markdown__button_query').addEventListener("click", query);
     obj.this.shadowRoot.querySelector('.markdown__button_download').addEventListener("click", download);
