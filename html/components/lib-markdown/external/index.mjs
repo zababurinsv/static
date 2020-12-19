@@ -167,13 +167,14 @@ export default async (v,p,c,obj,r) => {
         "CodeMirror":obj['this']['shadowRoot'].querySelectorAll('.CodeMirror'),
         "fs": undefined,
         "fs.path": undefined,
-        "checkbox": obj['this']['shadowRoot'].querySelector('#markdown__string_menu_change-views'), 
+        "markdown__string_menu_change-views":obj['this']['shadowRoot'].querySelector('#markdown__string_menu_change-views'),
+        "markdown__button_views":obj['this']['shadowRoot'].querySelector('#markdown__button_views'),
+        "checkbox": obj['this']['shadowRoot'].querySelector('#markdown__string_menu_change-views'),
         "checkbox.checked": true, 
         "output":[],
         "markdown__string_menu":obj['this']['shadowRoot'].querySelectorAll('.markdown__string_menu'),
         "markdown__string_views": obj['this']['shadowRoot'].querySelector('#markdown__string_views'),
     }
-    
     if(isEmpty(system.json.children.view) && !isEmpty(system.location.hash)) {
         system.validation.value.fsRead = true
         system.validation.value.hashRead = false
@@ -608,25 +609,6 @@ export default async (v,p,c,obj,r) => {
                 await saveMd()
         } else {
             console.log('~~~~~~~~~~~~~~',event, type)
-            // switch(event.target.tagName) {
-            //         case"INPUT":
-            //         switch(event.target.id) {
-            //             case'markdown__button_views':
-            //                 changeViews(event)
-            //                 break
-            //             default:
-            //                 console.log('~~~~~~markdown__string_menu_change_false~~~~~~~~~~')
-            //                 system.worker_main['checkbox.checked'] = event.target.checked
-            //                 system.worker_main['checkbox.checked']
-            //                 ? markdown__string_menu_change_true('updateUI')
-            //                 : markdown__string_menu_change_false('updateUI')
-            //                 break
-            //             }
-            //             break
-            //         default:
-            //             console.log('input', event.target)
-            //             break
-            // }
         }
     }
     await fsLoad()
@@ -682,6 +664,23 @@ export default async (v,p,c,obj,r) => {
         );
         obj.this.shadowRoot.querySelector("#output").value = out
     });
+
+    function checkbox(event) {
+        switch(event.target.id) {
+            case'markdown__button_views':
+                changeViews(event)
+                break
+            default:
+                system.worker_main['checkbox.checked'] = event.target.checked
+                system.worker_main['checkbox.checked']
+                ? markdown__string_menu_change_true('updateUI')
+                : markdown__string_menu_change_false('updateUI')
+                break
+        }
+    }
+
+    obj.this.shadowRoot.querySelector('.markdown__button_views').addEventListener("change", checkbox);
+    obj.this.shadowRoot.querySelector('.markdown__string_menu_change-views').addEventListener("change", checkbox);
     obj.this.shadowRoot.querySelector('.markdown__button_update').addEventListener("click", update);
     obj.this.shadowRoot.querySelector('.markdown__button_query').addEventListener("click", query);
     obj.this.shadowRoot.querySelector('.markdown__button_download').addEventListener("click", download);
