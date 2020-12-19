@@ -136,24 +136,22 @@ export default async (v,p,c,obj,r) => {
         proxy: new Proxy(target, handler)
     }
 
-    let hash = async (event) => {
-        if(!isEmpty(location.hash)){
-            switch (location.hash) {
-                case '#external':
-                    await system.pull.orbitdb(system.location.hash.replace('#', ''))
+    let hash = async (id) => {
+    console.log('~~~~~~~~~~~~~~~~~~~',event)
+            switch (id) {
+                case 'external':
+                    await system.pull.orbitdb(id)
                     break
                 default:
-                    await system.pull.resolve(system.location.hash.replace('#', ''))
+                    await system.pull.resolve(id)
                     break
             }
-            location.hash = ''
             system.worker_main["markdown__string_views"].innerHTML = ''
             system.worker_main["md"]= system.value
             codemirror.setValue(system.value)
-            // system.worker_main["markdown__self"].value= system.value
+            system.worker_main["markdown__self"].value= system.value
             system.worker_main["self.value"]= system.value
             updateUI()
-        }
     }
     system.json.ok = true; 
     system.json.status = true; 
@@ -210,18 +208,12 @@ export default async (v,p,c,obj,r) => {
     }
     system.worker_main.markdown__self_menu_aside_0.innerHTML = ''
     system.worker_main.markdown__self_menu_aside_0.innerHTML = Parser.stringify(system.json.children.isMainThread)
-    system.worker_main.markdown__self_menu_aside_1.innerHTML = ''
-    system.worker_main.markdown__self_menu_aside_1.innerHTML = Parser.stringify(system.json.children.isMainThread)
     system.json.children.isMainThread.forEach(element => {
         switch(element.type) {
             case"element":
                 system.worker_main.markdown__self_menu_aside_0.querySelector(`#${element.attributes[0].value}`).addEventListener('click',async (event) =>{
                     event.preventDefault();
-                    location.hash = `#${event.target.id}`;
-                })
-                system.worker_main.markdown__self_menu_aside_1.querySelector(`#${element.attributes[0].value}`).addEventListener('click',async (event) =>{
-                    event.preventDefault();
-                    location.hash = `#${event.target.id}`;
+                    hash(event.target.id)
                 })
                 break
             default:
@@ -471,8 +463,8 @@ export default async (v,p,c,obj,r) => {
     function saveMd () {
         return new Promise(async (resolve, reject) => {
             let code = {}
-            codemirror.setValue(system.worker_main["self.value"])
-            // system.worker_main["markdown__self"].innerHTML = system.worker_main["self.value"];
+            // codemirror.setValue(system.worker_main["self.value"])
+            system.worker_main["markdown__self"].innerHTML = system.worker_main["self.value"];
             system.worker_main["output"] = markdownToHTML(system.worker_main["self.value"]);
             system.worker_main["markdown__string_html"].innerHTML = system.worker_main["output"];
             code = {}
@@ -531,7 +523,6 @@ export default async (v,p,c,obj,r) => {
                     section_2[i].parentNode.removeChild(section_2[i])
                 }
             }
-            // console.assert(false, h1 )
             if(h1 === 'aside') {
                 asideitems([
                     [system.worker_main["markdown__self_menu_aside_0"]],
@@ -562,6 +553,7 @@ export default async (v,p,c,obj,r) => {
             : system.worker_main["markdown__string_views"].style.height = '75vw'
             system.worker_main["markdown__self_html"].innerHTML = system.worker_main["markdown__string_html"].innerHTML;
             system.worker_main["markdown__string_menu"][0].scrollIntoView()
+            console.assert(false, event)
             resolve(fsSave())
         })
     }
@@ -613,6 +605,7 @@ export default async (v,p,c,obj,r) => {
         system.worker_main["markdown__string_menu_json_code_run"].disabled = false;
     }
     let updateUI = async (event = {}) => {
+        console.log('~~~~~~~~~~~~~~~~~~~ updateUI ~~~~~~~~~~~~~~~~', event)
         system.ptr = system.worker_main
         system.worker_main["event.target"] = event.target
         if(!isEmpty(event.target)) {
@@ -693,8 +686,10 @@ export default async (v,p,c,obj,r) => {
             location.hash = 'external';
         }
     }
-
-    window.addEventListener("hashchange", hash, false);
+    // codemirror.on('update', updateUI)
+    // window.addEventListener("hashchange", hash, {
+    //     defaultPrevented: true
+    // });
     obj.this.shadowRoot.querySelector("#btnRun").addEventListener("click", function()
     {
         let out = jq(
@@ -703,7 +698,7 @@ export default async (v,p,c,obj,r) => {
         );
         obj.this.shadowRoot.querySelector("#output").value = out
     });
-    obj.this.shadowRoot.querySelector('.markdown').addEventListener("input", updateUI);
+    // obj.this.shadowRoot.querySelector('.markdown__self').addEventListener("input", updateUI);
     obj.this.shadowRoot.querySelector('.markdown__button_update').addEventListener("click", update);
     obj.this.shadowRoot.querySelector('.markdown__button_query').addEventListener("click", query);
     obj.this.shadowRoot.querySelector('.markdown__button_download').addEventListener("click", download);
