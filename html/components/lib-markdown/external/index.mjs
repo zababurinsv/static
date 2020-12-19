@@ -99,7 +99,8 @@ export default async (v,p,c,obj,r) => {
                             system.value = mdfs
                         } else {
                             system.worker_main["md"]= "# Empty"
-                            system.worker_main["markdown__self"].value= "# Empty"
+                            codemirror.setValue("# Empty")
+                            // system.worker_main["markdown__self"].value= "# Empty"
                             system.worker_main["self.value"]= "# Empty"
                         }
                     } else {
@@ -146,7 +147,8 @@ export default async (v,p,c,obj,r) => {
             location.hash = ''
             system.worker_main["markdown__string_views"].innerHTML = ''
             system.worker_main["md"]= system.value
-            system.worker_main["markdown__self"].value= system.value
+            codemirror.setValue(system.value)
+            // system.worker_main["markdown__self"].value= system.value
             system.worker_main["self.value"]= system.value
             updateUI()
         }
@@ -304,14 +306,16 @@ export default async (v,p,c,obj,r) => {
                 let mdfs =  window.zb.fs[`${system.worker_main['fs.path']}`].readFile("/body/data.md",{ encoding: "utf8" });
                 if(!isEmpty(mdfs)) {
                     system.worker_main["md"]= mdfs
-                    system.worker_main["markdown__self"].value= mdfs
+                    codemirror.setValue(mdfs)
+                    // system.worker_main["markdown__self"].value= mdfs
                     system.worker_main["self.value"]= mdfs 
                 }
             } else {
                 system.worker_main["md"]="# Empty"
             }
         }
-        system.worker_main["markdown__self"].value = system.worker_main["md"]
+        codemirror.setValue(system.worker_main["md"])
+        // system.worker_main["markdown__self"].value = system.worker_main["md"]
         system.worker_main["self.value"] = system.worker_main["md"]
         system.worker_main["checkbox.checked"] = true        
         updateUI()
@@ -339,7 +343,8 @@ export default async (v,p,c,obj,r) => {
         reader.onload = function() {
             system.worker_main["markdown__string_views"].innerHTML = ''
             system.worker_main["md"]= reader.result
-            system.worker_main["markdown__self"].value= reader.result
+            codemirror.setValue(reader.result)
+            // system.worker_main["markdown__self"].value= reader.result
             system.worker_main["self.value"]= reader.result
             updateUI()
           };
@@ -480,7 +485,8 @@ export default async (v,p,c,obj,r) => {
     function saveMd () {
         return new Promise(async (resolve, reject) => {
             let code = {}
-            system.worker_main["markdown__self"].innerHTML = system.worker_main["self.value"];
+            codemirror.setValue(system.worker_main["self.value"])
+            // system.worker_main["markdown__self"].innerHTML = system.worker_main["self.value"];
             system.worker_main["output"] = markdownToHTML(system.worker_main["self.value"]);
             system.worker_main["markdown__string_html"].innerHTML = system.worker_main["output"];
             code = {}
@@ -640,11 +646,13 @@ export default async (v,p,c,obj,r) => {
         }
     }
     async function update(event) {
-       let status = await task.set(true,'','red',system['worker_main']['markdown__self'].innerHTML, '/orbitdb/set/:external')
+        let status = await task.set(true,'','red',codemirror.getValue(), '/orbitdb/set/:external')
+        // let status = await task.set(true,'','red',system['worker_main']['markdown__self'].innerHTML, '/orbitdb/set/:external')
     }
 
     async function query(event) {
-        let res = await task.set(true,'','red',system['worker_main']['markdown__self'].innerHTML, '/orbitdb/get/:external')
+        let res = await task.set(true,'','red',codemirror.getValue(), '/orbitdb/get/:external')
+        // let res = await task.set(true,'','red',system['worker_main']['markdown__self'].innerHTML, '/orbitdb/get/:external')
         if(res.status === 'ok') {
             window.zb.fs['/body'].writeFile("/body/external.md", res['md'][0]['md'])
             // window.zb.fs['/body'].syncfs(false, err => console.warn(err));
