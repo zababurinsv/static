@@ -167,10 +167,10 @@ export default async (v,p,c,obj,r) => {
         "CodeMirror":obj['this']['shadowRoot'].querySelectorAll('.CodeMirror'),
         "fs": undefined,
         "fs.path": undefined,
-        "markdown__string_menu_change-views":obj['this']['shadowRoot'].querySelector('#markdown__string_menu_change-views'),
+        "markdown__string_menu_change_views":obj['this']['shadowRoot'].querySelector('#markdown__string_menu_change_views'),
+        "checkbox": obj['this']['shadowRoot'].querySelector('.markdown__string_menu_change_views'),
+        "checkbox.checked": true,
         "markdown__button_views":obj['this']['shadowRoot'].querySelector('#markdown__button_views'),
-        "checkbox": obj['this']['shadowRoot'].querySelector('#markdown__string_menu_change-views'),
-        "checkbox.checked": true, 
         "output":[],
         "markdown__string_menu":obj['this']['shadowRoot'].querySelectorAll('.markdown__string_menu'),
         "markdown__string_views": obj['this']['shadowRoot'].querySelector('#markdown__string_views'),
@@ -547,10 +547,15 @@ export default async (v,p,c,obj,r) => {
             system.worker_main["markdown__string_views"].appendChild(system.worker_main["markdown__string_html.iframe"]);
             (code.innerText === '<pre></pre>')
             ? system.worker_main["markdown__string_views"].style.height = 'auto'
-            : system.worker_main["markdown__string_views"].style.height = '75vw'
+            : system.worker_main["markdown__string_views"].style.height = '81vh'
             system.worker_main["markdown__self_html"].innerHTML = system.worker_main["markdown__string_html"].innerHTML;
             system.worker_main["markdown__string_menu"][0].scrollIntoView()
-            console.assert(false, event)
+            let json = {
+                code: Parser.parse(system.worker_main['markdown__string_html.code']),
+                html: Parser.parse(system.worker_main['markdown__string_html.innerHTML'])
+            }
+            codemirror_json_html.setValue(Parser.json(json.html))
+            codemirror_json_code.setValue(Parser.json(json.code))
             resolve(fsSave())
         })
     }
@@ -578,6 +583,7 @@ export default async (v,p,c,obj,r) => {
         system.worker_main["markdown__string_views"].appendChild(system.worker_main["markdown__string_html.iframe"])
         system.worker_main["markdown__string_views"].style.height = '75vw'
         system.worker_main["markdown__string_views"].style.whiteSpace = "initial"
+        system.worker_main["markdown__string_views"].style.display = "flex"
 
         system.worker_main["markdown__string_views_json"].style.display = 'none'
 
@@ -666,8 +672,12 @@ export default async (v,p,c,obj,r) => {
     });
 
     function checkbox(event) {
+      console.assert(false)
         switch(event.target.id) {
             case'markdown__button_views':
+                system.worker_main['checkbox.checked'] = true
+                system.worker_main['markdown__string_menu_change_views'].checked = true
+                markdown__string_menu_change_true('updateUI')
                 changeViews(event)
                 break
             default:
@@ -678,9 +688,8 @@ export default async (v,p,c,obj,r) => {
                 break
         }
     }
-
     obj.this.shadowRoot.querySelector('.markdown__button_views').addEventListener("change", checkbox);
-    obj.this.shadowRoot.querySelector('.markdown__string_menu_change-views').addEventListener("change", checkbox);
+    obj.this.shadowRoot.querySelector('.markdown__string_menu_change_views').addEventListener("change", checkbox);
     obj.this.shadowRoot.querySelector('.markdown__button_update').addEventListener("click", update);
     obj.this.shadowRoot.querySelector('.markdown__button_query').addEventListener("click", query);
     obj.this.shadowRoot.querySelector('.markdown__button_download').addEventListener("click", download);
