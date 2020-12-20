@@ -165,6 +165,7 @@ export default async (v,p,c,obj,r) => {
         "markdown__string_menu_json_code_query":obj['this']['shadowRoot'].querySelector('.markdown__string_menu_json_code_query'),
         "markdown__string_menu_json_code_run":obj['this']['shadowRoot'].querySelector('.markdown__string_menu_json_code_run'),
         "CodeMirror":obj['this']['shadowRoot'].querySelectorAll('.CodeMirror'),
+        "markdown__button_url_submit": obj['this']['shadowRoot'].querySelector('.markdown__button_url_submit'),
         "fs": undefined,
         "fs.path": undefined,
         "markdown__string_menu_change_views":obj['this']['shadowRoot'].querySelector('#markdown__string_menu_change_views'),
@@ -188,20 +189,7 @@ export default async (v,p,c,obj,r) => {
         }
     }
     let hash = async (id) => {
-        switch (id) {
-            case 'external':
-                await system.pull.orbitdb(id)
-                break
-            default:
-                await system.pull.resolve(id)
-                break
-        }
-        system.worker_main["markdown__string_views"].innerHTML = ''
-        system.worker_main["md"]= system.value
-        codemirror.setValue(system.value)
-        system.worker_main["markdown__self"].value= system.value
-        system.worker_main["self.value"]= system.value
-        updateUI()
+
     }
     system.worker_main.markdown__self_menu_aside_0.innerHTML = ''
     system.worker_main.markdown__self_menu_aside_0.innerHTML = Parser.stringify(system.json.children.isMainThread)
@@ -210,7 +198,20 @@ export default async (v,p,c,obj,r) => {
             case"element":
                 system.worker_main.markdown__self_menu_aside_0.querySelector(`#${element.attributes[0].value}`).addEventListener('click',async (event) =>{
                     event.preventDefault();
-                    hash(event.target.id)
+                    switch (event.target.id) {
+                        case 'external':
+                            await system.pull.orbitdb(event.target.id)
+                            break
+                        default:
+                            await system.pull.resolve(event.target.id)
+                            break
+                    }
+                    system.worker_main["markdown__string_views"].innerHTML = ''
+                    system.worker_main["md"]= system.value
+                    codemirror.setValue(system.value)
+                    system.worker_main["markdown__self"].value= system.value
+                    system.worker_main["self.value"]= system.value
+                    updateUI('', 'isMainThread')
                 })
                 break
             default:
@@ -326,7 +327,7 @@ export default async (v,p,c,obj,r) => {
         // system.worker_main["markdown__self"].value = system.worker_main["md"]
         system.worker_main["self.value"] = system.worker_main["md"]
         system.worker_main["checkbox.checked"] = true        
-        updateUI()
+        updateUI('', 'selected')
     }
     function download() {
         let name = prompt('Введите название файла', 'default');
@@ -354,14 +355,13 @@ export default async (v,p,c,obj,r) => {
             codemirror.setValue(reader.result)
             // system.worker_main["markdown__self"].value= reader.result
             system.worker_main["self.value"]= reader.result
-            updateUI()
+            updateUI('', 'upload')
           };
           reader.onerror = function() {
             console.log(reader.error);
           };
     }
     function changeViews(event) {
-        console.log('~~~~~~~~~~~~~~~~~~~~~changeViews~~~~~~~~~~~~~~~~~~', )
         if(event.target.checked) {
             // system.worker_main["markdown__self"].style.display = "block"
             system.worker_main["markdown__self_html"].innerHTML = ''
@@ -560,8 +560,6 @@ export default async (v,p,c,obj,r) => {
         })
     }
     function markdown__string_menu_change_true(event) {
-        console.log('~~~~~~~~~~markdown__string_menu_change_true~~~~~~~~~~', system.worker_main['markdown__string_html.innerHTML'])
-
         system.worker_main["markdown__string_views"].innerHTML = ''
         if(system.worker_main["markdown__string_views"].querySelector('iframe')) {
             system.worker_main["markdown__string_views"].querySelector('iframe').remove()
@@ -608,8 +606,8 @@ export default async (v,p,c,obj,r) => {
         system.worker_main["markdown__string_menu_json_code_run"].disabled = false;
     }
     let updateUI = async (event = {}, type) => {
-        console.log('~~~~~~~~~~~~~~~~~~~ updateUI ~~~~~~~~~~~~~~~~', type)
-        if(type === 'codeMirror') {
+        console.log('~~~~~~~~~~~~~~~~~~~ updateUI ~~~~~~~~~~~~~~~~', event.constructor.name)
+        if(type === 'codeMirror' || type ===  'fsLoad') {
                 system.worker_main["src"] = 'data:text/html;charset=utf-8,' + encodeURIComponent(system.worker_main["markdown__string_html.code"])
                 system.worker_main["self.value"] = codemirror.getValue()
                 await saveMd()
@@ -627,7 +625,7 @@ export default async (v,p,c,obj,r) => {
                 codemirror.setValue(mdfs)
                 // system.worker_main["markdown__self"].value= mdfs
                 system.worker_main["self.value"]= mdfs
-                updateUI()
+                updateUI('', 'fsLoad')
             } else {
                 system.worker_main["md"]= "# Empty"
                 codemirror.setValue("# Empty")
@@ -642,7 +640,7 @@ export default async (v,p,c,obj,r) => {
         }
     } else {
         if(system.validation.value.hashRead) { hash() } else {
-            updateUI()
+            updateUI('', 'undefined')
         }
     }
     async function update(event) {
@@ -655,8 +653,13 @@ export default async (v,p,c,obj,r) => {
         // let res = await task.set(true,'','red',system['worker_main']['markdown__self'].innerHTML, '/orbitdb/get/:external')
         if(res.status === 'ok') {
             window.zb.fs['/body'].writeFile("/body/external.md", res['md'][0]['md'])
-            // window.zb.fs['/body'].syncfs(false, err => console.warn(err));
-            location.hash = 'external';
+            await system.pull.orbitdb('external')
+            system.worker_main["markdown__string_views"].innerHTML = ''
+            system.worker_main["md"]= system.value
+            codemirror.setValue(system.value)
+            system.worker_main["markdown__self"].value= system.value
+            system.worker_main["self.value"]= system.value
+            updateUI('', 'query')
         }
     }
     codemirror.on('update', (event)=>{
@@ -688,6 +691,12 @@ export default async (v,p,c,obj,r) => {
                 break
         }
     }
+
+    function fetchMarkDown(event) {
+        console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$', event)
+    }
+
+    obj.this.shadowRoot.querySelector('.markdown__button_url_submit').addEventListener("click", fetchMarkDown);
     obj.this.shadowRoot.querySelector('.markdown__button_views').addEventListener("change", checkbox);
     obj.this.shadowRoot.querySelector('.markdown__string_menu_change_views').addEventListener("change", checkbox);
     obj.this.shadowRoot.querySelector('.markdown__button_update').addEventListener("click", update);
