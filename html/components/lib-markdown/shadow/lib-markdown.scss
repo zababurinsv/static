@@ -61,6 +61,8 @@ h1 {
             margin-bottom: 0.4vw;
 
             &_aside {
+                height: min-content;
+
                 h1 {
                     @include fonts(6);
                     cursor: pointer;
