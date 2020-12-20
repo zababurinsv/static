@@ -147,6 +147,7 @@ export default async (v,p,c,obj,r) => {
     system.worker_main = {
         "self.value": await system["pull"]["resolve"](),
         "src": false,
+        "url_md": undefined,
         "markdown__self":obj['this']['shadowRoot'].querySelector('.markdown__self'),
         "markdown__self_menu": obj['this']['shadowRoot'].querySelector('.markdown__self_menu'),
         "markdown__self_menu_aside_0": obj['this']['shadowRoot'].querySelector('#markdown__self_menu_aside_0'),
@@ -166,6 +167,7 @@ export default async (v,p,c,obj,r) => {
         "markdown__string_menu_json_code_run":obj['this']['shadowRoot'].querySelector('.markdown__string_menu_json_code_run'),
         "CodeMirror":obj['this']['shadowRoot'].querySelectorAll('.CodeMirror'),
         "markdown__button_url_submit": obj['this']['shadowRoot'].querySelector('.markdown__button_url_submit'),
+        "markdown__button_url": obj['this']['shadowRoot'].querySelector('#markdown__button_url'),
         "fs": undefined,
         "fs.path": undefined,
         "markdown__string_menu_change_views":obj['this']['shadowRoot'].querySelector('#markdown__string_menu_change_views'),
@@ -324,7 +326,6 @@ export default async (v,p,c,obj,r) => {
             }
         }
         codemirror.setValue(system.worker_main["md"])
-        // system.worker_main["markdown__self"].value = system.worker_main["md"]
         system.worker_main["self.value"] = system.worker_main["md"]
         system.worker_main["checkbox.checked"] = true        
         updateUI('', 'selected')
@@ -692,8 +693,20 @@ export default async (v,p,c,obj,r) => {
         }
     }
 
-    function fetchMarkDown(event) {
-        console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$', event)
+    async function fetchMarkDown(event) {
+        system.worker_main["url_md"] = await fetch(system.worker_main['markdown__button_url'].value)
+          .catch((e)=>{
+              console.warn({
+                  "error":e
+              })
+              return undefined
+          })
+        system.worker_main["url_md"] = await system.worker_main["url_md"].text()
+
+        codemirror.setValue(system.worker_main["url_md"])
+        system.worker_main["self.value"] = system.worker_main["url_md"]
+        system.worker_main["checkbox.checked"] = true
+        updateUI('', 'fetch url')
     }
 
     obj.this.shadowRoot.querySelector('.markdown__button_url_submit').addEventListener("click", fetchMarkDown);
