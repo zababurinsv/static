@@ -1,49 +1,29 @@
 export default async (v,p,c,obj,r) => {
-    
-    
-    // 
-    // async function selected(event) {
-        // event.preventDefault()
-        // let md = await fetch(`${location.origin}/markdown/${event.target.value}.md`)  
-        // md = await md.text()
-        // self.innerText = md 
-        // self.value = md
-        // updateUI()
-    // }
-    // function download() {
-        // let name = prompt('Введите название файла', 'default');
-        // let dir = idbfs.FS.readdir("/data")  
-        // let filename = `${name}.md`
-        // let text = ''
-        // if(dir.find(item => item === 'data.md')) {
-            // text =  idbfs.FS.readFile("/data/data.md",{ encoding: "utf8" });
-        // }
-        // var element = document.createElement('a');
-        // element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-        // element.setAttribute('download', filename);
-        // element.style.display = 'none';
-        // document.body.appendChild(element);
-        // element.click();
-        // document.body.removeChild(element);
-    // }
-    // function upload(event) {
-        // console.log(event.path[0].files[0])
-        // let reader = new FileReader();
-        // reader.readAsText(event.path[0].files[0]);
-// 
-        // reader.onload = function() {
-            // self.innerText = reader.result 
-            // self.value = reader.result 
-            // updateUI()
-        //   };
-        // 
-        //   reader.onerror = function() {
-            // console.log(reader.error);
-        //   };
-    // }
-// 
-    // obj.this.shadowRoot.querySelector('.markdown').addEventListener("input", updateUI);
-    // obj.this.shadowRoot.querySelector('.markdown__button_download').addEventListener("click", download);
-    // obj.this.shadowRoot.querySelector('.markdown__button_upload').addEventListener("change", upload);
-    // obj.this.shadowRoot.querySelector('.markdown__button_select').addEventListener("change", selected);
+  obj.system.worker_main['markdown__string_menu_codemirror_search'].addEventListener('click', function() {
+   console.log('~~~~~~~~~~~~~~',  p)
+    // p.execCommand("find")
+  }, false);
+  obj.system.worker_main['markdown__string_menu_codemirror_fnext'].addEventListener('click', function() {
+    // p.commands.findNext(p.editor);
+    // p.execCommand("findNext")
+  }, false);
+  obj.system.worker_main['markdown__string_menu_codemirror_fprev'].addEventListener('click', function() {
+    // p.commands.findPrev(p.editor);
+  }, false);
+  obj.system.worker_main['markdown__string_menu_codemirror_replace'].addEventListener('click', function() {
+    // p.execCommand("replace")
+    // p.commands.replace(p.editor);
+  }, false);
+  obj.system.worker_main['markdown__string_menu_codemirror_replall'].addEventListener('click', function() {
+    // p.commands.replaceAll(p.editor);
+  }, false);
+  obj.system.worker_main['markdown__string_menu_codemirror_goto'].addEventListener('click', function() {
+    // p.commands.jumpToLine(p.editor);
+  }, false);
+  obj.system.worker_main['markdown__string_menu_codemirror_undo'].addEventListener('click', function(){
+    p.undo();
+  }, false);
+  obj.system.worker_main['markdown__string_menu_codemirror_redo'].addEventListener('click', function(){
+    p.redo();
+  },false);
 }

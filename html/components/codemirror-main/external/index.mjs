@@ -13,7 +13,7 @@ export default async (v,p,c,obj,r) => {
       undo = obj.this.shadowRoot.querySelector('#undo'),
       redo = obj.this.shadowRoot.querySelector('#redo')
 
-   console.log('~~~~~~~~~~~~~~~~~~~~~~~~', editor.editor)
+
     // codemirror.self.CodeMirror.change = async (instance, changeObj) => {
     //         console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>>',instance, changeObj)
     // }
@@ -21,6 +21,11 @@ export default async (v,p,c,obj,r) => {
     //     console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>>',from, to, text, removed, origin)
     // }
     btnsearch.addEventListener('click', function() {
+      console.log('##############',{
+        editor:editor,
+        "editor.editor":editor.editor,
+        "codemirror.self": codemirror.self
+      })
         codemirror.self.CodeMirror.commands.find(editor.editor)
     }, false);
     fnext.addEventListener('click', function() {

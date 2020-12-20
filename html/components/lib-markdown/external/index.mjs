@@ -170,6 +170,14 @@ export default async (v,p,c,obj,r) => {
         "markdown__button_url": obj['this']['shadowRoot'].querySelector('#markdown__button_url'),
         "fs": undefined,
         "fs.path": undefined,
+        "markdown__string_menu_codemirror_search":obj['this']['shadowRoot'].querySelector('.markdown__string_menu_codemirror_search'),
+        "markdown__string_menu_codemirror_fnext":obj['this']['shadowRoot'].querySelector('.markdown__string_menu_codemirror_fnext'),
+        "markdown__string_menu_codemirror_fprev":obj['this']['shadowRoot'].querySelector('.markdown__string_menu_codemirror_fprev'),
+        "markdown__string_menu_codemirror_replace":obj['this']['shadowRoot'].querySelector('.markdown__string_menu_codemirror_replace'),
+        "markdown__string_menu_codemirror_replall":obj['this']['shadowRoot'].querySelector('.markdown__string_menu_codemirror_replall'),
+        "markdown__string_menu_codemirror_goto":obj['this']['shadowRoot'].querySelector('.markdown__string_menu_codemirror_goto'),
+        "markdown__string_menu_codemirror_undo":obj['this']['shadowRoot'].querySelector('.markdown__string_menu_codemirror_undo'),
+        "markdown__string_menu_codemirror_redo":obj['this']['shadowRoot'].querySelector('.markdown__string_menu_codemirror_redo'),
         "markdown__string_menu_change_views":obj['this']['shadowRoot'].querySelector('#markdown__string_menu_change_views'),
         "checkbox": obj['this']['shadowRoot'].querySelector('.markdown__string_menu_change_views'),
         "checkbox.checked": true,
@@ -663,9 +671,6 @@ export default async (v,p,c,obj,r) => {
             updateUI('', 'query')
         }
     }
-    codemirror.on('update', (event)=>{
-        updateUI(event,'codeMirror')
-    })
     obj.this.shadowRoot.querySelector("#btnRun").addEventListener("click", function()
     {
         let out = jq(
@@ -708,7 +713,11 @@ export default async (v,p,c,obj,r) => {
         system.worker_main["checkbox.checked"] = true
         updateUI('', 'fetch url')
     }
-
+    obj.system = system
+    events(true, codemirror, 'red', obj, 'codemirror events')
+    codemirror.on('update', (event)=>{
+        updateUI(event,'codeMirror')
+    })
     obj.this.shadowRoot.querySelector('.markdown__button_url_submit').addEventListener("click", fetchMarkDown);
     obj.this.shadowRoot.querySelector('.markdown__button_views').addEventListener("change", checkbox);
     obj.this.shadowRoot.querySelector('.markdown__string_menu_change_views').addEventListener("change", checkbox);
