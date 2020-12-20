@@ -671,17 +671,23 @@ export default async (v,p,c,obj,r) => {
             updateUI('', 'query')
         }
     }
-    obj.this.shadowRoot.querySelector("#btnRun").addEventListener("click", function()
+    obj.this.shadowRoot.querySelector(".markdown__string_menu_json_html_run").addEventListener("click", async (event) =>
     {
-        let out = jq(
-          obj.this.shadowRoot.querySelector("#input").value,
-          obj.this.shadowRoot.querySelector("#query").value
+       let out = jq(
+          codemirror_json_html.getValue(),
+          system.worker_main["markdown__string_menu_json_html_query"].value
         );
-        obj.this.shadowRoot.querySelector("#output").value = out
+        console.log('~~~~~~~~~~~~~', out)
+        system.worker_main["markdown__string_html_json_output"].value = out
     });
-
+    obj.this.shadowRoot.querySelector(".markdown__string_menu_json_code_run").addEventListener("click", async (event) =>
+    {
+        system.worker_main["markdown__string_views_json_output"].value = jq(
+          codemirror_json_code.getValue(),
+          system.worker_main["markdown__string_menu_json_code_query"].value
+        );
+    });
     function checkbox(event) {
-      console.assert(false)
         switch(event.target.id) {
             case'markdown__button_views':
                 system.worker_main['checkbox.checked'] = true
