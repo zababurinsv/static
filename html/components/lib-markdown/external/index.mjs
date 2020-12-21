@@ -614,11 +614,6 @@ export default async (v,p,c,obj,r) => {
             code: Parser.parse(system.worker_main['markdown__string_html.code']),
             html: Parser.parse(system.worker_main['markdown__string_html.innerHTML'])
         }
-        console.log('ffffffffffffffffffffff', {
-            html: Parser.json(json.html),
-            code: Parser.json(json.code),
-            js: json.code
-        })
 
         system.worker_main["markdown__string_html"].style.display = 'none'
         system.worker_main["markdown__string_html_json"].style.display = 'flex'
