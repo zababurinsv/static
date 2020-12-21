@@ -43,13 +43,22 @@ h1 {
     }
 
     &__self {
+        resize: none;
+        white-space: pre-wrap;
+        min-height: 50vh;
+        padding: 1vw;
+        box-sizing: border-box;
+        border: none;
+        border-left: 0.2vw solid threedface;
+        border-right: 0.2vw solid threedface;
+
         &_menu {
             display: grid;
             grid-template-rows: minmax(40vh, auto);
             grid-template-columns: 16vw 1fr 16vw;
             grid-gap: 0.4vw;
             padding: 0;
-            height: 81vh;
+            height: 50vh;
             overflow: hidden;
             margin: 0;
             border-width: 0.2vw;
@@ -90,40 +99,29 @@ h1 {
                     background: #c9bc4e;
                 }
             }
-            .markdown__self {
-                resize: none;
-                white-space: pre-wrap;
-                min-height: 60vh;
-                padding: 1vw;
+            &_aside {
+                height: inherit;
+                background: aquamarine;
+            }
+
+            &_html {
+                display: flex;
+                flex-grow: 1;
+                flex-direction: column;
+            }
+
+            &_views {
+                @include fonts(4);
+                flex-grow: 1;
+                height: auto;
                 box-sizing: border-box;
-                border: none;
-                border-left: 0.2vw solid threedface;
-                border-right: 0.2vw solid threedface;
+                padding: 0.4vw;
 
-                &_aside {
-                    height: inherit;
-                    background: aquamarine;
-                }
-
-                &_html {
-                    display: flex;
-                    flex-grow: 1;
-                    flex-direction: column;
-                }
-
-                &_views {
-                    @include fonts(4);
-                    flex-grow: 1;
-                    height: auto;
-                    box-sizing: border-box;
-                    padding: 0.4vw;
-
-                    h1 {
-                        margin: 0.4vw;
-                        cursor: pointer;
-                        background-color: burlywood;
-                        border-radius: 0.2vw;
-                    }
+                h1 {
+                    margin: 0.4vw;
+                    cursor: pointer;
+                    background-color: burlywood;
+                    border-radius: 0.2vw;
                 }
             }
         }
@@ -149,27 +147,12 @@ h1 {
                 }
             }
         }
-        &_views {
-            &_json {
-                border-bottom: 0.2vw solid threedface;
-
-                & > .CodeMirror {
-                    width: 50vw;
-                }
-                &_output {
-                    resize: none;
-                    border-bottom: none;
-                    border-top: none;
-                    border-right: none;
-                    height: 81vh;
-                }
-            }
-        }
         &_html {
             white-space: initial;
 
             &_json {
                 border-bottom: 0.2vw solid threedface;
+                height: auto;
 
                 & > .CodeMirror {
                     width: 50vw;
@@ -180,7 +163,24 @@ h1 {
                     border-bottom: none;
                     border-top: none;
                     border-right: none;
-                    height: 81vh;
+                    height: auto;
+                }
+            }
+        }
+        &_views {
+            &_json {
+                border-bottom: 0.2vw solid threedface;
+                height: auto;
+
+                & > .CodeMirror {
+                    width: 50vw;
+                }
+                &_output {
+                    resize: none;
+                    border-bottom: none;
+                    border-top: none;
+                    border-right: none;
+                    height: auto;
                 }
             }
         }

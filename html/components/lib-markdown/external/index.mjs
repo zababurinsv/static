@@ -556,7 +556,7 @@ export default async (v,p,c,obj,r) => {
             system.worker_main["markdown__string_views"].appendChild(system.worker_main["markdown__string_html.iframe"]);
             (code.innerText === ' <div> </div> ')
             ? system.worker_main["markdown__string_views"].style.height = 'auto'
-            : system.worker_main["markdown__string_views"].style.height = '81vh'
+            : system.worker_main["markdown__string_views"].style.height = '25vh'
             system.worker_main["markdown__self_html"].innerHTML = system.worker_main["markdown__string_html"].innerHTML;
             // system.worker_main["markdown__string_menu"][0].scrollIntoView()
             let json = {
@@ -588,7 +588,7 @@ export default async (v,p,c,obj,r) => {
         system.worker_main["markdown__string_html.iframe"].style.frameBorder = "0";
         system.worker_main["markdown__string_html.iframe"].sandbox = "allow-scripts";
         system.worker_main["markdown__string_views"].appendChild(system.worker_main["markdown__string_html.iframe"])
-        system.worker_main["markdown__string_views"].style.height = '75vw'
+        system.worker_main["markdown__string_views"].style.height = '25vh'
         system.worker_main["markdown__string_views"].style.whiteSpace = "initial"
         system.worker_main["markdown__string_views"].style.display = "flex"
 
