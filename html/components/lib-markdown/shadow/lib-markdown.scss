@@ -92,6 +92,15 @@ h1 {
                     @include fonts(1);
                     cursor: pointer;
                 }
+
+                &_left {
+
+                }
+                &_right {
+                    text-align: right;
+                    box-sizing: border-box;
+                    padding-right: 1vw;
+                }
             }
             &_aside {
                 height: inherit;

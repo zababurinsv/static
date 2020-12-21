@@ -150,8 +150,8 @@ export default async (v,p,c,obj,r) => {
         "url_md": undefined,
         "markdown__self":obj['this']['shadowRoot'].querySelector('.markdown__self'),
         "markdown__self_menu": obj['this']['shadowRoot'].querySelector('.markdown__self_menu'),
-        "markdown__self_menu_aside_0": obj['this']['shadowRoot'].querySelector('#markdown__self_menu_aside_0'),
-        "markdown__self_menu_aside_1": obj['this']['shadowRoot'].querySelector('#markdown__self_menu_aside_1'),
+        "markdown__self_menu_aside_0": obj['this']['shadowRoot'].querySelector('.markdown__self_menu_aside_left'),
+        "markdown__self_menu_aside_1": obj['this']['shadowRoot'].querySelector('.markdown__self_menu_aside_right'),
         "markdown__self_html": obj['this']['shadowRoot'].querySelector('.markdown__self_html'),
         "markdown__string_html": obj['this']['shadowRoot'].querySelector('.markdown__string_html'),
         "markdown__string_html.iframe": false,
@@ -201,12 +201,12 @@ export default async (v,p,c,obj,r) => {
     let hash = async (id) => {
 
     }
-    system.worker_main.markdown__self_menu_aside_0.innerHTML = ''
-    system.worker_main.markdown__self_menu_aside_0.innerHTML = Parser.stringify(system.json.children.isMainThread)
+    system.worker_main.markdown__self_menu_aside_1.innerHTML = ''
+    system.worker_main.markdown__self_menu_aside_1.innerHTML = Parser.stringify(system.json.children.isMainThread)
     system.json.children.isMainThread.forEach(element => {
         switch(element.type) {
             case"element":
-                system.worker_main.markdown__self_menu_aside_0.querySelector(`#${element.attributes[0].value}`).addEventListener('click',async (event) =>{
+                system.worker_main.markdown__self_menu_aside_1.querySelector(`#${element.attributes[0].value}`).addEventListener('click',async (event) =>{
                     event.preventDefault();
                     switch (event.target.id) {
                         case 'external':
@@ -376,8 +376,8 @@ export default async (v,p,c,obj,r) => {
             system.worker_main["markdown__self_html"].innerHTML = ''
             system.worker_main["markdown__self_html"].style.display = "none"
             system.worker_main["markdown__self_menu"].style.display = "grid"
-            system.worker_main["markdown__self_menu_aside_0"].style.display = "block"
             system.worker_main["markdown__self_menu_aside_1"].style.display = "block"
+            system.worker_main["markdown__self_menu_aside_0"].style.display = "block"
             system.worker_main["markdown__string_html"].style.display = "block"
             system.worker_main["markdown__string_menu"][1].style.display = "flex"
             system.worker_main['CodeMirror'][0].style.display = "block"
@@ -391,8 +391,8 @@ export default async (v,p,c,obj,r) => {
             system.worker_main['CodeMirror'][0].style.display = "none"
             system.worker_main["markdown__string_html"].style.display = "none"
             system.worker_main["markdown__string_menu"][1].style.display = "none"
-            system.worker_main["markdown__self_menu_aside_0"].style.display = "none"
             system.worker_main["markdown__self_menu_aside_1"].style.display = "none"
+            system.worker_main["markdown__self_menu_aside_0"].style.display = "none"
         }
     }
     function markdownToHTML(markdown) {
@@ -405,8 +405,8 @@ export default async (v,p,c,obj,r) => {
         if(id === 'aside') {
             let component_h1 = document.createElement('h1')
             component_h1.innerText = 'empty'
-            system.worker_main["markdown__self_menu_aside_1"].innerHTML = ''
-            system.worker_main["markdown__self_menu_aside_1"].appendChild(component_h1)
+            system.worker_main["markdown__self_menu_aside_0"].innerHTML = ''
+            system.worker_main["markdown__self_menu_aside_0"].appendChild(component_h1)
         } else {
             for(let self of items) {
                 let h1save = {}
@@ -424,9 +424,9 @@ export default async (v,p,c,obj,r) => {
 
                     if(!isEmpty(self)) {
                         h1save = self.cloneNode(true)
-                        system.worker_main["markdown__self_menu_aside_1"].innerHTML = ''
-                        system.worker_main["markdown__self_menu_aside_1"].appendChild(h1save)
-                        system.worker_main["markdown__self_menu_aside_1"].appendChild(section)
+                        system.worker_main["markdown__self_menu_aside_0"].innerHTML = ''
+                        system.worker_main["markdown__self_menu_aside_0"].appendChild(h1save)
+                        system.worker_main["markdown__self_menu_aside_0"].appendChild(section)
                     } else {
                         let component_h1 = document.createElement('h1')
                         let component_a = document.createElement('a')
@@ -436,15 +436,15 @@ export default async (v,p,c,obj,r) => {
                         component_a.setAttribute('aria-hidden', true)
                         component_a.href = `#${id}`
                         component_h1.appendChild(component_a)
-                        system.worker_main["markdown__self_menu_aside_1"].innerHTML = ''
-                        system.worker_main["markdown__self_menu_aside_1"].appendChild(component_h1)
-                        system.worker_main["markdown__self_menu_aside_1"].appendChild(section)
+                        system.worker_main["markdown__self_menu_aside_0"].innerHTML = ''
+                        system.worker_main["markdown__self_menu_aside_0"].appendChild(component_h1)
+                        system.worker_main["markdown__self_menu_aside_0"].appendChild(section)
                     }
                 } else {
                     if(!isEmpty(self)) {
                         h1save = self.cloneNode(true)
-                        system.worker_main["markdown__self_menu_aside_1"].innerHTML = ''
-                        system.worker_main["markdown__self_menu_aside_1"].appendChild(h1save)
+                        system.worker_main["markdown__self_menu_aside_0"].innerHTML = ''
+                        system.worker_main["markdown__self_menu_aside_0"].appendChild(h1save)
                     } else {
                         let component_h1 = document.createElement('h1')
                         let component_a = document.createElement('a')
@@ -454,8 +454,8 @@ export default async (v,p,c,obj,r) => {
                         component_a.setAttribute('aria-hidden', true)
                         component_a.href = `#${id}`
                         component_h1.appendChild(component_a)
-                        system.worker_main["markdown__self_menu_aside_1"].innerHTML = ''
-                        system.worker_main["markdown__self_menu_aside_1"].appendChild(component_h1)
+                        system.worker_main["markdown__self_menu_aside_0"].innerHTML = ''
+                        system.worker_main["markdown__self_menu_aside_0"].appendChild(component_h1)
                     }
                 }
             }
@@ -516,8 +516,8 @@ export default async (v,p,c,obj,r) => {
             if(isEmpty(h1)) {
                 h1 = "aside"
             }
-            let section_1 = system.worker_main["markdown__self_menu_aside_0"].querySelectorAll('section')
-            let section_2 = system.worker_main["markdown__self_menu_aside_1"].querySelectorAll('section')
+            let section_1 = system.worker_main["markdown__self_menu_aside_1"].querySelectorAll('section')
+            let section_2 = system.worker_main["markdown__self_menu_aside_0"].querySelectorAll('section')
 
             if(section_1.length !== 0) {
                 for (let i =0;i < section_1.length;i++){
@@ -531,11 +531,11 @@ export default async (v,p,c,obj,r) => {
             }
             if(h1 === 'aside') {
                 asideitems([
-                    [system.worker_main["markdown__self_menu_aside_0"]],
+                    [system.worker_main["markdown__self_menu_aside_1"]],
                 ], h, h1)
             } else {
                 asideitems(
-                  [system.worker_main["markdown__self_menu_aside_0"].querySelector(`#${h1}`)],
+                  [system.worker_main["markdown__self_menu_aside_1"].querySelector(`#${h1}`)],
                   h,
                   h1
                 )
