@@ -13,7 +13,6 @@ hr {
 h1 {
     cursor: pointer;
     border-radius: 0.2vw;
-    background: gold;
 }
 
 .markdown__string_html_json_input, .markdown__string_views_json_input { width: 50%; height: -webkit-fill-available; }
@@ -76,32 +75,26 @@ h1 {
                 h2 {
                     @include fonts(5);
                     cursor: pointer;
-                    background: violet;
                 }
                 h3 {
                     @include fonts(4);
                     cursor: pointer;
-                    background: #82eeaa;
                 }
                 h4 {
                     @include fonts(3);
                     cursor: pointer;
-                    background: #e8505c;
                 }
                 h5 {
                     @include fonts(2);
                     cursor: pointer;
-                    background: #55c1c1;
                 }
                 h6 {
                     @include fonts(1);
                     cursor: pointer;
-                    background: #c9bc4e;
                 }
             }
             &_aside {
                 height: inherit;
-                background: aquamarine;
             }
 
             &_html {
@@ -120,7 +113,6 @@ h1 {
                 h1 {
                     margin: 0.4vw;
                     cursor: pointer;
-                    background-color: burlywood;
                     border-radius: 0.2vw;
                 }
             }
