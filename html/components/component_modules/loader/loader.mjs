@@ -110,13 +110,14 @@ export default (url, name, obj)=>{
               }
           }
         }else{
-            if( isEmpty(window[name])){
-              document.addEventListener(`${name}-loading`,()=>{
-                  resolve(window[name])
-              })
-            }else{
-                resolve(window[name])
-            }
+            resolve(true)
+            // if( isEmpty(window[name])){
+            //   document.addEventListener(`${name}-loading`,()=>{
+            //       resolve(window[name])
+            //   })
+            // }else{
+            //     resolve(window[name])
+            // }
         }
     })
 }
