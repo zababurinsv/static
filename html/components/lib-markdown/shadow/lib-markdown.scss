@@ -207,14 +207,16 @@ h1 {
 
         &_android {
             border-bottom: 0.2vw solid threedface;
-            height: auto;
+            height: 50vh;
             padding: 0;
             margin: 0;
             white-space: initial;
             display: flex;
             flex-direction: row;
             width: 100%;
-
+             &_query {
+                 width: 49%;
+             }
              & > .CodeMirror {
                  width: 50%;
              }
@@ -224,6 +226,7 @@ h1 {
                  border-top: none;
                  border-right: none;
                  height: auto;
+                 width: 50%;
              }
         }
     }

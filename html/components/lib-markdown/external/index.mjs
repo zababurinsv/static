@@ -190,6 +190,8 @@ export default async (v,p,c,obj,r) => {
         "markdown__jasonelle_android":obj['this']['shadowRoot'].querySelector('.markdown__jasonelle_android'),
         "markdown__jasonelle_android_input":obj['this']['shadowRoot'].querySelector('.markdown__jasonelle_android_input'),
         "markdown__jasonelle_android_output":obj['this']['shadowRoot'].querySelector('.markdown__jasonelle_android_output'),
+        "markdown__jasonelle_android_query":obj['this']['shadowRoot'].querySelector('.markdown__jasonelle_android_query'),
+        "markdown__jasonelle_android_run":obj['this']['shadowRoot'].querySelector('.markdown__jasonelle_android_run'),
     }
     if(isEmpty(system.json.children.view) && !isEmpty(system.location.hash)) {
         system.validation.value.fsRead = true
@@ -286,10 +288,12 @@ export default async (v,p,c,obj,r) => {
             window.zb.jq = {}
             window.zb.jq.self = this
             window.zb.jq.fs = this.FS
+            system.worker_main["markdown__jasonelle_android_run"].disabled = false;
             if(!system.worker_main['checkbox.checked']) {
                 system.worker_main["markdown__string_menu_json_html_run"].disabled = false;
                 system.worker_main["markdown__string_menu_json_code_run"].disabled = false;
             } else {
+                console.log( system.worker_main["markdown__jasonelle_android_run"])
                 system.worker_main["markdown__string_menu_json_html_run"].disabled = true;
                 system.worker_main["markdown__string_menu_json_code_run"].disabled = true;
             }
@@ -682,23 +686,6 @@ export default async (v,p,c,obj,r) => {
             updateUI('', 'query')
         }
     }
-    obj.this.shadowRoot.querySelector(".markdown__string_menu_json_html_run").addEventListener("click", async (event) =>
-    {
-       let out = jq(
-          codemirror_json_html.getValue(),
-          system.worker_main["markdown__string_menu_json_html_query"].value
-        );
-        console.log('~~~~~~~~~~~~~', out)
-        system.worker_main["markdown__string_html_json_output"].value = JSON.stringify(JSON.parse(out), undefined, 4);
-    });
-    obj.this.shadowRoot.querySelector(".markdown__string_menu_json_code_run").addEventListener("click", async (event) =>
-    {
-        let out  = jq(
-          codemirror_json_code.getValue(),
-          system.worker_main["markdown__string_menu_json_code_query"].value
-        );
-        system.worker_main["markdown__string_views_json_output"].value =  JSON.stringify(JSON.parse(out), undefined, 4);
-    });
     function checkbox(event) {
         switch(event.target.id) {
             case'markdown__button_views':
@@ -736,6 +723,50 @@ export default async (v,p,c,obj,r) => {
     codemirror.on('update', (event)=>{
         updateUI(event,'codeMirror')
     })
+
+    try {
+        let url = '/android/index.json'
+        if(location.hostname !== 'localhost'){
+            url = 'https://zababurinsv.github.io/android/index.json'
+        }
+        let jasonelle = await fetch(url)
+        jasonelle = await jasonelle.text()
+        codemirror_android_json.setValue(jasonelle)
+
+    }catch (e) {
+        console.warn({
+            _:'error',
+            data:e
+        })
+    }
+
+    obj.this.shadowRoot.querySelector(".markdown__string_menu_json_html_run").addEventListener("click", async (event) =>
+    {
+        let out = jq(
+          codemirror_json_html.getValue(),
+          system.worker_main["markdown__string_menu_json_html_query"].value
+        );
+        console.log('~~~~~~~~~~~~~', out)
+        system.worker_main["markdown__string_html_json_output"].value = JSON.stringify(JSON.parse(out), undefined, 4);
+    });
+    obj.this.shadowRoot.querySelector(".markdown__string_menu_json_code_run").addEventListener("click", async (event) =>
+    {
+        let out  = jq(
+          codemirror_json_code.getValue(),
+          system.worker_main["markdown__string_menu_json_code_query"].value
+        );
+        system.worker_main["markdown__string_views_json_output"].value =  JSON.stringify(JSON.parse(out), undefined, 4);
+    });
+    system.worker_main["markdown__jasonelle_android_run"].addEventListener("click", async (event) =>
+    {
+        let out  = jq(
+          codemirror_android_json.getValue(),
+          system.worker_main["markdown__jasonelle_android_query"].value
+        );
+        if(!isEmpty(out)) {
+            system.worker_main["markdown__jasonelle_android_output"].value =  JSON.stringify(JSON.parse(out), undefined, 4);
+        }
+    });
     obj.this.shadowRoot.querySelector('.markdown__button_url_submit').addEventListener("click", fetchMarkDown);
     obj.this.shadowRoot.querySelector('.markdown__button_views').addEventListener("change", checkbox);
     obj.this.shadowRoot.querySelector('.markdown__string_menu_change_views').addEventListener("change", checkbox);
