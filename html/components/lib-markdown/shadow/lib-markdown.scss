@@ -22,9 +22,6 @@ h1 {
 :host {
     display: flex;
     flex-direction: column;
-    // display: grid;
-    // grid-template-rows: 1fr;
-    // grid-template-columns: 1fr;
     box-sizing: border-box;
     padding: 1vw;
 }
@@ -132,12 +129,13 @@ h1 {
         }
     }
     &__string {
-        // background: rgb(243, 108, 108);
+        padding: 0;
         border-width: 0.2vw;
         border-style: solid;
         border-color: threedface;
         margin: 0;
         white-space: initial;
+
         &_menu {
             white-space: initial;
             margin: 0.4vw 0;
@@ -151,17 +149,43 @@ h1 {
                 }
             }
         }
+        &_views {
+            &_json {
+                border-bottom: 0.2vw solid threedface;
+
+                & > .CodeMirror {
+                    width: 50vw;
+                }
+                &_output {
+                    resize: none;
+                    border-bottom: none;
+                    border-top: none;
+                    border-right: none;
+                    height: 81vh;
+                }
+            }
+        }
         &_html {
-            // background: rgb(74, 84, 226);
-            // border-width: 0.1vw;
-            // border-style: solid;
-            // border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
-            // white-space: pre-wrap;
             white-space: initial;
+
+            &_json {
+                border-bottom: 0.2vw solid threedface;
+
+                & > .CodeMirror {
+                    width: 50vw;
+                }
+
+                &_output {
+                    resize: none;
+                    border-bottom: none;
+                    border-top: none;
+                    border-right: none;
+                    height: 81vh;
+                }
+            }
         }
         &_json {
-            display: flex;
-            flex-direction: row;
+            white-space: initial;
         }
     }
 }

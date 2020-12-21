@@ -474,7 +474,7 @@ export default async (v,p,c,obj,r) => {
             system.worker_main["output"] = markdownToHTML(system.worker_main["self.value"]);
             system.worker_main["markdown__string_html"].innerHTML = system.worker_main["output"];
             code = {}
-            code.innerText = '<pre></pre>'
+            code.innerText = ' <div> </div> '
             if(!isEmpty(system.worker_main["markdown__string_html"].querySelector('code'))) {
                 code = system.worker_main["markdown__string_html"].querySelector('code').cloneNode(true)
                 system.worker_main["markdown__string_html"].querySelector('code').remove()
@@ -554,7 +554,7 @@ export default async (v,p,c,obj,r) => {
             system.worker_main["markdown__string_html.iframe"].style.frameBorder = "0";
             system.worker_main["markdown__string_html.iframe"].sandbox = "allow-scripts";
             system.worker_main["markdown__string_views"].appendChild(system.worker_main["markdown__string_html.iframe"]);
-            (code.innerText === '<pre></pre>')
+            (code.innerText === ' <div> </div> ')
             ? system.worker_main["markdown__string_views"].style.height = 'auto'
             : system.worker_main["markdown__string_views"].style.height = '81vh'
             system.worker_main["markdown__self_html"].innerHTML = system.worker_main["markdown__string_html"].innerHTML;
@@ -605,6 +605,12 @@ export default async (v,p,c,obj,r) => {
             code: Parser.parse(system.worker_main['markdown__string_html.code']),
             html: Parser.parse(system.worker_main['markdown__string_html.innerHTML'])
         }
+        console.log('ffffffffffffffffffffff', {
+            html: Parser.json(json.html),
+            code: Parser.json(json.code),
+            js: json.code
+        })
+
         system.worker_main["markdown__string_html"].style.display = 'none'
         system.worker_main["markdown__string_html_json"].style.display = 'flex'
         codemirror_json_html.setValue(Parser.json(json.html))

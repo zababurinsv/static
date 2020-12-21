@@ -16,6 +16,7 @@ export default (textNode, mode)=>{
             smartIndent: true,
             searchMode: 'popup',
             lineWrapping: true,
+            fixedGutter: true,
             extraKeys: {
                 "Ctrl-Q": function(cm){
                     console.log('~~~~~Ctrl-Q~~~~~~~~~~~', cm)
