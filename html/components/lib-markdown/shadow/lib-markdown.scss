@@ -18,6 +18,11 @@ h1 {
 .markdown__string_html_json_input, .markdown__string_views_json_input { width: 50%; height: -webkit-fill-available; }
 .markdown__string_html_json_output, .markdown__string_views_json_output { width: 50%; height: -webkit-fill-available; }
 
+.aside-menu {
+   & h1,h2,h3,h4,h5,h6 {
+        cursor: pointer;
+    }
+}
 :host {
     display: flex;
     flex-direction: column;
