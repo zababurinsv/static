@@ -215,7 +215,6 @@ export default async (v,p,c,obj,r) => {
           data:e
         })
       }
-      // startWriter(db,'5000')
     }
 
     const update = async (db, payload = '') => {
@@ -294,6 +293,7 @@ export default async (v,p,c,obj,r) => {
        </div>
      `}
     openDatabase('/orbitdb/zdpuApCvxfEFug6uohbADwnsBvBBxSdHaq1WTD6ES8cKmxN14/web3')
+    return obj
 }
 
 /*
