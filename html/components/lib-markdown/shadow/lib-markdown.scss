@@ -161,7 +161,7 @@ h1 {
                 height: auto;
 
                 & > .CodeMirror {
-                    width: 50vw;
+                    width: 50%;
                 }
 
                 &_output {
@@ -170,6 +170,7 @@ h1 {
                     border-top: none;
                     border-right: none;
                     height: auto;
+                    width: 50%;
                 }
             }
         }
@@ -179,7 +180,7 @@ h1 {
                 height: auto;
 
                 & > .CodeMirror {
-                    width: 50vw;
+                    width: 50%;
                 }
                 &_output {
                     resize: none;
@@ -187,6 +188,7 @@ h1 {
                     border-top: none;
                     border-right: none;
                     height: auto;
+                    width: 50%;
                 }
             }
         }
