@@ -194,4 +194,37 @@ h1 {
             white-space: initial;
         }
     }
+    &__jasonelle {
+        padding: 0;
+        border-width: 0.2vw;
+        border-style: solid;
+        border-color: threedface;
+        white-space: initial;
+        display: flex;
+        flex-direction: row;
+        border-bottom: none;
+        margin-top: 1vw;
+
+        &_android {
+            border-bottom: 0.2vw solid threedface;
+            height: auto;
+            padding: 0;
+            margin: 0;
+            white-space: initial;
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+
+             & > .CodeMirror {
+                 width: 50%;
+             }
+             &_output {
+                 resize: none;
+                 border-bottom: none;
+                 border-top: none;
+                 border-right: none;
+                 height: auto;
+             }
+        }
+    }
 }

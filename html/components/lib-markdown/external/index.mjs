@@ -46,6 +46,7 @@ export default async (v,p,c,obj,r) => {
     let codemirror = await TextEditor(obj.this.shadowRoot.querySelector('.markdown__self'),'javascript')
     let codemirror_json_html = await TextEditor(obj.this.shadowRoot.querySelector('.markdown__string_html_json_input'),'javascript')
     let codemirror_json_code = await TextEditor(obj.this.shadowRoot.querySelector('.markdown__string_views_json_input'),'javascript')
+    let codemirror_android_json = await TextEditor(obj.this.shadowRoot.querySelector('.markdown__jasonelle_android_input'),'javascript')
     let backJson = (json) => {
         return new Promise( async (resolve, reject)=>{
             let Json = await fetch(`${location.origin}/static/html/components/lib-markdown/external/${(json)?json:'index'}.json`)
@@ -185,6 +186,10 @@ export default async (v,p,c,obj,r) => {
         "output":[],
         "markdown__string_menu":obj['this']['shadowRoot'].querySelectorAll('.markdown__string_menu'),
         "markdown__string_views": obj['this']['shadowRoot'].querySelector('#markdown__string_views'),
+        "markdown__jasonelle":obj['this']['shadowRoot'].querySelector('.markdown__jasonelle'),
+        "markdown__jasonelle_android":obj['this']['shadowRoot'].querySelector('.markdown__jasonelle_android'),
+        "markdown__jasonelle_android_input":obj['this']['shadowRoot'].querySelector('.markdown__jasonelle_android_input'),
+        "markdown__jasonelle_android_output":obj['this']['shadowRoot'].querySelector('.markdown__jasonelle_android_output'),
     }
     if(isEmpty(system.json.children.view) && !isEmpty(system.location.hash)) {
         system.validation.value.fsRead = true
