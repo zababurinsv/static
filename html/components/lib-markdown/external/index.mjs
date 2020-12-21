@@ -558,7 +558,7 @@ export default async (v,p,c,obj,r) => {
             ? system.worker_main["markdown__string_views"].style.height = 'auto'
             : system.worker_main["markdown__string_views"].style.height = '81vh'
             system.worker_main["markdown__self_html"].innerHTML = system.worker_main["markdown__string_html"].innerHTML;
-            system.worker_main["markdown__string_menu"][0].scrollIntoView()
+            // system.worker_main["markdown__string_menu"][0].scrollIntoView()
             let json = {
                 code: Parser.parse(system.worker_main['markdown__string_html.code']),
                 html: Parser.parse(system.worker_main['markdown__string_html.innerHTML'])
@@ -678,14 +678,15 @@ export default async (v,p,c,obj,r) => {
           system.worker_main["markdown__string_menu_json_html_query"].value
         );
         console.log('~~~~~~~~~~~~~', out)
-        system.worker_main["markdown__string_html_json_output"].value = out
+        system.worker_main["markdown__string_html_json_output"].value = JSON.stringify(JSON.parse(out), undefined, 4);
     });
     obj.this.shadowRoot.querySelector(".markdown__string_menu_json_code_run").addEventListener("click", async (event) =>
     {
-        system.worker_main["markdown__string_views_json_output"].value = jq(
+        let out  = jq(
           codemirror_json_code.getValue(),
           system.worker_main["markdown__string_menu_json_code_query"].value
         );
+        system.worker_main["markdown__string_views_json_output"].value =  JSON.stringify(JSON.parse(out), undefined, 4);
     });
     function checkbox(event) {
         switch(event.target.id) {

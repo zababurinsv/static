@@ -16,7 +16,33 @@ export default (textNode, mode)=>{
             smartIndent: true,
             searchMode: 'popup',
             lineWrapping: true,
-            gutters:['test333']
+            extraKeys: {
+                "Ctrl-Q": function(cm){
+                    console.log('~~~~~Ctrl-Q~~~~~~~~~~~', cm)
+                },
+                "Ctrl-F": function(cm){
+                    cm.execCommand("find")
+                    console.log('~~~~~Ctrl-F~~~~~~~~~~~', cm)
+                },
+                "Ctrl-G": function(cm){
+                    console.log('~~~~~Ctrl-Q~~~~~~~~~~~', cm)
+                },
+                "Ctrl-Shift-G": function(cm){
+                    console.log('~~~~~Ctrl-Q~~~~~~~~~~~', cm)
+                },
+                "Ctrl-Shift-F": function(cm){
+                    console.log('~~~~~Ctrl-Q~~~~~~~~~~~', cm)
+                },
+                "Ctrl-Shift-R": function(cm){
+                    console.log('~~~~~Ctrl-Q~~~~~~~~~~~', cm)
+                },
+                "Alt-F": function(cm){
+                    console.log('~~~~~Ctrl-Q~~~~~~~~~~~', cm)
+                },
+                "Alt-G": function(cm){
+                    console.log('~~~~~Ctrl-Q~~~~~~~~~~~', cm)
+                },
+            }
         });
         resolve(editor)
     })
