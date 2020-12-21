@@ -625,13 +625,13 @@ export default async (v,p,c,obj,r) => {
         system.worker_main["markdown__string_menu_json_code_run"].disabled = false;
     }
     let updateUI = async (event = {}, type) => {
-        console.log('~~~~~~~~~~~~~~~~~~~ updateUI ~~~~~~~~~~~~~~~~', event.constructor.name)
+        console.log('updateUI', type)
         if(type === 'codeMirror' || type ===  'fsLoad') {
                 system.worker_main["src"] = 'data:text/html;charset=utf-8,' + encodeURIComponent(system.worker_main["markdown__string_html.code"])
                 system.worker_main["self.value"] = codemirror.getValue()
                 await saveMd()
         } else {
-            console.log('~~~~~~~~~~~~~~',event, type)
+            console.log('updateUI unknown',event, type)
         }
     }
     await fsLoad()

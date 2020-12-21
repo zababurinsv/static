@@ -93,28 +93,28 @@ export default async (v,p,c,obj,r) => {
         return queryAndRender(db)
       })
       db.events.on('replicated', () => {
-        console.log('~~~~~~~~~ replicated ~~~~~~~~~~~')
+        console.log('orbitdb replicated')
         return queryAndRender(db)
       })
       db.events.on('replicate', (address) => {
-        console.log('~~~~~~~~~ replicate ~~~~~~~~~~~', address)
+        console.log('orbitdb replicate', address)
       })
       db.events.on('replicate.progress', (address, hash, entry, progress, have) => {
 
-        console.log('~~~~~~~~~ replicate.progress ~~~~~~~~~~~', progress, have, hash)
+        console.log('orbitdb replicate.progress', progress, have, hash)
       })
       db.events.on('load', (dbname) => {
-        console.log('~~~~~~~~~ load ~~~~~~~~~~~', dbname)
+        console.log('orbitdb load', dbname)
       })
       db.events.on('write', () => {
-        console.log('~~~~~~~~~ write ~~~~~~~~~~~')
+        console.log('orbitdb write')
         return queryAndRender(db)
       })
       db.events.on('peer', (peer) => {
-        console.log('~~~~~~~~~ peer ~~~~~~~~~~~', peer)
+        console.log('orbitdb peer', peer)
       })
       db.events.on('peer.exchanged', (peer, address, heads) => {
-        console.log('~~~~~~~~~ peer.exchanged ~~~~~~~~~~~', peer, address, heads)
+        console.log('orbitdb peer.exchanged', peer, address, heads)
       })
       db.events.on('replicate.progress', () => queryAndRender(db))
       let maxTotal = 0, loaded = 0
@@ -125,7 +125,7 @@ export default async (v,p,c,obj,r) => {
         statusElm.innerHTML = `Loading database... ${maxTotal} / ${total}`
       })
       db.events.on('ready', () => {
-        console.log('~~~~~~~~~ ready 2~~~~~~~~~~~')
+        console.log('orbitdb ready')
         setTimeout(() => {
           statusElm.innerHTML = 'Database is ready'
         }, 1000)
