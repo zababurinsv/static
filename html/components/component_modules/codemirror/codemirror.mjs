@@ -2,12 +2,12 @@ import loader from '/static/html/components/component_modules/loader/loader.mjs'
 export default (textNode, mode)=>{
     return new Promise( async (resolve, reject) => {
         let CodeMirror = await loader('/static/html/components/component_modules/codemirror/codemirror_5_21_0.js', 'CodeMirror')
-        await loader('/static/html/components/component_modules/codemirror/search.js', 'search')
-        await loader('/static/html/components/component_modules/codemirror/searchcursor.js', 'searchcursor')
-        await loader('/static/html/components/component_modules/codemirror/match-highlighter.js', 'match-highlighter')
-        await loader('/static/html/components/component_modules/codemirror/jump-to-line.js', 'jump-to-line')
-        await loader('/static/html/components/component_modules/codemirror/dialog.js', 'dialog')
-        await loader('/static/html/components/component_modules/codemirror/runmode.js', 'runmode')
+        await loader('/static/html/components/component_modules/codemirror/search.js', 'plugin')
+        await loader('/static/html/components/component_modules/codemirror/searchcursor.js', 'plugin')
+        await loader('/static/html/components/component_modules/codemirror/match-highlighter.js', 'plugin')
+        await loader('/static/html/components/component_modules/codemirror/jump-to-line.js', 'plugin')
+        await loader('/static/html/components/component_modules/codemirror/dialog.js', 'plugin')
+        await loader('/static/html/components/component_modules/codemirror/runmode.js', 'plugin')
 
         // theme: 'one-dark',
         let editor = CodeMirror.fromTextArea(textNode, {
