@@ -65,8 +65,7 @@ export default (view,property,color,substrate,relation,callback,origin) =>{
                 if(isEmpty(target.staticProperty[`${relation}`])){
                     // console.assert(false, target.staticProperty[`${relation}`],'----->')
                     console.log(`${emoji('first_quarter_moon')}`, {
-                        property:property,
-                        substrate:substrate,
+                        _:"process",
                         relation:relation,
                     })
 

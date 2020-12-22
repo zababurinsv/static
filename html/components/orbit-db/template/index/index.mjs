@@ -273,7 +273,7 @@ export default async (v,p,c,obj,r) => {
             response = db.get('')
             break
         }
-        console.log('~~~~~~~~orbitdb query~~~~~~~~~~', response)
+        console.log('~~~~~~~~ orbitdb ~~~~~~~~', response)
         return response
       }
       else if (db.type === 'keyvalue')

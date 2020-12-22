@@ -168,8 +168,6 @@ export default async (v,p,c,obj,r) => {
         "markdown__string_menu_json_code_query":obj['this']['shadowRoot'].querySelector('.markdown__string_menu_json_code_query'),
         "markdown__string_menu_json_code_run":obj['this']['shadowRoot'].querySelector('.markdown__string_menu_json_code_run'),
         "CodeMirror":obj['this']['shadowRoot'].querySelectorAll('.CodeMirror'),
-        "markdown__button_url_submit": obj['this']['shadowRoot'].querySelector('.markdown__button_url_submit'),
-        "markdown__button_url": obj['this']['shadowRoot'].querySelector('#markdown__button_url'),
         "fs": undefined,
         "fs.path": undefined,
         "markdown__string_menu_codemirror_search":obj['this']['shadowRoot'].querySelector('.markdown__string_menu_codemirror_search'),
@@ -197,6 +195,8 @@ export default async (v,p,c,obj,r) => {
         "markdown__button_update_anil":obj['this']['shadowRoot'].querySelector('.markdown__button_update_anil'),
         "markdown__button_delete_value":obj['this']['shadowRoot'].querySelector('#markdown__button_delete_value'),
         "markdown__button_delete":obj['this']['shadowRoot'].querySelector('.markdown__button_delete'),
+        "markdown__button_url_value":obj['this']['shadowRoot'].querySelector('#markdown__button_url_value'),
+        "markdown__button_url":obj['this']['shadowRoot'].querySelector('.markdown__button_url'),
     }
     if(isEmpty(system.json.children.view) && !isEmpty(system.location.hash)) {
         system.validation.value.fsRead = true
@@ -728,7 +728,7 @@ export default async (v,p,c,obj,r) => {
     }
 
     async function fetchMarkDown(event) {
-        system.worker_main["url_md"] = await fetch(system.worker_main['markdown__button_url'].value)
+        system.worker_main["url_md"] = await fetch(system.worker_main['markdown__button_url_value'].value)
           .catch((e)=>{
               console.warn({
                   "error":e
@@ -799,7 +799,12 @@ export default async (v,p,c,obj,r) => {
             system.worker_main["markdown__jasonelle_android_output"].value =  JSON.stringify(JSON.parse(out), undefined, 4);
         }
     });
-    obj.this.shadowRoot.querySelector('.markdown__button_url_submit').addEventListener("click", fetchMarkDown);
+    system.worker_main["markdown__button_url"].addEventListener("click", fetchMarkDown);
+    system.worker_main["markdown__button_url_value"].addEventListener("input", (event)=>{
+        isEmpty(event.target.value)
+          ? system.worker_main["markdown__button_url"].disabled = true
+          : system.worker_main["markdown__button_url"].disabled = false
+    });
     obj.this.shadowRoot.querySelector('.markdown__button_views').addEventListener("change", checkbox);
     obj.this.shadowRoot.querySelector('.markdown__string_menu_change_views').addEventListener("change", checkbox);
     obj.this.shadowRoot.querySelector('.markdown__button_update').addEventListener("click", update);
