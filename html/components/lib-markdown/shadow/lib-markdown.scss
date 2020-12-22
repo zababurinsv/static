@@ -106,6 +106,7 @@ h1 {
                 &_left {
                     height: 70vh;
                     overflow-y: scroll;
+                    overflow-x: hidden;
                     &::-webkit-scrollbar { width: 0; }
                 }
                 &_right {
@@ -114,6 +115,7 @@ h1 {
                     padding-right: 1vw;
                     height: 70vh;
                     overflow-y: scroll;
+                    overflow-x: hidden;
                     &::-webkit-scrollbar { width: 0; }
                 }
             }
@@ -171,7 +173,7 @@ h1 {
                 height: auto;
 
                 & > .CodeMirror {
-                    width: 50%;
+                    width: 46.5vw;
                 }
 
                 &_output {
@@ -190,7 +192,7 @@ h1 {
                 height: auto;
 
                 & > .CodeMirror {
-                    width: 50%;
+                    width: 46.5vw;
                 }
                 &_output {
                     resize: none;
