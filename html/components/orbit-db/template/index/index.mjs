@@ -206,7 +206,7 @@ export default async (v,p,c,obj,r) => {
         })
         task.get(true, 'await', '5', '','/orbitdb/get/:external', async (object)=>{
           console.log('objectddddddddddd', object.property)
-          let md = await query(db)
+          let md = await query(db, object.property)
           console.log('/orbitdb/get/:external')
           object.callback({status:'ok', md:md})
         })
@@ -245,13 +245,23 @@ export default async (v,p,c,obj,r) => {
         throw new Error("Unknown datatbase type: ", db.type)
       }
     }
-    const query = (db) => {
+    const query = (db, type) => {
       if (db.type === 'eventlog')
         return db.iterator({ limit: 5 }).collect()
       else if (db.type === 'feed')
         return db.iterator({ limit: 5 }).collect()
-      else if (db.type === 'docstore')
-        return db.get('external')
+      else if (db.type === 'docstore'){
+        let response = {}
+        switch (type) {
+          case 'anil':
+            response = db.get('anil')
+            break
+          default:
+            response = db.get('external')
+            break
+        }
+        return response
+      }
       else if (db.type === 'keyvalue')
         return db.get('mykey')
       else if (db.type === 'counter')

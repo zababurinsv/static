@@ -106,6 +106,7 @@ export default async (v,p,c,obj,r) => {
                             system.worker_main["self.value"]= "# Empty"
                         }
                     } else {
+                        console.log('query db')
                         pull = await task.set(true,'t','green',{
                             _:'get orbitdb',
                             item: (path)?path:'external'
@@ -664,7 +665,18 @@ export default async (v,p,c,obj,r) => {
         }
     }
     async function update(event) {
-        let status = await task.set(true,'','red',codemirror.getValue(), '/orbitdb/set/:external')
+        let res = {}
+        let path = {}
+        console.log('event~~~~~~~~~', event.target.id)
+        switch (event.target.id) {
+            case 'markdown__button_query_anil':
+                path = 'anil'
+                break
+            default:
+                path = 'external'
+                break
+        }
+        // let status = await task.set(true,'','red',codemirror.getValue(), '/orbitdb/set/:external')
         // let status = await task.set(true,'','red',system['worker_main']['markdown__self'].innerHTML, '/orbitdb/set/:external')
     }
 
