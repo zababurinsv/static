@@ -207,7 +207,6 @@ export default async (v,p,c,obj,r) => {
           // console.log('FFFFFFFFFFFFFFFFFFFFFFFFFffffFFFFfff', object.property)
           try{
             let md = await query(db, object.property)
-            console.log('/orbitdb/get/:external', md)
             isEmpty(md)
               ?object.callback({status:'false', md:false})
               :object.callback({status:'ok', md:md})
@@ -271,7 +270,7 @@ export default async (v,p,c,obj,r) => {
         throw new Error("Unknown datatbase type: ", db.type)
       }
     }
-    const query = (db, type) => {
+    const query = async (db, type) => {
       if (db.type === 'eventlog')
         return db.iterator({ limit: 5 }).collect()
       else if (db.type === 'feed')
@@ -280,13 +279,13 @@ export default async (v,p,c,obj,r) => {
         let response = {}
         switch (type) {
           case 'anil':
-            response = db.get('anil')
+            response = await db.get('anil')
             break
           case 'external':
-            response = db.get('external')
+            response = await db.get('external')
             break
           default:
-            response = db.get('')
+            response = await db.get('')
             break
         }
         console.log(`(0( )0)`, response)
@@ -303,7 +302,8 @@ export default async (v,p,c,obj,r) => {
     const queryAndRender = async (db) => {
       const networkPeers = await ipfs.swarm.peers()
       const databasePeers = await ipfs.pubsub.peers(db.address.toString())
-      const result = query(db)
+      const result = await query(db)
+      console.log('~~~~~~~~~~~~~~~~~~~~~~~~~>>>>', result)
       window.zb.fs['/body'].writeFile("/body/external.md", result[0].md)
       // window.zb.fs['/body'].syncfs(false, err => console.warn(err));
       if (dbType !== db.type || dbAddress !== db.address) {
