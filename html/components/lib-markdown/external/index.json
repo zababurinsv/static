@@ -128,5 +128,21 @@
         },
         { "type": "text", "content": "external" }
       ]
+    },{
+      "type": "element",
+      "tagName": "h1",
+      "attributes": [{ "key": "id", "value": "anil" }],
+      "children": [
+        {
+          "type": "element",
+          "tagName": "a",
+          "attributes": [
+            { "key": "aria-hidden", "value": "true" },
+            { "key": "href", "value": "#anil" }
+          ],
+          "children": []
+        },
+        { "type": "text", "content": "anil" }
+      ]
     }]
 }

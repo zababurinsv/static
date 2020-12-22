@@ -222,6 +222,9 @@ export default async (v,p,c,obj,r) => {
                         case 'external':
                             await system.pull.orbitdb(event.target.id)
                             break
+                        case 'anil':
+                            await system.pull.orbitdb(event.target.id)
+                            break
                         default:
                             await system.pull.resolve(event.target.id)
                             break
