@@ -19,7 +19,7 @@ h1 {
 .markdown__string_html_json_output, .markdown__string_views_json_output { width: 50%; height: -webkit-fill-available; }
 
 .aside-menu {
-    height: inherit;
+    height: min-content;
    & h1,h2,h3,h4,h5,h6 {
         cursor: pointer;
     }
@@ -104,12 +104,14 @@ h1 {
 
                 &_left {
                     height: 70vh;
+                    overflow-y: scroll;
                 }
                 &_right {
                     text-align: right;
                     box-sizing: border-box;
                     padding-right: 1vw;
                     height: 70vh;
+                    overflow-y: scroll;
                 }
             }
             &_aside {
