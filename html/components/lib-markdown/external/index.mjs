@@ -626,12 +626,12 @@ export default async (v,p,c,obj,r) => {
     }
     let updateUI = async (event = {}, type) => {
         console.log('updateUI', type)
-        if(type === 'codeMirror' || type ===  'fsLoad') {
+        if(type === 'codeMirror' || type ===  'fsLoad' || type === 'query') {
                 system.worker_main["src"] = 'data:text/html;charset=utf-8,' + encodeURIComponent(system.worker_main["markdown__string_html.code"])
                 system.worker_main["self.value"] = codemirror.getValue()
                 await saveMd()
         } else {
-            console.log('updateUI unknown',event, type)
+            console.log('updateUI unknown', type)
         }
     }
     await fsLoad()
