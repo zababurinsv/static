@@ -205,8 +205,9 @@ export default async (v,p,c,obj,r) => {
           object.callback({status:'ok'})
         })
         task.get(true, 'await', '5', '','/orbitdb/get/:external', async (object)=>{
+          console.log('objectddddddddddd', object.property)
           let md = await query(db)
-          console.log('/orbitdb/get/:external', md)
+          console.log('/orbitdb/get/:external')
           object.callback({status:'ok', md:md})
         })
       } catch (e) {

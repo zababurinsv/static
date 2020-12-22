@@ -91,12 +91,12 @@ export default async (v,p,c,obj,r) => {
                 }
 
             },
-            "orbitdb": async (item) => {
+            "orbitdb": async (path) => {
                 let pull = {}
                 try {
                     let dir = window.zb.fs['/body'].readdir("/body")
-                    if(dir.find(item => item === 'external.md')) {
-                        let mdfs = window.zb.fs[`${system.worker_main['fs.path']}`].readFile("/body/external.md",{ encoding: "utf8" });
+                    if(dir.find(item => item === `${path}.md`)) {
+                        let mdfs = window.zb.fs[`${system.worker_main['fs.path']}`].readFile(`/body/${path}.md`,{ encoding: "utf8" });
                         if(!isEmpty(mdfs)) {
                             system.value = mdfs
                         } else {
@@ -108,7 +108,7 @@ export default async (v,p,c,obj,r) => {
                     } else {
                         pull = await task.set(true,'t','green',{
                             _:'get orbitdb',
-                            item: (item)?item:'external'
+                            item: (path)?path:'external'
                         },'/orbitdb')
                         if(pull.status === 'ok') {
                             system.value = pull.md[0]['md']
@@ -192,6 +192,8 @@ export default async (v,p,c,obj,r) => {
         "markdown__jasonelle_android_output":obj['this']['shadowRoot'].querySelector('.markdown__jasonelle_android_output'),
         "markdown__jasonelle_android_query":obj['this']['shadowRoot'].querySelector('.markdown__jasonelle_android_query'),
         "markdown__jasonelle_android_run":obj['this']['shadowRoot'].querySelector('.markdown__jasonelle_android_run'),
+        "markdown__button_query_anil":obj['this']['shadowRoot'].querySelector('.markdown__button_query_anil'),
+        "markdown__button_update_anil":obj['this']['shadowRoot'].querySelector('.markdown__button_update_anil'),
     }
     if(isEmpty(system.json.children.view) && !isEmpty(system.location.hash)) {
         system.validation.value.fsRead = true
@@ -667,17 +669,28 @@ export default async (v,p,c,obj,r) => {
     }
 
     async function query(event) {
-        let res = await task.set(true,'','red',codemirror.getValue(), '/orbitdb/get/:external')
-        // let res = await task.set(true,'','red',system['worker_main']['markdown__self'].innerHTML, '/orbitdb/get/:external')
+        let res = {}
+        let path = {}
+        switch (event.target.id) {
+            case'markdown__button_query':
+                path = 'external'
+                break
+            case 'markdown__button_query_anil':
+                path = 'anil'
+                break
+            default:
+                path = 'external'
+                break
+        }
+        res = await task.set(true,path,'red',codemirror.getValue(), '/orbitdb/get/:external')
         if(res.status === 'ok') {
-            window.zb.fs['/body'].writeFile("/body/external.md", res['md'][0]['md'])
-            await system.pull.orbitdb('external')
+            window.zb.fs['/body'].writeFile(`/body/${path}.md`, res['md'][0]['md'])
+            await system.pull.orbitdb(`${path}`)
             system.worker_main["markdown__string_views"].innerHTML = ''
             system.worker_main["md"]= system.value
             codemirror.setValue(system.value)
             system.worker_main["markdown__self"].value= system.value
             system.worker_main["self.value"]= system.value
-            // updateUI('', 'query')
         }
     }
     function checkbox(event) {
@@ -766,6 +779,8 @@ export default async (v,p,c,obj,r) => {
     obj.this.shadowRoot.querySelector('.markdown__string_menu_change_views').addEventListener("change", checkbox);
     obj.this.shadowRoot.querySelector('.markdown__button_update').addEventListener("click", update);
     obj.this.shadowRoot.querySelector('.markdown__button_query').addEventListener("click", query);
+    system.worker_main["markdown__button_query_anil"].addEventListener("click", query);
+    system.worker_main["markdown__button_update_anil"].addEventListener("click", update);
     obj.this.shadowRoot.querySelector('.markdown__button_download').addEventListener("click", download);
     obj.this.shadowRoot.querySelector('.markdown__button_upload').addEventListener("change", upload);
     obj.this.shadowRoot.querySelector('.markdown__button_select').addEventListener("change", selected);
