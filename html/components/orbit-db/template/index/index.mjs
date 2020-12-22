@@ -251,15 +251,20 @@ export default async (v,p,c,obj,r) => {
       else if (db.type === 'feed')
         return db.iterator({ limit: 5 }).collect()
       else if (db.type === 'docstore'){
+        console.log('orbitdb query', type)
         let response = {}
         switch (type) {
           case 'anil':
             response = db.get('anil')
             break
-          default:
+          case 'external':
             response = db.get('external')
             break
+          default:
+            response = db.get('')
+            break
         }
+        console.log('~~~~~~~~orbitdb query~~~~~~~~~~', response)
         return response
       }
       else if (db.type === 'keyvalue')
