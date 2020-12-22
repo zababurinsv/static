@@ -626,7 +626,7 @@ export default async (v,p,c,obj,r) => {
     }
     let updateUI = async (event = {}, type) => {
         console.log('updateUI', type)
-        if(type === 'codeMirror' || type ===  'fsLoad' || type === 'query') {
+        if(type === 'codeMirror' || type ===  'fsLoad') {
                 system.worker_main["src"] = 'data:text/html;charset=utf-8,' + encodeURIComponent(system.worker_main["markdown__string_html.code"])
                 system.worker_main["self.value"] = codemirror.getValue()
                 await saveMd()
@@ -678,7 +678,7 @@ export default async (v,p,c,obj,r) => {
             codemirror.setValue(system.value)
             system.worker_main["markdown__self"].value= system.value
             system.worker_main["self.value"]= system.value
-            updateUI('', 'query')
+            // updateUI('', 'query')
         }
     }
     function checkbox(event) {
