@@ -20,10 +20,10 @@ export default async (v,p,c,obj,r) => {
   // obj.system.worker_main['markdown__string_menu_codemirror_goto'].addEventListener('click', function() {
     // p.commands.jumpToLine(p.editor);
   // }, false);
-  obj.system.worker_main['markdown__string_menu_codemirror_undo'].addEventListener('click', function(){
-    p.undo();
-  }, false);
-  obj.system.worker_main['markdown__string_menu_codemirror_redo'].addEventListener('click', function(){
-    p.redo();
-  },false);
+  // obj.system.worker_main['markdown__string_menu_codemirror_undo'].addEventListener('click', function(){
+  //   p.undo();
+  // }, false);
+  // obj.system.worker_main['markdown__string_menu_codemirror_redo'].addEventListener('click', function(){
+  //   p.redo();
+  // },false);
 }

@@ -195,6 +195,8 @@ export default async (v,p,c,obj,r) => {
         "markdown__jasonelle_android_run":obj['this']['shadowRoot'].querySelector('.markdown__jasonelle_android_run'),
         "markdown__button_query_anil":obj['this']['shadowRoot'].querySelector('.markdown__button_query_anil'),
         "markdown__button_update_anil":obj['this']['shadowRoot'].querySelector('.markdown__button_update_anil'),
+        "markdown__button_delete_value":obj['this']['shadowRoot'].querySelector('#markdown__button_delete_value'),
+        "markdown__button_delete":obj['this']['shadowRoot'].querySelector('.markdown__button_delete'),
     }
     if(isEmpty(system.json.children.view) && !isEmpty(system.location.hash)) {
         system.validation.value.fsRead = true
@@ -762,6 +764,14 @@ export default async (v,p,c,obj,r) => {
         })
     }
 
+   async function remove(event) {
+
+        task.set(true,'t','green',{
+            _:'delete data in orbitdb',
+            item: system.worker_main["markdown__button_delete_value"].value
+        },'/orbitdb/delete')
+    }
+
     obj.this.shadowRoot.querySelector(".markdown__string_menu_json_html_run").addEventListener("click", async (event) =>
     {
         let out = jq(
@@ -796,6 +806,12 @@ export default async (v,p,c,obj,r) => {
     obj.this.shadowRoot.querySelector('.markdown__button_query').addEventListener("click", query);
     system.worker_main["markdown__button_query_anil"].addEventListener("click", query);
     system.worker_main["markdown__button_update_anil"].addEventListener("click", update);
+    system.worker_main["markdown__button_delete"].addEventListener("click", remove);
+    system.worker_main["markdown__button_delete_value"].addEventListener("input", (event)=>{
+        isEmpty(event.target.value)
+            ? system.worker_main["markdown__button_delete"].disabled = true
+            : system.worker_main["markdown__button_delete"].disabled = false
+    });
     obj.this.shadowRoot.querySelector('.markdown__button_download').addEventListener("click", download);
     obj.this.shadowRoot.querySelector('.markdown__button_upload').addEventListener("change", upload);
     obj.this.shadowRoot.querySelector('.markdown__button_select').addEventListener("change", selected);

@@ -210,6 +210,15 @@ export default async (v,p,c,obj,r) => {
           console.log('/orbitdb/get/:external')
           object.callback({status:'ok', md:md})
         })
+        task.get(true, 'await', '5', '','/orbitdb/delete', async (object)=>{
+          try{
+            console.log('/orbitdb/delete')
+            const hash = await db.del(object.substrate.item)
+            object.callback({status:'ok', hash:hash})
+          }catch (e) {
+            object.callback({status:'false', error:e})
+          }
+        })
       } catch (e) {
         console.error({
           _:"status error",
