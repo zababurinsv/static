@@ -672,16 +672,16 @@ export default async (v,p,c,obj,r) => {
     async function update(event) {
         let res = {}
         let path = {}
-        console.log('event~~~~~~~~~', event.target.id)
+
         switch (event.target.id) {
-            case 'markdown__button_query_anil':
+            case 'markdown__button_update_anil':
                 path = 'anil'
                 break
             default:
                 path = 'external'
                 break
         }
-        // let status = await task.set(true,'','red',codemirror.getValue(), '/orbitdb/set/:external')
+        let status = await task.set(true,path,'red',codemirror.getValue(), '/orbitdb/set/:external')
         // let status = await task.set(true,'','red',system['worker_main']['markdown__self'].innerHTML, '/orbitdb/set/:external')
     }
 
@@ -699,15 +699,24 @@ export default async (v,p,c,obj,r) => {
                 path = 'external'
                 break
         }
+
         res = await task.set(true,path,'red',codemirror.getValue(), '/orbitdb/get/:external')
         if(res.status === 'ok') {
-            window.zb.fs['/body'].writeFile(`/body/${path}.md`, res['md'][0]['md'])
-            await system.pull.orbitdb(`${path}`)
-            system.worker_main["markdown__string_views"].innerHTML = ''
-            system.worker_main["md"]= system.value
-            codemirror.setValue(system.value)
-            system.worker_main["markdown__self"].value= system.value
-            system.worker_main["self.value"]= system.value
+            try {
+                window.zb.fs['/body'].writeFile(`/body/${path}.md`, res['md'][0]['md'])
+                await system.pull.orbitdb(`${path}`)
+                system.worker_main["markdown__string_views"].innerHTML = ''
+                system.worker_main["md"]= system.value
+                codemirror.setValue(system.value)
+                system.worker_main["markdown__self"].value= system.value
+                system.worker_main["self.value"]= system.value
+            } catch (e) {
+                system.worker_main["markdown__string_views"].innerHTML = ''
+                system.worker_main["md"]= system.value
+                codemirror.setValue(system.value)
+                system.worker_main["markdown__self"].value= system.value
+                system.worker_main["self.value"]= system.value
+            }
         }
     }
     function checkbox(event) {
@@ -765,7 +774,6 @@ export default async (v,p,c,obj,r) => {
     }
 
    async function remove(event) {
-
         task.set(true,'t','green',{
             _:'delete data in orbitdb',
             item: system.worker_main["markdown__button_delete_value"].value

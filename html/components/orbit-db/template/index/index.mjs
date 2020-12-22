@@ -200,15 +200,23 @@ export default async (v,p,c,obj,r) => {
           object.callback({status:'ok',md:md})
         })
         task.get(true, 'await', '5', '','/orbitdb/set/:external', async (object)=>{
-          update(db, object.substrate)
-          console.log('/orbitdb/set/:external', object.substrate)
+          await update(db, object.substrate, object.property)
           object.callback({status:'ok'})
         })
         task.get(true, 'await', '5', '','/orbitdb/get/:external', async (object)=>{
-          console.log('objectddddddddddd', object.property)
-          let md = await query(db, object.property)
-          console.log('/orbitdb/get/:external')
-          object.callback({status:'ok', md:md})
+          // console.log('FFFFFFFFFFFFFFFFFFFFFFFFFffffFFFFfff', object.property)
+          try{
+            let md = await query(db, object.property)
+            console.log('/orbitdb/get/:external', md)
+            isEmpty(md)
+              ?object.callback({status:'false', md:false})
+              :object.callback({status:'ok', md:md})
+
+          }catch (e) {
+            object.callback({status:'false', md:e})
+          }
+
+
         })
         task.get(true, 'await', '5', '','/orbitdb/delete', async (object)=>{
           try{
@@ -227,7 +235,7 @@ export default async (v,p,c,obj,r) => {
       }
     }
 
-    const update = async (db, payload = '') => {
+    const update = async (db, payload = '', type) => {
       count ++
       const time = new Date().toISOString()
       const idx = Math.floor(Math.random() * creatures.length)
@@ -240,12 +248,21 @@ export default async (v,p,c,obj,r) => {
         await db.add(value)
       } else if (db.type === 'docstore') {
         let value = {}
-        if(!isEmpty(payload)) {
-          value = { _id: 'external', avatar: creature, updated: time, md: payload }
-        } else {
-          value = { _id: 'external', avatar: creature, updated: time, md:'# empty' }
+        if(isEmpty(payload)) {
+          payload = '# empty'
         }
-        await db.put(value)
+        switch (type){
+          case 'anil':
+            value = { _id: 'anil', avatar: creature, updated: time, md: payload }
+            break
+          case 'external':
+            value = { _id: 'external', avatar: creature, updated: time, md:payload }
+            break
+          default:
+            console.warn('неизвестный запрос', type)
+            break
+        }
+        return db.put(value)
       } else if (db.type === 'keyvalue') {
         await db.set('mykey', creature)
       } else if (db.type === 'counter') {
@@ -260,7 +277,6 @@ export default async (v,p,c,obj,r) => {
       else if (db.type === 'feed')
         return db.iterator({ limit: 5 }).collect()
       else if (db.type === 'docstore'){
-        console.log('orbitdb query', type)
         let response = {}
         switch (type) {
           case 'anil':
@@ -273,7 +289,7 @@ export default async (v,p,c,obj,r) => {
             response = db.get('')
             break
         }
-        console.log('~~~~~~~~ orbitdb ~~~~~~~~', response)
+        console.log(`(0( )0)`, response)
         return response
       }
       else if (db.type === 'keyvalue')
