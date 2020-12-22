@@ -19,6 +19,7 @@ h1 {
 .markdown__string_html_json_output, .markdown__string_views_json_output { width: 50%; height: -webkit-fill-available; }
 
 .aside-menu {
+    height: inherit;
    & h1,h2,h3,h4,h5,h6 {
         cursor: pointer;
     }
@@ -62,14 +63,17 @@ h1 {
             grid-template-columns: 16vw 1fr 16vw;
             grid-gap: 0.4vw;
             padding: 0;
-            height: 50vh;
-            overflow: hidden;
+            height: 70vh;
             margin: 0;
             border-width: 0.2vw;
             border-style: solid;
             border-color: threedface;
             margin-bottom: 0.4vw;
+            overflow: hidden;
 
+            & > CodeMirror {
+                height: -webkit-fill-available;
+            }
             &_aside {
                 height: min-content;
 
@@ -99,12 +103,13 @@ h1 {
                 }
 
                 &_left {
-
+                    height: 70vh;
                 }
                 &_right {
                     text-align: right;
                     box-sizing: border-box;
                     padding-right: 1vw;
+                    height: 70vh;
                 }
             }
             &_aside {
