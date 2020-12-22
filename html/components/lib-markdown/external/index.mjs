@@ -293,7 +293,6 @@ export default async (v,p,c,obj,r) => {
                 system.worker_main["markdown__string_menu_json_html_run"].disabled = false;
                 system.worker_main["markdown__string_menu_json_code_run"].disabled = false;
             } else {
-                console.log( system.worker_main["markdown__jasonelle_android_run"])
                 system.worker_main["markdown__string_menu_json_html_run"].disabled = true;
                 system.worker_main["markdown__string_menu_json_code_run"].disabled = true;
             }
