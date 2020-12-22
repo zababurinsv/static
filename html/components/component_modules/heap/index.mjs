@@ -3,7 +3,7 @@ import emoji from '/static/html/components/component_modules/emoji/emoji.mjs'
 export default {
     set:(view,property,color,substrate,relation)=>{
         return new Promise(function (resolve, reject) {
-            console.log(`  ${emoji('new_moon')}`, substrate)
+            console.log(`  ${emoji('new_moon')}`, relation)
             heap(view, property,color,substrate ,relation, (event)=>{
                 console.log(`   ${emoji('full_moon')}`, event)
                 resolve(event)
