@@ -303,7 +303,6 @@ export default async (v,p,c,obj,r) => {
       const networkPeers = await ipfs.swarm.peers()
       const databasePeers = await ipfs.pubsub.peers(db.address.toString())
       const result = await query(db)
-      console.log('~~~~~~~~~~~~~~~~~~~~~~~~~>>>>', result)
       window.zb.fs['/body'].writeFile("/body/external.md", result[0].md)
       // window.zb.fs['/body'].syncfs(false, err => console.warn(err));
       if (dbType !== db.type || dbAddress !== db.address) {
