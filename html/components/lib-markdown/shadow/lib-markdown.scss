@@ -15,8 +15,8 @@ h1 {
     border-radius: 0.2vw;
 }
 
-.markdown__string_html_json_input, .markdown__string_views_json_input { width: 50%; height: -webkit-fill-available; }
-.markdown__string_html_json_output, .markdown__string_views_json_output { width: 50%; height: -webkit-fill-available; }
+.markdown__string_html_json_input, .markdown__string_views_json_input { width: 46vw; height: -webkit-fill-available; }
+.markdown__string_html_json_output, .markdown__string_views_json_output { width: auto; height: -webkit-fill-available; }
 
 .aside-menu {
     height: min-content;
@@ -232,7 +232,7 @@ h1 {
                  width: 49%;
              }
              & > .CodeMirror {
-                 width: 50%;
+                 width: 46.5vw;
                  height: 50vh;
              }
              &_output {
