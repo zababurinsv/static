@@ -33,8 +33,7 @@ export default ( obj ={ _:'default' } ) =>{
                 await tests('/tests/game.mjs','tests')
                 break
             default:
-                // await tests('/tests/wallet.mjs','tests')
-                console.warn('неизвестный источник', location)
+                await tests('/tests/index.mjs','tests')
                 break
         }
         let test = document.createElement('script');

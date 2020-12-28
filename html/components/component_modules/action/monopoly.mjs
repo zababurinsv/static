@@ -27,7 +27,7 @@ export default (views,property,color,substrate,relation)=>{
                 }))
                 break
             case 'player':
-                (async (views,property,color,substrate,relation)=>{
+                await (async (views,property,color,substrate,relation)=>{
 
                     let json = (await Json(views))
                     let selected = await json.select(substrate)
