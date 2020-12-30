@@ -81,21 +81,23 @@ System.start = async function(portTunnel, wsHostUrl, remoteAddr) {
 
   })
   System.self.this.wsClientForControll.addEventListener('message', function (message) {
-    //Only utf8 message used in Controll WS Socket
-    console.log('wsClientForControll.message', message.data)
-    var parsing = message.data.split(":");
-    //Managing new TCP connection on WS Server
-    if (parsing[0] === 'NC') {
-      //Identification of ID connection
-      var idConnection = parsing[1];
-      console.log('idConnection', idConnection)
-      System.self.this.wsClientData = new WebSocket(wsHostUrl+"/?id="+idConnection, 'tunnel-protocol')
-      // System.self.this.wsClientData.connect(wsHostUrl+"/?id="+idConnection, 'tunnel-protocol');
-      //Management of new WS Client for every TCP connection on WS Server
-      System.self.this.wsClientData.onopen = async function(_this){
-        await tcpConnection(System.self.this.wsClientData, System.self.remoteHost, System.self.remotePort);
+    return new Promise(function (resolve, reject) {
+      //Only utf8 message used in Controll WS Socket
+      console.log('wsClientForControll.message', message.data)
+      var parsing = message.data.split(":");
+      //Managing new TCP connection on WS Server
+      if (parsing[0] === 'NC') {
+        //Identification of ID connection
+        var idConnection = parsing[1];
+        console.log('idConnection', idConnection)
+        System.self.this.wsClientData = new WebSocket(wsHostUrl+"/?id="+idConnection, 'tunnel-protocol')
+        // System.self.this.wsClientData.connect(wsHostUrl+"/?id="+idConnection, 'tunnel-protocol');
+        //Management of new WS Client for every TCP connection on WS Server
+        System.self.this.wsClientData.onopen = async function(_this){
+          resolve(await tcpConnection(System.self.this.wsClientData, System.self.remoteHost, System.self.remotePort));
+        }
       }
-    }
+    })
   });
 
   System.self.this.wsClientForControll.onclose = function(event) {
@@ -122,31 +124,30 @@ function convertStringToUTF8ByteArray(str) {
 }
 
 async function tcpConnection(wsConn, host, port){
-  wsConn.onopen = () => {
-    let net = new WebTCP(host, 9999);
-    let options = {
-      encoding: "utf-8",
-      timeout: 0,
-      noDelay: true, // disable/enable Nagle algorithm
-      keepAlive: false, //default is false
-      initialDelay: 0 // for keepAlive. default is 0
-    }
-    let socket = net.createSocket(host, port, options);
-    bindSockets(wsConn, socket);
+  let net = new WebTCP(host, 5005);
+  let options = {
+    encoding: "utf-8",
+    timeout: 0,
+    noDelay: true, // disable/enable Nagle algorithm
+    keepAlive: false, //default is false
+    initialDelay: 0 // for keepAlive. default is 0
   }
+  let socket = net.createSocket(host, port, options);
+  bindSockets(wsConn, socket);
+  return true
 }
 
 
 let bindSockets = async function(wslocal, tcpconn) {
-
-  wslocal.addEventListener('message', (message) => {
+  console.log('[SYSTEM] --> bindSockets:');
+  wslocal.addEventListener('message', async (message) => {
 
     console.log('[SYSTEM] --> WS MESSAGE:',message);
 
-    if (message.type === 'utf8') {
-      return console.log('Error, Not supposed to received message ');
-    }
-    else if (message.type === 'binary') {
+    // if (message.type === 'utf8') {
+    //   return console.log('Error, Not supposed to received message ');
+    // }
+    // else if (message.type === 'binary') {
 
       // if (false === tcpconn.write(convertStringToUTF8ByteArray('hello world'))) {
         // wslocal.socket.pause();
@@ -162,18 +163,21 @@ let bindSockets = async function(wslocal, tcpconn) {
         // }
       // }
     // } else {
-      console.log('wslocal-----1------->>', message.data)
-      var reader = new FileReader();
+    //   var buffer = await message.data.arrayBuffer();
+    var buffer = await message.data.arrayBuffer();
+        console.log('wslocal-----1------->>', buffer)
+    // wsconn.send(buffer);
+    //   var reader = new FileReader();
+    //
+    //   reader.onload = function () {
+    //     console.log('wslocal---------2--->>', reader.result)
+    //     tcpconn.write(reader.result)
+    //     wslocal.send(reader.result);
+      // }
+    wslocal.send(buffer)
+      // console.log('wslocal-----44444------->>', message.data)
+      // reader.readAsBinaryString(message.data);
 
-      reader.onloadend = function () {
-        console.log('wslocal---------2--->>', reader.result)
-      }
-        tcpconn.write(reader.result)
-        wslocal.send(reader.result);
-      }
-
-      reader.readAsBinaryString(message.data);
-    // }
   });
   tcpconn.on("data", function(buffer) {
     //DEBUG
