@@ -117,7 +117,7 @@ export default {
                     })(obj, type, rest)
                     break
                 case 'getAll':
-                  await (async (obj, type, rest)=>{
+                   await (async (obj, type, rest)=>{
 
                         await connect({name:'mirrors', version: 1 },async (db)=>{
                             let object = []
