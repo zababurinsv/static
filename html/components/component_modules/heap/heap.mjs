@@ -1,6 +1,8 @@
 import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 import emoji from '/static/html/components/component_modules/emoji/emoji.mjs'
 import colorLog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
+
+
 let source = {}
 let target = {}
 source.staticProperty = {}
@@ -41,7 +43,7 @@ export default (view,property,color,substrate,relation,callback,origin) =>{
                             callback: callback
                         }
                         out(true)
-                    }else{
+                    } else {
                         // console.assert(false, source.staticProperty, target.staticProperty, '2')
                         console.log(`${emoji('last_quarter_moon')}`, {
                             relation:source.staticProperty[`${relation}`][0]['relation']
@@ -64,7 +66,7 @@ export default (view,property,color,substrate,relation,callback,origin) =>{
             }else{
                 if(isEmpty(target.staticProperty[`${relation}`])){
                     // console.assert(false, target.staticProperty[`${relation}`],'----->')
-                    console.log(`${emoji('first_quarter_moon')}`, {
+                    console.log(`${emoji('moon')[1][1]}`, {
                         _:"process",
                         relation:relation,
                     })
@@ -80,7 +82,7 @@ export default (view,property,color,substrate,relation,callback,origin) =>{
                     }
                     out(true)
                 }else{
-                    console.log(`${emoji('waning_crescent_moon')}`, {
+                    console.log(`  ${emoji('moon')[1][2]}`, {
                         property:property,
                         substrate:substrate,
                         relation:relation,

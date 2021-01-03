@@ -1,3 +1,4 @@
+
 const emojiMap = [
     { emoji: '💯', name: '100' },
     { emoji: '🔢', name: '1234' },
@@ -1432,11 +1433,21 @@ const emojiMap = [
     { emoji: '🇿🇲', name: 'zambia' },
     { emoji: '🇿🇼', name: 'zimbabwe' },
 ];
+
+export let moon = [
+    ['💥','⭐','🌟','◼️'],
+    ['🌕','🌔','🌓','🌒'],
+    ['🌑','🌘','🌗','🌖'],
+]
+
 export default (name)=>{
    let all = false
     switch (name) {
         case 'all':
             all = true
+            break
+        case 'moon':
+            return moon
             break
         default:
             for(let key in emojiMap){
