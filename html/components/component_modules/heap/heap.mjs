@@ -69,8 +69,12 @@ export default (view,property,color,substrate,relation,callback,origin) =>{
                         source:source
                     })
                     break
+                case 'close':
+                    delete target.staticProperty[`${relation}`]
+                    resolve(target.staticProperty)
+                    break
                 case 'await':
-                    if(!isEmpty(target.staticProperty[`${relation}`])){
+                    if(!isEmpty(target.staticProperty[`${relation}`])) {
                         target.staticProperty[`${relation}`].push({
                             callback: callback
                         })

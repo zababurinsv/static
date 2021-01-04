@@ -14,12 +14,14 @@ export default {
         console.log(`${emoji('moon')[0][0]}`, relation)
         return heap(view, 'await',color,{property, substrate} ,relation, callback)
     },
-    list:(view,property,color,substrate,relation, callback) => {
-        console.log(`${emoji('moon')[0][1]}`, 'list__')
-        return heap(view, 'list')
+    list:async (view,property,color,substrate,relation, callback) => {
+        let list = await heap(view, 'list')
+        console.log(`${emoji('moon')[0][1]}`, list)
+        return list
     },
-    close:(view,property,color,substrate,relation, callback)=>{
-        console.log(`${emoji('moon')[0][3]}`, relation)
+    close:async (view,property,color,substrate,relation, callback)=>{
+        let remove = await heap(view,'close',color,substrate,relation)
+        console.log(`${emoji('moon')[0][3]}`, remove)
         return true
     }
 }
