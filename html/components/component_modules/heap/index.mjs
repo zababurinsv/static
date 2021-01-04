@@ -14,9 +14,9 @@ export default {
         console.log(`${emoji('moon')[0][0]}`, relation)
         return heap(view, 'await',color,{property, substrate} ,relation, callback)
     },
-    list:(view,property,color,substrate,relation, callback)=>{
-        console.log(`${emoji('moon')[0][1]}`, relation)
-        return true
+    list:(view,property,color,substrate,relation, callback) => {
+        console.log(`${emoji('moon')[0][1]}`, 'list__')
+        return heap(view, 'list')
     },
     close:(view,property,color,substrate,relation, callback)=>{
         console.log(`${emoji('moon')[0][3]}`, relation)

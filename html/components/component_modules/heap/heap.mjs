@@ -62,28 +62,82 @@ export default (view,property,color,substrate,relation,callback,origin) =>{
             reject(obj)
         }
         try {
-            if(property === 'await') {
-                // concustomEventsole.assert(false, property, substrate)
-                if(!isEmpty(target.staticProperty[`${relation}`])){
-                   console.assert(false, 'должен быть один таргет объект в heap')
-                }else{
-                    if(isEmpty(source.staticProperty[`${relation}`])){
-                        // console.log(`${emoji('waxing_crescent_moon')}`, {
-                        //     relation: relation,
-                        // })
-                        // console.assert(false, source.staticProperty, target.staticProperty, '2')
-                        target.staticProperty[`${relation}`]= {
+            switch (property) {
+                case 'list':
+                    resolve({
+                        target:target,
+                        source:source
+                    })
+                    break
+                case 'await':
+                    if(!isEmpty(target.staticProperty[`${relation}`])){
+                        target.staticProperty[`${relation}`].push({
+                            callback: callback
+                        })
+                        resolve(true)
+                    } else {
+                        if(isEmpty(source.staticProperty[`${relation}`])) {
+                            target.staticProperty[`${relation}`] = []
+                            target.staticProperty[`${relation}`].push({
+                                callback: callback
+                            })
+                            resolve(true)
+                        } else {
+                            // console.assert(false, source.staticProperty, target.staticProperty, '2')
+                            console.log(`${emoji('last_quarter_moon')}`, {
+                                relation:source.staticProperty[`${relation}`][0]['relation']
+                            })
+
+                            while(!isEmpty(source.staticProperty[`${relation}`][0])){
+                                await callback({
+                                    view:source.staticProperty[`${relation}`][0]['view'],
+                                    property:source.staticProperty[`${relation}`][0]['property'],
+                                    color: source.staticProperty[`${relation}`][0]['color'],
+                                    substrate:source.staticProperty[`${relation}`][0]['substrate'],
+                                    relation: source.staticProperty[`${relation}`][0]['relation'],
+                                    callback: source.staticProperty[`${relation}`][0]['callback']
+                                })
+                                source.staticProperty[`${relation}`].shift()
+                            }
+                            out(true)
+                        }
+                    }
+                    break
+                default:
+                    if(isEmpty(target.staticProperty[`${relation}`])){
+                        // console.assert(false, target.staticProperty[`${relation}`],'----->')
+                        console.log(`  ${emoji('moon')[2][2]}`, {
+                            _:"process",
+                            relation:relation,
+                        })
+
+                        // console.assert(false, target.staticProperty[`${relation}`],'----->')
+                        source.staticProperty[`${relation}`] = {
+                            view:view,
+                            property:property,
+                            color:color,
+                            substrate:substrate,
+                            relation:relation,
                             callback: callback
                         }
                         out(true)
-                    } else {
-                        // console.assert(false, source.staticProperty, target.staticProperty, '2')
-                        console.log(`${emoji('last_quarter_moon')}`, {
-                            relation:source.staticProperty[`${relation}`][0]['relation']
+                    }else{
+                        console.log(`  ${emoji('moon')[1][2]}`, {
+                            property:property,
+                            substrate:substrate,
+                            relation:relation,
                         })
 
+                        source.staticProperty[`${relation}`] = {
+                            view:view,
+                            property:property,
+                            color:color,
+                            substrate:substrate,
+                            relation:relation,
+                            callback: callback
+                        }
                         while(!isEmpty(source.staticProperty[`${relation}`][0])){
-                           await callback({
+                            target.staticProperty[`${relation}`].callback({
                                 view:source.staticProperty[`${relation}`][0]['view'],
                                 property:source.staticProperty[`${relation}`][0]['property'],
                                 color: source.staticProperty[`${relation}`][0]['color'],
@@ -91,60 +145,13 @@ export default (view,property,color,substrate,relation,callback,origin) =>{
                                 relation: source.staticProperty[`${relation}`][0]['relation'],
                                 callback: source.staticProperty[`${relation}`][0]['callback']
                             })
-                             source.staticProperty[`${relation}`].shift()
+                            source.staticProperty[`${relation}`].shift()
                         }
                         out(true)
                     }
-                }
-            }else{
-                if(isEmpty(target.staticProperty[`${relation}`])){
-                    // console.assert(false, target.staticProperty[`${relation}`],'----->')
-                    console.log(`  ${emoji('moon')[2][2]}`, {
-                        _:"process",
-                        relation:relation,
-                    })
-
-                    // console.assert(false, target.staticProperty[`${relation}`],'----->')
-                    source.staticProperty[`${relation}`] = {
-                        view:view,
-                        property:property,
-                        color:color,
-                        substrate:substrate,
-                        relation:relation,
-                        callback: callback
-                    }
-                    out(true)
-                }else{
-                    console.log(`  ${emoji('moon')[1][2]}`, {
-                        property:property,
-                        substrate:substrate,
-                        relation:relation,
-                    })
-
-                    source.staticProperty[`${relation}`] = {
-                        view:view,
-                        property:property,
-                        color:color,
-                        substrate:substrate,
-                        relation:relation,
-                        callback: callback
-                    }
-                    while(!isEmpty(source.staticProperty[`${relation}`][0])){
-                       target.staticProperty[`${relation}`].callback({
-                            view:source.staticProperty[`${relation}`][0]['view'],
-                            property:source.staticProperty[`${relation}`][0]['property'],
-                            color: source.staticProperty[`${relation}`][0]['color'],
-                            substrate:source.staticProperty[`${relation}`][0]['substrate'],
-                            relation: source.staticProperty[`${relation}`][0]['relation'],
-                            callback: source.staticProperty[`${relation}`][0]['callback']
-                        })
-                         source.staticProperty[`${relation}`].shift()
-                    }
-                    out(true)
-                }
-
+                    break
             }
-        }catch (e) {
+        } catch (e) {
             err({
                 _:'object',
                 error: e
