@@ -2,16 +2,49 @@ import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.m
 import emoji from '/static/html/components/component_modules/emoji/emoji.mjs'
 import colorLog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
 
-
 let source = {}
 let target = {}
 source.staticProperty = {}
 target.staticProperty = {}
-source.staticProperty = new Proxy({}, {
+target.staticProperty = new Proxy({}, {
     get: (obj, prop) => {
+        console.log({
+            _:'get target',
+            prop:prop,
+            obj:obj,
+            value:obj[prop]
+        })
         return obj[prop];
     },
     set: (obj, prop, value) => {
+        console.log({
+            _:'set target',
+            prop:prop,
+            obj:obj,
+            value:value
+        })
+        obj[prop] = value;
+        return true
+    }
+});
+
+source.staticProperty = new Proxy({}, {
+    get: (obj, prop) => {
+        console.log({
+            _:'get source',
+            prop:prop,
+            obj:obj,
+            value:obj[prop]
+        })
+        return obj[prop];
+    },
+    set: (obj, prop, value) => {
+        console.log({
+            _:'set source',
+            prop:prop,
+            obj:obj,
+            value:value
+        })
         if(isEmpty(obj[prop])){
             obj[prop] = []
         }
@@ -29,7 +62,7 @@ export default (view,property,color,substrate,relation,callback,origin) =>{
             reject(obj)
         }
         try {
-            if(property === 'await'){
+            if(property === 'await') {
                 // concustomEventsole.assert(false, property, substrate)
                 if(!isEmpty(target.staticProperty[`${relation}`])){
                    console.assert(false, 'должен быть один таргет объект в heap')
@@ -66,7 +99,7 @@ export default (view,property,color,substrate,relation,callback,origin) =>{
             }else{
                 if(isEmpty(target.staticProperty[`${relation}`])){
                     // console.assert(false, target.staticProperty[`${relation}`],'----->')
-                    console.log(`${emoji('moon')[1][1]}`, {
+                    console.log(`  ${emoji('moon')[2][2]}`, {
                         _:"process",
                         relation:relation,
                     })
