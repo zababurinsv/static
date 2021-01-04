@@ -1,50 +1,54 @@
 import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 import emoji from '/static/html/components/component_modules/emoji/emoji.mjs'
 import colorLog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
-
 let source = {}
 let target = {}
+let remove = {}
 source.staticProperty = {}
 target.staticProperty = {}
+remove.staticProperty = {}
 target.staticProperty = new Proxy({}, {
     get: (obj, prop) => {
-        console.log({
-            _:'get target',
-            prop:prop,
-            obj:obj,
-            value:obj[prop]
-        })
+        // console.log({
+        //     _:'get target',
+        //     prop:prop,
+        //     obj:obj,
+        //     value:obj[prop]
+        // })
         return obj[prop];
     },
     set: (obj, prop, value) => {
-        console.log({
-            _:'set target',
-            prop:prop,
-            obj:obj,
-            value:value
-        })
-        obj[prop] = value;
+        // console.log({
+        //     _:'set target',
+        //     prop:prop,
+        //     obj:obj,
+        //     value:value
+        // })
+        if(isEmpty(obj[prop])){
+            obj[prop] = []
+        }
+        obj[prop].push(value);
         return true
     }
 });
 
 source.staticProperty = new Proxy({}, {
     get: (obj, prop) => {
-        console.log({
-            _:'get source',
-            prop:prop,
-            obj:obj,
-            value:obj[prop]
-        })
+        // console.log({
+        //     _:'get source',
+        //     prop:prop,
+        //     obj:obj,
+        //     value:obj[prop]
+        // })
         return obj[prop];
     },
     set: (obj, prop, value) => {
-        console.log({
-            _:'set source',
-            prop:prop,
-            obj:obj,
-            value:value
-        })
+        // console.log({
+        //     _:'set source',
+        //     prop:prop,
+        //     obj:obj,
+        //     value:value
+        // })
         if(isEmpty(obj[prop])){
             obj[prop] = []
         }
@@ -66,34 +70,89 @@ export default (view,property,color,substrate,relation,callback,origin) =>{
                 case 'list':
                     resolve({
                         target:target,
-                        source:source
+                        source:source,
+                        remove:remove
                     })
                     break
                 case 'close':
-                    delete target.staticProperty[`${relation}`]
-                    resolve(target.staticProperty)
+                    isEmpty(source.staticProperty[`${relation}`])
+                      ? delete target.staticProperty[`${relation}`]
+                      : remove.staticProperty[`${relation}`] = true
+                      resolve(true)
                     break
                 case 'await':
                     if(!isEmpty(target.staticProperty[`${relation}`])) {
-                        target.staticProperty[`${relation}`].push({
+                        target.staticProperty[`${relation}`] = {
                             callback: callback
-                        })
+                        }
                         resolve(true)
                     } else {
                         if(isEmpty(source.staticProperty[`${relation}`])) {
-                            target.staticProperty[`${relation}`] = []
-                            target.staticProperty[`${relation}`].push({
+                            target.staticProperty[`${relation}`] = {
                                 callback: callback
-                            })
+                            }
                             resolve(true)
                         } else {
-                            // console.assert(false, source.staticProperty, target.staticProperty, '2')
-                            console.log(`${emoji('last_quarter_moon')}`, {
-                                relation:source.staticProperty[`${relation}`][0]['relation']
-                            })
-
+                            console.log(`  ${emoji('moon')[2][1]}`, source.staticProperty[`${relation}`][0]['relation'])
+                            target.staticProperty[`${relation}`] = {
+                                callback: callback
+                            }
+                            let item = target.staticProperty[`${relation}`]
                             while(!isEmpty(source.staticProperty[`${relation}`][0])){
-                                await callback({
+                                for(let i = 0; i < item.length;i++){
+                                    await item[i].callback({
+                                        view:source.staticProperty[`${relation}`][0]['view'],
+                                        property:source.staticProperty[`${relation}`][0]['property'],
+                                        color: source.staticProperty[`${relation}`][0]['color'],
+                                        substrate:source.staticProperty[`${relation}`][0]['substrate'],
+                                        relation: source.staticProperty[`${relation}`][0]['relation'],
+                                        callback: source.staticProperty[`${relation}`][0]['callback']
+                                    })
+
+                                }
+                                source.staticProperty[`${relation}`].shift()
+                            }
+                            if(remove.staticProperty[`${relation}`]) {
+                                delete target.staticProperty[`${relation}`]
+                                delete remove.staticProperty[`${relation}`]
+                            }
+                            delete source.staticProperty[`${relation}`]
+                            resolve(true)
+                        }
+                    }
+                    break
+                default:
+                    if(isEmpty(target.staticProperty[`${relation}`])) {
+                        console.log(`  ${emoji('moon')[2][3]}`, {
+                            _:"process",
+                            relation:relation,
+                        })
+                        source.staticProperty[`${relation}`] = {
+                            view:view,
+                            property:property,
+                            color:color,
+                            substrate:substrate,
+                            relation:relation,
+                            callback: callback
+                        }
+                        resolve(true)
+                    } else {
+                        console.log(`  ${emoji('moon')[1][3]}`, {
+                            property:property,
+                            substrate:substrate,
+                            relation:relation,
+                        })
+                        source.staticProperty[`${relation}`] = {
+                            view:view,
+                            property:property,
+                            color:color,
+                            substrate:substrate,
+                            relation:relation,
+                            callback: callback
+                        }
+                        while(!isEmpty(source.staticProperty[`${relation}`][0])) {
+                            target.staticProperty[`${relation}`].forEach(item => {
+                                item.callback({
                                     view:source.staticProperty[`${relation}`][0]['view'],
                                     property:source.staticProperty[`${relation}`][0]['property'],
                                     color: source.staticProperty[`${relation}`][0]['color'],
@@ -101,57 +160,15 @@ export default (view,property,color,substrate,relation,callback,origin) =>{
                                     relation: source.staticProperty[`${relation}`][0]['relation'],
                                     callback: source.staticProperty[`${relation}`][0]['callback']
                                 })
-                                source.staticProperty[`${relation}`].shift()
-                            }
-                            out(true)
-                        }
-                    }
-                    break
-                default:
-                    if(isEmpty(target.staticProperty[`${relation}`])){
-                        // console.assert(false, target.staticProperty[`${relation}`],'----->')
-                        console.log(`  ${emoji('moon')[2][2]}`, {
-                            _:"process",
-                            relation:relation,
-                        })
-
-                        // console.assert(false, target.staticProperty[`${relation}`],'----->')
-                        source.staticProperty[`${relation}`] = {
-                            view:view,
-                            property:property,
-                            color:color,
-                            substrate:substrate,
-                            relation:relation,
-                            callback: callback
-                        }
-                        out(true)
-                    }else{
-                        console.log(`  ${emoji('moon')[1][2]}`, {
-                            property:property,
-                            substrate:substrate,
-                            relation:relation,
-                        })
-
-                        source.staticProperty[`${relation}`] = {
-                            view:view,
-                            property:property,
-                            color:color,
-                            substrate:substrate,
-                            relation:relation,
-                            callback: callback
-                        }
-                        while(!isEmpty(source.staticProperty[`${relation}`][0])){
-                            target.staticProperty[`${relation}`].callback({
-                                view:source.staticProperty[`${relation}`][0]['view'],
-                                property:source.staticProperty[`${relation}`][0]['property'],
-                                color: source.staticProperty[`${relation}`][0]['color'],
-                                substrate:source.staticProperty[`${relation}`][0]['substrate'],
-                                relation: source.staticProperty[`${relation}`][0]['relation'],
-                                callback: source.staticProperty[`${relation}`][0]['callback']
-                            })
+                            });
                             source.staticProperty[`${relation}`].shift()
                         }
-                        out(true)
+                        if(remove.staticProperty[`${relation}`]) {
+                            delete target.staticProperty[`${relation}`]
+                            delete remove.staticProperty[`${relation}`]
+                        }
+                       delete source.staticProperty[`${relation}`]
+                       resolve(true)
                     }
                     break
             }
