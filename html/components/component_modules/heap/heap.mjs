@@ -137,11 +137,7 @@ export default (view,property,color,substrate,relation,callback,origin) =>{
                         }
                         resolve(true)
                     } else {
-                        console.log(`  ${emoji('moon')[1][3]}`, {
-                            property:property,
-                            substrate:substrate,
-                            relation:relation,
-                        })
+                        console.log(`  ${emoji('moon')[1][3]}`, relation)
                         source.staticProperty[`${relation}`] = {
                             view:view,
                             property:property,
