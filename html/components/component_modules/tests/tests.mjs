@@ -1,4 +1,5 @@
 let object = {}
+import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 import { tests } from '/static/html/components/component_modules/loader/loader.mjs'
 export default ( obj ={ _:'default' } ) =>{
     return new Promise(async (resolve, reject) =>{
@@ -33,7 +34,10 @@ export default ( obj ={ _:'default' } ) =>{
                 await tests('/tests/game.mjs','tests')
                 break
             default:
-                await tests('/tests/index.mjs','tests')
+                let pathname = location.pathname.replace(/\//gi,'')
+                await tests(isEmpty(pathname)
+                  ?'/tests/index.mjs'
+                  :`${location.origin}/${pathname}/test.${pathname}.mjs`,'tests')
                 break
         }
         let test = document.createElement('script');
