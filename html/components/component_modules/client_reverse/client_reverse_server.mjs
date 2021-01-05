@@ -124,8 +124,6 @@ System.self = {
 System.url = ''
 System.wst_client_reverse = async function() {
   System.state.wst_client_reverse = true
-  // console.log('WebSocket', await tunnel())
-  // this.wsClientForControll = new WebSocket("ws://tunnel-reverse.herokuapp.com");
   this.wsClientForControll = new WebSocketClient();
   System.self.this = this
   System.state.wst_client_reverse = false
@@ -144,11 +142,7 @@ System.start = function(portTunnel, wsHostUrl, remoteAddr) {
 
   System.url = `${wsHostUrl}/?dst=localhost:${portTunnel}`;
   console.log("[SYSTEM] - Connecting to", wsHostUrl)
-  console.log("[SYSTEM] - Connecting to", wsHostUrl);
   console.log("[SYSTEM] --> exposing", remoteAddr, "on port", portTunnel);
-  console.log('ddddddddddd', System.url)
-  //Connection to Controll WS Server
-
   System.self.this.wsClientForControll.connect(System.url, 'tunnel-protocol');
    System.self.this.wsClientForControll.on('connect', (function(_this){
      return function(wsConnectionForControll) {
