@@ -8,8 +8,8 @@ export default async (v,p,c,obj,r) => {
         obj.this.shadowRoot.querySelector('.board').addEventListener("touchstart", manager, false);
         obj.this.shadowRoot.querySelector('.board').addEventListener("touchend", manager, false);
         
-        const userAgent = new UserAgent.item();
-        console.log(userAgent.data);
+        // const userAgent = new UserAgent.item();
+        // console.log(userAgent.data);
 
     function DragContainer(container, type) {
         this.element = container;

@@ -1,8 +1,10 @@
 import action from '/static/html/components/component_modules/action/action.mjs'
 import utils from '/static/html/components/component_modules/utils/utils.mjs'
+import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
+import Feed from '/static/html/components/component_modules/feed/module/feed-bundle.mjs'
+let feed = Feed['default']
 export default  (obj, func, ...args)=>{
-    return new Promise( function (resolve, reject) {
-        bundle['default'](obj,'export', async function (error, config) {
+    return new Promise( async (resolve, reject) => {
             let out = (obj) => {
                 //console.log('~~~ out router ~~~')
                 resolve(obj)
@@ -13,7 +15,7 @@ export default  (obj, func, ...args)=>{
             }
             switch (func) {
                 case 'create':
-                    (async (obj, props,data) => {
+                   await (async (obj, props,data) => {
                         try {
                             console.log(`${obj['input']}[${func}][(feed)${obj[props]}]`)
                             let news = {}
@@ -21,7 +23,7 @@ export default  (obj, func, ...args)=>{
                             let item = {}
                             switch (obj[props]) {
                                 case 'channel':
-                                    if(config['isEmpty'](obj['name'])){
+                                    if(isEmpty(obj['name'])){
                                        obj['name'] = 'default'
                                     }
                                     switch(obj['name']){
@@ -44,7 +46,7 @@ export default  (obj, func, ...args)=>{
                                                 },
                                                 category:'product'
                                             }
-                                            feed = new config['Feed'](news['option']);
+                                            feed = new feed['feed'](news['option']);
                                             feed.addCategory("product");
                                             news['json'] = feed.json1()
                                             news['rss'] = feed.rss2()
@@ -72,7 +74,7 @@ export default  (obj, func, ...args)=>{
                                                 },
                                                 category:'education'
                                             }
-                                            feed = new config['Feed'](news['option']);
+                                            feed = new feed['feed'](news['option']);
                                             feed.addCategory("education");
                                             news['json'] = feed.json1()
                                             news['rss'] = feed.rss2()
@@ -82,10 +84,10 @@ export default  (obj, func, ...args)=>{
                                     out(news)
                                     break
                                 case 'item':
-                                    feed = new config['Feed'](obj['feed']['option']);
+                                    feed = new feed['feed'](obj['feed']['option']);
 
 
-                                    if(config['isEmpty'](obj['data']['rss'])){
+                                    if(isEmpty(obj['data']['rss'])){
                                         obj['data']['rss'] = 'default'
                                     }
                                     switch (obj['data']['rss']) {
@@ -124,7 +126,7 @@ export default  (obj, func, ...args)=>{
                                     out(obj)
                                     break
                                 case 'feed':
-                                   let newFeed = new config['Feed'](obj['feed']['option']);
+                                   let newFeed = new feed['feed'](obj['feed']['option']);
 
                                     // console.log(obj['items'])
                                     // console.assert(false, obj['items'][0]['title'])
@@ -169,13 +171,13 @@ export default  (obj, func, ...args)=>{
                     })(obj, args[0], args[1], args[2], args[3])
                     break
                 case 'convert':
-                    (async (obj, props,data) => {
+                   await (async (obj, props,data) => {
                         try {
                             console.log(`${obj['input']}[${func}][(feed)${obj[props]}]`)
 
                             switch (obj[props]) {
                                 case 'rss':
-                                    const feed = new config['Feed'](obj['data']);
+                                    const feed = new feed['feed'](obj['data']);
                                     out(feed.rss2())
                                     break
                                 case 'light':
@@ -186,20 +188,20 @@ export default  (obj, func, ...args)=>{
                                     break
                             }
 
-                            // console.assert(false, config['Feed'])
+                            // console.assert(false, feed['feed'])
 
 
                         } catch (e) { err(e) }
                     })(obj, args[0], args[1], args[2], args[3])
                     break
                 case 'get':
-                    (async (obj, props,data) => {
+                   await (async (obj, props,data) => {
                         try {
                             console.log(`${obj['input']}[${func}][(feed)${obj[props]}]`)
                             switch (obj[props]) {
                                 case 'yandex':
                                     const CORS_PROXY = "https://cors-anywhere.herokuapp.com/"
-                                    let parser = new config['rssParser']();
+                                    let parser = new feed['parser']();
                                     parser.parseURL(CORS_PROXY + 'https://news.yandex.ru/culture.rss', function(err, feed) {
 
 
@@ -250,14 +252,14 @@ export default  (obj, func, ...args)=>{
                                     break
                             }
 
-                            // console.assert(false, config['Feed'])
+                            // console.assert(false, feed['feed'])
 
 
                         } catch (e) { err(e) }
                     })(obj, args[0], args[1], args[2], args[3])
                     break
                 case 'search':
-                    (async (obj, props,data) => {
+                  await  (async (obj, props,data) => {
                         try {
                             console.log(`${obj['input']}[${func}][(feed)${obj[props]}]`)
                             switch (obj[props]) {
@@ -288,7 +290,7 @@ export default  (obj, func, ...args)=>{
                     })(obj, args[0], args[1], args[2], args[3])
                     break
                 case 'find':
-                    (async (obj, props,data) => {
+                   await (async (obj, props,data) => {
                         try {
                             console.log(`${obj['input']}[${func}][(feed)${obj[props]}]`)
                             switch (obj[props]) {
@@ -348,6 +350,5 @@ export default  (obj, func, ...args)=>{
                     err(`новая функция ${func}`)
                     break
             }
-        })
     })
 }

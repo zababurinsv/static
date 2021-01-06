@@ -1,126 +1,125 @@
 import conf from '/static/html/components/component_modules/matcher/matcher/this/database/config/index.mjs'
 import template from '/static/html/components/component_modules/template/template.mjs'
 import utils from '/static/html/components/component_modules/utils/utils.mjs'
+import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
+import Axios from '/static/html/components/component_modules/axios/axios.mjs'
+let axios = Axios['default']
+
 function webdav(obj, path,node, method) {
-    return new Promise((resolve, reject) => {
-        bundle['default'](obj,'export', async function (error, config) {
+    return new Promise(async (resolve, reject) => {
+        function setData( data) {
+            return new Promise((resolve, reject) => {
+                let formData  = new FormData();
+                for(let name in data) {
+                    formData.append(name, data[name]);
+                }
+                resolve(formData)
+            })
+        }
+        switch (method) {
+            case 'GET':
+                console.log('~~~~~~~~~~~~GET~~~~~~~~~~~~~~~~',`${node}${path}`)
+                axios.get(`${node}${path}`)
+                    .then(function (response) {
+                        obj = {}
+                        obj['get_n'] = []
+                        obj['mongo'] = response['data']
+                        obj['get_n'].push(response['data'])
+                        resolve(obj)
+                    })
+                    .catch(function (error) {
+                        // handle error
+                        console.log(error);
 
-            function setData( data) {
-                return new Promise((resolve, reject) => {
-                    let formData  = new FormData();
-                    for(let name in data) {
-                        formData.append(name, data[name]);
+                    })
+                    .finally(function () {
+                        resolve({mongo:'null'})
+                    });
+
+                break
+            case 'POST':
+                console.log('~~~~~~~~~~~~POST~~~~~~~~~~~~~~~~',`${node}${path}`)
+              let formData = await setData(obj)
+                fetch(`${node}${path}`, {
+                    method: method,
+                    headers: {
+                        'mode': 'no-cors'
+                    },
+                    body: formData
+                }).then(function (response) {
+                    if (!response.ok) {
+                        throw new Error('HTTP error, status = ' + response.status)
+                    } else {
+                        return response.json()
                     }
-                    resolve(formData)
                 })
-            }
-            switch (method) {
-                case 'GET':
-                    console.log('~~~~~~~~~~~~GET~~~~~~~~~~~~~~~~',`${node}${path}`)
-                    config['axios'].get(`${node}${path}`)
-                        .then(function (response) {
-                            obj = {}
-                            obj['get_n'] = []
-                            obj['mongo'] = response['data']
-                            obj['get_n'].push(response['data'])
-                            resolve(obj)
-                        })
-                        .catch(function (error) {
-                            // handle error
-                            console.log(error);
-
-                        })
-                        .finally(function () {
-                            resolve({mongo:'null'})
-                        });
-
-                    break
-                case 'POST':
-                    console.log('~~~~~~~~~~~~POST~~~~~~~~~~~~~~~~',`${node}${path}`)
-                  let formData = await setData(obj)
-                    fetch(`${node}${path}`, {
-                        method: method,
-                        headers: {
-                            'mode': 'no-cors'
-                        },
-                        body: formData
-                    }).then(function (response) {
-                        if (!response.ok) {
-                            throw new Error('HTTP error, status = ' + response.status)
-                        } else {
-                            return response.json()
-                        }
+                    .then(function (json) {
+                        obj = []
+                        obj['get_n'] = []
+                        obj['mongo'] = json
+                        obj['get_n'].push(json)
+                        resolve(obj)
                     })
-                        .then(function (json) {
-                            obj = []
-                            obj['get_n'] = []
-                            obj['mongo'] = json
-                            obj['get_n'].push(json)
-                            resolve(obj)
-                        })
-                        .catch(function (error) {
-                            console.warn( 'webDav', error, `${node}${path}`)
-                            resolve({mongo:'null'})
-                        })
-                    break
-                case 'PUT':
-                    console.log('~~~~~~~~~~~~PUT~~~~~~~~~~~~~~~~',`${node}${path}`)
-                    let update = await setData(obj)
-                    // console.assert(false, obj, `${node}${path}`)
-                    fetch(`${node}${path}`, {
-                        method: method,
-                        headers: {
-                            'mode': 'no-cors'
-                        },
-                        body: update
-                    }).then(function (response) {
-                        if (!response.ok) {
-                            throw new Error('HTTP error, status = ' + response.status)
-                        } else {
-                            return response.json()
-                        }
+                    .catch(function (error) {
+                        console.warn( 'webDav', error, `${node}${path}`)
+                        resolve({mongo:'null'})
                     })
-                        .then(function (json) {
-                            obj['get_n'] = []
-                            obj['mongo'] = json
-                            obj['get_n'].push(json)
-                            resolve(obj)
-                        })
-                        .catch(function (error) {
-                            console.warn( 'webDav', error, `${node}${path}`)
-                            resolve({mongo:'null'})
-                        })
-                    break
-                case 'DELETE':
-                    console.log('~~~~~~~~~~~~DELETE~~~~~~~~~~~~~~~~',`${node}${path}`)
-                    fetch(`${node}${path}`, {
-                        method: method,
-                        headers: {
-                            'mode': 'no-cors'
-                        },
-                    }).then(function (response) {
-                        if (!response.ok) {
-                            throw new Error('HTTP error, status = ' + response.status)
-                        } else {
-                            return response.json()
-                        }
+                break
+            case 'PUT':
+                console.log('~~~~~~~~~~~~PUT~~~~~~~~~~~~~~~~',`${node}${path}`)
+                let update = await setData(obj)
+                // console.assert(false, obj, `${node}${path}`)
+                fetch(`${node}${path}`, {
+                    method: method,
+                    headers: {
+                        'mode': 'no-cors'
+                    },
+                    body: update
+                }).then(function (response) {
+                    if (!response.ok) {
+                        throw new Error('HTTP error, status = ' + response.status)
+                    } else {
+                        return response.json()
+                    }
+                })
+                    .then(function (json) {
+                        obj['get_n'] = []
+                        obj['mongo'] = json
+                        obj['get_n'].push(json)
+                        resolve(obj)
                     })
-                        .then(function (json) {
+                    .catch(function (error) {
+                        console.warn( 'webDav', error, `${node}${path}`)
+                        resolve({mongo:'null'})
+                    })
+                break
+            case 'DELETE':
+                console.log('~~~~~~~~~~~~DELETE~~~~~~~~~~~~~~~~',`${node}${path}`)
+                fetch(`${node}${path}`, {
+                    method: method,
+                    headers: {
+                        'mode': 'no-cors'
+                    },
+                }).then(function (response) {
+                    if (!response.ok) {
+                        throw new Error('HTTP error, status = ' + response.status)
+                    } else {
+                        return response.json()
+                    }
+                })
+                    .then(function (json) {
 
-                            resolve({delete:'ok'})
-                        })
-                        .catch(function (error) {
-                            console.warn( 'webDav', error, `${node}${path}`)
-                            resolve({mongo:'null'})
-                        })
-                    break
-                default:
-                    console.warn(`необрабатываемый тип запроса`, obj[props])
-                    break
-            }
-
-        })
-
+                        resolve({delete:'ok'})
+                    })
+                    .catch(function (error) {
+                        console.warn( 'webDav', error, `${node}${path}`)
+                        resolve({mongo:'null'})
+                    })
+                break
+            default:
+                console.warn(`необрабатываемый тип запроса`, obj[props])
+                break
+        }
     })
 }
 
@@ -141,7 +140,7 @@ export default  (obj, func, ...args)=>{
                         // console.log(`app(${func}[(${obj['input']})${obj[props]}]property)`)
                         switch (obj[props]) {
                             case 'request':
-                                (async (obj, props,data) => {
+                              await  (async (obj, props,data) => {
                                     try {
 
                                         out(await webdav(obj['data'], '/setMail', conf['store']['web'], 'POST'))
@@ -198,14 +197,12 @@ export default  (obj, func, ...args)=>{
                 })(obj, args[0], args[1], args[2], args[3])
                 break
             case 'post':
-                bundle['default'](obj,'export', async function (error, config) {
-
                     (async (obj, props,data) => {
                         try {
                             // console.log(`app(${func}[(${obj['input']})${obj[props]}]property)`)
                             switch (obj[props]) {
                                 case 'list':
-                                    (async (obj, props,data) => {
+                                   await (async (obj, props,data) => {
                                         try {
 
                                             if(!obj['path']){
@@ -214,7 +211,7 @@ export default  (obj, func, ...args)=>{
 
                                             let object = await webdav(obj['data'], obj['path'], conf['store']['web'], 'POST')
                                             let moderatorArray = []
-                                            if(config['isEmpty'](object['mongo'])){
+                                            if(isEmpty(object['mongo'])){
 
 
                                             }else{
@@ -246,8 +243,6 @@ export default  (obj, func, ...args)=>{
 
                         } catch (e) { err(e) }
                     })(obj, args[0], args[1], args[2], args[3])
-
-                })
                 break
             case 'get':
                 (async (obj, props,data) => {
@@ -255,7 +250,7 @@ export default  (obj, func, ...args)=>{
                         // console.log(`app(${func}[(${obj['input']})${obj[props]}]property)`)
                         switch (obj[props]) {
                             case 'components':
-                                (async (obj, props,data) => {
+                              await  (async (obj, props,data) => {
                                     try {
 
                                         if(!obj['path']){
@@ -275,7 +270,7 @@ export default  (obj, func, ...args)=>{
                                 })(obj, args[0], args[1], args[2], args[3])
                                 break
                             case 'about':
-                                (async (obj, props,data) => {
+                               await (async (obj, props,data) => {
                                     try {
 
                                         if(!obj['path']){
@@ -293,7 +288,7 @@ export default  (obj, func, ...args)=>{
                                 })(obj, args[0], args[1], args[2], args[3])
                                 break
                             case 'aboutString':
-                                (async (obj, props,data) => {
+                               await (async (obj, props,data) => {
                                     try {
 
                                         if(!obj['path']){

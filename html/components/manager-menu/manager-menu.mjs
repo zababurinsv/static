@@ -4,7 +4,7 @@ import Menu from '/static/html/components/component_modules/monopoly/menu.mjs'
 import player from '/static/html/components/manager-menu/template/player.mjs'
 import events from '/static/html/components/component_modules/CustomEvent/index.mjs'
 import iframe from '/static/html/components/component_modules/iframe/iframe.mjs'
-import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty_t.mjs'
+import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 customElements.define('manager-menu',
     class extends HTMLElement {
         constructor () {

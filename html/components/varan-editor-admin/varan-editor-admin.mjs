@@ -1,1 +1,741 @@
-import Editor from"/static/html/components/component_modules/editor/editor.mjs";import Slider from"/static/html/components/component_modules/varan-slider/varan-slider.mjs";import store from"/static/html/components/component_modules/staticProperty/staticProperty.mjs";customElements.define("varan-editor-admin",class extends HTMLElement{static get observedAttributes(){return["feed"]}constructor(){super();let t=[],e=[],r=[],l=[];function s(e,r){return new Promise(function(r,l){if(e.verify=[],e.this.getAttribute("preset"))switch(e.this.getAttribute("preset")){case"default":e["path-template"]=`/static/html/components/${e.component}/template/${e.component}.html`,e.preset=`${e.this.getAttribute("preset")}`,e.verify.preset=!0;break;default:e["path-template"]=`/static/html/components/${e.component}/template/${e.this.getAttribute("preset")}.html`,e.preset=`${e.this.getAttribute("preset")}`,e.verify.preset=!0}else e["path-template"]=`/static/html/components/${e.component}/${e.component}.html`,e.verify.preset=!1;fetch(e["path-template"]).then(function(t){if(t.ok)return t.text()}).then(function(l){let s=(new DOMParser).parseFromString(l,"text/html");e.template=s.getElementsByTagName("template")[0].content.cloneNode(!0),function(e){return new Promise(function(r,l){e["path-external"]=`/static/html/components/${e.component}/external/${e.component}-external.html`,fetch(e["path-external"]).then(function(t){return!1===t.ok?t.ok:t.text()}).then(function(l){if(!1===l);else{let s=new DOMParser,n=s.parseFromString(l,"text/html");e.external=n.querySelectorAll("section"),function(e){return new Promise(function(r,l){e["external-property"]=t["external-property"];let s=[],n=[],i=[];for(let t=0;t<e.external.length;t++){for(let r=0;r<e.external[t].children.length;r++)switch(e.external[t].children[r].tagName){case"SCRIPT":e.external[t].getAttribute("id")&&(n.script=e.external[t].children[r]);break;case"COMPONENT-ID":n.id=e.external[t].children[r].innerText;break;case"COMPONENT-ACTION":for(let l=0;l<e.external[t].children[r].children.length;l++)i.push(e.external[t].children[r].children[l].innerText);n.actions=i}s.push(n),n=[]}e["external-property"]=s,r(e)}).catch(t=>{})}(e).then(t=>{0===t["external-property"].length?r(t):function(t){return new Promise(function(e,r){t["words-action"]=[];let l=[];for(let r=0;r<t["external-property"].length;r++){for(let e=0;e<t["external-property"][r].actions.length;e++)for(let s=0;s<t.words.length;s++)-1!==t["external-property"][r].actions[e].indexOf(t.words[s])&&("shadowRoot"!==t.words[s]&&"shadow"!==t.words[e]||(l.shadow=!0),"light"!==t.words[s]&&"лайт"!==t.words[e]||(l.light=!0),"editor"===t.words[s]&&(l.editor=!0),"слайдер"===t.words[s]&&(l["editor-slider"]=!0),"swap"===t.words[s]&&(l.swap=!0));t["words-action"]=l;for(let e in t["external-property"])for(let r in t["external-property"][e])switch(r){case"id":let l=document.createElement(t["external-property"][e][r]);l.setAttribute("type","external"),t.this.appendChild(l)}e(t)}})}(t).then(t=>{r(t)})})}}).catch(t=>{throw t})})}(e).then(t=>{(function(t,e,r){return new Promise(function(e,r){t["template-shadow"]=[],t["template-light"]=[];let l=[];l.swap=!1,l.blog=!1,l.external=!1,l.light=!1,l.slider=!1,l.one=!1,l.sliderText=!1,l.text=!1;for(let e=0;e<t.type.length;e++){if(-1!==t.type[e].indexOf("slider")&&t.type[e].split("-").length>1){l.slider=!0;for(let r in t.type[e].split("-"))switch(t.type[e].split("-")[r]){case"one":l.one=!0}}if(t.type[e].length)if(t.type[e].split("-").length>1)switch(t.type[e].split("-")[0]){case"blog":l.blog=!0;break;default:console.log("типы не отслеживаются",t.type[e])}else switch(t.type[e]){case"swap":l.swap=!0;break;case"external":l.external=!0;break;case"light":l.light=!0;break;case"slider":l.slider=!0;break;case"sliderText":l.sliderText=!0;break;case"text":l.text=!0}}if(t.this.getAttribute("parent")&&(t.parent=t.this.getAttribute("parent")),!0===l.swap){for(let e=0;e<t.this.children.length;e++)1===t.this.children[e].tagName.split("-").length?("view"===t.this.children[e].slot&&(t.this.children[e].className="wall"),t["template-light"].push(t.this.children[e])):!0===t.getAttribute(t.this.children[e],"light","template")?(t.this.children[e].setAttribute("type",`${t.this.children[e].getAttribute("type")}-external`),!1===t.parent?t.slot?t.this.children[e].setAttribute("parent",`${t.slot}`):t.this.children[e].setAttribute("parent",`${t.component}`):t.this.children[e].setAttribute("parent",`${t.parent}`),n(t.this.children[e],t),t["template-light"].push(t.this.children[e])):(t.this.children[e].setAttribute("type",`${t.this.children[e].getAttribute("type")}-external`),!1===t.parent?t.slot?t.this.children[e].setAttribute("parent",`${t.slot}`):t.this.children[e].setAttribute("parent",`${t.component}`):t.this.children[e].setAttribute("parent",`${t.parent}`),n(t.this.children[e],t),t["template-shadow"].push(t.this.children[e]));for(let e=0;e<t.template.children.length;e++)1===t.template.children[e].tagName.split("-").length?("view"===t.template.children[e].slot&&(t.template.children[e].className="wall"),t["template-light"].push(t.template.children[e])):!0===t.getAttribute(t.template.children[e],"light","template")?(t.template.children[e].setAttribute("type",`${t.template.children[e].getAttribute("type")}-external`),!1===t.parent?t.slot?t.this.children[e].setAttribute("parent",`${t.slot}`):t.this.children[e].setAttribute("parent",`${t.component}`):t.this.children[e].setAttribute("parent",`${t.parent}`),n(t.template.children[e],t),t["template-light"].push(t.template.children[e])):(t.template.children[e].setAttribute("type",`${t.template.children[e].getAttribute("type")}-external`),!1===t.parent?t.slot?t.this.children[e].setAttribute("parent",`${t.slot}`):t.this.children[e].setAttribute("parent",`${t.component}`):t.this.children[e].setAttribute("parent",`${t.parent}`),n(t.template.children[e],t),t["template-shadow"].push(t.template.children[e]))}else{for(let e=0;e<t.this.children.length;e++)1===t.this.children[e].tagName.split("-").length?("view"===t.this.children[e].slot&&(t.this.children[e].className="wall"),t["template-shadow"].push(t.this.children[e])):!0===t.getAttribute(t.this.children[e],"light","template")?(!1===t.parent?t.slot?t.this.children[e].setAttribute("parent",`${t.slot}`):t.this.children[e].setAttribute("parent",`${t.component}`):t.this.children[e].setAttribute("parent",`${t.parent}`),n(t.this.children[e],t),t["template-shadow"].push(t.this.children[e])):(!1===t.parent?t.slot?t.this.children[e].setAttribute("parent",`${t.slot}`):t.this.children[e].setAttribute("parent",`${t.component}`):t.this.children[e].setAttribute("parent",`${t.parent}`),n(t.this.children[e],t),t["template-light"].push(t.this.children[e]));for(let e=0;e<t.template.children.length;e++)1===t.template.children[e].tagName.split("-").length?("view"===t.template.children[e].slot&&(t.template.children[e].className="wall"),t["template-shadow"].push(t.template.children[e])):!0===t.getAttribute(t.template.children[e],"light","template")?(!1===t.parent?t.slot?t.this.children[e].setAttribute("parent",`${t.slot}`):t.this.children[e].setAttribute("parent",`${t.component}`):t.this.children[e].setAttribute("parent",`${t.parent}`),n(t.template.children[e],t),t["template-shadow"].push(t.template.children[e])):(!1===t.parent?t.slot?t.this.children[e].setAttribute("parent",`${t.slot}`):t.this.children[e].setAttribute("parent",`${t.component}`):t.this.children[e].setAttribute("parent",`${t.parent}`),n(t.template.children[e],t),t["template-light"].push(t.template.children[e]))}for(let e in l)t.verify[e]=l[e];e(t)})})(t,t["type-swap"],t["type-external"]).then(t=>{if(!0===t.verify.swap){if(0!==t["template-light"].length)for(let e=0;e<t["template-light"].length;e++)t.this.prepend(t["template-light"][e]);if(0!==t["template-shadow"].length){t.this.attachShadow({mode:"open"}),t.shadowRoot=!0;for(let e=0;e<t["template-shadow"].length;e++)t.this.shadowRoot.appendChild(t["template-shadow"][e])}}else{if(0!==t["template-light"].length)for(let e in t["template-light"])t.this.appendChild(t["template-light"][e]);if(0!==t["template-shadow"].length){t.this.attachShadow({mode:"open"}),t.shadowRoot=!0;for(let e in t["template-shadow"])t.this.shadowRoot.appendChild(t["template-shadow"][e])}}r(t)})})}).catch(t=>t)})}function n(t,e){return new Promise(function(r,l){let s=!1;for(let e=0;e<document.querySelectorAll(t.tagName.toLowerCase()).length;e++){let r=document.querySelectorAll(t.tagName.toLowerCase())[e];if(null===r.shadowRoot){if(r.querySelectorAll("script").length>0)for(let e=0;e<r.querySelectorAll("script").length;e++)-1!==r.querySelectorAll("script")[e].src.indexOf(t.tagName.toLowerCase())&&(s=!0)}else if(r.shadowRoot.querySelectorAll("script").length>0)for(let e=0;e<r.shadowRoot.querySelectorAll("script").length;e++)-1!==r.shadowRoot.querySelectorAll("script")[e].src.indexOf(t.tagName.toLowerCase())&&(s=!0)}for(let e=0;e<document.querySelectorAll("script").length;e++)-1!==document.querySelectorAll("script")[e].src.indexOf(t.tagName.toLowerCase())&&(s=!0);if(!0===s)console.log("модуль загружен");else{const s=document.createElement("script");s.src=`/static/html/components/${t.tagName.toLowerCase()}/${t.tagName.toLowerCase()}.mjs`,s.type="module",s.setAttribute("async",""),s.onload=r,s.onerror=l,e.this.appendChild(s)}})}var i;e.push("component-id"),e.push("script"),e.push("component-action"),r.push("h1"),r.push("innerText"),l.push("shadowRoot"),l.push("head"),l.push("shadow"),l.push("light"),l.push("lightDom"),l.push("editor"),l.push("слайдер"),l.push("swap"),t.this=this,t["type-supported"]=r,(i=this,new Promise(function(t,e){let r=[];r.staticProperty=[],r.staticProperty.c=0,r.state=[],r.state.push("shadow"),r.state.push("light"),r.words=l,r.parent=!1,r["type-swap"]=!1,r["type-external"]=!1,r["document-offsetWidth"]=document.body.offsetWidth;let s=!1;if(r.getAttribute=((t,e,r)=>{if("template"===r){if(!t.getAttribute("type"))return t.setAttribute("type","default"),!1;for(let r=0;r<t.getAttribute("type").split("-").length;r++)t.getAttribute("type").split("-")[r]===e&&(s=!0);return s}if(t[`verify-${e}`]=!1,0===t.this.getAttribute("type").split("-").length)return!1;for(let r=0;r<t.this.getAttribute("type").split("-").length;r++)t.this.getAttribute("type").split("-")[r]===e?t[`verify-${e}`]=!0:t[`verify-${e}`]=!1;return console.assert(!1,t),t[`verify-${e}`]}),i.tagName.toLowerCase()&&(r.component=i.tagName.toLowerCase()),"object"!=typeof i);else{if(i.getAttribute("type")){r.type=i.getAttribute("type").split("-");for(let t=0;t<r.type.length;t++)r.type[t]=r.type[t].replace(/:/g,"-");for(let t in r.type)switch(r.type[t]){case"swap":r["type-swap"]=!0;break;case"external":r["type-external"]=!0}}else r.type=["default"],i.setAttribute("type","default");if(i.slot?r.slot=i.slot:(i.slot=i.tagName.toLowerCase(),r.slot=i.slot),i.getAttribute("type")){let t=!1;for(let e in i.getAttribute("type").split("-"))-1!==i.getAttribute("type").split("-")[e].indexOf("style:")&&(t=!0);r["style-custom"]=!0===t?"not-default":"default"}}r.shadowRoot=!1,r.this=i,t(r)})).then(t=>{s(t).then(t=>{(function(t){return new Promise(function(e,r){let l=document.createElement("style"),s=document.createElement("style"),n={};(n=t.slot?t.slot:t.parent)||console.assert(!1,"не установленны ни слот ни парент");for(let e=0;e<t.type.length;e++)"swap"===t.type[e]?"scoped"===t.type[e]&&l.setAttribute("scoped",""):"scoped"===t.type[e]&&s.setAttribute("scoped","");for(let r=0;r<t.state.length;r++){switch(t[`path-style-${t.state[r]}`]=`@import '/static/html/components/${t.component}/${t.state[r]}/${t.component}.css'; @import '/static/html/components/${t.component}/${t.state[r]}/${t.component}-custom.css';`,t.state[r]){case"shadow":!0===t.verify.preset&&(t[`path-style-${t.state[r]}-preset`]=`@import '/static/html/components/${t.component}/template/${n}.css';`),l.innerText=t[`path-style-${t.state[r]}`]+t[`path-style-${t.state[r]}-preset`];break;case"light":!0===t.verify.preset&&(t[`path-style-${t.state[r]}-preset`]=`@import '/static/html/components/${t.component}/template/${n}.css';`),s.innerText=t[`path-style-${t.state[r]}`]+t[`path-style-${t.state[r]}-preset`]}"swap"===t.state[r]?!0===t.shadowRoot?(t.this.shadowRoot.appendChild(s),t.this.appendChild(l),e(t)):t.this.appendChild(l):!0===t.shadowRoot?(t.this.shadowRoot.appendChild(l),t.this.appendChild(s),e(t)):t.this.appendChild(s)}e(t)})})(t).then(t=>{!async function(t){bundle.default(t,null,async function(e,r){await store({input:"varan-editor-admin",this:t.this,obj:t,slot:t.this.slot,type:"obj"},"set","type"),t.this.shadowRoot.querySelector(".create").addEventListener("click",function(t){let e=prompt("это окно для суперпользователя","*********");if("123"===e){let t=new CustomEvent("createChannel",{detail:{id:"test"}});document.dispatchEvent(t)}else alert("я для себя пока сделал эту кнопку")})})}(t)})})})}});
+import Editor from '/static/html/components/component_modules/editor/editor.mjs'
+import Slider from '/static/html/components/component_modules/varan-slider/varan-slider.mjs'
+import store from '/static/html/components/component_modules/staticProperty/staticProperty.mjs'
+customElements.define('varan-editor-admin',
+    class extends HTMLElement {
+      static get observedAttributes () {
+        return ['feed']
+      }
+      constructor () {
+        super()
+        let white = []
+        let property = []
+
+        let typeSupported = []
+        let words = []
+
+        property.push('component-id')
+        property.push('script')
+        property.push('component-action')
+        typeSupported.push('h1')
+        typeSupported.push('innerText')
+        words.push('shadowRoot')
+        words.push('head')
+        words.push('shadow')
+        words.push('light')
+        words.push('lightDom')
+        words.push('editor')
+        words.push('слайдер')
+        words.push('swap')
+        white['this'] = this
+        white['type-supported'] = typeSupported
+
+        function style (obj) {
+          return new Promise(function (resolve, reject) {
+            let styleS = document.createElement('style')
+            let styleL = document.createElement('style')
+            let name = {}
+            if (!obj['slot']) {
+              name = obj['parent']
+            } else {
+              name = obj['slot']
+            }
+            if (!name) {
+              console.assert(false, 'не установленны ни слот ни парент')
+            }
+
+            for (let key = 0; key < obj['type'].length; key++) {
+              if (obj['type'][key] === 'swap') {
+                if (obj['type'][key] === 'scoped') {
+                  styleS.setAttribute('scoped', '')
+                }
+              } else {
+                if (obj['type'][key] === 'scoped') {
+                  styleL.setAttribute('scoped', '')
+                }
+              }
+            }
+            for (let state = 0; state < obj['state'].length; state++) {
+              obj[`path-style-${obj['state'][state]}`] = `@import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}.css'; @import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}-custom.css';`
+              switch (obj['state'][state]) {
+                case 'shadow':
+                  if (obj['verify']['preset'] === true) {
+                    obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${name}.css';`
+                  }
+                  styleS.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
+                  break
+                case 'light':
+                  if (obj['verify']['preset'] === true) {
+                    obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${name}.css';`
+                  }
+                  styleL.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
+                  break
+                default:
+                  // //console.log(`новый тип`, obj['state'][state])
+                  break
+              }
+              if (obj['state'][state] === 'swap') {
+                if (obj['shadowRoot'] === true) {
+                  obj['this']['shadowRoot'].appendChild(styleL)
+                  obj['this'].appendChild(styleS)
+                  resolve(obj)
+                } else {
+                  obj['this'].appendChild(styleS)
+                }
+              } else {
+                if (obj['shadowRoot'] === true) {
+                  obj['this']['shadowRoot'].appendChild(styleS)
+                  obj['this'].appendChild(styleL)
+                  resolve(obj)
+                } else {
+                  obj['this'].appendChild(styleL)
+                }
+              }
+            }
+            resolve(obj)
+          })
+        }
+        function objectProperty (obj) {
+          return new Promise(function (resolve, reject) {
+            let black = []
+            black['staticProperty'] = []
+            black['staticProperty']['c'] = 0
+            black['state'] = []
+            black['state'].push('shadow')
+            black['state'].push('light')
+            black['words'] = words
+            black['parent'] = false
+            black[`type-swap`] = false
+            black[`type-external`] = false
+            black[`document-offsetWidth`] = document['body'].offsetWidth
+            let verifyLight = false
+            black[`getAttribute`] = (obj, type, property) => {
+              if (property === 'template') {
+                if (!obj.getAttribute('type')) {
+                  // //console.log('не установлен тип ставим default')
+                  obj.setAttribute('type', 'default')
+                  return false
+                } else {
+                  for (let key = 0; key < obj.getAttribute('type').split('-').length; key++) {
+                    if (obj.getAttribute('type').split('-')[key] === type) {
+                      verifyLight = true
+                    }
+                  }
+                }
+                return verifyLight
+              } else {
+                // //console.log(obj['this'].getAttribute('type'))
+                obj[`verify-${type}`] = false
+                if (obj['this'].getAttribute('type').split('-').length === 0) {
+                  return false
+                } else {
+                  for (let key = 0; key < obj['this'].getAttribute('type').split('-').length; key++) {
+                    if (obj['this'].getAttribute('type').split('-')[key] === type) {
+                      obj[`verify-${type}`] = true
+                    } else {
+                      obj[`verify-${type}`] = false
+                    }
+                  }
+                }
+                console.assert(false, obj)
+                return obj[`verify-${type}`]
+              }
+            }
+            if (!obj.tagName.toLowerCase()) {
+              // //console.log('что то пошло не так middleware js objectProperty', '')
+            } else {
+              black[`component`] = obj.tagName.toLowerCase()
+            }
+            if (typeof (obj) !== 'object') {
+              // //console.log('objectProperty middleware.js пришёл не объект')
+            } else {
+              if (!obj.getAttribute('type')) {
+                black[`type`] = ['default']
+                // //console.log('нет типа ставим default')
+                obj.setAttribute('type', 'default')
+              } else {
+                black[`type`] = obj.getAttribute('type').split('-')
+                for (let type = 0; type < black[`type`].length; type++) {
+                  black[`type`][type] = black[`type`][type].replace(/:/g, '-')
+                }
+                for (let key in black[`type`]) {
+                  switch (black[`type`][key]) {
+                    case 'swap':
+                      black[`type-swap`] = true
+                      break
+                    case 'external':
+                      black[`type-external`] = true
+                      break
+                    default:
+                      // //console.log(`дополнительные типы`, black[`type`][key])
+                      break
+                  }
+                }
+              }
+              if (!obj.slot) {
+                obj.slot = obj.tagName.toLowerCase()
+                black[`slot`] = obj.slot
+              } else {
+                black[`slot`] = obj.slot
+              }
+              if (!obj.getAttribute('type')) {
+              } else {
+                let veryfiStyle = false
+                for (let key in obj.getAttribute('type').split('-')) {
+                  if (obj.getAttribute('type').split('-')[key].indexOf('style:') !== -1) {
+                    // //console.log('устанавливаются пути к стилям')
+                    veryfiStyle = true
+                  }
+                }
+                if (veryfiStyle === true) {
+                  black['style-custom'] = 'not-default'
+                } else {
+                  black['style-custom'] = 'default'
+                }
+              }
+            }
+            black['shadowRoot'] = false
+            black['this'] = obj
+            resolve(black)
+          })
+        }
+
+        function externalProperty (obj) {
+          return new Promise(function (resolve, reject) {
+            obj['external-property'] = white['external-property']
+            let object = []
+            let component = []
+            let a = []
+            for (let key = 0; key < obj['external'].length; key++) {
+              for (let type = 0; type < obj['external'][key].children.length; type++) {
+                switch (obj['external'][key].children[type].tagName) {
+                  case 'SCRIPT':
+                    if (!obj['external'][key].getAttribute('id')) {
+                      // //console.log('у компонента нет id нужно в external property script  получить id для загрузки скрипта')
+                    } else {
+                      component['script'] = obj['external'][key]['children'][type]
+                    }
+                    break
+                  case 'COMPONENT-ID':
+                    component['id'] = obj['external'][key]['children'][type].innerText
+                    break
+                  case 'COMPONENT-ACTION':
+                    for (let action = 0; action < obj['external'][key]['children'][type]['children'].length; action++) {
+                      a.push(obj['external'][key]['children'][type]['children'][action].innerText)
+                    }
+                    component['actions'] = a
+                    break
+                  default:
+                    // //console.log(`Не отслеживается, по мере надобности добавляются [${obj['external'][key].children[type].tagName.toLowerCase()}]`)
+                    break
+                }
+              }
+              object.push(component)
+              component = []
+            }
+            obj['external-property'] = object
+            resolve(obj)
+          })
+              .catch(error => {
+                // //console.log('здесь я перехватывал отсутствие страницы но это убрал', error)
+              })
+        }
+
+
+        function getTemplate (obj, swap, external) {
+          return new Promise(function (resolve, reject) {
+            obj['template-shadow'] = []
+            obj['template-light'] = []
+            let verify = []
+            verify['swap'] = false
+            verify['blog'] = false
+            verify['external'] = false
+            verify['light'] = false
+            verify['slider'] = false
+            verify['one'] = false
+            verify['sliderText'] = false
+            verify['text'] = false
+            for (let type = 0; type < obj['type'].length; type++) {
+              if (obj['type'][type].indexOf('slider') !== -1) {
+                if (obj['type'][type].split('-').length > 1) {
+                  verify['slider'] = true
+                  for (let key in obj['type'][type].split('-')) {
+                    switch (obj['type'][type].split('-')[key]) {
+                      case 'one':
+                        verify['one'] = true
+                        break
+                      default:
+                        // //console.log(`~~~дополнительное свойство~~~`, obj['type'][type].split('-')[key])
+                        break
+                    }
+                  }
+                }
+              }
+              if (obj['type'][type].length) {
+                if (obj['type'][type].split('-').length > 1) {
+                  switch (obj['type'][type].split('-')[0]) {
+                    case 'blog':
+                      verify['blog'] = true
+                      break
+                    default:
+                      console.log(`типы не отслеживаются`, obj['type'][type])
+                      break
+                  }
+                } else {
+                  switch (obj['type'][type]) {
+                    case 'swap':
+                      verify['swap'] = true
+                      break
+                    case 'external':
+                      verify['external'] = true
+                      break
+                    case 'light':
+                      verify['light'] = true
+                      break
+                    case 'slider':
+                      verify['slider'] = true
+                      break
+                    case 'sliderText':
+                      verify['sliderText'] = true
+                      break
+                    case 'text':
+                      verify['text'] = true
+                      break
+                    default:
+                      // //console.log(`типы не отслеживаются`, obj['type'][type])
+                      break
+                  }
+                }
+              }
+            }
+
+            /**
+             * цикл this
+             * цикл template
+             */
+            /**
+             * устанавливается свойство parent если его нет у родителя ставится по родителю
+             *
+             */
+            if(obj['this'].getAttribute('parent')){
+              obj['parent'] = obj['this'].getAttribute('parent')
+            }
+            if (verify['swap'] === true) {
+              for (let key = 0; key < obj['this'].children.length; key++) {
+                // //console.log('~~~~~~this~~~~~~~', obj['this'].children[key].tagName)
+                if (obj['this'].children[key].tagName.split('-').length === 1) {
+                  if (obj['this'].children[key].slot === 'view') {
+                    obj['this'].children[key].className = 'wall'
+                  }
+                  obj['template-light'].push(obj['this'].children[key])
+                } else {
+                  if (obj['getAttribute'](obj['this'].children[key], 'light', 'template') === true) {
+                    obj['this'].children[key].setAttribute('type', `${obj['this'].children[key].getAttribute('type')}-external`)
+                    if(obj['parent'] === false){
+                      if(!obj['slot']){
+                        obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                      }else{
+                        obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                      }
+                    }else{
+                      obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                    }
+
+                    scriptTemplate(obj['this'].children[key], obj)
+                    obj['template-light'].push(obj['this'].children[key])
+                  } else {
+                    obj['this'].children[key].setAttribute('type', `${obj['this'].children[key].getAttribute('type')}-external`)
+                    /**
+                     * устанавливается свойство parent если его нет у родителя ставится по родителю
+                     *
+                     */
+                    if(obj['parent'] === false){
+                      if(!obj['slot']){
+                        obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                      }else{
+                        obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                      }
+                    }else{
+                      obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                    }
+                    scriptTemplate(obj['this'].children[key], obj)
+                    obj['template-shadow'].push(obj['this'].children[key])
+                  }
+                }
+              }
+              for (let key = 0; key < obj['template'].children.length; key++) {
+                // //console.log('~~~~~~template~~~~~~~', obj['template'].children[key].tagName)
+                if (obj['template'].children[key].tagName.split('-').length === 1) {
+                  if (obj['template'].children[key].slot === 'view') {
+                    obj['template'].children[key].className = 'wall'
+                  }
+                  obj['template-light'].push(obj['template'].children[key])
+                } else {
+                  if (obj['getAttribute'](obj['template'].children[key], 'light', 'template') === true) {
+                    obj['template'].children[key].setAttribute('type', `${obj['template'].children[key].getAttribute('type')}-external`)
+                    if(obj['parent'] === false){
+                      if(!obj['slot']){
+                        obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                      }else{
+                        obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                      }
+                    }else{
+                      obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                    }
+                    scriptTemplate(obj['template'].children[key], obj)
+                    obj['template-light'].push(obj['template'].children[key])
+                  } else {
+                    obj['template'].children[key].setAttribute('type', `${obj['template'].children[key].getAttribute('type')}-external`)
+                    if(obj['parent'] === false){
+                      if(!obj['slot']){
+                        obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                      }else{
+                        obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                      }
+                    }else{
+                      obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                    }
+                    scriptTemplate(obj['template'].children[key], obj)
+                    obj['template-shadow'].push(obj['template'].children[key])
+                  }
+                }
+              }
+            } else {
+              for (let key = 0; key < obj['this'].children.length; key++) {
+                // //console.log('~~~~~~this~~~~~~~', obj['this'].children[key].tagName)
+                if (obj['this'].children[key].tagName.split('-').length === 1) {
+                  if (obj['this'].children[key].slot === 'view') {
+                    obj['this'].children[key].className = 'wall'
+                  }
+                  obj['template-shadow'].push(obj['this'].children[key])
+                } else {
+                  if (obj['getAttribute'](obj['this'].children[key], 'light', 'template') === true) {
+                    if(obj['parent'] === false){
+                      if(!obj['slot']){
+                        obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                      }else{
+                        obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                      }
+                    }else{
+                      obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                    }
+                    scriptTemplate(obj['this'].children[key], obj)
+                    obj['template-shadow'].push(obj['this'].children[key])
+                  } else {
+                    if(obj['parent'] === false){
+                      if(!obj['slot']){
+                        obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                      }else{
+                        obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                      }
+                    }else{
+                      obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                    }
+                    scriptTemplate(obj['this'].children[key], obj)
+                    obj['template-light'].push(obj['this'].children[key])
+                  }
+                }
+              }
+              for (let key = 0; key < obj['template'].children.length; key++) {
+                // //console.log('~~~~~~template~~~~~~~', obj['template'].children[key].tagName)
+                if (obj['template'].children[key].tagName.split('-').length === 1) {
+                  if (obj['template'].children[key].slot === 'view') {
+                    obj['template'].children[key].className = 'wall'
+                  }
+                  obj['template-shadow'].push(obj['template'].children[key])
+                } else {
+                  if (obj['getAttribute'](obj['template'].children[key], 'light', 'template') === true) {
+                    if(obj['parent'] === false){
+                      if(!obj['slot']){
+                        obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                      }else{
+                        obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                      }
+                    }else{
+                      obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                    }
+                    scriptTemplate(obj['template'].children[key], obj)
+                    obj['template-shadow'].push(obj['template'].children[key])
+                  } else {
+                    if(obj['parent'] === false){
+                      if(!obj['slot']){
+                        obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                      }else{
+                        obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                      }
+                    }else{
+                      obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                    }
+                    scriptTemplate(obj['template'].children[key], obj)
+                    obj['template-light'].push(obj['template'].children[key])
+                  }
+                }
+              }
+            }
+            for (let key in verify) {
+              obj['verify'][key] = verify[key]
+            }
+            resolve(obj)
+          })
+        }
+        function template (obj, type) {
+          return new Promise(function (resolve, reject) {
+            obj['verify'] = []
+
+            if (!obj['this'].getAttribute('preset')) {
+              obj['path-template'] = `/static/html/components/${obj['component']}/${obj['component']}.html`
+              obj['verify']['preset'] = false
+            } else {
+              switch(obj['this'].getAttribute('preset')){
+                case 'default':
+                  obj['path-template'] = `/static/html/components/${obj['component']}/template/${obj['component']}.html`
+                  obj['preset'] = `${obj['this'].getAttribute('preset')}`
+                  obj['verify']['preset'] = true
+                  break
+                default:
+                  obj['path-template'] = `/static/html/components/${obj['component']}/template/${obj['this'].getAttribute('preset')}.html`
+                  obj['preset'] = `${obj['this'].getAttribute('preset')}`
+                  obj['verify']['preset'] = true
+                  break
+              }
+            }
+            fetch(obj['path-template'])
+                .then(function (response) {
+                  if (response.ok) {
+                    return response.text()
+                  }
+                }).then(function (body) {
+              let parser = new DOMParser()
+              let doc = parser.parseFromString(body, 'text/html')
+              obj['template'] = doc.getElementsByTagName('template')[0].content.cloneNode(true)
+              external(obj)
+                  .then((obj) => {
+                    getTemplate(obj, obj['type-swap'], obj['type-external'])
+                        .then((obj) => {
+                          if (obj['verify']['swap'] === true) {
+
+                            if (obj['template-light'].length !== 0) {
+                              for (let key = 0; key < obj['template-light'].length; key++) {
+                                //console.log('2222222222111111111111222222222222', obj['template-light'][key])
+                                obj['this']['prepend'](obj['template-light'][key])
+                                // console.assert(false, obj['template-light'][key])
+                              }
+                            }
+                            if (obj['template-shadow'].length !== 0) {
+                              obj['this']['attachShadow']({mode: 'open'})
+                              obj['shadowRoot'] = true
+                              for (let key = 0; key < obj['template-shadow'].length; key++) {
+
+                                obj['this']['shadowRoot']['appendChild'](obj['template-shadow'][key])
+                              }
+                            }
+
+                          } else {
+                            if (obj['template-light'].length !== 0) {
+                              for (let key in obj['template-light']) {
+                                obj['this']['appendChild'](obj['template-light'][key])
+                              }
+                            }
+                            if (obj['template-shadow'].length !== 0) {
+                              obj['this']['attachShadow']({mode: 'open'})
+                              obj['shadowRoot'] = true
+                              for (let key in obj['template-shadow']) {
+                                obj['this']['shadowRoot']['appendChild'](obj['template-shadow'][key])
+                              }
+                            }
+
+                          }
+                          resolve(obj)
+                        })
+                  })
+            })
+                .catch(error => {
+                  return error
+                })
+          })
+        }
+
+        function renderExternal (obj) {
+          return new Promise(function (resolve, reject) {
+            obj['words-action'] = []
+            let wordsAction = []
+            for (let key = 0; key < obj['external-property'].length; key++) {
+              for (let words = 0; words < obj['external-property'][key]['actions'].length; words++) {
+                for (let verify = 0; verify < obj['words'].length; verify++) {
+                  if (obj['external-property'][key]['actions'][words].indexOf(obj['words'][verify]) !== -1) {
+                    if (obj['words'][verify] === 'shadowRoot' || obj['words'][words] === 'shadow') {
+                      wordsAction['shadow'] = true
+                    }
+                    if (obj['words'][verify] === 'light' || obj['words'][words] === 'лайт') {
+                      wordsAction['light'] = true
+                    }
+                    if (obj['words'][verify] === 'editor') {
+                      wordsAction['editor'] = true
+                    }
+                    if (obj['words'][verify] === 'слайдер') {
+                      wordsAction['editor-slider'] = true
+                    }
+                    if (obj['words'][verify] === 'swap') {
+                      wordsAction['swap'] = true
+                    }
+                  }
+                }
+              }
+              obj['words-action'] = wordsAction
+
+              for (let key in obj['external-property']) {
+                for (let type in obj['external-property'][key]) {
+                  switch (type) {
+                    case 'id':
+                      let doc = document.createElement(obj['external-property'][key][type])
+                      doc.setAttribute('type', 'external')
+                      obj['this'].appendChild(doc)
+                      break
+                    default:
+                      // //console.log(`какой то неизвестный тип`, type)
+                      break
+                  }
+                }
+              }
+              resolve(obj)
+            }
+          })
+        }
+
+        function external (obj) {
+          return new Promise(function (resolve, reject) {
+            obj['path-external'] = `/static/html/components/${obj['component']}/external/${obj['component']}-external.html`
+            fetch(obj['path-external'])
+                .then(function (response) {
+                  if (response.ok === false) {
+                    return response.ok
+                  } else {
+                    return response.text()
+                  }
+                })
+                .then(function (data) {
+                  if (data === false) {
+                  } else {
+                    let parser = new DOMParser()
+                    let doc = parser.parseFromString(data, 'text/html')
+                    obj['external'] = doc.querySelectorAll('section')
+                    externalProperty(obj)
+                        .then((obj) => {
+                          if (obj['external-property'].length === 0) {
+                            resolve(obj)
+                          } else {
+                            renderExternal(obj)
+                                .then((obj) => {
+                                  resolve(obj)
+                                })
+                          }
+                        })
+                  }
+                })
+                .catch(error => {
+                  throw error
+                })
+          })
+        }
+        function getElementsByClassName (obj, type) {
+          return new Promise(function (resolve, reject) {
+            for (let state = 0; state < obj['state'].length; state++) {
+              for (let key = 0; key < obj[`template-${obj['state'][state]}`].length; key++) {
+                if (obj[`template-${obj['state'][state]}`][key].getElementsByClassName(type).length === 0) {
+
+                } else {
+                  obj['slider'] = obj[`template-${obj['state'][state]}`][key].getElementsByClassName(type)[0]
+                  resolve(obj[`template-${obj['state'][state]}`][key].getElementsByClassName(type)[0])
+                }
+              }
+            }
+          })
+        }
+        function scriptTemplate (obj, parent) {
+          return new Promise(function (resolve, reject) {
+            let verify = false
+
+            // console.log(document.querySelectorAll(obj.tagName.toLowerCase()))
+
+            // console.assert(false, document.querySelectorAll(obj.tagName.toLowerCase()))
+            for (let i = 0; i < document.querySelectorAll(obj.tagName.toLowerCase()).length; i++) {
+            let temp = document.querySelectorAll(obj.tagName.toLowerCase())[i]
+
+              if(temp.shadowRoot === null){
+                if(temp.querySelectorAll('script').length > 0){
+                  for(let j =0; j < temp.querySelectorAll('script').length; j++){
+
+                    if (temp.querySelectorAll('script')[j].src.indexOf(obj.tagName.toLowerCase()) !== -1) {
+                      verify = true
+                    }
+                  }
+                }
+              }else{
+                if(temp.shadowRoot.querySelectorAll('script').length > 0){
+                  for(let j =0; j < temp.shadowRoot.querySelectorAll('script').length; j++){
+
+                    if (temp.shadowRoot.querySelectorAll('script')[j].src.indexOf(obj.tagName.toLowerCase()) !== -1) {
+                      verify = true
+                    }
+                  }
+                }
+              }
+            }
+            for (let i = 0; i < document.querySelectorAll('script').length; i++) {
+              if (document.querySelectorAll('script')[i].src.indexOf(obj.tagName.toLowerCase()) !== -1) {
+                verify = true
+              }
+            }
+            if (verify === true) {
+              console.log('модуль загружен')
+            } else {
+              const script = document.createElement('script')
+              script.src = `/static/html/components/${obj.tagName.toLowerCase()}/${obj.tagName.toLowerCase()}.mjs`
+              script.type = 'module'
+              script.setAttribute('async', '')
+              script.onload = resolve
+              script.onerror = reject
+
+              parent['this'].appendChild(script)
+            }
+          })
+        }
+        objectProperty(this)
+            .then((obj) => {
+              template(obj)
+                  .then((obj) => {
+                    style(obj)
+                        .then((obj) => {
+                          modules(obj)
+                        })
+                  })
+            })
+        async function modules (obj) {
+            // config['Style']['default'](obj['this'].querySelector('.varan-editor').style)
+          await store({
+              input:'varan-editor-admin',
+              this:obj['this'],
+              obj: obj,
+              slot: obj['this'].slot,
+              type:'obj'
+            }, 'set', 'type')
+
+            obj['this'].shadowRoot.querySelector('.create').addEventListener('click', function (event) {
+
+              let title = 'это окно для суперпользователя'
+              let result = prompt(title,'*********')
+                if(result === '123'){
+                  let createChannel = new CustomEvent('createChannel', {
+                    detail: {
+                      id: 'test'
+                    }
+                  })
+                  document.dispatchEvent(createChannel)
+                }else{
+                  alert('я для себя пока сделал эту кнопку')
+                }
+
+            })
+        }
+      }
+    })
