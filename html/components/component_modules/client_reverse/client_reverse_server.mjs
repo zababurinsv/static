@@ -195,7 +195,7 @@ System.start = function(portTunnel, wsHostUrl, remoteAddr) {
 };
 
 function tcpConnection(wsConn, host, port){
-
+  console.log('###{port: port, host: host}#########',{port: port, host: host})
   var tcpConn = net.connect( {port: port, host: host}, function(){});
   bindSockets(wsConn, tcpConn);
 
