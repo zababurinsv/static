@@ -771,7 +771,22 @@ div#external{
           } else {
             json = await fetch(`${location.origin}/android/index.web.json`)
           }
-         json = await json.json() 
+         json = await json.json()
+
+          if(url) {
+            json['$jason'] = {
+              'head': {
+                'title': 'Basic'
+              },
+              'body': {
+                'background': {
+                  'type': 'html',
+                  'url':`${url}`
+                }
+              }
+            }
+          }
+
          let app = Jason({
           $cell: true,
           style: {
@@ -779,7 +794,7 @@ div#external{
             height: '100%',
             margin: '0 auto'
           }
-        }, 
+        },
         {
          '$jason': json['$jason']
         })
