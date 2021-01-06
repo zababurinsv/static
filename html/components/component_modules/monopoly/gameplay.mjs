@@ -1055,9 +1055,9 @@ export default {
                                     }
 
                                     if (sq.house == 5) {
-                                        housetext += "<span style='float: right; font-weight: bold;'>1&nbsp;x&nbsp;<img src='./static/html/components/main-manager/images/hotel.png' alt='' title='Hotel' class='hotel' style='float: none;' /></span>";
+                                        housetext += "<span style='float: right; font-weight: bold;'>1&nbsp;x&nbsp;<img src='/static/html/components/main-manager/images/hotel.png' alt='' title='Hotel' class='hotel' style='float: none;' /></span>";
                                     } else if (sq.house > 0 && sq.house < 5) {
-                                        housetext += "<span style='float: right; font-weight: bold;'>" + sq.house + "&nbsp;x&nbsp;<img src='./static/html/components/main-manager/images/house.png' alt='' title='House' class='house' style='float: none;' /></span>";
+                                        housetext += "<span style='float: right; font-weight: bold;'>" + sq.house + "&nbsp;x&nbsp;<img src='/static/html/components/main-manager/images/house.png' alt='' title='House' class='house' style='float: none;' /></span>";
                                     }
 
                                     HTML += "<tr><td class='statscellcolor' style='background: " + sq.color + ";";
@@ -1351,10 +1351,10 @@ export default {
                                 if (sq.house >= 1 && sq.house <= 4) {
                                     for (let x = 1; x <= sq.house; x++) {
 
-                                        housetext += "<img src='./static/html/components/main-manager/images/house.png' alt='' title='House' class='house' />";
+                                        housetext += "<img src='/static/html/components/main-manager/images/house.png' alt='' title='House' class='house' />";
                                     }
                                 } else if (sq.hotel) {
-                                    housetext += "<img src='./static/html/components/main-manager/images/house.png' alt='' title='Hotel' class='hotel' />";
+                                    housetext += "<img src='/static/html/components/main-manager/images/house.png' alt='' title='Hotel' class='hotel' />";
                                 }
 
                                 if (HTML === "") {
@@ -1501,7 +1501,7 @@ export default {
                             payload['this'].querySelector('#buildings').style.display = 'flex'
                             // $("#buildings").show();
 
-                            payload['this'].getElementById("buildings").innerHTML = "<img src='./static/html/components/main-manager/images/house.png' alt='' title='House' class='house' />:&nbsp;" + housesum + "&nbsp;&nbsp;<img src='./static/html/components/main-manager/images/hotel.png.png' alt='' title='Hotel' class='hotel' />:&nbsp;" + hotelsum;
+                            payload['this'].getElementById("buildings").innerHTML = "<img src='/static/html/components/main-manager/images/house.png' alt='' title='House' class='house' />:&nbsp;" + housesum + "&nbsp;&nbsp;<img src='/static/html/components/main-manager/images/hotel.png.png' alt='' title='Hotel' class='hotel' />:&nbsp;" + hotelsum;
 
                             out(payload)
                         }else{

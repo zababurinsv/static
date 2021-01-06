@@ -21,7 +21,7 @@ export default (parameters= {})=>{
         obj['this'].shadowRoot.querySelector('div.w3-container').innerHTML = ''
         obj['this'].shadowRoot.querySelector('div.w3-container').insertAdjacentHTML('afterbegin', `
                   
-                  <label class="avatar" for="image"><img src="./static/html/components/telegram-login/images/cameraadd_svg.svg"><input required="" type="file" id="image"></label>
+                  <label class="avatar" for="image"><img src="/static/html/components/telegram-login/images/cameraadd_svg.svg"><input required="" type="file" id="image"></label>
                 `)
         // obj['this']['shadowRoot'].querySelector('.head').innerHTML = ''
         // obj['this']['shadowRoot'].querySelector('.head').insertAdjacentHTML('afterbegin',`

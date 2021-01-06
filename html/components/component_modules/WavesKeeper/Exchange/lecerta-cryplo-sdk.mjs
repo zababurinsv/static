@@ -1,6 +1,6 @@
 function init (){
     // console.assert(false)
-    fetch('./static/html/components/component_modules/lacerta-crypto/Exchange/v1/3533.json')
+    fetch('/static/html/components/component_modules/lacerta-crypto/Exchange/v1/3533.json')
         .then(function(response) {
             console.assert(false, response)
             if (!response.ok) {
@@ -17,7 +17,7 @@ function init (){
         .catch(function(error) {
 
         });
-    fetch('./static/html/components/component_modules/lacerta-crypto/Exchange/v1/CPf7EWE4hPrBNKJpzBtBm9os4UsyZ8Eebhzwq4EqLWqG.json')
+    fetch('/static/html/components/component_modules/lacerta-crypto/Exchange/v1/CPf7EWE4hPrBNKJpzBtBm9os4UsyZ8Eebhzwq4EqLWqG.json')
         .then(function(response) {
             if (!response.ok) {
                 throw new Error("HTTP error, status = " + response.status);
@@ -35,7 +35,7 @@ function init (){
         });
 
 
-    fetch('./static/html/components/component_modules/lacerta-crypto/Exchange/v2/28biMwpgZVjAUk5iJnWvphaFgr8Tybwqe6s5JxGTdDWJ.json')
+    fetch('/static/html/components/component_modules/lacerta-crypto/Exchange/v2/28biMwpgZVjAUk5iJnWvphaFgr8Tybwqe6s5JxGTdDWJ.json')
         .then(function(response) {
             if (!response.ok) {
                 throw new Error("HTTP error, status = " + response.status);
@@ -52,7 +52,7 @@ function init (){
 
         });
 
-    fetch('./static/html/components/component_modules/lacerta-crypto/Exchange/v2/469802.json')
+    fetch('/static/html/components/component_modules/lacerta-crypto/Exchange/v2/469802.json')
         .then(function(response) {
             if (!response.ok) {
                 throw new Error("HTTP error, status = " + response.status);

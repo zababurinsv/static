@@ -489,9 +489,9 @@ export default {
                         htmlManager.getElementById("enlarge" + i + "price").textContent = s.pricetext;
                     }
 
-                    htmlManager.getElementById("enlarge0token").innerHTML += '<img src="./static/html/components/main-manager/images/arrow_icon.png" width="50%" alt="" />';
-                    htmlManager.getElementById("enlarge20price").innerHTML += "<img src='./static/html/components/main-manager/images/free_parking_icon.png'  width='50%' alt='' style='position: relative; top: -1.953vw;' />";
-                    htmlManager.getElementById("enlarge38token").innerHTML += '<img src="./static/html/components/main-manager/images/tax_icon.png"  width="50%" alt="" style="position: relative; top: -1.953vw;" />';
+                    htmlManager.getElementById("enlarge0token").innerHTML += '<img src="/static/html/components/main-manager/images/arrow_icon.png" width="50%" alt="" />';
+                    htmlManager.getElementById("enlarge20price").innerHTML += "<img src='/static/html/components/main-manager/images/free_parking_icon.png'  width='50%' alt='' style='position: relative; top: -1.953vw;' />";
+                    htmlManager.getElementById("enlarge38token").innerHTML += '<img src="/static/html/components/main-manager/images/tax_icon.png"  width="50%" alt="" style="position: relative; top: -1.953vw;" />';
 
                     await classicedition['get']({type:'corrections'},payload)
                     // Jail corrections
@@ -502,7 +502,7 @@ export default {
 
                     htmlManager.getElementById("jail").enlargeId = "enlarge40";
 
-                    htmlManager.getElementById("enlarge-wrap").innerHTML += "<div id='enlarge40' class='enlarge'><div id='enlarge40color' class='enlarge-color'></div><br /><div id='enlarge40name' class='enlarge-name'>Jail</div><br /><div id='enlarge40price' class='enlarge-price'><img src='./static/html/components/main-manager/images/jake_icon.png' width='50%' alt='' style='position: relative; top: -1.953vw;' /></div><br /><div id='enlarge40token' class='enlarge-token'></div></div>";
+                    htmlManager.getElementById("enlarge-wrap").innerHTML += "<div id='enlarge40' class='enlarge'><div id='enlarge40color' class='enlarge-color'></div><br /><div id='enlarge40name' class='enlarge-name'>Jail</div><br /><div id='enlarge40price' class='enlarge-price'><img src='/static/html/components/main-manager/images/jake_icon.png' width='50%' alt='' style='position: relative; top: -1.953vw;' /></div><br /><div id='enlarge40token' class='enlarge-token'></div></div>";
 
                     htmlManager.getElementById("enlarge40name").innerHTML = "Jail";
 

@@ -1332,7 +1332,7 @@ export default {
 
 
                             await monopoly['get']({type:'popup', HTML:`
-                            <img src='./static/html/components/main-manager/images/community_chest_icon.png' style='height: 15vw; width: 15vw; margin: 0.781vw 0.781vw 0.781vw 0;' />
+                            <img src='/static/html/components/main-manager/images/community_chest_icon.png' style='height: 15vw; width: 15vw; margin: 0.781vw 0.781vw 0.781vw 0;' />
                             <div class="containerCard">
                             <div style='font-weight: bold; font-size: 3vw; '>Community Chest:</div>
                             <div style='text-align: center;'>${payload['communityChestCards'][communityChestIndex].text}</div>
@@ -1358,7 +1358,7 @@ export default {
                                 payload['chanceCards'].deck.splice(payload['chanceCards'].index, 1);
                             }
 
-                            await monopoly['get']({type:'popup', HTML:"<img src='./static/html/components/main-manager/images/chance_icon.png' style='height: 7.883vw; width: 5vw; margin: 0.781vw 0.781vw 0.781vw 0;' /><div style='font-weight: bold; font-size: 3vw; '>Chance:</div><div style='text-align: justify;'>" + payload['chanceCards'][chanceIndex].text + "</div>", action:async function(obj, payload) {
+                            await monopoly['get']({type:'popup', HTML:"<img src='/static/html/components/main-manager/images/chance_icon.png' style='height: 7.883vw; width: 5vw; margin: 0.781vw 0.781vw 0.781vw 0;' /><div style='font-weight: bold; font-size: 3vw; '>Chance:</div><div style='text-align: justify;'>" + payload['chanceCards'][chanceIndex].text + "</div>", action:async function(obj, payload) {
                                     // console.assert(false, payload)
                                     // console.assert(false, chanceIndex)
                                    await auction['get']({type:'chanceAction', chanceIndex: chanceIndex},payload);
@@ -1511,7 +1511,7 @@ export default {
                             payload['this'].querySelector('#buildings').style.display = 'flex'
                             // $("#buildings").show();
 
-                            payload['this'].getElementById("buildings").innerHTML = "<img src='./static/html/components/main-manager/images/house.png' alt='' title='House' class='house' />:&nbsp;" + housesum + "&nbsp;&nbsp;<img src='./static/html/components/main-manager/images/hotel.png' alt='' title='Hotel' class='hotel' />:&nbsp;" + hotelsum;
+                            payload['this'].getElementById("buildings").innerHTML = "<img src='/static/html/components/main-manager/images/house.png' alt='' title='House' class='house' />:&nbsp;" + housesum + "&nbsp;&nbsp;<img src='/static/html/components/main-manager/images/hotel.png' alt='' title='Hotel' class='hotel' />:&nbsp;" + hotelsum;
 
                             out(payload)
                         }else{
@@ -1719,10 +1719,10 @@ export default {
                                 if (sq.house >= 1 && sq.house <= 4) {
                                     for (let x = 1; x <= sq.house; x++) {
 
-                                        housetext += "<img src='./static/html/components/main-manager/images/house.png' alt='' title='House' class='house' />";
+                                        housetext += "<img src='/static/html/components/main-manager/images/house.png' alt='' title='House' class='house' />";
                                     }
                                 } else if (sq.hotel) {
-                                    housetext += "<img src='./static/html/components/main-manager/images/house.png' alt='' title='Hotel' class='hotel' />";
+                                    housetext += "<img src='/static/html/components/main-manager/images/house.png' alt='' title='Hotel' class='hotel' />";
                                 }
 
                                 if (HTML === "") {

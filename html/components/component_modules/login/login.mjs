@@ -91,7 +91,7 @@ export default async (obj)=>{
                 obj['this'].shadowRoot.querySelector('div.telegram').innerHTML = ''
                 obj['this'].shadowRoot.querySelector('div.telegram').insertAdjacentHTML('afterbegin', `
                   
-                  <label class="avatar" for="image"><img src="./static/html/components/telegram-login/images/cameraadd_svg.svg"><input required="" type="file" id="image"></label>
+                  <label class="avatar" for="image"><img src="/static/html/components/telegram-login/images/cameraadd_svg.svg"><input required="" type="file" id="image"></label>
                 `)
                 obj['this']['shadowRoot'].querySelector('.head').innerHTML = ''
                 obj['this']['shadowRoot'].querySelector('.head').insertAdjacentHTML('afterbegin',`
@@ -122,7 +122,7 @@ export default async (obj)=>{
                     this.templateCode = obj =>{
                         obj.querySelector('#next').disabled = true
                         obj.querySelector('.telegram').style.background = 'transparent'
-                        obj.querySelector('img.telegram').src = './static/html/components/telegram-login/images/monkey.png'
+                        obj.querySelector('img.telegram').src = '/static/html/components/telegram-login/images/monkey.png'
                         obj.querySelector('#next').innerText = 'PLEASE WAIT...'
                         obj.querySelector('.loader').style.display = 'flex'
                         return obj

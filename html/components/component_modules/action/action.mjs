@@ -442,7 +442,7 @@ export default  (obj, func, ...args)=>{
 
                                         let templateGalary = `
                                                 <div class="gallery-item">
-                                                    <img class="lazy" src="./static/html/components/lacerta-gallery/images/empty.jpeg" data-src="${obj['data'][i]['filename'].split('/')[2]}" data-srcset="${obj['data'][i]['filename'].split('/')[2]}" alt="gallery">
+                                                    <img class="lazy" src="/static/html/components/lacerta-gallery/images/empty.jpeg" data-src="${obj['data'][i]['filename'].split('/')[2]}" data-srcset="${obj['data'][i]['filename'].split('/')[2]}" alt="gallery">
                                                 </div>`
 
                                         obj['this'].shadowRoot.querySelector('section').insertAdjacentHTML('beforeend', templateGalary)

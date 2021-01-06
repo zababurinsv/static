@@ -55,12 +55,12 @@ export default {
 				case 'corrections':
 					(async (obj, payload, rest)=>{
 						payload['this'].getElementById("cell1name").textContent = "Mediter-ranean Avenue";
-						payload['this'].getElementById("enlarge5token").innerHTML += '<img src="./static/html/components/main-manager/images/train_icon.png"  width="50%" alt="" style="position: relative; bottom: 1.953vw;" />';
-						payload['this'].getElementById("enlarge15token").innerHTML += '<img src="./static/html/components/main-manager/images/train_icon.png"  width="50%" alt="" style="position: relative; top: -1.953vw;" />';
-						payload['this'].getElementById("enlarge25token").innerHTML += '<img src="./static/html/components/main-manager/images/train_icon.png"  width="50%" alt="" style="position: relative; top: -1.953vw;" />';
-						payload['this'].getElementById("enlarge35token").innerHTML += '<img src="./static/html/components/main-manager/images/train_icon.png"  width="50%" alt="" style="position: relative; top: -1.953vw;" />';
-						payload['this'].getElementById("enlarge12token").innerHTML += '<img src="./static/html/components/main-manager/images/electric_icon.png"  width="35%" alt="" style="position: relative; top: -1.953vw;" />';
-						payload['this'].getElementById("enlarge28token").innerHTML += '<img src="./static/html/components/main-manager/images/water_icon.png"  width="50%" alt="" style="position: relative; top: -1.953vw;" />';
+						payload['this'].getElementById("enlarge5token").innerHTML += '<img src="/static/html/components/main-manager/images/train_icon.png"  width="50%" alt="" style="position: relative; bottom: 1.953vw;" />';
+						payload['this'].getElementById("enlarge15token").innerHTML += '<img src="/static/html/components/main-manager/images/train_icon.png"  width="50%" alt="" style="position: relative; top: -1.953vw;" />';
+						payload['this'].getElementById("enlarge25token").innerHTML += '<img src="/static/html/components/main-manager/images/train_icon.png"  width="50%" alt="" style="position: relative; top: -1.953vw;" />';
+						payload['this'].getElementById("enlarge35token").innerHTML += '<img src="/static/html/components/main-manager/images/train_icon.png"  width="50%" alt="" style="position: relative; top: -1.953vw;" />';
+						payload['this'].getElementById("enlarge12token").innerHTML += '<img src="/static/html/components/main-manager/images/electric_icon.png"  width="35%" alt="" style="position: relative; top: -1.953vw;" />';
+						payload['this'].getElementById("enlarge28token").innerHTML += '<img src="/static/html/components/main-manager/images/water_icon.png"  width="50%" alt="" style="position: relative; top: -1.953vw;" />';
 					out(payload)
 					})(obj,payload,  rest)
 					break

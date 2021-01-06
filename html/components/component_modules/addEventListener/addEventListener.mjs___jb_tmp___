@@ -472,7 +472,7 @@ export default  (obj, func, ...args)=>{
 
                                                                     admin.querySelector('.item').className = admin.querySelector('.item').className.split('_')[0]
                                                                     admin.querySelector('.nameBid').value = 'Наименование товара'
-                                                                    admin.querySelector('.imgBidAdmin').src = './static/html/components/varan-card-news/icons/no_image.jpg'
+                                                                    admin.querySelector('.imgBidAdmin').src = '/static/html/components/varan-card-news/icons/no_image.jpg'
                                                                     admin.querySelector('.timerValue').value = 10
                                                                     admin.querySelector('.priceValue').value = 1
                                                                     break

@@ -577,7 +577,7 @@ div#control {
               background-color: #305BC9;
               background-image: -webkit-linear-gradient(bottom,#213EB2,#4787ED);
               background-image: -moz-linear-gradient(bottom,#213EB2,#4787ED);
-              background-image: url(./static/html/components/main-manager/images/menu_background.png);
+              background-image: url(/static/html/components/main-manager/images/menu_background.png);
               background-repeat: repeat-x;
               overflow: hidden;
               tbody{
@@ -1289,7 +1289,7 @@ div#control {
   /* background-image: -webkit-linear-gradient(bottom,#000080,#4787ED);
   background-image: -moz-linear-gradient(bottom,#000080,#4787ED); */
 
-  background-image: url(./static/html/components/main-manager/images/menu_background_hover.png);
+  background-image: url(/static/html/components/main-manager/images/menu_background_hover.png);
 }
 
 .menu-item {
@@ -1556,7 +1556,7 @@ tr#moneybarrow8{
 }
 
 .board-top .cell-owner {
-  background-image: url("./static/html/components/main-manager/images/hori-bar.png");
+  background-image: url("/static/html/components/main-manager/images/hori-bar.png");
   height: 16%;
   left: 0;
   top: -2.441vw;
@@ -1565,7 +1565,7 @@ tr#moneybarrow8{
 }
 
 .board-bottom .cell-owner {
-  background-image: url("./static/html/components/main-manager/images/hori-bar.png");
+  background-image: url("/static/html/components/main-manager/images/hori-bar.png");
   bottom: -2.441vw;
   height: 16%;
   left: 0;
@@ -1573,7 +1573,7 @@ tr#moneybarrow8{
 }
 
 .board-left .cell-owner {
-  background-image: url("./static/html/components/main-manager/images/vert-bar.png");
+  background-image: url("/static/html/components/main-manager/images/vert-bar.png");
 
   height: 5vw;
   left: -2.441vw;
@@ -1585,7 +1585,7 @@ tr#moneybarrow8{
 
 }
 .board-right .cell-owner {
-  background-image: url("./static/html/components/main-manager/images/vert-bar.png");
+  background-image: url("/static/html/components/main-manager/images/vert-bar.png");
 
   height: 5vw;
   right: -2.441vw;
