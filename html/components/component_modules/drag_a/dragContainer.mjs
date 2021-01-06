@@ -1,5 +1,5 @@
 import dragManager from '/static/html/components/component_modules/drag_a/dragManager.mjs'
-import UserAgent from '/static/html/components/component_modules/bundle/ua/ua.index.mjs'
+import UA from '/static/html/components/component_modules/bundle/ua/ua.index.mjs'
 import touch from '/static/html/components/component_modules/drag_a/dragTouch.mjs'
 export default async (v,p,c,obj,r) => {
     let manager = await dragManager()
@@ -7,9 +7,8 @@ export default async (v,p,c,obj,r) => {
         obj.this.shadowRoot.querySelector('.board').addEventListener('dragend', manager);
         obj.this.shadowRoot.querySelector('.board').addEventListener("touchstart", manager, false);
         obj.this.shadowRoot.querySelector('.board').addEventListener("touchend", manager, false);
-        
-        // const userAgent = new UserAgent.item();
-        // console.log(userAgent.data);
+  let userAgent = new UA['default']['user-agent']
+
 
     function DragContainer(container, type) {
         this.element = container;
