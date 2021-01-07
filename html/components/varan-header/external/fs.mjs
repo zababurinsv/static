@@ -18,7 +18,7 @@ export default async (v,p,c,obj,r) => {
         const fsLoad = () => {
             return new Promise(async (resolve, reject) => {
                 window.zb.fs[`${system.worker_main['fs.path']}`].syncfs(true , (err) => {
-                    console.log('header load')
+                    // console.log('header load')
                     resolve()
                 });
             })
@@ -76,6 +76,6 @@ export default async (v,p,c,obj,r) => {
         }
         return system
     } finally {
-        console.log('system-fs-finaly', system)
+        // console.log('system-fs-finaly', system)
     }
 }
