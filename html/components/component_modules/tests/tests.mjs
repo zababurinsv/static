@@ -34,10 +34,27 @@ export default ( obj ={ _:'default' } ) =>{
                 await tests('/tests/game.mjs','tests')
                 break
             default:
-                let pathname = location.pathname.replace(/\//gi,'')
-                await tests(isEmpty(pathname)
-                  ?'/tests/index.mjs'
-                  :`${location.origin}/${pathname}/test.${pathname}.mjs`,'tests')
+                let pathname = {}
+                if(!isEmpty(location.pathname)) {
+                    pathname = location.pathname
+                    pathname = pathname.split('/')
+                    if(pathname[1].split('-').length >1) {
+                        pathname = `${location.origin}/${pathname}/test.${pathname}.mjs`
+                    } else {
+                        switch (pathname[1]) {
+                            case 'dev':
+                                pathname = `${location.origin}/test.index.mjs`
+                                break
+                            default:
+                                console.log('неизвестно какой тест подключать',pathname[1])
+                                pathname = `${location.origin}/test.index.mjs`
+                                break
+                        }
+                    }
+                } else {
+                    pathname = '/test.index.mjs'
+                }
+                await tests(pathname,'tests')
                 break
         }
         let test = document.createElement('script');
