@@ -1,33 +1,13 @@
 import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 import emoji from '/static/html/components/component_modules/emoji/emoji.mjs'
 import task from '/static/html/components/component_modules/heap/index.mjs'
-import Waves from '/static/html/components/component_modules/bundle/waves/waves.index.mjs'
+import waves from '/static/html/components/component_modules/bundle/waves/waves.index.mjs'
 
 export default (async ()=>{
     console.log('# Actions for waves')
     task.get(true, 'await', '5', '','/waves/bank', async (object)=>{
-        // if(isEmpty(substrate[`${relation}`])){
-        //     console.warn(`${emoji('kissing_heart')} субстрат не определён --->`,  substrate)
-        // }else{
-        //     let dAppData = {}
-        //     switch (substrate[`${relation}`]['/']) {
-        //         case 'bank':
-        //             dAppData = await waves['transactions']['nodeInteraction'].accountData(substrate[`${relation}`]['property']['dapp'], substrate[`${relation}`]['property']['testnodes'])
-        //             break
-        //         default:
-        //             console.warn(`waves.mjs ${emoji('microscope')} действие не обрабтывается ${emoji('point_right')}`, substrate[`${relation}`]['/'], emoji('pray'),  substrate)
-        //             break
-        //
-        //     }
-        //     document.dispatchEvent( new CustomEvent('bank-end', {
-        //         detail: {
-        //             '/':`${substrate[`${relation}`]['/']}`,
-        //             dAppData:dAppData
-        //         }
-        //     }))
-        //     resolve(dAppData)
-        // }
-        object.callback({status:'ok'})
+    let dAppData = await waves['default']['transactions']['nodeInteraction'].accountData('3N8n4Lc8BMsPPyVHJXTivQWs7ER61bB7wQn', 'https://testnode1.wavesnodes.com')
+        object.callback({status:'ok', data: dAppData})
     })
     task.get(true, 'await', '5', '','/waves/transfer', async (object)=>{
         /*
