@@ -3,7 +3,6 @@ import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.m
 import { tests } from '/static/html/components/component_modules/loader/loader.mjs'
 export default ( obj ={ _:'default' } ) =>{
     return new Promise(async (resolve, reject) =>{
-
         let sw = {}
         if(location.hostname === 'localhost'){
             sw = location.host
@@ -39,7 +38,7 @@ export default ( obj ={ _:'default' } ) =>{
                     pathname = location.pathname
                     pathname = pathname.split('/')
                     if(pathname[1].split('-').length >1) {
-                        pathname = `${location.origin}/${pathname}/test.${pathname}.mjs`
+                        pathname = `${location.origin}/${pathname[1]}/test.${pathname[1]}.mjs`
                     } else {
                         switch (pathname[1]) {
                             case 'dev':
