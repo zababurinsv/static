@@ -3,9 +3,9 @@ import emoji from '/static/html/components/component_modules/emoji/emoji.mjs'
 export default {
     set:(view,property,color,substrate,relation)=>{
         return new Promise(function (resolve, reject) {
-            console.log(`${emoji('moon')[1][0]}`, relation)
+            console.log(`${emoji('moon')[1][0]}`, relation + ' init')
             heap(view, property,color,substrate ,relation, (event)=>{
-                console.log(`    ${emoji('moon')[2][0]}`, event)
+                console.log(`    ${emoji('moon')[2][0]}`,relation, event)
                 resolve(event)
             })
         })

@@ -9,7 +9,6 @@ export default ( obj ={ _:'default' } ) =>{
         }else{
             sw =  location.pathname
         }
-        console.log('hostname', sw)
         switch (sw) {
             case 'localhost:1111':
                 await tests('/tests/core.mjs','tests')

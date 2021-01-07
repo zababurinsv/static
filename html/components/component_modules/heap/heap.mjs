@@ -123,10 +123,7 @@ export default (view,property,color,substrate,relation,callback,origin) =>{
                     break
                 default:
                     if(isEmpty(target.staticProperty[`${relation}`])) {
-                        console.log(`  ${emoji('moon')[2][3]}`, {
-                            _:"process",
-                            relation:relation,
-                        })
+                        console.log(`  ${emoji('moon')[2][3]}`, relation + ' process')
                         source.staticProperty[`${relation}`] = {
                             view:view,
                             property:property,
@@ -137,7 +134,7 @@ export default (view,property,color,substrate,relation,callback,origin) =>{
                         }
                         resolve(true)
                     } else {
-                        console.log(`  ${emoji('moon')[1][3]}`, relation)
+                        console.log(`  ${emoji('moon')[1][3]}`, relation + ' process')
                         source.staticProperty[`${relation}`] = {
                             view:view,
                             property:property,
