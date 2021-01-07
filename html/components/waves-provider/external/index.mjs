@@ -78,7 +78,7 @@ obj['this'].shadowRoot.querySelector('button.login-button').addEventListener('cl
                 let name = obj['this'].shadowRoot.querySelector('#account-name').value
                 let type = obj['this'].shadowRoot.querySelector('#account-type').value
                 if(isEmpty(name)){ name = 'wallet' }
-                let wallet = await account.create(name, pass.value,type)
+                 let wallet = await account.create(name, pass.value,type)
                 let balance = (await (await waves)['balance'](wallet['public']['address']))['balance']
                 let template =await walletTemplate(true,'','3',{
                     type:wallet['type'],

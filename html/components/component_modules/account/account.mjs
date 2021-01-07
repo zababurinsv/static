@@ -1,6 +1,7 @@
-import conf from '/static/html/components/component_modules/storage/module/config/config.mjs'
 export default  (obj, func, ...args)=>{
     return new Promise( function (resolve, reject) {
+        bundle['default'](obj,null, async function (error, config) {
+
             let out = (obj) => {
                 console.log('~~~ out  ~~~')
                 resolve(obj)
@@ -9,19 +10,14 @@ export default  (obj, func, ...args)=>{
                 console.log('~~~ err  ~~~', error)
                 reject(error)
             }
-        if(func === undefined) {
-                console.warn('account not defined waves-provider')
-            resolve(obj)
-        }else {
             switch (func) {
                 case 'get':
                     (async (obj, props,data) => {
                         try {
                             switch (obj[props]) {
                                 case 'state':
-                                    await (async (obj, props,data) => {
+                                    (async (obj, props,data) => {
                                         try {
-                                            console.assert(false, obj)
                                             let dappaddress = conf['account']['dappaddress'];
                                             let baseUri = conf['account']['testnodes'];
                                             let accountbalance = await  window['wt']['nodeInteraction']['balanceDetails'](dappaddress, baseUri)
@@ -41,7 +37,7 @@ export default  (obj, func, ...args)=>{
                     err(`new function ${func}`)
                     break
             }
-        }
 
+        })
     })
 }
