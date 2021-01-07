@@ -1,3 +1,4 @@
+import {pixelToVW} from '/static/html/components/component_modules/convert/convert.mjs'
 let develop = false
 let element, bbox, inputX, inputY, offsetX, offsetY, raf;
 
@@ -22,9 +23,8 @@ export default async (v,p,c,obj,r) => {
         }
     
         function userMoved(event) {
-        
-            element.style.left = (event.clientX + offsetX) + "px";
-            element.style.top = (event.clientY + offsetY) + "px";
+            element.style.left = pixelToVW((event.clientX + offsetX)) + "vw";
+            element.style.top = pixelToVW((event.clientY + offsetY)) + "vw";
         }
     
         function userReleased(event) {
