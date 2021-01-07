@@ -1,8 +1,7 @@
 import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
-import Signer from '/static/html/components/component_modules/bundle/waves/waves.mjs'
-import iframeWindow from '/static/html/components/component_modules/waves-provider/module/iframe/iframe-window.mjs'
-let signer = Signer['default']
-let Class = class Provider {
+import waves from '/static/html/components/component_modules/bundle/waves/waves.index.mjs'
+// import iframeWindow from '/static/html/components/component_modules/waves-provider/module/iframe/iframe-window.mjs'
+export let Account = class Provider {
     constructor(self) {
         this._seed = '' // string;
         this._options = {
@@ -17,7 +16,7 @@ let Class = class Provider {
     sign({list:[]}){
         return Promise.resolve(
             list.map((params) =>
-                signer['signTx'](
+              waves.signer['signTx'](
                     {
                         chainId: this._options.NETWORK_BYTE,
                         ...params,
@@ -32,19 +31,19 @@ let Class = class Provider {
            // await iframeWindow()
             document.addEventListener('provider-login',async (event)=>{
                 resolve({
-                    address: signer['libs'].crypto.address(
+                    address: waves.signer['libs'].crypto.address(
                         this._seed,
                         this._options.NETWORK_BYTE
                     ),
-                    publicKey: signer['libs'].crypto.publicKey(this._seed),
+                    publicKey: waves.signer['libs'].crypto.publicKey(this._seed),
                 })
             })
             resolve({
-                address: signer['libs'].crypto.address(
+                address: waves.signer['libs'].crypto.address(
                     this._seed,
                     this._options.NETWORK_BYTE
                 ),
-                publicKey: signer['libs'].crypto.publicKey(this._seed),
+                publicKey: waves.signer['libs'].crypto.publicKey(this._seed),
             })
         })
     }
@@ -95,4 +94,4 @@ let Class = class Provider {
 }
 
 
-export default Class
+export default Account

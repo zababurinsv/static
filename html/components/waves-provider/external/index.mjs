@@ -1,15 +1,16 @@
-import store from '/static/html/components/component_modules/staticProperty/staticProperty.mjs'
+// import store from '/static/html/components/component_modules/staticProperty/staticProperty.mjs'
 import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 import Account from '/static/html/components/component_modules/account/index.mjs'
 import walletTemplate from '/static/html/components/waves-provider/template/wallet.mjs'
-import Waves from '/static/html/components/component_modules/waves/waves.mjs'
+import Waves from '/static/html/components/component_modules/waves/index.mjs'
 import task from '/static/html/components/component_modules/heap/index.mjs'
-let waves = Waves()
-console.log('dddddddddddddddddddddddddddddddd', Account)
+
+
 export default async (v,p,c,obj,r) => {
-    // let account = new Account()
+    let account = new Account()
+    let waves = new Waves()
     let objectWallet = {}
-    task.get(true, 'await', '5', '','await-wallet', async (object)=>{
+    task.get(true, 'await', '5', '','await-wallet', async (object)=> {
         if (isEmpty(objectWallet)) {
             objectWallet = new Proxy({}, {
                 get: function (target, prop) {
@@ -28,31 +29,8 @@ export default async (v,p,c,obj,r) => {
         }
         object.callback({status:'ok', data: dAppData})
     })
-    console.log('ddddddddddddddddddddddfffffffffffff',account)
-   /*
 
 
-// console.log('@@@@@@@@@@@@@55555@@@@@@@@@@@@@', objectWallet)
-// document.addEventListener('await-wallet',async (event)=>{
-//     console.log('@@@@@@@@@@@@@111@@@@@@@@@@@@@', objectWallet)
-//     if(isEmpty(objectWallet)){
-//          objectWallet = new Proxy({}, {
-//             get: function(target, prop) {
-//                 return Reflect.get(target, prop);
-//             },
-//             set: function(target, prop, value) {
-//                 obj['this'].shadowRoot.querySelector('div.connecting-cycle').style.background = '#f21818de'
-//                 obj['this'].shadowRoot.querySelector('div.connecting-cycle').style.color = '#93fff5'
-//                 obj['this'].shadowRoot.querySelector('div.connecting-cycle').innerHTML = 'ON AIR'
-//                 event.detail.callback(value)
-//                 return Reflect.set(target, prop, value);
-//             }
-//         });
-//     }else{
-//         console.assert(false, objectWallet)
-//     }
-// })
-    let account = await (Account())
     obj['this'].shadowRoot.querySelector('svg.form-password').addEventListener('click', async (event) => {
         let type = obj['this'].shadowRoot.querySelector('#form-password')
         if (type.type === 'text') {
@@ -158,6 +136,30 @@ export default async (v,p,c,obj,r) => {
             }
         }
     })
+
+// console.log('@@@@@@@@@@@@@55555@@@@@@@@@@@@@', objectWallet)
+// document.addEventListener('await-wallet',async (event)=>{
+//     console.log('@@@@@@@@@@@@@111@@@@@@@@@@@@@', objectWallet)
+//     if(isEmpty(objectWallet)){
+//          objectWallet = new Proxy({}, {
+//             get: function(target, prop) {
+//                 return Reflect.get(target, prop);
+//             },
+//             set: function(target, prop, value) {
+//                 obj['this'].shadowRoot.querySelector('div.connecting-cycle').style.background = '#f21818de'
+//                 obj['this'].shadowRoot.querySelector('div.connecting-cycle').style.color = '#93fff5'
+//                 obj['this'].shadowRoot.querySelector('div.connecting-cycle').innerHTML = 'ON AIR'
+//                 event.detail.callback(value)
+//                 return Reflect.set(target, prop, value);
+//             }
+//         });
+//     }else{
+//         console.assert(false, objectWallet)
+//     }
+// })
+    /*
+    let account = await (Account())
+
     */
 }
 
