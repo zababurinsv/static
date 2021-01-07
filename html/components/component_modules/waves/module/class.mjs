@@ -1,6 +1,6 @@
 // import colorlog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
 import queue from '/static/html/components/component_modules/queue/queue.mjs'
-import bundle from '/static/html/components/component_modules/waves/module/waves-bundle.mjs'
+import bundle from '/static/html/components/component_modules/bundle/waves/waves.index.mjs'
 let Class = class Waves {
     constructor(self) {
         this.bank = this.bank.bind(this)
