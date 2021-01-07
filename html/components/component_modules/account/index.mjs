@@ -1,24 +1,26 @@
-import colorlog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
+// import colorlog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
 import Provider from '/static/html/components/component_modules/waves-provider/waves-provider.mjs'
-import Signer from '/static/html/components/component_modules/bundle/waves/waves.mjs'
-let signer = Signer['default']
+import waves from '/static/html/components/component_modules/bundle/waves/waves.index.mjs'
+
 // let accountbalance = await  window['wt']['nodeInteraction']['balanceDetails'](dappaddress, baseUri)
 let Class = class Account {
     constructor() {
-        this.create = this.create.bind(this)
-        this.open = this.open.bind(this)
-        this.saveAs = this.saveAs.bind(this)
+        // waves['default']['transactions']['nodeInteraction']['balanceDetails']('3N8n4Lc8BMsPPyVHJXTivQWs7ER61bB7wQn', 'https://nodes-testnet.wavesnodes.com/').then((account)=>{
+        // })
+        // this.create = this.create.bind(this)
+        // this.open = this.open.bind(this)
+        // this.saveAs = this.saveAs.bind(this)
     }
+    /*
     create(name, password, chainId){
         return new Promise( async (resolve, reject) => {
             let provider = await Provider()
             let waves = {}
             let verify = false
             if(chainId === 'w'){
-                waves = new signer['Signer']();
                 verify = true
             }else if(chainId === 't'){
-                waves = new signer['Signer']({NODE_URL: 'https://pool.testnet.wavesnodes.com'});
+                waves = new waves['default']['Signer']({NODE_URL: 'https://pool.testnet.wavesnodes.com'});
                 verify = true
             }else{
                 console.assert(false, 'укажите сеть t -тестнет или w - майннет')
@@ -85,6 +87,7 @@ let Class = class Account {
     get self() {
         return Signer
     }
+     */
 }
 
 

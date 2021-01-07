@@ -1,12 +1,13 @@
 import store from '/static/html/components/component_modules/staticProperty/staticProperty.mjs'
 import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
-import Account from '/static/html/components/component_modules/account/account.mjs'
+import Account from '/static/html/components/component_modules/account/index.mjs'
 import walletTemplate from '/static/html/components/waves-provider/template/wallet.mjs'
 import Waves from '/static/html/components/component_modules/waves/waves.mjs'
 import task from '/static/html/components/component_modules/heap/index.mjs'
 let waves = Waves()
+console.log('dddddddddddddddddddddddddddddddd', Account)
 export default async (v,p,c,obj,r) => {
-    let account = await Account()
+    // let account = new Account()
     let objectWallet = {}
     task.get(true, 'await', '5', '','await-wallet', async (object)=>{
         if (isEmpty(objectWallet)) {
