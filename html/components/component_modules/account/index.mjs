@@ -2,6 +2,7 @@ import colorlog from '/static/html/components/component_modules/colorLog/colorLo
 import Provider from '/static/html/components/component_modules/waves-provider/waves-provider.mjs'
 import Signer from '/static/html/components/component_modules/bundle/waves/waves.mjs'
 let signer = Signer['default']
+// let accountbalance = await  window['wt']['nodeInteraction']['balanceDetails'](dappaddress, baseUri)
 let Class = class Account {
     constructor() {
         this.create = this.create.bind(this)
