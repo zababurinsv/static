@@ -1,5 +1,6 @@
 import colorlog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
 import queue from '/static/html/components/component_modules/queue/queue.mjs'
+import events from '/static/html/components/component_modules/CustomEvent/index.mjs'
 let object = {}
 object['amount'] = 10 ** 8;
 object['price'] = 10 ** 6;
@@ -19,7 +20,7 @@ let Class = class Waves {
         return price/wvsPrice
     }
     buy(pair,amount, obj,name){
-        return new Promise( (resolve, reject)=>{
+        return new Promise( async (resolve, reject)=>{
             let verify = true
             let count = 0
             let outAmount = undefined
@@ -51,9 +52,48 @@ let Class = class Waves {
                                 // console.log('bidAmount --->', bidAmount,'askAmount --->',askAmount, 'count--->',count)
                                 // console.log('----->', askAmount, outAmount)
                                 if((bidAmount - amount) <= 0){
-                                    console.warn('невозможно купить wavesEuro','askAmount:',askAmount,'outAmount:',outAmount, 'count:', count )
+                                // console.warn('невозможно купить wavesEuro','askAmount:',askAmount,'outAmount:',outAmount, 'count:', count )
                                     count++
                                 }else{
+
+                                    if(obj['eue'] === undefined){
+
+
+
+                                        const params = {
+                                            amount: 10000000,
+                                            price:  516000,
+                                            amountAsset: 'WAVES',
+                                            priceAsset: '3KFXBGGLCjA5Z2DuW4Dq9fDDrHjJJP1ZEkaoajSzuKsC',
+                                            matcherPublicKey: "8QUAqtTckM5B8gvcuP7mMswat9SjKUuafJMusEoSn1Gy",
+                                            orderType: 'sell'
+                                        }
+                                        obj['system'] = {
+                                            items:{
+                                                id:'avy',
+                                                eue:{
+                                                    property:{ },
+                                                    substrate: [ ],
+                                                    relation:'',
+                                                }
+                                            }
+                                        }
+
+
+                                        let order = await events.eventListener.set(true,'t','8',params,'/matcher/get/order')
+                                        obj['eue'] = {}
+                                        obj['eue']['buy(wavesEuro)'] = {}
+                                        obj['eue']['buy(wavesEuro)']['amount'] = amount
+                                        obj['eue']['buy(wavesEuro)']['price'] = bidPrice
+                                        obj['system']['items']['eue']['substrate'].push(order)
+                                    }
+
+                                    if(obj['wew'] != undefined){
+                                        obj['wew']['buy(wavesEuro)'] = {}
+                                        obj['wew']['buy(wavesEuro)']['amount'] = amount
+                                        obj['wew']['buy(wavesEuro)']['price'] = bidPrice
+                                    }
+
                                     obj['buy(wavesEuro)'] = amount*bidPrice -object['fee']
                                     obj['buy(wavesEuro)'] = this.fix(obj['buy(wavesEuro)'])
                                     verify = false
@@ -90,9 +130,21 @@ let Class = class Waves {
                                 // console.log('result2 --->', amount/bidPrice -object['fee'], '----->', count)
                                 // console.log('askAmount --->', askAmount,'-','bidAmount --->',bidAmount, 'count--->',count)
                                 if((askAmount - outAmount) <= 0){
-                                    console.warn('невозможно купить wavesUsd','askAmount:',askAmount,'-', 'outAmount:', outAmount, 'count-->', count)
+                            // console.warn('невозможно купить wavesUsd','askAmount:',askAmount,'-', 'outAmount:', outAmount, 'count-->', count)
                                     count++
                                 }else{
+                                    if(obj['ueu'] === undefined){
+                                        obj['ueu'] = {}
+                                        obj['ueu']['buy(wavesUsd)'] = {}
+                                        obj['ueu']['buy(wavesUsd)']['amount'] = amount
+                                        obj['ueu']['buy(wavesUsd)']['price'] = askPrice
+                                    }
+                                    if(obj['wuw'] !== undefined){
+                                        obj['wuw']['buy(wavesUsd)'] = {}
+                                        obj['wuw']['buy(wavesUsd)']['amount'] = amount
+                                        obj['wuw']['buy(wavesUsd)']['price'] = bidPrice
+                                    }
+
                                     obj['buy(wavesUsd)'] = amount/askPrice - object['fee']
                                     obj['buy(wavesUsd)'] = this.fix(obj['buy(wavesUsd)'])
                                     verify = false
@@ -131,9 +183,15 @@ let Class = class Waves {
                                 // console.log('bidAmount --->', bidAmount,'askAmount --->',askAmount, 'count--->',count)
 
                                 if((bidAmount - outAmount) <= 0){
-                                    console.warn('невозможно купить')
+                                   // console.warn('невозможно купить')
                                     count++
                                 }else{
+
+
+                                    obj['wew'] = {}
+                                    obj['wew']['buy(usdWaves)'] = {}
+                                    obj['wew']['buy(usdWaves)']['amount'] = amount
+                                    obj['wew']['buy(usdWaves)']['price'] = bidPrice
                                     obj['buy(usdWaves)'] =(amount - object['fee'])*bidPrice
                                     obj['buy(usdWaves)'] = this.fix(obj['buy(usdWaves)'])
                                     verify = false
@@ -170,9 +228,12 @@ let Class = class Waves {
                                 // console.log('bidPrice --->', bidPrice,'askPrice --->',askPrice, 'count--->',count)
 
                                 if((bidAmount - amount) <= 0){
-                                    console.warn('невозможно купить')
+                                  // console.warn('невозможно купить')
                                     count++
                                 }else{
+                                    obj['ueu']['buy(usdEuro)'] = {}
+                                    obj['ueu']['buy(usdEuro)']['amount'] = amount
+                                    obj['ueu']['buy(usdEuro)']['price'] = bidPrice
                                     obj['buy(usdEuro)'] = amount*bidPrice - obj['fee']['usd']
                                     obj['buy(usdEuro)'] = this.fix(obj['buy(usdEuro)'])
                                     verify = false
@@ -212,9 +273,13 @@ let Class = class Waves {
 
                                 // console.assert(false,  pair['asks'][count], askAmount)
                                 if((askAmount - outAmount) <= 0){
-                                    console.warn('невозможно купить euroUsd', 'askAmount:', askAmount,'outAmount:',outAmount )
+                                    // console.warn('невозможно купить euroUsd', 'askAmount:', askAmount,'outAmount:',outAmount )
                                     count++
                                 }else{
+
+                                    obj['eue']['buy(euroUsd)'] = {}
+                                    obj['eue']['buy(euroUsd)']['amount'] = amount
+                                    obj['eue']['buy(euroUsd)']['price'] = bidPrice
                                     obj['buy(euroUsd)'] = amount/askPrice - obj['fee']['euro']
                                     obj['buy(euroUsd)'] = this.fix(obj['buy(euroUsd)'])
                                     verify = false
@@ -255,6 +320,11 @@ let Class = class Waves {
                                     // console.warn('невозможно купить euroWaves', 'askAmount:', askAmount,'outAmount:',outAmount )
                                     count++
                                 }else{
+
+                                    obj['wuw'] = {}
+                                    obj['wuw']['buy(euroWaves)'] = {}
+                                    obj['wuw']['buy(euroWaves)']['amount'] = amount
+                                    obj['wuw']['buy(euroWaves)']['price'] = bidPrice
                                     obj['buy(euroWaves)'] = (amount-0.003)/askPrice
                                     obj['buy(euroWaves)'] = this.fix(obj['buy(euroWaves)'])
                                     verify = false
@@ -266,7 +336,7 @@ let Class = class Waves {
                     resolve(obj)
                     break
                 default:
-                    console.warn('имя не обрабатывается --->', name)
+                    // console.warn('имя не обрабатывается --->', name)
                     break
 
             }
@@ -308,9 +378,13 @@ let Class = class Waves {
                                 // console.log('bidAmount --->', bidAmount,'amount --->',amount, 'count--->',count)
 
                                 if((bidAmount - amount) <= 0){
-                                    console.warn('невозможно купить', 'bidAmount:',bidAmount,'- amount:',amount,'count:',count)
+                                    // console.warn('невозможно купить', 'bidAmount:',bidAmount,'- amount:',amount,'count:',count)
                                     count++
                                 }else{
+
+                                    obj['eue']['sell(wavesUsd)'] = {}
+                                    obj['eue']['sell(wavesUsd)']['amount'] = amount
+                                    obj['eue']['sell(wavesUsd)']['price'] = bidPrice
                                     obj['sell(wavesUsd)'] = (amount- object['fee'])*bidPrice
                                     obj['sell(wavesUsd)'] = this.fix(obj['sell(wavesUsd)'])
                                     verify = false
@@ -351,7 +425,7 @@ let Class = class Waves {
                                 // console.log(amount/askPrice -object['fee'])
                                 // console.log('$$$$$$$$$$$$', askAmount, outAmount)
                                 if((askAmount - outAmount) <= 0){
-                                    console.warn('невозможно купить')
+                                    // console.warn('невозможно купить')
                                     count++
                                 }else{
                                     obj['sell(usdWaves)'] = amount/askPrice - object['fee']
@@ -394,6 +468,10 @@ let Class = class Waves {
                                     // console.warn('wavesEuro невозможно купить','bidAmount:',bidAmount,'-', 'outAmount:',outAmount, 'count-->', count)
                                     count++
                                 }else{
+
+                                    obj['ueu']['sell(wavesEuro)'] = {}
+                                    obj['ueu']['sell(wavesEuro)']['amount'] = amount
+                                    obj['ueu']['sell(wavesEuro)']['price'] = askPrice
                                     obj['sell(wavesEuro)'] = (amount - object['fee'])/askPrice
                                     obj['sell(wavesEuro)'] = this.fix(obj['sell(wavesEuro)'])
                                     verify = false
@@ -425,14 +503,17 @@ let Class = class Waves {
                                 bidPrice = this.denormalize(pair['bids'][count]['price'],obj['decimals'][`${ pair['pair']['priceAsset'] }`],obj['decimals'][`${ pair['pair']['amountAsset'] }`])
                                 
                                 outAmount = amount*bidPrice
-                                console.log('result1 --->', amount*askPrice, '----->', count)
-                                console.log('result2 --->', amount*bidPrice, '----->', count, obj['fee']['euro'])
+                                // console.log('result1 --->', amount*askPrice, '----->', count)
+                                // console.log('result2 --->', amount*bidPrice, '----->', count, obj['fee']['euro'])
                                 // console.log('askAmount --->', askAmount,'-','outAmount --->',outAmount,'bidAmount--->',bidAmount, 'count--->', count)
-                                console.log('bidAmount --->', bidAmount,'askAmount --->',askAmount, 'count--->',count)
+                                // console.log('bidAmount --->', bidAmount,'askAmount --->',askAmount, 'count--->',count)
                                 if((bidAmount - amount) <= 0){
-                                    console.warn('невозможно купить euroUsd','bidAmount:',bidAmount,'-', 'outAmount:',outAmount, 'count-->', count)
+                                    // console.warn('невозможно купить euroUsd','bidAmount:',bidAmount,'-', 'outAmount:',outAmount, 'count-->', count)
                                     count++
                                 }else{
+                                    obj['wuw']['sell(euroUsd)'] = {}
+                                    obj['wuw']['sell(euroUsd)']['amount'] = amount
+                                    obj['wuw']['sell(euroUsd)']['price'] = bidPrice
                                     obj['sell(euroUsd)'] = (amount - obj['fee']['euro'])*bidPrice
                                     obj['sell(euroUsd)'] = this.fix(obj['sell(euroUsd)'])
                                     verify = false
@@ -470,9 +551,13 @@ let Class = class Waves {
                                 // console.log('askAmount --->', askAmount,'-','outAmount --->',outAmount,'bidAmount--->',bidAmount, 'count--->', count)
                                 // console.log('bidAmount --->', bidAmount,'askAmount --->',askAmount, 'count--->',count)
                                 if((bidAmount - outAmount) <= 0){
-                                    console.warn('невозможно купить usdEuro','bidAmount:',bidAmount,'-', 'outAmount:',outAmount, 'count-->', count)
+                                    // console.warn('невозможно купить usdEuro','bidAmount:',bidAmount,'-', 'outAmount:',outAmount, 'count-->', count)
                                     count++
                                 }else{
+
+                                    obj['wew']['sell(usdEuro)'] = {}
+                                    obj['wew']['sell(usdEuro)']['amount'] = amount
+                                    obj['wew']['sell(usdEuro)']['price'] = askPrice
                                     obj['sell(usdEuro)'] = (amount - obj['fee']['usd'])/askPrice
                                     obj['sell(usdEuro)'] = this.fix(obj['sell(usdEuro)'])
                                     verify = false
@@ -483,7 +568,7 @@ let Class = class Waves {
                     resolve(obj)
                     break
                 default:
-                    console.warn('имя не обрабатывается --->', name)
+                    // console.warn('имя не обрабатывается --->', name)
                     break
 
             }
