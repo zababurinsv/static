@@ -1,4 +1,3 @@
-import colorlog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
 import Provider from '/static/html/components/component_modules/waves-provider/index.mjs'
 import waves from '/static/html/components/component_modules/bundle/waves/waves.index.mjs'
 let provider = new Provider()
