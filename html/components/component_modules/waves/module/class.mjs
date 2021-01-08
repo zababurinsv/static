@@ -24,9 +24,9 @@ let Class = class Waves {
         return new Promise(async (resolve, reject)=>{
             let balance = {}
             if(after === undefined){
-                balance = await fetch(`https://testnodes.wavesnodes.com/assets/nft/${address}/limit/${limit}`)
+                balance = await fetch(`https://nodes-testnet.wavesnodes.com/assets/nft/${address}/limit/${limit}`)
             }else{
-                balance = await fetch(`https://testnodes.wavesnodes.com/assets/nft/${address}/limit/${limit}?after=${after}`)
+                balance = await fetch(`https://nodes-testnet.wavesnodes.com/assets/nft/${address}/limit/${limit}?after=${after}`)
             }
             resolve(await balance.json())
         })
@@ -39,7 +39,7 @@ let Class = class Waves {
     }
     balance(id){
         return new Promise(async (resolve, reject)=>{
-            let balance = await fetch(`https://testnodes.wavesnodes.com/addresses/balance/${id}`)
+            let balance = await fetch(`https://nodes-testnet.wavesnodes.com/addresses/balance/${id}`)
             resolve(await balance.json())
         })
     }

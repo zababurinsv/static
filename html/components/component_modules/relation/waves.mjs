@@ -7,7 +7,7 @@ export default {
             },
             property:{
                 dapp:'3N8n4Lc8BMsPPyVHJXTivQWs7ER61bB7wQn',
-                testnodes:'https://testnodes.wavesnodes.com',
+                testnodes:'https://nodes-testnet.wavesnodes.com',
             },
             substrate:{ },
         },
@@ -18,7 +18,7 @@ export default {
             },
             property:{
                 dapp:'',
-                testnodes:'https://testnodes.wavesnodes.com',
+                testnodes:'https://nodes-testnet.wavesnodes.com',
             },
             substrate:{ },
         },
@@ -29,7 +29,7 @@ export default {
             },
             property:{
                 dapp:'',
-                testnodes:'https://testnodes.wavesnodes.com',
+                testnodes:'https://nodes-testnet.wavesnodes.com',
             },
             substrate:{ },
         },

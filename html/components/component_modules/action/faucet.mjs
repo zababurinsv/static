@@ -17,7 +17,7 @@ export default (views,property,color,substrate,relation)=>{
                         },
                         property:{
                             dapp:'zone tower six sound oblige horn false blue enroll flash pact all',
-                            testnodes:'https://testnodes.wavesnodes.com',
+                            testnodes:'https://nodes-testnet.wavesnodes.com',
                         },
                         substrate:{
                             recipient:substrate[`${relation}`]['address']

@@ -5,11 +5,11 @@ let net = {}
 net.node = {}
 net.matcher = {}
 net.node.waves = {}
-net.node.waves.test = 'https://testnodes.wavesnodes.com'
+net.node.waves.test = 'https://nodes-testnet.wavesnodes.com'
 net.node.waves.main = 'https://nodes.wavesnodes.com'
 net.matcher.waves = {}
 net.matcher.waves.test = 'https://matcher-testnet.wavesnodes.com'
-net.matcher.waves.main = 'https://testnodes.wavesnodes.com'
+net.matcher.waves.main = 'https://nodes-testnet.wavesnodes.com'
 let Class = class Waves {
     constructor(self) {
         this.bank = this.bank.bind(this)

@@ -1,5 +1,6 @@
 import Provider from '/static/html/components/component_modules/waves-provider/index.mjs'
 import waves from '/static/html/components/component_modules/bundle/waves/waves.index.mjs'
+import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
 let provider = new Provider()
 
 export default class Account {
