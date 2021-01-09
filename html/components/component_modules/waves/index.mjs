@@ -4,7 +4,8 @@ import waves from '/static/html/components/component_modules/bundle/waves/waves.
 import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
 import task from '/static/html/components/component_modules/heap/index.mjs'
 let system = {
-    net: 'T'
+    net: 'T',
+    wvs: 10 ** 8
 }
 export default class Waves {
     constructor(self) {
