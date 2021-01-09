@@ -13,7 +13,7 @@ let system = {
 }
 export default (async ()=>{
     console.log('# Actions for waves');
-    task.get(true, 'await', '5', '','/waves/bank', async (object)=>{
+    task.get(true, 'await', '5', '','/waves/daap', async (object)=>{
         let dAppData = await waves['default']['transactions']['nodeInteraction'].accountData(
           config['accountsStore']['accountGroups'][`${system.net.test}`]['address'],
           config[`${system.net.test}`][0]);
@@ -33,13 +33,6 @@ export default (async ()=>{
                 user:user,
                 balances:balances
             }
-        })
-    })
-
-    task.get(true, 'await', '5', '','/waves/create/nft', async (object)=> {
-        object.callback({
-            status:true,
-            nft: ''
         })
     })
     task.get(true, 'await', '5', '','/waves/set/script', async (object)=> {
@@ -72,6 +65,78 @@ export default (async ()=>{
                 error: e
             })
         }
+    })
+    task.get(true, 'await', '5', '','/waves/get/orders', async (object)=> {
+        object.callback({
+            status:true,
+            nft: ''
+        })
+    })
+    task.get(true, 'await', '5', '','/waves/task/cancelAllOrders', async (object)=> {
+        object.callback({
+            status:true,
+            nft: ''
+        })
+    })
+    task.get(true, 'await', '5', '','/waves/task/denormalize', async (object)=> {
+        object.callback({
+            status:true,
+            nft: ''
+        })
+    })
+    task.get(true, 'await', '5', '','/waves/task/getNft', async (object)=> {
+        object.callback({
+            status:true,
+            nft: ''
+        })
+    })
+    task.get(true, 'await', '5', '','/waves/task/details', async (object)=> {
+        object.callback({
+            status:true,
+            nft: ''
+        })
+    })
+    task.get(true, 'await', '5', '','/waves/task/balance', async (object)=> {
+        object.callback({
+            status:true,
+            nft: ''
+        })
+    })
+    task.get(true, 'await', '5', '','/waves/task/nft', async (object)=> {
+        object.callback({
+            status:true,
+            nft: ''
+        })
+    })
+    task.get(true, 'await', '5', '','/waves/task/transfer', async (object)=> {
+        object.callback({
+            status:true,
+            nft: ''
+        })
+    })
+    task.get(true, 'await', '5', '','/waves/task/faucet', async (object)=> {
+        object.callback({
+            status:true,
+            nft: ''
+        })
+    })
+    task.get(true, 'await', '5', '','/waves/task/bank', async (object)=> {
+        object.callback({
+            status:true,
+            nft: ''
+        })
+    })
+    task.get(true, 'await', '5', '','/waves/task/wallet', async (object)=> {
+        object.callback({
+            status:true,
+            nft: ''
+        })
+    })
+    task.get(true, 'await', '5', '','/waves/task/waitForTx', async (object)=> {
+        object.callback({
+            status:true,
+            nft: ''
+        })
     })
     return true
 })()

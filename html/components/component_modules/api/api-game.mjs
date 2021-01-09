@@ -1,4 +1,4 @@
-import Waves from '/static/html/components/component_modules/waves/waves.mjs'
+import Waves from '/static/html/components/component_modules/waves/index.mjs'
 import actions from '/static/html/components/component_modules/relation/waves.mjs'
 import emoji from '/static/html/components/component_modules/emoji/emoji.mjs';
 import events from '/static/html/components/component_modules/CustomEvent/index.mjs'

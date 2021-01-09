@@ -4,7 +4,7 @@ import iframe from '/static/html/components/component_modules/iframe/iframe.mjs'
 import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 import emoji from '/static/html/components/component_modules/emoji/emoji.mjs'
 import events from '/static/html/components/component_modules/CustomEvent/index.mjs'
-import Waves from '/static/html/components/component_modules/waves/waves.mjs'
+import Waves from '/static/html/components/component_modules/waves/index.mjs'
 
 export default async (v,p,c,obj,r) => {
     let methods = await classDex()

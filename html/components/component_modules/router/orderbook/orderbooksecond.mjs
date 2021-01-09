@@ -1,4 +1,4 @@
-import Waves from '/static/html/components/component_modules/waves/waves.mjs'
+import Waves from '/static/html/components/component_modules/waves/index.mjs'
 import emoji from '/static/html/components/component_modules/emoji/emoji.mjs'
 export default (view, property, color, substrate, relation)=>{
     return new Promise(function(resolve, reject) {

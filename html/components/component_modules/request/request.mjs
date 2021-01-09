@@ -1,5 +1,5 @@
 import staticProperty from '/static/html/components/component_modules/staticProperty/staticProperty.mjs'
-import waves from '/static/html/components/component_modules/waves/waves.mjs'
+import waves from '/static/html/components/component_modules/waves/index.mjs'
 import matcher from '/static/html/components/component_modules/matcher/matcher.mjs'
 export default async (obj, func, ...args)=>{
     bundle['default'](obj,null, async function (error, config) {

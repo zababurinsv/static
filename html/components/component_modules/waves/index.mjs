@@ -1,6 +1,15 @@
 import colorlog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
 import queue from '/static/html/components/component_modules/queue/queue.mjs'
 import waves from '/static/html/components/component_modules/bundle/waves/waves.index.mjs'
+import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
+import task from '/static/html/components/component_modules/heap/index.mjs'
+let system = {
+    net: {
+        test:'T',
+        main:'W',
+        stage:'S',
+    }
+}
 export default class Waves {
     constructor(self) {
         this.bank = this.bank.bind(this)
@@ -24,7 +33,7 @@ export default class Waves {
         return new Promise(async (resolve, reject)=>{
             let orders = {}
             if(relation === 't'){
-                orders = await fetch(`${net.matcher.waves.test}/matcher/orderbook/${substrate}?activeOnly=true`,{
+                orders = await fetch(`${config}/matcher/orderbook/${substrate}?activeOnly=true`,{
                     method: 'GET',
                     headers:{
                         Timestamp:property['timestamp'],
