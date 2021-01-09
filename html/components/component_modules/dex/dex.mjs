@@ -1,5 +1,5 @@
 import Waves from '/static/html/components/component_modules/waves/index.mjs'
-let waves = Waves()
+let waves =  new Waves()
 export default {
     get:(obj, payload, ...rest)=>{
             return  new Promise((resolve, reject) => {

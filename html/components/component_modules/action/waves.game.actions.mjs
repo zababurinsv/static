@@ -1,43 +1,77 @@
-import emoji from '/static/html/components/component_modules/emoji/emoji.mjs';
 import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
-import Waves from '/static/html/components/component_modules/bundle/waves/waves.index.mjs'
-export default (views,property,color,substrate,relation)=>{
-    return  new Promise(async (resolve, reject) => {
-        color = 'action'
-        let waves = Waves.default
-        switch (relation.toLowerCase()) {
-            case 'create-nft':
-                if(isEmpty(substrate[`${relation}`])){
-                    console.warn(`${emoji('kissing_heart')} субстрат не определён --->`,  substrate)
-                }else{
-                    try {
-                        let tokenParamsCustomIndivisible = {
-                            name: substrate[`${relation}`].name,
-                            quantity:1,
-                            decimals:0,
-                            reisuable:false,
-                            chainId:'T',
-                            description:substrate[`${relation}`].description,
+import emoji from '/static/html/components/component_modules/emoji/emoji.mjs'
+import task from '/static/html/components/component_modules/heap/index.mjs'
+import lib from '/static/html/components/component_modules/bundle/waves/waves.index.mjs'
+import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
+import Waves from '/static/html/components/component_modules/waves/index.mjs'
+let waves = new Waves()
+let system = {
+    net: {
+        test:'T',
+        main:'W',
+        stage:'S',
+    }
+}
+export default (async ()=> {
+    task.get(true, 'await', '5', '','/create/nft', async (object)=>{
+        if(object.view) {
+            let message = await waves.createNFT(object.views, object.property,object.color,object.substrate, object.relation)
+            object.callback({
+                status: message.status,
+                message: message.message,
+                _scriptDir: import.meta.url
+            })
+        } else {
+            object.callback({
+                status:true,
+                message: 'pause',
+                _scriptDir: import.meta.url
+            })
+        }
+    })
+
+    task.get(true, 'await', '5', '','/get/nft', async (object) => {
+        if(object.view) {
+            try {
+                let nft = false
+                let message = false
+                nft = await waves.getNFT(
+                  config['accountsStore']['accountGroups'][`${system.net.test}`]['address'],
+                  100)
+                if (isEmpty(object.substrate.name)) {
+                    message = nft
+                } else {
+                    if (nft.length !== 0) {
+                        for(let item of nft) {
+                            if(item.description.toLowerCase().indexOf(object.substrate.description) !== -1) {
+                                if(!message) { message = [] }
+                                message.push(item)
+                            }
                         }
-                        // console.log(`${emoji('beer')} wavesGame.mjs`,tokenParamsCustomIndivisible)
-                        // console.log(`${emoji('beer')} wavesGame.mjs`,substrate[`${relation}`].dapp)
-                        // console.log(`${emoji('beer')} wavesGame.mjs`,substrate[`${relation}`].proofs[0])
+                    } else {
 
-                        const signedIssueTx = waves.transactions.issue(tokenParamsCustomIndivisible,substrate[`${relation}`].dapp)
-                        let txObjectSignedTwo = waves.transactions.issue(signedIssueTx, substrate[`${relation}`].proofs[0])
-                        let txObjectSignedThre = waves.transactions.issue(txObjectSignedTwo, substrate[`${relation}`].proofs[1])
-                        let tx = await waves.transactions.broadcast(txObjectSignedThre, substrate[`${relation}`].node)
-                        property.property(relation, tx)
-
-                    }catch (e) {
-                        console.warn({error: e})
                     }
                 }
-                break
-            default:
-                console.warn(`${emoji('kissing_heart')} wavesGame.mjs нет обработчика --->`, relation.toLowerCase(), '[(' ,views,property,color,substrate,relation ,')a]')
-                break
+                // await customEvents(true, 'отобразить данные на странице','3',object,'objectPlayer')
+                object.callback({
+                    status: true,
+                    message: message,
+                    _scriptDir: import.meta.url
+                })
+            } catch (e) {
+                object.callback({
+                    status: false,
+                    message: e,
+                    _scriptDir: import.meta.url
+                })
+            }
+        } else {
+            object.callback({
+                status:true,
+                message: 'pause',
+                _scriptDir: import.meta.url
+            })
         }
-        resolve({ key:true})
     })
-}
+    return {status:true}
+})()

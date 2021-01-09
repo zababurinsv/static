@@ -2,7 +2,6 @@ import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.m
 import emoji from '/static/html/components/component_modules/emoji/emoji.mjs'
 import task from '/static/html/components/component_modules/heap/index.mjs'
 import waves from '/static/html/components/component_modules/bundle/waves/waves.index.mjs'
-// import {signer} from '/static/html/components/component_modules/bundle/waves/waves.index.mjs'
 import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
 let system = {
     net: {
@@ -12,17 +11,22 @@ let system = {
     }
 }
 export default (async ()=>{
-    console.log('# Actions for waves');
+    console.log('# Actions');
     task.get(true, 'await', '5', '','/waves/dApp', async (object)=>{
         let dAppData = await waves['default']['transactions']['nodeInteraction'].accountData(
           config['accountsStore']['accountGroups'][`${system.net.test}`]['address'],
           config[`${system.net.test}`][0]);
-         object.callback({status:true, data: dAppData})
+         object.callback({
+             status:true,
+             message: dAppData,
+             _scriptDir: import.meta.url
+         })
     })
     task.get(true, 'await', '5', '','/waves/dApp/faucet', async (object)=> {
         object.callback({
             status:true,
-            nft: ''
+            message: '',
+            _scriptDir: import.meta.url
         })
     })
     task.get(true, 'await', '5', '','/waves/transfer', async (object)=> {
@@ -41,19 +45,22 @@ export default (async ()=>{
             // customEvents(`${relation}-end`, {status:true, tx: tx})
             object.callback({
                 status:true,
-                tx: tx
+                message: tx,
+                _scriptDir: import.meta.url
             })
         }catch (e) {
             object.callback({
                 status:false,
-                error: e
+                message: e,
+                _scriptDir: import.meta.url
             })
         }
     })
     task.get(true, 'await', '5', '','/waves/denormalize', async (object)=> {
         object.callback({
             status:true,
-            nft: ''
+            message: '',
+            _scriptDir: import.meta.url
         })
     })
     task.get(true, 'await', '5', '','/waves/create/wallet', async (object)=> {
@@ -66,58 +73,67 @@ export default (async ()=>{
         let balances = await signer.getBalance();
         object.callback({
             status:true,
-                wallet: {
+            message: {
                 user:user,
                 balances:balances
-            }
+            },
+            _scriptDir: import.meta.url
         })
     })
     task.get(true, 'await', '5', '','/waves/set/script', async (object)=> {
         object.callback({
             status:true,
-            nft: ''
+            message: '',
+            _scriptDir: import.meta.url
         })
     })
     task.get(true, 'await', '5', '','/waves/get/wallet', async (object)=> {
         object.callback({
             status:true,
-            nft: ''
+            message: '',
+            _scriptDir: import.meta.url
         })
     })
     task.get(true, 'await', '5', '','/waves/get/orders', async (object)=> {
         object.callback({
             status:true,
-            nft: ''
+            message: '',
+            _scriptDir: import.meta.url
         })
     })
     task.get(true, 'await', '5', '','/waves/get/nft', async (object)=> {
         object.callback({
             status:true,
-            nft: ''
+            message: '',
+            _scriptDir: import.meta.url
         })
     })
     task.get(true, 'await', '5', '','/waves/get/details', async (object)=> {
         object.callback({
             status:true,
-            nft: ''
+            message: '',
+            _scriptDir: import.meta.url
         })
     })
     task.get(true, 'await', '5', '','/waves/get/balance', async (object)=> {
         object.callback({
             status:true,
-            nft: ''
+            message: '',
+            _scriptDir: import.meta.url
         })
     })
     task.get(true, 'await', '5', '','/waves/cancel/orders/all', async (object)=> {
         object.callback({
             status:true,
-            nft: ''
+            message: '',
+            _scriptDir: import.meta.url
         })
     })
     task.get(true, 'await', '5', '','/waves/wait/for/tx', async (object)=> {
         object.callback({
             status:true,
-            nft: ''
+            message: '',
+            _scriptDir: import.meta.url
         })
     })
     return true

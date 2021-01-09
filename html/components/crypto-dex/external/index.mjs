@@ -10,7 +10,7 @@ export default async (v,p,c,obj,r) => {
     let methods = await classDex()
     let relation = {}
     let wallet = {}
-    let waves = await (await Waves())
+    let waves = await new Waves()
     let system = {
         _scriptDir: import.meta.url,
         validation: {

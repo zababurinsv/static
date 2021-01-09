@@ -4,11 +4,7 @@ import waves from '/static/html/components/component_modules/bundle/waves/waves.
 import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
 import task from '/static/html/components/component_modules/heap/index.mjs'
 let system = {
-    net: {
-        test:'T',
-        main:'W',
-        stage:'S',
-    }
+    net: 'T'
 }
 export default class Waves {
     constructor(self) {
@@ -17,8 +13,8 @@ export default class Waves {
         this.wallet = this.wallet.bind(this)
         this.faucet = this.faucet.bind(this)
         this.transfer = this.transfer.bind(this)
-        this.nft = this.nft.bind(this)
-        this.getNft = this.getNft.bind(this)
+        this.createNFT = this.createNFT.bind(this)
+        this.getNFT = this.getNFT.bind(this)
         this.denormalize = this.denormalize.bind(this)
         this.details = this.details.bind(this)
         this.waitForTx = this.waitForTx.bind(this)
@@ -28,6 +24,62 @@ export default class Waves {
         this.getOrders = this.getOrders.bind(this)
 
         document.addEventListener('typeScript-end', this.end)
+    }
+    createNFT(view = true,property='a',color = 'black', substrate={_:'button'},relation='transfer'  ) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let message = false
+                let tokenParamsCustomIndivisible = {
+                    name: substrate.name,
+                    quantity:1,
+                    decimals:0,
+                    reisuable: false,
+                    chainId:'T',
+                    description: substrate.description,
+                }
+
+
+                const signedIssueTx = waves.transactions.issue(
+                  tokenParamsCustomIndivisible,
+                  config['accountsStore']['accountGroups'][`${system.net}`]['seed'])
+
+                const txObjectSignedTwo = waves.transactions.issue(
+                  signedIssueTx,
+                  config['accountsStore']['accountGroups'][`${system.net}`]['clients'][0]['seed'])
+
+                const txObjectSignedThre = waves.transactions.issue(
+                  txObjectSignedTwo,
+                  config['accountsStore']['accountGroups'][`${system.net}`]['clients'][1]['seed'])
+
+                message = await waves.transactions.broadcast(txObjectSignedThre, config[`${system.net}`][0])
+
+                await waves.transactions.waitForTx(message.id,{
+                    apiBase: config[`${system.net}`][0]
+                })
+                resolve({
+                    status: true,
+                    message: message,
+                    _scriptDir: import.meta.url
+                })
+            }catch (e) {
+                resolve({
+                    status:false,
+                    message: e,
+                    _scriptDir: import.meta.url
+                })
+            }
+        })
+    }
+    getNFT(address='', limit = 1, after = undefined){
+        return new Promise(async (resolve, reject)=>{
+            let balance = {}
+            if(after === undefined){
+                balance = await fetch(`${config['T'][0]}/assets/nft/${address}/limit/${limit}`)
+            }else{
+                balance = await fetch(`${config['T'][0]}/assets/nft/${address}/limit/${limit}?after=${after}`)
+            }
+            resolve(await balance.json())
+        })
     }
     getOrders(view = true,property='',color = 'black', substrate={_:'order'},relation='order'  ){
         return new Promise(async (resolve, reject)=>{
@@ -110,17 +162,6 @@ export default class Waves {
         let wvsPrice = 10 ** (priceAssetDecimals - amountAssetDecimals + 8)
         return price/wvsPrice
     }
-    getNft(address='', limit = 1, after = undefined){
-        return new Promise(async (resolve, reject)=>{
-            let balance = {}
-            if(after === undefined){
-                balance = await fetch(`https://nodes-testnet.wavesnodes.com/assets/nft/${address}/limit/${limit}`)
-            }else{
-                balance = await fetch(`https://nodes-testnet.wavesnodes.com/assets/nft/${address}/limit/${limit}?after=${after}`)
-            }
-            resolve(await balance.json())
-        })
-    }
     details(assetId){
         return new Promise(async (resolve, reject)=>{
             let balance = await fetch(`https://nodes.wavesnodes.com/assets/details/${assetId}`)
@@ -132,9 +173,6 @@ export default class Waves {
             let balance = await fetch(`https://nodes-testnet.wavesnodes.com/addresses/balance/${id}`)
             resolve(await balance.json())
         })
-    }
-    nft(view = true,property='a',color = 'black', substrate={_:'button'},relation='transfer'  ){
-        return queue(view, property,color,substrate,relation)
     }
     transfer(console = true,property='a',color = 'black', substrate={_:'button'},relation='transfer'  ){
         return queue(console, property,color,substrate,relation)
