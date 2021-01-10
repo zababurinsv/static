@@ -84,7 +84,7 @@ export default class Waves {
     getOrders(view = true,property='',color = 'black', substrate={_:'order'},relation='order'  ){
         return new Promise(async (resolve, reject)=>{
             let orders = {}
-            if(relation === 't'){
+            if(relation === 'T'){
                 orders = await fetch(`${config[`${system.net}`][0]}/matcher/orderbook/${substrate}?activeOnly=true`,{
                     method: 'GET',
                     headers:{
@@ -113,7 +113,7 @@ export default class Waves {
     cancelAllOrders(view = true,property='',color = 'black', substrate={_:'order'},relation='order'  ){
         return new Promise(async (resolve, reject)=>{
             let order = {}
-            if(relation === 't'){
+            if(relation === 'T'){
                 let request = {
                     method: 'POST',
                     body:substrate,
@@ -124,7 +124,7 @@ export default class Waves {
                 order = await fetch(`${config[`${system.net}`][0]}/matcher/orderbook/cancel`,request)
                 resolve(await order.json())
 
-            }else if(relation === 'w'){
+            }else if(relation === 'W'){
 
 
             }else{
@@ -137,7 +137,7 @@ export default class Waves {
     order(view = true,property='',color = 'black', substrate={_:'order'},relation='order'  ){
         return new Promise(async (resolve, reject)=>{
             let order = {}
-            if(relation === 't'){
+            if(relation === 'T'){
                 let request = {
                     method: 'POST',
                     body:substrate,
@@ -175,7 +175,7 @@ export default class Waves {
                 balance = await balance.json()
                 resolve({
                     status: true,
-                    message: message,
+                    message: balance,
                     _scriptDir: import.meta.url
                 })
             } catch (e) {

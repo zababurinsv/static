@@ -1,1 +1,20 @@
-export default(s,e,t,a,i)=>new Promise(function(s,e){let t="";for(let s of a)null===s.assetPair.amountAsset&&(s.assetPair.amountAsset="Waves"),t+=`\n                  <div class="item-order">\n                  <p class="item id">${s.id}</p>\n                  <p class="item amountAsset">${s.assetPair.amountAsset}</p>\n                  <p class="item priceAsset">${s.assetPair.priceAsset}</p>\n                  <p class="item type ${s.type}">${s.type}</p>\n                  <p class="item price">${s.price}</p>\n                  </div>\n                  `;s(t)});
+export default (view, property, color, substrate, relation) => {
+     return new Promise(function (resolve, reject) {
+         let template = ''
+         for(let item of substrate){
+             if(item.assetPair.amountAsset === null){
+                 item.assetPair.amountAsset = 'Waves'
+             }
+             template = template + `
+                  <div class="item-order">
+                  <p class="item id">${item.id}</p>
+                  <p class="item amountAsset">${item.assetPair.amountAsset}</p>
+                  <p class="item priceAsset">${item.assetPair.priceAsset}</p>
+                  <p class="item type ${item.type}">${item.type}</p>
+                  <p class="item price">${item.price}</p>
+                  </div>
+                  `
+         }
+         resolve(template)
+     })
+}

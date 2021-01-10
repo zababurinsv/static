@@ -10,7 +10,7 @@ export default async (v,p,c,obj,r) => {
     let account = new Account()
     let waves = new Waves()
     let objectWallet = {}
-    task.get(true, 'await', '5', '','await-wallet', async (object)=> {
+    task.get(true, 'await', '5', '','/onload/wallet', async (object)=> {
         if (isEmpty(objectWallet)) {
             objectWallet = new Proxy({}, {
                 get: function (target, prop) {
@@ -65,18 +65,15 @@ export default async (v,p,c,obj,r) => {
                     if (isEmpty(name)) { name = 'wallet' }
                     let wallet = await account.create(name, sys.pass, type)
                     let balance = await waves['balance'](wallet['public']['address'])
-                    console.assert(false, {
-                        balance: balance,
-                        wallet: wallet
-                    })
+                    // console.assert(false, wallet)
                     let template = await walletTemplate(true, '', '3', {
                         type: wallet['type'],
                         date: wallet['date']['GMT'],
                         address: wallet['public']['address'],
                         publicKey: wallet['public']['key'],
-                        privateKey: wallet['private']['privateKey'],
+                        privateKey: wallet['private']['key'],
                         seed: wallet['private']['seed'],
-                        balance: balance,
+                        balance: balance['message']['balance'],
                     }, 'template-wallet')
                     obj['this'].shadowRoot.querySelector('#wallet').innerHTML = ''
                     obj['this'].shadowRoot.querySelector('#wallet').classList.add("active")
@@ -102,55 +99,50 @@ export default async (v,p,c,obj,r) => {
                 }
             }
         } else {
-            if (isEmpty(pass.value)) {
-                alert('введите пароль')
-            } else {
-                try {
-                    console.log('fffffffffffffffff',file, pass.value)
-                    let wallet = await account.open(file, pass.value)
-                    obj['this'].shadowRoot.querySelector('#form-password').value = ''
-                    let balance = await waves['balance'](wallet['public']['address'], wallet['type'])
-                    console.log('ddddddddddddddddddd', {
-                        wallet: wallet,
-                        balance: balance
-                    })
-                    let template = await walletTemplate(true, '', '3', {
-                        type: wallet['type'],
-                        date: wallet['date']['GMT'],
-                        address: wallet['public']['address'],
-                        publicKey: wallet['public']['key'],
-                        privateKey: wallet['private']['privateKey'],
-                        seed: wallet['private']['seed'],
-                        balance: balance,
-                    }, 'template-wallet')
-                    obj['this'].shadowRoot.querySelector('#wallet').innerHTML = ''
-                    obj['this'].shadowRoot.querySelector('#wallet').classList.add("active")
-                    obj['this'].shadowRoot.querySelector('#wallet').insertAdjacentHTML('beforeend', template)
-                    let button = ['wallet-address',
-                        'wallet-publicKey',
-                        'wallet-privateKey',
-                        'wallet-seed',
-                        'wallet-balance']
-                    objectWallet['wallet'] = wallet
-                    for (let item of button) {
-                        obj['this'].shadowRoot.querySelector(`div.${item}`).addEventListener('click', async (event) => {
-                            event.currentTarget.style.background = '#faf671'
-                            let object = event.currentTarget
-                            let value = object.querySelector('p.value').innerHTML
-                            await navigator.clipboard.writeText(value)
-                            let timer = setTimeout((event) => {
-                                object.style.background = '#4c6499de'
-                                clearTimeout(timer);
-                            }, 250);
-                        })
-                    }
-                } catch (e) {
-                    console.warn({
-                        status: false,
-                        message: e,
-                        _scriptDir: import.meta.url
+            try {
+                let wallet = await account.open(file)
+                obj['this'].shadowRoot.querySelector('#form-password').value = ''
+                let balance = await waves['balance'](wallet['address'], wallet['type'])
+                console.log('ddddddddddddddddddd', {
+                    wallet: wallet,
+                    balance: balance
+                })
+                let template = await walletTemplate(true, '', '3', {
+                    type: wallet['type'],
+                    date: wallet['date']['GMT'],
+                    address: wallet['address'],
+                    publicKey: wallet['key'],
+                    privateKey: 'не подключен',
+                    seed: 'не подключен',
+                    balance: balance['message']['balance'],
+                }, 'template-wallet')
+                obj['this'].shadowRoot.querySelector('#wallet').innerHTML = ''
+                obj['this'].shadowRoot.querySelector('#wallet').classList.add("active")
+                obj['this'].shadowRoot.querySelector('#wallet').insertAdjacentHTML('beforeend', template)
+                let button = ['wallet-address',
+                    'wallet-publicKey',
+                    'wallet-privateKey',
+                    'wallet-seed',
+                    'wallet-balance']
+                objectWallet['wallet'] = wallet
+                for (let item of button) {
+                    obj['this'].shadowRoot.querySelector(`div.${item}`).addEventListener('click', async (event) => {
+                        event.currentTarget.style.background = '#faf671'
+                        let object = event.currentTarget
+                        let value = object.querySelector('p.value').innerHTML
+                        await navigator.clipboard.writeText(value)
+                        let timer = setTimeout((event) => {
+                            object.style.background = '#4c6499de'
+                            clearTimeout(timer);
+                        }, 250);
                     })
                 }
+            } catch (e) {
+                console.warn({
+                    status: false,
+                    message: e,
+                    _scriptDir: import.meta.url
+                })
             }
         }
     })

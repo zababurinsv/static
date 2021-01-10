@@ -1,10 +1,11 @@
+import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
 export default (view, property, color, substrate, relation) => {
      return new Promise(function (resolve, reject) {
           let link = {}
-          if(substrate['type'] === 't'){
-               link = `https://wavesexplorer.com/testnet/address/${substrate['address']}`
-          }else{
-               link = `https://wavesexplorer.com/address/${substrate['address']}`
+          if(substrate['type'] === 'T'){
+               link = `${config.explorer}/testnet/address/${substrate['address']}`
+          }else {
+               link = `${config.explorer}/address/${substrate['address']}`
           }
           resolve(`
 <div class="wallet wallet-explorer">
@@ -32,8 +33,4 @@ export default (view, property, color, substrate, relation) => {
 </div>`)
      
      })
-     
-    
-    
-    
 }
