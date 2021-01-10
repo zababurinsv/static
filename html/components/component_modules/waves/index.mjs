@@ -7,8 +7,9 @@ let system = {
     net: 'T',
     wvs: 10 ** 8
 }
+
 export default class Waves {
-    constructor(self) {
+    constructor(...args) {
         this.bank = this.bank.bind(this)
         this.balance = this.balance.bind(this)
         this.wallet = this.wallet.bind(this)
@@ -23,7 +24,6 @@ export default class Waves {
         this.order = this.order.bind(this)
         this.cancelAllOrders = this.cancelAllOrders.bind(this)
         this.getOrders = this.getOrders.bind(this)
-
         document.addEventListener('typeScript-end', this.end)
     }
     createNFT(view = true,property='a',color = 'black', substrate={_:'button'},relation='transfer'  ) {
@@ -70,14 +70,17 @@ export default class Waves {
             }
         })
     }
-    getNFT(address='', limit = 1, after = undefined){
+    getNFT(address='', limit = 1, after = undefined, type){
         return new Promise(async (resolve, reject)=>{
             let balance = {}
             if(after === undefined){
-                balance = await fetch(`${config[`${system.net}`][0]}/assets/nft/${address}/limit/${limit}`)
+                console.assert(false, `${config[`${type}`][0]}/assets/nft/${address}/limit/${limit}`)
+                balance = await fetch(`${config[`${type}`][0]}/assets/nft/${address}/limit/${limit}`)
             }else{
-                balance = await fetch(`${config[`${system.net}`][0]}/assets/nft/${address}/limit/${limit}?after=${after}`)
+                console.assert(false, `${config[`${type}`][0]}/assets/nft/${address}/limit/${limit}`)
+                balance = await fetch(`${config[`${type}`][0]}/assets/nft/${address}/limit/${limit}?after=${after}`)
             }
+            console.assert(false, 'sssssssss')
             resolve(await balance.json())
         })
     }
@@ -136,8 +139,9 @@ export default class Waves {
     }
     order(view = true,property='',color = 'black', substrate={_:'order'},relation='order'  ){
         return new Promise(async (resolve, reject)=>{
+            console.assert(false, relation,'ddddddddd', substrate, )
             let order = {}
-            if(relation === 'T'){
+            if(relation === 'T') {
                 let request = {
                     method: 'POST',
                     body:substrate,
@@ -148,11 +152,11 @@ export default class Waves {
                 order = await fetch(`${config[`${system.net}`][0]}/matcher/orderbook`,request)
                 resolve(await order.json())
 
-            }else if(relation === 'w'){
-
+            }else if(relation === 'W'){
+                console.assert(false, 'не стал пока вставлять')
 
             }else{
-                console.warn( 'укажите тип сети t - тестнет w - майннет')
+                console.warn( 'укажите тип сети T - тестнет W - майннет', )
                 resolve(false)
             }
 
@@ -162,9 +166,20 @@ export default class Waves {
         let wvsPrice = 10 ** (priceAssetDecimals - amountAssetDecimals + 8)
         return price/wvsPrice
     }
-    details(assetId){
+    details(v,p,c,s,r){
         return new Promise(async (resolve, reject)=>{
-            let balance = await fetch(`${config[`${system.net}`][0]}/assets/details/${assetId}`)
+            switch (p){
+                case 'W':
+                    system.net = 'W'
+                    break
+                case 'T':
+                    system.net = 'T'
+                    break
+                default:
+                    system.net = 'T'
+                    break
+            }
+            let balance = await fetch(`${config[`${system.net}`][0]}/assets/details/${s}`)
             resolve(await balance.json())
         })
     }
@@ -212,6 +227,6 @@ export default class Waves {
         })
     }
     get self() {
-        return object
+        return waves
     }
 }

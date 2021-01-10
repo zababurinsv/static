@@ -110,6 +110,7 @@ export default (view,property,color,substrate,relation,callback,origin) =>{
                                     })
 
                                 }
+                                console.log('source.staticProperty[`${relation}`]', source.staticProperty[`${relation}`])
                                 source.staticProperty[`${relation}`].shift()
                             }
                             if(remove.staticProperty[`${relation}`]) {
@@ -154,6 +155,7 @@ export default (view,property,color,substrate,relation,callback,origin) =>{
                                     callback: source.staticProperty[`${relation}`][0]['callback']
                                 })
                             });
+                            console.log('source.staticProperty[`${relation}`]222', source.staticProperty[`${relation}`])
                             source.staticProperty[`${relation}`].shift()
                         }
                         if(remove.staticProperty[`${relation}`]) {
@@ -166,9 +168,11 @@ export default (view,property,color,substrate,relation,callback,origin) =>{
                     break
             }
         } catch (e) {
-            err({
-                _:'object',
-                error: e
+            resolve({
+                _:'error',
+                message: e,
+                _scriptDir: import.meta.url,
+                status: false,
             })
         }
         

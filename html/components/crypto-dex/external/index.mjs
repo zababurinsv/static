@@ -11,7 +11,7 @@ export default async (v,p,c,obj,r) => {
     let relation = {}
     let wallet = {}
     let waves = await new Waves()
-    let system = {
+    let sys = {
         _scriptDir: import.meta.url,
         validation: {
             onhashchange: (...args) => { return ("onhashchange" in window)  }
@@ -163,31 +163,35 @@ export default async (v,p,c,obj,r) => {
     obj['this'].shadowRoot.querySelector('#right').addEventListener('input',async (e)=>{
         relation['e'] =  e.target.value
     },{passive:true})
+    let assets = {
+        waves:'WAVES',
+        eth:'474jTeYx2r2Va35794tCScAXWJG9hU2HcgxzMowaZUnu',
+        usdt:'34N9YcEETLWn93qYQ64EsP1x89tSruJU44RrEMSXXEPJ'
+    }
 
     let description = {
         wavesEuro:{
-            amountAsset:'474jTeYx2r2Va35794tCScAXWJG9hU2HcgxzMowaZUnu',
-            priceAsset:'WAVES',
+            amountAsset: assets.eth,
+            priceAsset: assets.waves,
             tickSize:undefined,
         },
         euroUsd:{
-            amountAsset:'474jTeYx2r2Va35794tCScAXWJG9hU2HcgxzMowaZUnu',
-            priceAsset:'DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p',
+            amountAsset: assets.eth,
+            priceAsset: assets.usdt,
             tickSize:undefined
         },
         wavesUsd:{
-            amountAsset:'DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p',
-            priceAsset:'WAVES',
+            amountAsset: assets.usdt,
+            priceAsset: assets.waves,
             tickSize:undefined
         },
         details:{},
         name:{},
         fee:{},
-        assetId:['474jTeYx2r2Va35794tCScAXWJG9hU2HcgxzMowaZUnu','DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p']
+        assetId:[assets.eth,assets.usdt]
     }
     let itemDetails = {}
     for(let item of description['assetId']){
-        console.assert(false, item)
         itemDetails[`${item}`] = await events.eventListener.set(true,'W','8',item,'/assets/details/{assetId}')
         description['details'][`${item}`] = itemDetails[`${item}`]['decimals']
         description['name'][`${item}`] = itemDetails[`${item}`]['name']
@@ -322,7 +326,7 @@ export default async (v,p,c,obj,r) => {
         let seed = 'tone leg hidden system tenant aware desk clap body robust debris puppy ecology scan runway thing second metal cousin ocean liberty banner garment rice feel'
         let publicKey = 'HrMWJVXDkjpzkMA3LnzurfmXMtRTtip4uS2236NvW6AR'
         let timestamp = Date.now();
-        let signature = await events.eventListener.set(true,'w','8',{
+        let signature = await events.eventListener.set(true,'W','8',{
             seed:seed,
             publicKey:publicKey,
             timestamp:timestamp
@@ -335,12 +339,12 @@ export default async (v,p,c,obj,r) => {
             property:'получаем ордера',
             publicKey:publicKey,
             substrate:publicKey,
-            relation:'t'
+            relation:'T'
         },'/matcher/orderbook/{publicKey}')
 
 
 
-        let idbOrders = await events.eventListener.set(true, 't','7','monopoly','/storage/get/all')
+        let idbOrders = await events.eventListener.set(true, 'T','7','monopoly','/storage/get/all')
         if(getOrders.length > 2){
             let object = JSON.stringify({
                 sender: publicKey,
@@ -348,11 +352,11 @@ export default async (v,p,c,obj,r) => {
                 signature: signature,
                 orderId: null
             })
-            await events.eventListener.set(true, 't','7',object,'/matcher/orderbook/cancel')
-            await events.eventListener.set(true, 't','7',{},'/storage/delete/all')
+            await events.eventListener.set(true, 'T','7',object,'/matcher/orderbook/cancel')
+            await events.eventListener.set(true, 'T','7',{},'/storage/delete/all')
         }else{
-            let order = await events.eventListener.set(true,'t','8',relation['system']['items']['eue']['substrate'],'/matcher/orderbook/set')
-            await events.eventListener.set(true, 't','7',order,'/storage/set/item')
+            let order = await events.eventListener.set(true,'T','8',relation['system']['items']['eue']['substrate'],'/matcher/orderbook/set')
+            await events.eventListener.set(true, 'T','7',order,'/storage/set/item')
         }
         //  console.log('###################', requestSet)
         if(relation['description']['ueu'][0] - relation['description']['ueu'][3] < 0){

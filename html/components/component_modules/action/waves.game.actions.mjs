@@ -35,9 +35,12 @@ export default (async ()=> {
             try {
                 let nft = false
                 let message = false
+                console.assert(false)
                 nft = await waves.getNFT(
-                  config['accountsStore']['accountGroups'][`${system.net.test}`]['address'],
-                  100)
+                  config['accountsStore']['accountGroups'][`${config[object.property]}`]['address'],
+                  100, undefined, object.property)
+
+
                 if (isEmpty(object.substrate.name)) {
                     message = nft
                 } else {

@@ -50,6 +50,9 @@ export default {
     'https://nodes-testnet.wavesnodes.com',
     'https://testnode1.wavesnodes.com'
   ],
+  W: [
+    'https://nodes.wavesnodes.com'
+  ],
   explorer: 'https://wavesexplorer.com',
   accountsStore: {
     accountGroups: {

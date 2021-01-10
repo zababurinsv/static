@@ -1,7 +1,11 @@
 import Waves from '/static/html/components/component_modules/waves/index.mjs'
 import events from '/static/html/components/component_modules/CustomEvent/index.mjs'
 import storageApi from '/static/html/components/component_modules/storage/index.mjs'
+import bundle from '/static/html/components/component_modules/bundle/waves/waves.index.mjs'
+import task from '/static/html/components/component_modules/heap/index.mjs'
+
 storageApi()
+
 customElements.define('router-api',
     class extends HTMLElement {
         static get observedAttributes () {
@@ -685,7 +689,6 @@ customElements.define('router-api',
                         })
                 })
             async function modules (obj) {
-
                 let waves = new Waves()
 
                 events.eventListener.get(true, 'await', '5', '','/matcher/orderbook/{publicKey}',async (event)=>{
@@ -699,7 +702,7 @@ customElements.define('router-api',
 
                 events.eventListener.get(true, 'await', '5', '','/matcher/orderbook',async (event)=>{
                         let object = event;
-                        let order = await waves.order(true, 'test', '3', object.substrate.substrate, object.substrate.relation)
+                        let order = await waves.order(true, 'T', '3', object.substrate.substrate, object.substrate.relation)
                         object.callback(order)
                 })
 
@@ -715,24 +718,25 @@ customElements.define('router-api',
                 })
 
                 events.eventListener.get(true, 'await', '5', '','/assets/details/{assetId}', async (object)=>{
-                        let orders = await waves.details(object.view,'получить детали ассета', object.color, object.substrate, object.property)
-                            object.callback(orders)
+                        let orders = await waves.details(object.view,object.property, object.color, object.substrate, object.relation)
+                    // console.assert(false, orders)
+                    object.callback(orders)
                 })
-
-                events.eventListener.get(true, 'await', '5', '','/assets/signature/{assetId}', async (object)=>{
-
-                    let bigNum = new waves.self.BigNumber(object.substrate.timestamp);
+                task.get(true, 'await', '5', '','/assets/signature/{assetId}', async (object)=> {
+                    console.assert(false,  bundle.bigNumber(object.substrate.timestamp))
+                    let bigNum = waves.self.bigNumber(object.substrate.timestamp);
+                    console.assert(false, bigNum)
                     let result = bigNum.toBytes();
-                    let concat = waves.self.concat(object.substrate.publicKey, result)
-                    let signature = waves.self.signBytes(object.substrate.seed, concat , 0)
+                    let concat = waves.self.bigNumber.concat(object.substrate.publicKey, result)
+                    let signature = waves.self.bigNumber.signBytes(object.substrate.seed, concat , 0)
                     object.callback(signature)
-
+                    object.callback({status:'ok',md:md})
                 })
 
                 events.eventListener.get(true, 'await', '5', '','/matcher/get/order',async (object)=>{
 
                     let seed = 'tone leg hidden system tenant aware desk clap body robust debris puppy ecology scan runway thing second metal cousin ocean liberty banner garment rice feel'
-                    let response = waves.self.order(object.substrate, seed)
+                    let response = waves.order(object.substrate, seed)
                     response = JSON.stringify(response)
                     object.callback(response)
                 })
@@ -745,7 +749,7 @@ customElements.define('router-api',
 
                     let id = []
                     for(let it of object['substrate']){
-                        let order = await waves.order(true, object['relation'], '3', it, object['property'])
+                        let order = await waves.order(true, object['property'] , '3', it, object['relation'])
                         if(order['_'] === 'error'){
                             id.push('error')
                             item['orders'][`error-${item['orders']['length']}`]
