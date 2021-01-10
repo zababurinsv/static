@@ -74,9 +74,9 @@ export default class Waves {
         return new Promise(async (resolve, reject)=>{
             let balance = {}
             if(after === undefined){
-                balance = await fetch(`${config['T'][0]}/assets/nft/${address}/limit/${limit}`)
+                balance = await fetch(`${config[`${system.net}`][0]}/assets/nft/${address}/limit/${limit}`)
             }else{
-                balance = await fetch(`${config['T'][0]}/assets/nft/${address}/limit/${limit}?after=${after}`)
+                balance = await fetch(`${config[`${system.net}`][0]}/assets/nft/${address}/limit/${limit}?after=${after}`)
             }
             resolve(await balance.json())
         })

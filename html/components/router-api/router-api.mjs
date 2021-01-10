@@ -1,7 +1,3 @@
-import router from '/static/html/components/component_modules/router/index.mjs'
-import colorlog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
-import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
-import emoji from '/static/html/components/component_modules/emoji/emoji.mjs'
 import Waves from '/static/html/components/component_modules/waves/index.mjs'
 import events from '/static/html/components/component_modules/CustomEvent/index.mjs'
 import storageApi from '/static/html/components/component_modules/storage/index.mjs'
@@ -690,7 +686,7 @@ customElements.define('router-api',
                 })
             async function modules (obj) {
 
-                let waves = await (await Waves())
+                let waves = new Waves()
 
                 events.eventListener.get(true, 'await', '5', '','/matcher/orderbook/{publicKey}',async (event)=>{
                         let object = event;

@@ -187,7 +187,8 @@ export default async (v,p,c,obj,r) => {
     }
     let itemDetails = {}
     for(let item of description['assetId']){
-        itemDetails[`${item}`] = await events.eventListener.set(true,'w','8',item,'/assets/details/{assetId}')
+        console.assert(false, item)
+        itemDetails[`${item}`] = await events.eventListener.set(true,'W','8',item,'/assets/details/{assetId}')
         description['details'][`${item}`] = itemDetails[`${item}`]['decimals']
         description['name'][`${item}`] = itemDetails[`${item}`]['name']
     }
