@@ -63,7 +63,11 @@ export default async (v,p,c,obj,r) => {
                     let type = obj['this'].shadowRoot.querySelector('#account-type').value
                     if (isEmpty(name)) { name = 'wallet' }
                     let wallet = await account.create(name, pass.value, type)
-                    let balance = (await (await waves)['balance'](wallet['public']['address']))['balance']
+                    let balance = await waves['balance'](wallet['public']['address'])
+                    console.assert(false, {
+                        balance: balance,
+                        wallet: wallet
+                    })
                     let template = await walletTemplate(true, '', '3', {
                         type: wallet['type'],
                         date: wallet['date']['GMT'],
@@ -87,7 +91,6 @@ export default async (v,p,c,obj,r) => {
                             event.currentTarget.style.background = '#faf671'
                             let object = event.currentTarget
                             let value = object.querySelector('p.value').innerHTML
-                            console.log('----->', value)
                             await navigator.clipboard.writeText(value)
                             let timer = setTimeout((event) => {
                                 object.style.background = '#4c6499de'
@@ -99,38 +102,52 @@ export default async (v,p,c,obj,r) => {
             }
         } else {
             if (isEmpty(pass.value)) {
+                alert('введите пароль')
             } else {
-                let wallet = await account.open(file, pass.value)
-                obj['this'].shadowRoot.querySelector('#form-password').value = ''
-                let balance = (await (await waves)['balance'](wallet['public']['address'], wallet['type']))['balance']
-                let template = await walletTemplate(true, '', '3', {
-                    type: wallet['type'],
-                    date: wallet['date']['GMT'],
-                    address: wallet['public']['address'],
-                    publicKey: wallet['public']['key'],
-                    privateKey: wallet['private']['privateKey'],
-                    seed: wallet['private']['seed'],
-                    balance: balance,
-                }, 'template-wallet')
-                obj['this'].shadowRoot.querySelector('#wallet').innerHTML = ''
-                obj['this'].shadowRoot.querySelector('#wallet').classList.add("active")
-                obj['this'].shadowRoot.querySelector('#wallet').insertAdjacentHTML('beforeend', template)
-                let button = ['wallet-address',
-                    'wallet-publicKey',
-                    'wallet-privateKey',
-                    'wallet-seed',
-                    'wallet-balance']
-                objectWallet['wallet'] = wallet
-                for (let item of button) {
-                    obj['this'].shadowRoot.querySelector(`div.${item}`).addEventListener('click', async (event) => {
-                        event.currentTarget.style.background = '#faf671'
-                        let object = event.currentTarget
-                        let value = object.querySelector('p.value').innerHTML
-                        await navigator.clipboard.writeText(value)
-                        let timer = setTimeout((event) => {
-                            object.style.background = '#4c6499de'
-                            clearTimeout(timer);
-                        }, 250);
+                try {
+                    console.log('fffffffffffffffff',file, pass.value)
+                    let wallet = await account.open(file, pass.value)
+                    obj['this'].shadowRoot.querySelector('#form-password').value = ''
+                    let balance = await waves['balance'](wallet['public']['address'], wallet['type'])
+                    console.log('ddddddddddddddddddd', {
+                        wallet: wallet,
+                        balance: balance
+                    })
+                    let template = await walletTemplate(true, '', '3', {
+                        type: wallet['type'],
+                        date: wallet['date']['GMT'],
+                        address: wallet['public']['address'],
+                        publicKey: wallet['public']['key'],
+                        privateKey: wallet['private']['privateKey'],
+                        seed: wallet['private']['seed'],
+                        balance: balance,
+                    }, 'template-wallet')
+                    obj['this'].shadowRoot.querySelector('#wallet').innerHTML = ''
+                    obj['this'].shadowRoot.querySelector('#wallet').classList.add("active")
+                    obj['this'].shadowRoot.querySelector('#wallet').insertAdjacentHTML('beforeend', template)
+                    let button = ['wallet-address',
+                        'wallet-publicKey',
+                        'wallet-privateKey',
+                        'wallet-seed',
+                        'wallet-balance']
+                    objectWallet['wallet'] = wallet
+                    for (let item of button) {
+                        obj['this'].shadowRoot.querySelector(`div.${item}`).addEventListener('click', async (event) => {
+                            event.currentTarget.style.background = '#faf671'
+                            let object = event.currentTarget
+                            let value = object.querySelector('p.value').innerHTML
+                            await navigator.clipboard.writeText(value)
+                            let timer = setTimeout((event) => {
+                                object.style.background = '#4c6499de'
+                                clearTimeout(timer);
+                            }, 250);
+                        })
+                    }
+                } catch (e) {
+                    console.warn({
+                        status: false,
+                        message: e,
+                        _scriptDir: import.meta.url
                     })
                 }
             }

@@ -32,13 +32,12 @@ export default class Waves {
                 let message = false
                 let tokenParamsCustomIndivisible = {
                     name: substrate.name,
-                    quantity:1,
-                    decimals:0,
+                    quantity: 1,
+                    decimals: 0,
                     reisuable: false,
-                    chainId:'T',
+                    chainId: config[`${system.net}`],
                     description: substrate.description,
                 }
-
 
                 const signedIssueTx = waves.transactions.issue(
                   tokenParamsCustomIndivisible,
@@ -86,7 +85,7 @@ export default class Waves {
         return new Promise(async (resolve, reject)=>{
             let orders = {}
             if(relation === 't'){
-                orders = await fetch(`${config}/matcher/orderbook/${substrate}?activeOnly=true`,{
+                orders = await fetch(`${config[`${system.net}`][0]}/matcher/orderbook/${substrate}?activeOnly=true`,{
                     method: 'GET',
                     headers:{
                         Timestamp:property['timestamp'],
@@ -96,7 +95,7 @@ export default class Waves {
                 })
                 resolve(await orders.json())
             }else if(relation === 'w'){
-                orders  = await fetch(`${net.matcher.waves.main}/matcher/orderbook/${substrate}?activeOnly=true`,{
+                orders  = await fetch(`${config[`${system.net}`][0]}/matcher/orderbook/${substrate}?activeOnly=true`,{
                     method: 'GET',
                     headers:{
                         Timestamp:property['timestamp'],
@@ -122,7 +121,7 @@ export default class Waves {
                         'Content-Type': 'application/json;charset=utf-8'
                     },
                 }
-                order = await fetch(`${net.matcher.waves.test}/matcher/orderbook/cancel`,request)
+                order = await fetch(`${config[`${system.net}`][0]}/matcher/orderbook/cancel`,request)
                 resolve(await order.json())
 
             }else if(relation === 'w'){
@@ -146,7 +145,7 @@ export default class Waves {
                         'Content-Type': 'application/json;charset=utf-8'
                     },
                 }
-                order = await fetch(`${net.matcher.waves.test}/matcher/orderbook`,request)
+                order = await fetch(`${config[`${system.net}`][0]}/matcher/orderbook`,request)
                 resolve(await order.json())
 
             }else if(relation === 'w'){
@@ -165,31 +164,44 @@ export default class Waves {
     }
     details(assetId){
         return new Promise(async (resolve, reject)=>{
-            let balance = await fetch(`https://nodes.wavesnodes.com/assets/details/${assetId}`)
+            let balance = await fetch(`${config[`${system.net}`][0]}/assets/details/${assetId}`)
             resolve(await balance.json())
         })
     }
     balance(id){
         return new Promise(async (resolve, reject)=>{
-            let balance = await fetch(`https://nodes-testnet.wavesnodes.com/addresses/balance/${id}`)
-            resolve(await balance.json())
+            try {
+                let balance = await fetch(`${config[`${system.net}`][0]}/addresses/balance/${id}`)
+                balance = await balance.json()
+                resolve({
+                    status: true,
+                    message: message,
+                    _scriptDir: import.meta.url
+                })
+            } catch (e) {
+                resolve({
+                    status: false,
+                    message: e,
+                    _scriptDir: import.meta.url
+                })
+            }
         })
     }
     transfer(console = true,property='a',color = 'black', substrate={_:'button'},relation='transfer'  ){
-        return queue(console, property,color,substrate,relation)
+        // return queue(console, property,color,substrate,relation)
     }
     faucet(console = true,property='a',color = 'black', substrate={_:'button'},relation='faucet'  ){
-        return queue(console, property,color,substrate,relation)
+        // return queue(console, property,color,substrate,relation)
     }
     bank(console = true,property='a',color = 'black', substrate={_:'button'},relation='bank'  ){
-        return queue(console, property,color,substrate,relation)
+        // return queue(console, property,color,substrate,relation)
     }
     wallet(console = true,property='a',color = 'black', substrate={_:'player'},relation='wallet'  ){
-        return queue(console, property,color,substrate,relation)
+        // return queue(console, property,color,substrate,relation)
     }
     waitForTx(id, node){
         return  new Promise(async (resolve, reject) => {
-            resolve(transactions['waitForTx'](id, node))
+            resolve(waves.transactions['waitForTx'](id, node))
         })
     }
     end(event){

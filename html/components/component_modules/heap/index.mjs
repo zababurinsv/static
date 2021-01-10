@@ -10,10 +10,10 @@ export default {
                      resolve(event)
                  })
              } else {
-                 console.log(`    ${emoji('moon')[0][2]}`,`${relation} pause`)
+                 console.log(`    ${emoji('moon')[0][2]}`,`${relation} stop`)
                  resolve({
                      status:true,
-                     message: 'pause',
+                     message: 'stop',
                      _scriptDir: import.meta.url
                  })
              }

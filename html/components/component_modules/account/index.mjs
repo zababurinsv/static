@@ -2,7 +2,9 @@ import Provider from '/static/html/components/component_modules/waves-provider/i
 import waves from '/static/html/components/component_modules/bundle/waves/waves.index.mjs'
 import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
 let provider = new Provider()
-
+let system = {
+    net: 'T'
+}
 export default class Account {
     constructor() {
         this.create = this.create.bind(this)
@@ -11,17 +13,19 @@ export default class Account {
     }
     create(name, password, chainId) {
         return new Promise( async (resolve, reject) => {
-            let waves = {}
             let verify = false
+            let signer = false
             if(chainId === 'w'){
                 verify = true
-            }else if(chainId === 't'){
-              let signer =  waves['signer']({NODE_URL: 'https://pool.testnet.wavesnodes.com'});
+            }else if(chainId === 't') {
+                signer = new waves['signer']({
+                    NODE_URL: config[`${system.net}`][0]
+                });
                 verify = true
-            }else{
+            }else {
                 console.assert(false, 'укажите сеть t -тестнет или w - майннет')
             }
-            if(verify){
+            if(verify) {
                 let wallet = {}
                 wallet['type'] = chainId
                 wallet['private'] = {}
@@ -31,6 +35,13 @@ export default class Account {
                 wallet['date']['GMT'] = (new Date(parseInt(wallet['date']['timestap'],10))).toString()
                 wallet['private']['seed'] =  waves.libs.crypto.randomSeed(25)
                 wallet['private']['seedBinary'] = waves.libs.crypto.seedWithNonce(wallet['private']['seed'] , parseInt(wallet['date']['timestap'] - 20,10))
+                console.assert(false, {
+                    chainId: chainId,
+                    password:password,
+                    name: name,
+                    wallet: wallet,
+                    TEST_NET: waves.libs.crypto.TEST_NET_CHAIN_ID
+                })
                 if(chainId === 'w'){
                     wallet['private']['privateKey'] = waves.libs.crypto.privateKey(wallet['private']['seed'])
                     wallet['public']['key'] = waves.libs.crypto.publicKey(wallet['private']['seed'])
@@ -42,7 +53,9 @@ export default class Account {
     
                 }
                 signer.setProvider(provider.ProviderSeed(wallet['private']['seed']));
-                let outWallet =  waves.libs.crypto.encryptSeed(JSON.stringify(wallet), password)
+                let outWallet =  JSON.stringify(wallet)
+
+                // let outWallet =  waves.libs.crypto.encryptSeed(JSON.stringify(wallet), password)
                 let blob = new Blob([`${outWallet}`],{ type: "text/plain;charset=utf-8" });
                 await this.saveAs(blob, `${name}.boc`)
                 resolve(wallet)
