@@ -5,7 +5,7 @@ import walletTemplate from '/static/html/components/waves-provider/template/wall
 import Waves from '/static/html/components/component_modules/waves/index.mjs'
 import task from '/static/html/components/component_modules/heap/index.mjs'
 
-
+let sys = {}
 export default async (v,p,c,obj,r) => {
     let account = new Account()
     let waves = new Waves()
@@ -57,12 +57,13 @@ export default async (v,p,c,obj,r) => {
 
             } else {
                 if (pass.value === passConfirm.value) {
+                    sys.pass = pass.value
                     obj['this'].shadowRoot.querySelector('#form-password').value = ''
                     obj['this'].shadowRoot.querySelector('#form-confirm').value = ''
                     let name = obj['this'].shadowRoot.querySelector('#account-name').value
                     let type = obj['this'].shadowRoot.querySelector('#account-type').value
                     if (isEmpty(name)) { name = 'wallet' }
-                    let wallet = await account.create(name, pass.value, type)
+                    let wallet = await account.create(name, sys.pass, type)
                     let balance = await waves['balance'](wallet['public']['address'])
                     console.assert(false, {
                         balance: balance,

@@ -53,9 +53,9 @@ export default class Account {
     
                 }
                 signer.setProvider(provider.ProviderSeed(wallet['private']['seed']));
-                let outWallet =  JSON.stringify(wallet)
-
-                // let outWallet =  waves.libs.crypto.encryptSeed(JSON.stringify(wallet), password)
+                // let outWallet =  JSON.stringify(wallet)
+                console.assert(false, password)
+                let outWallet =  waves.libs.crypto.encryptSeed(JSON.stringify(wallet), password)
                 let blob = new Blob([`${outWallet}`],{ type: "text/plain;charset=utf-8" });
                 await this.saveAs(blob, `${name}.boc`)
                 resolve(wallet)
