@@ -378,6 +378,7 @@ fieldset#waves-login{
       padding: 1vw;
       margin-bottom: 1vw;
       cursor: pointer;
+      text-align: left;
       h2.preview{
         margin-top: 0;
         width: 100%;
@@ -395,6 +396,7 @@ fieldset#waves-login{
       font-family: Roboto, serif;
       color: rgb(255, 255, 255);
       @include fonts(4);
+      padding-left: 2vw;
       }
       a.value{
         width: 100%;
