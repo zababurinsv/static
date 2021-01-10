@@ -80,7 +80,7 @@ let Class = class Waves {
                                         }
 
 
-                                        let order = await events.eventListener.set(true,'t','8',params,'/matcher/get/order')
+                                        let order = await events.eventListener.set(true,'W','8',params,'/matcher/get/order')
                                         obj['eue'] = {}
                                         obj['eue']['buy(wavesEuro)'] = {}
                                         obj['eue']['buy(wavesEuro)']['amount'] = amount

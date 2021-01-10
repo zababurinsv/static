@@ -702,6 +702,7 @@ customElements.define('router-api',
 
                 events.eventListener.get(true, 'await', '5', '','/matcher/orderbook',async (event)=>{
                         let object = event;
+                        console.assert(false, object)
                         let order = await waves.order(true, 'T', '3', object.substrate.substrate, object.substrate.relation)
                         object.callback(order)
                 })
@@ -734,9 +735,9 @@ customElements.define('router-api',
                 })
 
                 events.eventListener.get(true, 'await', '5', '','/matcher/get/order',async (object)=>{
-
+                    console.assert(false, object)
                     let seed = 'tone leg hidden system tenant aware desk clap body robust debris puppy ecology scan runway thing second metal cousin ocean liberty banner garment rice feel'
-                    let response = waves.order(object.substrate, seed)
+                    let response = waves.order(true,object.property,'red', object.substrate, seed)
                     response = JSON.stringify(response)
                     object.callback(response)
                 })

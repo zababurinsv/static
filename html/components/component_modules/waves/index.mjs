@@ -141,7 +141,7 @@ export default class Waves {
         return new Promise(async (resolve, reject)=>{
             console.assert(false, relation,'ddddddddd', substrate, )
             let order = {}
-            if(relation === 'T') {
+            if(property === 'T') {
                 let request = {
                     method: 'POST',
                     body:substrate,
@@ -149,14 +149,21 @@ export default class Waves {
                         'Content-Type': 'application/json;charset=utf-8'
                     },
                 }
-                order = await fetch(`${config[`${system.net}`][0]}/matcher/orderbook`,request)
+                order = await fetch(`${config[`${property}`][0]}/matcher/orderbook`,request)
                 resolve(await order.json())
 
             }else if(relation === 'W'){
-                console.assert(false, 'не стал пока вставлять')
-
+                let request = {
+                    method: 'POST',
+                    body:substrate,
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                }
+                order = await fetch(`${config[`${property}`][0]}/matcher/orderbook`,request)
+                resolve(await order.json())
             }else{
-                console.warn( 'укажите тип сети T - тестнет W - майннет', )
+                console.warn( 'укажите тип сети T - тестнет W - майннет', relation)
                 resolve(false)
             }
 
