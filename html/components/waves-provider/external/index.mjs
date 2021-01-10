@@ -25,9 +25,9 @@ export default async (v,p,c,obj,r) => {
                 }
             });
         } else {
-            console.assert(false, objectWallet)
+            // console.assert(false, objectWallet)
         }
-        object.callback({status:'ok', data: dAppData})
+        object.callback({status: true, data: objectWallet})
     })
 
 
@@ -103,10 +103,6 @@ export default async (v,p,c,obj,r) => {
                 let wallet = await account.open(file)
                 obj['this'].shadowRoot.querySelector('#form-password').value = ''
                 let balance = await waves['balance'](wallet['address'], wallet['type'])
-                console.log('ddddddddddddddddddd', {
-                    wallet: wallet,
-                    balance: balance
-                })
                 let template = await walletTemplate(true, '', '3', {
                     type: wallet['type'],
                     date: wallet['date']['GMT'],
@@ -124,7 +120,10 @@ export default async (v,p,c,obj,r) => {
                     'wallet-privateKey',
                     'wallet-seed',
                     'wallet-balance']
-                objectWallet['wallet'] = wallet
+                // task.set(true, `change status`, '5', wallet ,'/onload/wallet');
+                obj['this'].shadowRoot.querySelector('div.connecting-cycle').style.background = '#f21818de'
+                obj['this'].shadowRoot.querySelector('div.connecting-cycle').style.color = '#93fff5'
+                obj['this'].shadowRoot.querySelector('div.connecting-cycle').innerHTML = 'ON AIR'
                 for (let item of button) {
                     obj['this'].shadowRoot.querySelector(`div.${item}`).addEventListener('click', async (event) => {
                         event.currentTarget.style.background = '#faf671'
