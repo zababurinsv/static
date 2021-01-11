@@ -3,7 +3,7 @@ import iframe from '/static/html/components/component_modules/iframe/iframe.mjs'
 import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 import Waves from '/static/html/components/component_modules/waves/index.mjs'
 import task from '/static/html/components/component_modules/heap/index.mjs'
-
+import { store } from '/static/html/components/component_modules/storage/index.mjs'
 export default async (v,p,c,obj,r) => {
     let methods = (await import('/static/html/components/component_modules/dex/index.mjs'))['default']
     let relation = {}
@@ -335,29 +335,29 @@ export default async (v,p,c,obj,r) => {
 
         let getOrders = await  task.set(true, {
             timestamp:timestamp,
-            signature:signature
+            signature:signature,
+            type:'W'
         },'7',{
             property:'получаем ордера',
             publicKey:publicKey,
             substrate:publicKey,
             relation:'T'
         },'/matcher/orderbook/{publicKey}')
-
-        console.assert(false, getOrders)
-
-        let idbOrders = await task.set(true, 'T','7','monopoly','/storage/get/all')
+        // let idbOrders = (await store).set(true, 'T','7','monopoly','/storage/get/all')
+        // console.assert(false,await idbOrders)
         if(getOrders.length > 2){
-            let object = JSON.stringify({
-                sender: publicKey,
-                timestamp: timestamp,
-                signature: signature,
-                orderId: null
-            })
-            await task.set(true, 'T','7',object,'/matcher/orderbook/cancel')
-            await task.set(true, 'T','7',{},'/storage/delete/all')
+            // let object = JSON.stringify({
+            //     sender: publicKey,
+            //     timestamp: timestamp,
+            //     signature: signature,
+            //     orderId: null
+            // })
+            // await task.set(true, 'T','7',object,'/matcher/orderbook/cancel')
+            // await task.set(true, 'T','7',{},'/storage/delete/all')
         }else{
-            let order = await task.set(true,'T','8',relation['system']['items']['eue']['substrate'],'/matcher/orderbook/set')
-            await task.set(true, 'T','7',order,'/storage/set/item')
+            // console.assert(false, idbOrders)
+            // let order = await task.set(true,'T','8',relation['system']['items']['eue']['substrate'],'/matcher/orderbook/set')
+            // await task.set(true, 'T','7',order,'/storage/set/item')
         }
         //  console.log('###################', requestSet)
         if(relation['description']['ueu'][0] - relation['description']['ueu'][3] < 0){
@@ -408,6 +408,7 @@ export default async (v,p,c,obj,r) => {
             obj['this'].shadowRoot.querySelector('div.ssue').style.background ='#7694f473'
             obj['this'].shadowRoot.querySelector('div.sbwe').style.background ='#7694f473'
         }
+        // console.assert(false, relation)
         // console.log('~~~~>>', relation)
         // relation.timestamp =  new Date();
         // if((relation['buy(usdEuro)'] - relation['u']) > 0){

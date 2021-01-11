@@ -83,9 +83,9 @@ export default class Waves {
     }
     getOrders(view = true,property='',color = 'black', substrate={_:'order'},relation='order'  ){
         return new Promise(async (resolve, reject)=>{
-            let orders = {}
-            if(relation === 'T'){
-                orders = await fetch(`${config[`${system.net}`][0]}/matcher/orderbook/${substrate}?activeOnly=true`,{
+            try {
+                let orders = {}
+                orders  = await fetch(`${config['matcher'][`${property.type}`][0]}/matcher/orderbook/${substrate}?activeOnly=true`,{
                     method: 'GET',
                     headers:{
                         Timestamp:property['timestamp'],
@@ -93,20 +93,18 @@ export default class Waves {
                     }
 
                 })
-                resolve(await orders.json())
-            }else if(relation === 'w'){
-                orders  = await fetch(`${config[`${system.net}`][0]}/matcher/orderbook/${substrate}?activeOnly=true`,{
-                    method: 'GET',
-                    headers:{
-                        Timestamp:property['timestamp'],
-                        Signature:property['signature'],
-                    }
-
+                orders = await orders.json()
+                resolve(Object.assign(orders, {
+                    _scriptDir: import.meta.url,
+                    status: true,
+                    message: 'waves.mjs'
+                }))
+            } catch (e) {
+                resolve({
+                    _scriptDir: import.meta.url,
+                    status: false,
+                    message: e
                 })
-                resolve(await orders.json())
-            }else{
-                console.warn( 'укажите тип сети t - тестнет w - майннет')
-                resolve(false)
             }
         })
     }

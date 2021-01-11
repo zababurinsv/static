@@ -9,6 +9,7 @@ export default (()=>{
       let orders = await waves.getOrders(true, {
         timestamp:object.property.timestamp,
         signature:object.property.signature,
+        type:object.property.type
       }, '3', object.substrate.publicKey,`${object.substrate.relation}`)
       object.callback(orders)
     })
