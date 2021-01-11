@@ -74,13 +74,10 @@ export default class Waves {
         return new Promise(async (resolve, reject)=>{
             let balance = {}
             if(after === undefined){
-                console.assert(false, `${config[`${type}`][0]}/assets/nft/${address}/limit/${limit}`)
                 balance = await fetch(`${config[`${type}`][0]}/assets/nft/${address}/limit/${limit}`)
             }else{
-                console.assert(false, `${config[`${type}`][0]}/assets/nft/${address}/limit/${limit}`)
                 balance = await fetch(`${config[`${type}`][0]}/assets/nft/${address}/limit/${limit}?after=${after}`)
             }
-            console.assert(false, 'sssssssss')
             resolve(await balance.json())
         })
     }
@@ -139,7 +136,7 @@ export default class Waves {
     }
     order(view = true,property='',color = 'black', substrate={_:'order'},relation='order'  ){
         return new Promise(async (resolve, reject)=>{
-            console.assert(false, relation,'ddddddddd', substrate, )
+            // console.assert(false, relation,'ddddddddd', substrate, )
             let order = {}
             if(property === 'T') {
                 let request = {
@@ -149,10 +146,10 @@ export default class Waves {
                         'Content-Type': 'application/json;charset=utf-8'
                     },
                 }
-                order = await fetch(`${config[`${property}`][0]}/matcher/orderbook`,request)
+                order = await fetch(`${config['matcher'][`${property}`][0]}/matcher/orderbook`,request)
                 resolve(await order.json())
 
-            }else if(relation === 'W'){
+            }else if(property === 'W'){
                 let request = {
                     method: 'POST',
                     body:substrate,
@@ -160,10 +157,11 @@ export default class Waves {
                         'Content-Type': 'application/json;charset=utf-8'
                     },
                 }
-                order = await fetch(`${config[`${property}`][0]}/matcher/orderbook`,request)
+                order = await fetch(`${config['matcher'][`${property}`][0]}/matcher/orderbook`,request)
+                console.assert(false,order)
                 resolve(await order.json())
             }else{
-                console.warn( 'укажите тип сети T - тестнет W - майннет', relation)
+                console.warn( 'укажите тип сети T - тестнет W - майннет', property)
                 resolve(false)
             }
 

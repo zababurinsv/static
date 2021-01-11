@@ -1,5 +1,4 @@
 import dex from '/static/html/components/component_modules/dex/dex.mjs'
-import classDex from '/static/html/components/component_modules/dex/dex_c.mjs'
 import iframe from '/static/html/components/component_modules/iframe/iframe.mjs'
 import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 import emoji from '/static/html/components/component_modules/emoji/emoji.mjs'
@@ -7,10 +6,10 @@ import events from '/static/html/components/component_modules/CustomEvent/index.
 import Waves from '/static/html/components/component_modules/waves/index.mjs'
 
 export default async (v,p,c,obj,r) => {
-    let methods = await classDex()
+    let methods = (await import('/static/html/components/component_modules/dex/index.mjs'))['default']
     let relation = {}
     let wallet = {}
-    let waves = await new Waves()
+    let waves = new Waves()
     let sys = {
         _scriptDir: import.meta.url,
         validation: {

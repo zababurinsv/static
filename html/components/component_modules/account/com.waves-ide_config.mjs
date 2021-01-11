@@ -43,7 +43,6 @@ set privateKey: ƒ (t)
 get publicKey: ƒ ()
 set publicKey: ƒ (t)
 */
-
 export default {
   VERSION: 0,
   T: [
@@ -53,6 +52,13 @@ export default {
   W: [
     'https://nodes.wavesnodes.com'
   ],
+  matcher: {
+    T:['https://matcher-testnet.waves.exchange'],
+    W:['https://matcher.waves.exchange']
+  },
+  WAVES: 10 ** 8,
+  price: 10 ** 6,
+  fee: 0.003,
   explorer: 'https://wavesexplorer.com',
   accountsStore: {
     accountGroups: {
