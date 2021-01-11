@@ -33,18 +33,15 @@ export default (()=>{
 
     task.get(true, 'await', '5', '','/assets/details/{assetId}', async (object)=>{
       let orders = await waves.details(object.view,object.property, object.color, object.substrate, object.relation)
-      // console.assert(false, orders)
       object.callback(orders)
     })
     task.get(true, 'await', '5', '','/assets/signature/{assetId}', async (object)=> {
-      console.assert(false,  bundle.bigNumber(object.substrate.timestamp))
-      let bigNum = waves.self.bigNumber(object.substrate.timestamp);
-      console.assert(false, bigNum)
+      // console.assert(false, )
+      let bigNum = new waves.self.bigNumber(object.substrate.timestamp);
       let result = bigNum.toBytes();
-      let concat = waves.self.bigNumber.concat(object.substrate.publicKey, result)
-      let signature = waves.self.bigNumber.signBytes(object.substrate.seed, concat , 0)
+      let concat = waves.self.concat(object.substrate.publicKey, result)
+      let signature = waves.self.signBytes(object.substrate.seed, concat , 0)
       object.callback(signature)
-      object.callback({status:'ok',md:md})
     })
 
     task.get(true, 'await', '5', '','/matcher/get/order',async (object)=>{

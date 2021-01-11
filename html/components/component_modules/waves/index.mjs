@@ -173,19 +173,21 @@ export default class Waves {
     }
     details(v,p,c,s,r){
         return new Promise(async (resolve, reject)=>{
-            switch (p){
-                case 'W':
-                    system.net = 'W'
-                    break
-                case 'T':
-                    system.net = 'T'
-                    break
-                default:
-                    system.net = 'T'
-                    break
+            try {
+                let balance = await fetch(`${config[`${p}`][0]}/assets/details/${s}`)
+                balance = await balance.json()
+                resolve(Object.assign(balance, {
+                    _scriptDir: import.meta.url,
+                    status: true,
+                    message: 'waves.mjs'
+                }))
+            } catch (e) {
+                resolve(Object.assign(balance, {
+                    _scriptDir: import.meta.url,
+                    status: false,
+                    message: e
+                }))
             }
-            let balance = await fetch(`${config[`${system.net}`][0]}/assets/details/${s}`)
-            resolve(await balance.json())
         })
     }
     balance(id){

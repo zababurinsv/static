@@ -1,9 +1,8 @@
 import dex from '/static/html/components/component_modules/dex/dex.mjs'
 import iframe from '/static/html/components/component_modules/iframe/iframe.mjs'
 import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
-import emoji from '/static/html/components/component_modules/emoji/emoji.mjs'
-import events from '/static/html/components/component_modules/CustomEvent/index.mjs'
 import Waves from '/static/html/components/component_modules/waves/index.mjs'
+import task from '/static/html/components/component_modules/heap/index.mjs'
 
 export default async (v,p,c,obj,r) => {
     let methods = (await import('/static/html/components/component_modules/dex/index.mjs'))['default']
@@ -191,7 +190,7 @@ export default async (v,p,c,obj,r) => {
     }
     let itemDetails = {}
     for(let item of description['assetId']){
-        itemDetails[`${item}`] = await events.eventListener.set(true,'W','8',item,'/assets/details/{assetId}')
+        itemDetails[`${item}`] = await task.set(true,'W','8',item,'/assets/details/{assetId}')
         description['details'][`${item}`] = itemDetails[`${item}`]['decimals']
         description['name'][`${item}`] = itemDetails[`${item}`]['name']
     }
@@ -245,17 +244,19 @@ export default async (v,p,c,obj,r) => {
         relation['wew'] = undefined
         relation['wuw'] = undefined
 
-        let wavesEuro = await dex['get']({type:'wavesEuro',pair:description['wavesEuro']}, obj)
+        let wavesEuro = await dex['get']({net:'W', type:'wavesEuro',pair:description['wavesEuro']}, obj)
         let euroWaves = wavesEuro
-        let wavesUsd = await  dex['get']({type:'wavesUsd',pair:description['wavesUsd']}, obj)
+        let wavesUsd = await  dex['get']({net:'W', type:'wavesUsd',pair:description['wavesUsd']}, obj)
         let usdWaves = wavesUsd
-        let euroUsd =  await  dex['get']({type:'eurUsd',pair:description['euroUsd']}, obj)
+        let euroUsd =  await  dex['get']({net:'W', type:'eurUsd', pair:description['euroUsd']}, obj)
         let usdEuro =  euroUsd
 
         let priceAssetDecimalsEuro =  description['details'][`${wavesEuro['pair']['priceAsset']}`]
         let amountAssetDecimalsEuro = description['details'][`${wavesEuro['pair']['amountAsset']}`]
         let priceAssetDecimalsUsd =  description['details'][`${wavesUsd['pair']['priceAsset']}`]
         let amountAssetDecimalsUsd = description['details'][`${wavesUsd['pair']['amountAsset']}`]
+
+
         relation['fee']['euro'] = ( 1/methods.denormalize(wavesEuro.asks[0]['price'],priceAssetDecimalsEuro,  amountAssetDecimalsEuro))*0.003
         relation['fee']['usd'] = ( 1/methods.denormalize(wavesUsd.asks[0]['price'],priceAssetDecimalsUsd,  amountAssetDecimalsUsd))*0.003
 
@@ -265,6 +266,7 @@ export default async (v,p,c,obj,r) => {
         obj['this'].shadowRoot.querySelector('#fswe').innerHTML = `${description['name'][`${wavesEuro.pair.priceAsset}`]}=>${description['name'][`${wavesEuro.pair.amountAsset}`]}[(${relation['buy(wavesUsd)']}*)${relation['sell(wavesEuro)']}]`
         relation = await methods.buy(usdEuro, relation['sell(wavesEuro)'], relation, 'usdEuro')
         obj['this'].shadowRoot.querySelector('#fbue').innerHTML = `${description['name'][`${usdEuro.pair.amountAsset}`]}=>${description['name'][`${usdEuro.pair.priceAsset}`]}[(${relation['sell(wavesEuro)']}*)${relation['buy(usdEuro)']}]`
+
 
         // console.assert(false, relation)
         relation['description']['ueu'] = []
@@ -325,13 +327,13 @@ export default async (v,p,c,obj,r) => {
         let seed = 'tone leg hidden system tenant aware desk clap body robust debris puppy ecology scan runway thing second metal cousin ocean liberty banner garment rice feel'
         let publicKey = 'HrMWJVXDkjpzkMA3LnzurfmXMtRTtip4uS2236NvW6AR'
         let timestamp = Date.now();
-        let signature = await events.eventListener.set(true,'W','8',{
+        let signature = await task.set(true,'W','8',{
             seed:seed,
             publicKey:publicKey,
             timestamp:timestamp
         },'/assets/signature/{assetId}')
 
-        let getOrders = await  events.eventListener.set(true, {
+        let getOrders = await  task.set(true, {
             timestamp:timestamp,
             signature:signature
         },'7',{
@@ -341,9 +343,9 @@ export default async (v,p,c,obj,r) => {
             relation:'T'
         },'/matcher/orderbook/{publicKey}')
 
+        console.assert(false, getOrders)
 
-
-        let idbOrders = await events.eventListener.set(true, 'T','7','monopoly','/storage/get/all')
+        let idbOrders = await task.set(true, 'T','7','monopoly','/storage/get/all')
         if(getOrders.length > 2){
             let object = JSON.stringify({
                 sender: publicKey,
@@ -351,11 +353,11 @@ export default async (v,p,c,obj,r) => {
                 signature: signature,
                 orderId: null
             })
-            await events.eventListener.set(true, 'T','7',object,'/matcher/orderbook/cancel')
-            await events.eventListener.set(true, 'T','7',{},'/storage/delete/all')
+            await task.set(true, 'T','7',object,'/matcher/orderbook/cancel')
+            await task.set(true, 'T','7',{},'/storage/delete/all')
         }else{
-            let order = await events.eventListener.set(true,'T','8',relation['system']['items']['eue']['substrate'],'/matcher/orderbook/set')
-            await events.eventListener.set(true, 'T','7',order,'/storage/set/item')
+            let order = await task.set(true,'T','8',relation['system']['items']['eue']['substrate'],'/matcher/orderbook/set')
+            await task.set(true, 'T','7',order,'/storage/set/item')
         }
         //  console.log('###################', requestSet)
         if(relation['description']['ueu'][0] - relation['description']['ueu'][3] < 0){

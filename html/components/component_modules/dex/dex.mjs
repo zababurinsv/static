@@ -1,5 +1,7 @@
 // import Waves from '/static/html/components/component_modules/waves/index.mjs'
 // let waves =  new Waves()
+import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
+
 export default {
     get:(obj, payload, ...rest)=>{
             return  new Promise((resolve, reject) => {
@@ -12,7 +14,7 @@ export default {
                 switch (obj['type']) {
                     case 'wavesUsd':
                         (async (obj, payload, rest)=>{
-                            let url = `https://matcher.waves.exchange/matcher/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}?depth=10`
+                            let url = `${config['matcher'][`${obj.net}`]}/matcher/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}?depth=10`
                             await fetch(url, {
                                 method: `GET`,
                                 headers: {
@@ -35,7 +37,7 @@ export default {
                         break
                     case 'eurUsd':
                         (async (obj, payload, rest)=>{
-                            let url = `https://matcher.waves.exchange/matcher/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}?depth=10`
+                            let url = `${config['matcher'][`${obj.net}`]}/matcher/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}?depth=10`
                             await fetch(url, {
                                 method: `GET`,
                                 headers: {
@@ -87,7 +89,7 @@ export default {
                     case 'wavesEuro':
                         (async (obj, payload, rest)=>{
 
-                            let url = `https://matcher.waves.exchange/matcher/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}?depth=10`
+                            let url = `${config['matcher'][`${obj.net}`]}/matcher/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}?depth=10`
                            await fetch(url, {
                                 method: `GET`,
                                 headers: {
@@ -111,7 +113,7 @@ export default {
                         break
                     case 'tickSize':
                         (async (obj, payload, rest)=>{
-                            let url = `https://matcher.waves.exchange/matcher/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}/info`
+                            let url = `${config['matcher'][`${obj.net}`]}/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}/info`
                             await fetch(url, {
                                 method: `GET`,
                                 headers: {
