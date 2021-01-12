@@ -33,7 +33,7 @@ export default ( obj ={ _:'default' } ) =>{
                 break
             default:
                 let pathname = {}
-                if(!isEmpty(location.pathname)) {
+                if(!isEmpty(location.pathname[1])) {
                     pathname = location.pathname
                     pathname = pathname.split('/')
                     if(pathname[1].split('-').length >1) {
@@ -44,7 +44,7 @@ export default ( obj ={ _:'default' } ) =>{
                                 pathname = `${location.origin}/test.index.mjs`
                                 break
                             default:
-                                console.log('неизвестно какой тест подключать',pathname[1])
+                                console.log('неизвестно какой тест подключать',pathname)
                                 pathname = `${location.origin}/test.index.mjs`
                                 break
                         }
