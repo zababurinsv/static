@@ -5,59 +5,64 @@ import config from '/static/html/components/component_modules/account/com.waves-
 export default {
     get:(obj, payload, ...rest)=>{
             return  new Promise((resolve, reject) => {
-                function out(obj) {
-                    resolve(obj)
-                }
-                function err(obj) {
-                    reject(obj)
-                }
                 switch (obj['type']) {
                     case 'wavesUsd':
                         (async (obj, payload, rest)=>{
-                            let url = `${config['matcher'][`${obj.net}`]}/matcher/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}?depth=10`
-                            await fetch(url, {
-                                method: `GET`,
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            }).then(function (response) {
+                            try {
+                                let url = `${config['matcher'][`${obj.net}`]}/matcher/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}?depth=10`
+                                let json = {}
+                                let response =  await fetch(url, {
+                                    method: `GET`,
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    }
+                                })
                                 if (!response.ok) {
-                                    throw new Error('HTTP error, status = ' + response.status)
+                                    resolve({
+                                        _scriptDir: import.meta.url,
+                                        status: false,
+                                        message: response.status
+                                    })
                                 } else {
-                                    return response.json()
+                                    resolve(await response.json())
                                 }
-                            })
-                                .then(function (json) {
-                                    out(json)
+                            } catch (e) {
+                                resolve({
+                                    _scriptDir: import.meta.url,
+                                    status: false,
+                                    message: e
                                 })
-                                .catch(function (error) {
-                                    console.assert(false, 'auth', error)
-                                })
+                            }
+
                         })(obj,payload,  rest)
                         break
                     case 'eurUsd':
                         (async (obj, payload, rest)=>{
-                            let url = `${config['matcher'][`${obj.net}`]}/matcher/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}?depth=10`
-                            await fetch(url, {
-                                method: `GET`,
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            }).then(function (response) {
+                            try {
+                                let url = `${config['matcher'][`${obj.net}`]}/matcher/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}?depth=10`
+                                let json = {}
+                                let response =  await fetch(url, {
+                                    method: `GET`,
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    }
+                                })
                                 if (!response.ok) {
-                                    throw new Error('HTTP error, status = ' + response.status)
+                                    resolve({
+                                        _scriptDir: import.meta.url,
+                                        status: false,
+                                        message: response.status
+                                    })
                                 } else {
-                                    return response.json()
+                                    resolve(await response.json())
                                 }
-                            })
-                                .then(function (json) {
-                                    out(json)
+                            } catch (e) {
+                                resolve({
+                                    _scriptDir: import.meta.url,
+                                    status: false,
+                                    message: e
                                 })
-                                .catch(function (error) {
-                                    console.assert(false, 'auth', error)
-                                })
-
-
+                            }
                         })(obj,payload,  rest)
                         break
                     case 'tidex':
@@ -73,11 +78,17 @@ export default {
                                 if (!response.ok) {
                                     throw new Error('HTTP error, status = ' + response.status)
                                 } else {
-                                    return response.json()
+                                    try {
+                                        console.log(response.text())
+                                        let out = response.json()
+                                        return out
+                                    } catch (e) {
+                                        return response.text()
+                                    }
                                 }
                             })
                                 .then(function (json) {
-                                    out(json)
+                                    resolve(json)
                                 })
                                 .catch(function (error) {
                                     console.assert(false, 'auth', error)
@@ -88,52 +99,61 @@ export default {
                         break
                     case 'wavesEuro':
                         (async (obj, payload, rest)=>{
-
-                            let url = `${config['matcher'][`${obj.net}`]}/matcher/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}?depth=10`
-                           await fetch(url, {
-                                method: `GET`,
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            }).then(function (response) {
+                            try {
+                                let url = `${config['matcher'][`${obj.net}`]}/matcher/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}?depth=10`
+                                let json = {}
+                                let response =  await fetch(url, {
+                                    method: `GET`,
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    }
+                                })
                                 if (!response.ok) {
-                                    throw new Error('HTTP error, status = ' + response.status)
+                                    reject({
+                                        _scriptDir: import.meta.url,
+                                        status: false,
+                                        message: response.status
+                                    })
                                 } else {
-                                    return response.json()
+                                    resolve(await response.json())
                                 }
-                            })
-                            .then(function (json) {
-                                  out(json)
-                            })
-                            .catch(function (error) {
-                                    console.assert(false, 'auth', error)
-                            })
-
+                            } catch (e) {
+                                reject({
+                                    _scriptDir: import.meta.url,
+                                    status: false,
+                                    message: e
+                                })
+                            }
                         })(obj,payload,  rest)
                         break
                     case 'tickSize':
                         (async (obj, payload, rest)=>{
-                            let url = `${config['matcher'][`${obj.net}`]}/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}/info`
-                            await fetch(url, {
-                                method: `GET`,
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            }).then(function (response) {
-                                if (!response.ok) {
-                                    throw new Error('HTTP error, status = ' + response.status)
-                                } else {
-                                    return response.json()
-                                }
-                            })
-                            .then(function (json) {
-                                obj['pair']['tickSize'] = json['matchingRules']['tickSize']
-                                out(json)
-                                })
-                                .catch(function (error) {
-                                    console.assert(false, 'auth', error)
-                                })
 
+                            try {
+                                let url = `${config['matcher'][`${obj.net}`]}/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}/info`
+                                let json = {}
+                                let response =  await fetch(url, {
+                                    method: `GET`,
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    }
+                                })
+                                if (!response.ok) {
+                                    reject({
+                                        _scriptDir: import.meta.url,
+                                        status: false,
+                                        message: response.status
+                                    })
+                                } else {
+                                    resolve(await response.json())
+                                }
+                            } catch (e) {
+                                reject({
+                                    _scriptDir: import.meta.url,
+                                    status: false,
+                                    message: e
+                                })
+                            }
                         })(obj,payload,  rest)
                         break
                     default:

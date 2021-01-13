@@ -215,10 +215,15 @@ export default async (v,p,c,obj,r) => {
                 break
         }
     }
-
-    relation['w'] = 10
-    relation['u'] = 10
-    relation['e'] = 0.1
+    let input_id_left = obj['this'].shadowRoot.querySelector('#left').value
+    let input_id_center = obj['this'].shadowRoot.querySelector('#center').value
+    let input_id_right = obj['this'].shadowRoot.querySelector('#right').value
+    // relation['w'] = input_id_right / 10
+    // relation['u'] = input_id_center / 10
+    // relation['e'] = input_id_left / 100
+    relation['w'] =  10
+    relation['u'] =  10
+    relation['e'] = 0.01
     relation['decimals'] = description['details']
     relation['fee'] = {}
     relation['description'] = []
@@ -251,6 +256,8 @@ export default async (v,p,c,obj,r) => {
         let euroUsd =  await  dex['get']({net:'W', type:'eurUsd', pair:description['euroUsd']}, obj)
         let usdEuro =  euroUsd
 
+        // console.assert(false, usdEuro)
+
         let priceAssetDecimalsEuro =  description['details'][`${wavesEuro['pair']['priceAsset']}`]
         let amountAssetDecimalsEuro = description['details'][`${wavesEuro['pair']['amountAsset']}`]
         let priceAssetDecimalsUsd =  description['details'][`${wavesUsd['pair']['priceAsset']}`]
@@ -259,15 +266,16 @@ export default async (v,p,c,obj,r) => {
 
         relation['fee']['euro'] = ( 1/methods.denormalize(wavesEuro.asks[0]['price'],priceAssetDecimalsEuro,  amountAssetDecimalsEuro))*0.003
         relation['fee']['usd'] = ( 1/methods.denormalize(wavesUsd.asks[0]['price'],priceAssetDecimalsUsd,  amountAssetDecimalsUsd))*0.003
+
         relation = await methods.buy(wavesUsd, relation['u'], relation, 'wavesUsd')
         obj['this'].shadowRoot.querySelector('#fbwu').innerHTML = `${description['name'][`${wavesUsd.pair.priceAsset}`]}=>${description['name'][`${wavesUsd.pair.amountAsset}`]}[(${relation['u']}*)${relation['buy(wavesUsd)']}]`
-        // console.assert(false, {
-        //     wavesUsd:wavesUsd,
-        //     u: relation['u'],
-        //     relation: relation
-        // })
         relation = await methods.sell(wavesEuro, relation['buy(wavesUsd)'], relation, 'wavesEuro')
         obj['this'].shadowRoot.querySelector('#fswe').innerHTML = `${description['name'][`${wavesEuro.pair.priceAsset}`]}=>${description['name'][`${wavesEuro.pair.amountAsset}`]}[(${relation['buy(wavesUsd)']}*)${relation['sell(wavesEuro)']}]`
+        // console.assert(false, {
+            // wavesUsd:wavesUsd,
+            // u: relation,
+            // relation: relation
+        // })
         relation = await methods.buy(usdEuro, relation['sell(wavesEuro)'], relation, 'usdEuro')
         obj['this'].shadowRoot.querySelector('#fbue').innerHTML = `${description['name'][`${usdEuro.pair.amountAsset}`]}=>${description['name'][`${usdEuro.pair.priceAsset}`]}[(${relation['sell(wavesEuro)']}*)${relation['buy(usdEuro)']}]`
 
@@ -363,7 +371,6 @@ export default async (v,p,c,obj,r) => {
             // let order = await task.set(true,'T','8',relation['system']['items']['eue']['substrate'],'/matcher/orderbook/set')
             // await task.set(true, 'T','7',order,'/storage/set/item')
         }
-        //  console.log('###################', requestSet)
         if(relation['description']['ueu'][0] - relation['description']['ueu'][3] < 0){
             relation['description']['ueu'].push(new Date().toString())
             relation['description']['ueu'].push('first')
