@@ -7,62 +7,41 @@ export default {
             return  new Promise((resolve, reject) => {
                 switch (obj['type']) {
                     case 'wavesUsd':
-                        (async (obj, payload, rest)=>{
-                            try {
-                                let url = `${config['matcher'][`${obj.net}`]}/matcher/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}?depth=10`
-                                let json = {}
-                                let response =  await fetch(url, {
-                                    method: `GET`,
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    }
-                                })
-                                if (!response.ok) {
-                                    resolve({
-                                        _scriptDir: import.meta.url,
-                                        status: false,
-                                        message: response.status
-                                    })
-                                } else {
-                                    resolve(await response.json())
-                                }
-                            } catch (e) {
-                                resolve({
-                                    _scriptDir: import.meta.url,
-                                    status: false,
-                                    message: e
-                                })
-                            }
+                        ((obj, payload, rest)=>{
+                            resolve(new Promise(async (resolve, reject) => {
 
+                            }))
                         })(obj,payload,  rest)
                         break
                     case 'eurUsd':
                         (async (obj, payload, rest)=>{
-                            try {
-                                let url = `${config['matcher'][`${obj.net}`]}/matcher/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}?depth=10`
-                                let json = {}
-                                let response =  await fetch(url, {
-                                    method: `GET`,
-                                    headers: {
-                                        'Content-Type': 'application/json'
+                            resolve(new Promise(async (resolve, reject) => {
+                                try {
+                                    let url = `${config['matcher'][`${obj.net}`]}/matcher/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}?depth=10`
+                                    let json = {}
+                                    let response =  await fetch(url, {
+                                        method: `GET`,
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        }
+                                    })
+                                    if (!response.ok) {
+                                        resolve({
+                                            _scriptDir: import.meta.url,
+                                            status: false,
+                                            message: response.status
+                                        })
+                                    } else {
+                                        resolve(await response.json())
                                     }
-                                })
-                                if (!response.ok) {
+                                } catch (e) {
                                     resolve({
                                         _scriptDir: import.meta.url,
                                         status: false,
-                                        message: response.status
+                                        message: e
                                     })
-                                } else {
-                                    resolve(await response.json())
                                 }
-                            } catch (e) {
-                                resolve({
-                                    _scriptDir: import.meta.url,
-                                    status: false,
-                                    message: e
-                                })
-                            }
+                            }))
                         })(obj,payload,  rest)
                         break
                     case 'tidex':
@@ -99,31 +78,34 @@ export default {
                         break
                     case 'wavesEuro':
                         (async (obj, payload, rest)=>{
-                            try {
-                                let url = `${config['matcher'][`${obj.net}`]}/matcher/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}?depth=10`
-                                let json = {}
-                                let response =  await fetch(url, {
-                                    method: `GET`,
-                                    headers: {
-                                        'Content-Type': 'application/json'
+                            resolve(new Promise(async (resolve, reject) => {
+                                try {
+                                    let url = `${config['matcher'][`${obj.net}`]}/matcher/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}?depth=10`
+                                    let json = {}
+                                    let response =  await fetch(url, {
+                                        method: `GET`,
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        }
+                                    })
+                                    if (!response.ok) {
+                                        reject({
+                                            _scriptDir: import.meta.url,
+                                            status: false,
+                                            message: response.status
+                                        })
+                                    } else {
+                                        console.log(await response.text())
+                                        resolve(await response.json())
                                     }
-                                })
-                                if (!response.ok) {
+                                } catch (e) {
                                     reject({
                                         _scriptDir: import.meta.url,
                                         status: false,
-                                        message: response.status
+                                        message: e
                                     })
-                                } else {
-                                    resolve(await response.json())
                                 }
-                            } catch (e) {
-                                reject({
-                                    _scriptDir: import.meta.url,
-                                    status: false,
-                                    message: e
-                                })
-                            }
+                            }))
                         })(obj,payload,  rest)
                         break
                     case 'tickSize':

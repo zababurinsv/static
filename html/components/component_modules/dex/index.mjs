@@ -1,5 +1,9 @@
 import task from '/static/html/components/component_modules/heap/index.mjs'
 import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
+import Axios from '/static/html/components/component_modules/axios/axios.mjs'
+import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
+
+let axios = Axios['default']
 let object = {}
 object.staticProperty = {}
 object.staticProperty.class = undefined
@@ -12,7 +16,73 @@ export default (()=>{
                 this.sell = this.sell.bind(this)
                 this.denormalize = this.denormalize.bind(this)
                 this.end = this.end.bind(this)
+                this.wavesUsd = this.wavesUsd.bind(this)
+                this.eurUsd = this.eurUsd.bind(this)
+                this.wavesEuro = this.wavesEuro.bind(this)
                 document.addEventListener('typeScript-end-dex', this.end)
+            }
+            wavesUsd(obj, self) {
+                return new Promise( async (resolve, reject) => {
+                    try {
+                        let url = `${config['matcher'][`${obj.net}`]}/matcher/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}?depth=10`
+                        let json = {}
+                        let response = await axios.get(url,{
+                            method: `GET`,
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                      resolve( response.data)
+                    } catch (e) {
+                        resolve({
+                            _scriptDir: import.meta.url,
+                            status: false,
+                            message: e
+                        })
+                    }
+                })
+            }
+            eurUsd(obj, self) {
+                return new Promise( async (resolve, reject) => {
+                    try {
+                        let url = `${config['matcher'][`${obj.net}`]}/matcher/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}?depth=10`
+                        let json = {}
+                        let response = await axios.get(url,{
+                            method: `GET`,
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        resolve( response.data)
+                    } catch (e) {
+                        resolve({
+                            _scriptDir: import.meta.url,
+                            status: false,
+                            message: e
+                        })
+                    }
+                })
+            }
+            wavesEuro(obj, self) {
+                return new Promise( async (resolve, reject) => {
+                    try {
+                        let url = `${config['matcher'][`${obj.net}`]}/matcher/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}?depth=10`
+                        let json = {}
+                        let response = await axios.get(url,{
+                            method: `GET`,
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        resolve( response.data)
+                    } catch (e) {
+                        resolve({
+                            _scriptDir: import.meta.url,
+                            status: false,
+                            message: e
+                        })
+                    }
+                })
             }
             denormalize(price, priceAssetDecimals, amountAssetDecimals){
                 let wvsPrice = 10 ** (priceAssetDecimals - amountAssetDecimals + 8)

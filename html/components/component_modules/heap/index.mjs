@@ -6,7 +6,7 @@ export default {
             console.log(`${emoji('moon')[1][0]}`, relation + ' init')
              if(view) {
                  heap(view, property,color,substrate ,relation, (event)=>{
-                     console.log(`    ${emoji('moon')[2][0]}`,relation, event)
+                     console.log(`    ${emoji('moon')[2][0]}`,relation)
                      resolve(event)
                  })
              } else {
