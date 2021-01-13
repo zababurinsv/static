@@ -455,11 +455,17 @@ export default async (v,p,c,obj,r) => {
     };
 
         (sys['validation']['disabled']['views'][0])
-          ? (views[0](),views[1](),views[2](),views[3]())
-          : ''
-
-
-
+          ? (views[0]())
+          : '';
+        (sys['validation']['disabled']['views'][1])
+          ? (views[1]())
+          : '';
+        (sys['validation']['disabled']['views'][2])
+          ? (views[2]())
+          : '';
+        (sys['validation']['disabled']['views'][3])
+          ? (views[3]())
+          : '';
 
         // console.assert(false, relation)
         // console.log('~~~~>>', relation)
