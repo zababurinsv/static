@@ -439,7 +439,6 @@ export default async (v,p,c,obj,r) => {
             }
         },
         "3": () => {
-            console.log('ddddddddddddddd', relation)
             if(relation['description']['wew'][0] - relation['description']['wew'][3] < 0){
                 relation['description']['wew'].push(new Date().toString())
                 relation['description']['wew'].push('fourth')
