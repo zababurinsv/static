@@ -32,7 +32,11 @@ export default (()=>{
                                 'Content-Type': 'application/json'
                             }
                         })
-                      resolve( response.data)
+                      resolve( {
+                          _scriptDir: import.meta.url,
+                          status: true,
+                          message: response.data
+                      })
                     } catch (e) {
                         resolve({
                             _scriptDir: import.meta.url,
@@ -53,7 +57,11 @@ export default (()=>{
                                 'Content-Type': 'application/json'
                             }
                         })
-                        resolve( response.data)
+                        resolve( {
+                            _scriptDir: import.meta.url,
+                            status: true,
+                            message: response.data
+                        })
                     } catch (e) {
                         resolve({
                             _scriptDir: import.meta.url,
@@ -74,7 +82,11 @@ export default (()=>{
                                 'Content-Type': 'application/json'
                             }
                         })
-                        resolve( response.data)
+                        resolve( {
+                            _scriptDir: import.meta.url,
+                            status: true,
+                            message: response.data
+                        })
                     } catch (e) {
                         resolve({
                             _scriptDir: import.meta.url,
@@ -346,7 +358,6 @@ export default (()=>{
                                             // console.warn('невозможно купить euroUsd', 'askAmount:', askAmount,'outAmount:',outAmount )
                                             count++
                                         }else{
-
                                             obj['eue']['buy(euroUsd)'] = {}
                                             obj['eue']['buy(euroUsd)']['amount'] = amount
                                             obj['eue']['buy(euroUsd)']['price'] = bidPrice

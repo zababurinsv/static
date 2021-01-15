@@ -1,4 +1,3 @@
-import dex from '/static/html/components/component_modules/dex/dex.mjs'
 import iframe from '/static/html/components/component_modules/iframe/iframe.mjs'
 import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 import Waves from '/static/html/components/component_modules/waves/index.mjs'
@@ -21,6 +20,9 @@ export default async (v,p,c,obj,r) => {
                     "2": true,
                     "3": true,
                 }
+            },
+            "input":{
+                "amount": true
             }
         },
     }
@@ -162,13 +164,13 @@ export default async (v,p,c,obj,r) => {
         }, 250);
     },{passive:true})
     obj['this'].shadowRoot.querySelector('#left').addEventListener('input',async (e)=>{
-        relation['w'] =  e.target.value
+        relation['e'] =  e.target.value
     },{passive:true})
     obj['this'].shadowRoot.querySelector('#center').addEventListener('input',async (e)=>{
         relation['u'] =  e.target.value
     },{passive:true})
     obj['this'].shadowRoot.querySelector('#right').addEventListener('input',async (e)=>{
-        relation['e'] =  e.target.value
+        relation['w'] =  e.target.value
     },{passive:true})
     let assets = {
         waves:'WAVES',
@@ -224,9 +226,9 @@ export default async (v,p,c,obj,r) => {
                 break
         }
     }
-    let input_id_left = obj['this'].shadowRoot.querySelector('#left').value
-    let input_id_center = obj['this'].shadowRoot.querySelector('#center').value
-    let input_id_right = obj['this'].shadowRoot.querySelector('#right').value
+    // let input_id_left = obj['this'].shadowRoot.querySelector('#left').value
+    // let input_id_center = obj['this'].shadowRoot.querySelector('#center').value
+    // let input_id_right = obj['this'].shadowRoot.querySelector('#right').value
     // relation['w'] = input_id_right / 10
     // relation['u'] = input_id_center / 10
     // relation['e'] = input_id_left / 100
@@ -259,11 +261,23 @@ export default async (v,p,c,obj,r) => {
         relation['wuw'] = undefined
 
         let wavesEuro = await methods.wavesEuro({net:'W',pair:description['wavesEuro']}, obj)
-        let euroWaves = wavesEuro
         let wavesUsd = await  methods.wavesUsd({net:'W', pair:description['wavesUsd']}, obj)
-        let usdWaves = wavesUsd
         let euroUsd =  await  methods.eurUsd({net:'W',pair:description['euroUsd']}, obj)
-        let usdEuro =  euroUsd
+        while (!wavesEuro.status) {
+            console.warn('запрос не сработал 1')
+            wavesEuro = await methods.wavesEuro({net:'W',pair:description['wavesEuro']}, obj)
+        }
+        while (!wavesUsd.status) {
+            console.warn('запрос не сработал 2')
+            wavesUsd = await  methods.wavesUsd({net:'W', pair:description['wavesUsd']}, obj)
+        }
+        while (!euroUsd.status) {
+            console.warn('запрос не сработал 3')
+            euroUsd = await  methods.eurUsd({net:'W',pair:description['euroUsd']}, obj)
+        }
+        wavesEuro = wavesEuro.message
+        wavesUsd = wavesUsd.message
+        euroUsd= euroUsd.message
 
         let priceAssetDecimalsEuro =  description['details'][`${wavesEuro['pair']['priceAsset']}`]
         let amountAssetDecimalsEuro = description['details'][`${wavesEuro['pair']['amountAsset']}`]
@@ -281,12 +295,10 @@ export default async (v,p,c,obj,r) => {
         (sys['validation']['disabled']['views'][0])
           ? obj['this'].shadowRoot.querySelector('#fswe').innerHTML = `${description['name'][`${wavesEuro.pair.priceAsset}`]}=>${description['name'][`${wavesEuro.pair.amountAsset}`]}[(${relation['buy(wavesUsd)']}*)${relation['sell(wavesEuro)']}]`
           : obj['this'].shadowRoot.querySelector('#fswe').innerHTML = 'disabled #fswe'
-        relation = await methods.buy(usdEuro, relation['sell(wavesEuro)'], relation, 'usdEuro');
+        relation = await methods.buy(euroUsd, relation['sell(wavesEuro)'], relation, 'usdEuro');
         (sys['validation']['disabled']['views'][0])
-          ? obj['this'].shadowRoot.querySelector('#fbue').innerHTML = `${description['name'][`${usdEuro.pair.amountAsset}`]}=>${description['name'][`${usdEuro.pair.priceAsset}`]}[(${relation['sell(wavesEuro)']}*)${relation['buy(usdEuro)']}]`
+          ? obj['this'].shadowRoot.querySelector('#fbue').innerHTML = `${description['name'][`${euroUsd.pair.amountAsset}`]}=>${description['name'][`${euroUsd.pair.priceAsset}`]}[(${relation['sell(wavesEuro)']}*)${relation['buy(usdEuro)']}]`
           : obj['this'].shadowRoot.querySelector('#fbue').innerHTML = 'disabled #fbue'
-
-        // console.assert(false, relation)
         relation['description']['ueu'] = []
         relation['description']['ueu'].push(relation['u'])
         relation['description']['ueu'].push(relation['buy(wavesUsd)'])
@@ -307,7 +319,6 @@ export default async (v,p,c,obj,r) => {
         (sys['validation']['disabled']['views'][1])
           ? obj['this'].shadowRoot.querySelector('#fbeu').innerHTML = `${description['name'][`${euroUsd.pair.priceAsset}`]}=>${description['name'][`${euroUsd.pair.amountAsset}`]}[(${relation['sell(wavesUsd)']}*)${relation['buy(euroUsd)']}]`
           : obj['this'].shadowRoot.querySelector('#fbeu').innerHTML = 'disabled #fbeu'
-
         relation['description']['eue'] = []
         relation['description']['eue'].push(relation['e'])
         relation['description']['eue'].push(relation['buy(wavesEuro)'])
@@ -316,9 +327,9 @@ export default async (v,p,c,obj,r) => {
         relation['buy(wavesEuro)'] = {}
         relation['sell(wavesUsd)'] ={}
         relation['buy(euroUsd)'] = {}
-        relation = await methods.buy(euroWaves, relation['w'], relation, 'euroWaves');
+        relation = await methods.buy(wavesEuro, relation['w'], relation, 'euroWaves');
             (sys['validation']['disabled']['views'][2])
-            ? obj['this'].shadowRoot.querySelector('#sbew').innerHTML = `${description['name'][`${euroWaves.pair.priceAsset}`]}=>${description['name'][`${euroWaves.pair.amountAsset}`]}[(${relation['w']}*)${relation['buy(euroWaves)']}]`
+            ? obj['this'].shadowRoot.querySelector('#sbew').innerHTML = `${description['name'][`${wavesEuro.pair.priceAsset}`]}=>${description['name'][`${wavesEuro.pair.amountAsset}`]}[(${relation['w']}*)${relation['buy(euroWaves)']}]`
             : obj['this'].shadowRoot.querySelector('#sbew').innerHTML = 'disabled #sbew'
         relation = await methods.sell(euroUsd,relation['buy(euroWaves)'], relation, 'euroUsd');
             (sys['validation']['disabled']['views'][2])
@@ -338,13 +349,13 @@ export default async (v,p,c,obj,r) => {
         relation['sell(euroUsd)'] ={}
         relation['buy(wavesUsd)'] = {}
 
-        relation = await methods.buy(usdWaves, relation['w'], relation, 'usdWaves');
+        relation = await methods.buy(wavesUsd, relation['w'], relation, 'usdWaves');
         (sys['validation']['disabled']['views'][3])
-          ? obj['this'].shadowRoot.querySelector('#sbuw').innerHTML = `${description['name'][`${usdWaves.pair.amountAsset}`]}=>${description['name'][`${usdWaves.pair.priceAsset}`]}[(${relation['w']}*)${relation['buy(usdWaves)']}]`
+          ? obj['this'].shadowRoot.querySelector('#sbuw').innerHTML = `${description['name'][`${wavesUsd.pair.amountAsset}`]}=>${description['name'][`${wavesUsd.pair.priceAsset}`]}[(${relation['w']}*)${relation['buy(usdWaves)']}]`
           : obj['this'].shadowRoot.querySelector('#sbuw').innerHTML = 'disabled #sbuw'
-        relation = await methods.sell(usdEuro,relation['buy(usdWaves)'], relation, 'usdEuro');
+        relation = await methods.sell(euroUsd,relation['buy(usdWaves)'], relation, 'usdEuro');
         (sys['validation']['disabled']['views'][3])
-          ? obj['this'].shadowRoot.querySelector('#ssue').innerHTML = `${description['name'][`${usdEuro.pair.priceAsset}`]}=>${description['name'][`${usdEuro.pair.amountAsset}`]}[(${relation['buy(usdWaves)']}*)${relation['sell(usdEuro)']}]`
+          ? obj['this'].shadowRoot.querySelector('#ssue').innerHTML = `${description['name'][`${euroUsd.pair.priceAsset}`]}=>${description['name'][`${euroUsd.pair.amountAsset}`]}[(${relation['buy(usdWaves)']}*)${relation['sell(usdEuro)']}]`
           : obj['this'].shadowRoot.querySelector('#ssue').innerHTML = 'disabled #sseu'
         relation = await methods.buy(wavesEuro,relation['sell(usdEuro)'], relation, 'wavesEuro');
         (sys['validation']['disabled']['views'][3])
