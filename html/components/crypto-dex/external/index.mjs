@@ -164,7 +164,7 @@ export default async (v,p,c,obj,r) => {
         }, 250);
     },{passive:true})
     obj['this'].shadowRoot.querySelector('#left').addEventListener('input',async (e)=>{
-        relation['e'] =  e.target.value
+        relation['e'] =  e.target.value / 100
     },{passive:true})
     obj['this'].shadowRoot.querySelector('#center').addEventListener('input',async (e)=>{
         relation['u'] =  e.target.value
@@ -234,7 +234,7 @@ export default async (v,p,c,obj,r) => {
     // relation['e'] = input_id_left / 100
     relation['w'] =  10
     relation['u'] =  10
-    relation['e'] = 0.01
+    relation['e'] = 0.1
     relation['decimals'] = description['details']
     relation['fee'] = {}
     relation['description'] = []
