@@ -3,6 +3,33 @@ import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.m
 import Waves from '/static/html/components/component_modules/waves/index.mjs'
 import task from '/static/html/components/component_modules/heap/index.mjs'
 import { store } from '/static/html/components/component_modules/storage/index.mjs'
+
+function count (obj) {
+    let countDownDate = Date.now();
+    let x = setInterval(function() {
+
+        // Get today's date and time
+        let now = Date.now();
+        // Find the distance between now and the count down date
+        let distance = now - countDownDate;
+
+        // Time calculations for days, hours, minutes and seconds
+        let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Display the result in the element with id="demo"
+        obj.this.shadowRoot.querySelector('.count-main').innerHTML = days + "d " + hours + "h "
+          + minutes + "m " + seconds + "s ";
+
+        // If the count down is finished, write some text
+        if (distance < 0) {
+            clearInterval(x);
+            obj.this.shadowRoot.querySelector('.count-main').innerHTML = "EXPIRED";
+        }
+    }, 1000);
+}
 export default async (v,p,c,obj,r) => {
     let methods = (await import('/static/html/components/component_modules/dex/index.mjs'))['default']
     let relation = {}
@@ -207,7 +234,7 @@ export default async (v,p,c,obj,r) => {
     }
     description['details'][`WAVES`] = 8
     description['name'][`WAVES`] = `WAVES`
-
+    count(obj)
     for(let key in description){
         switch (key) {
             case 'wavesEuro':
@@ -226,31 +253,18 @@ export default async (v,p,c,obj,r) => {
                 break
         }
     }
-    // let input_id_left = obj['this'].shadowRoot.querySelector('#left').value
-    // let input_id_center = obj['this'].shadowRoot.querySelector('#center').value
-    // let input_id_right = obj['this'].shadowRoot.querySelector('#right').value
-    // relation['w'] = input_id_right / 10
-    // relation['u'] = input_id_center / 10
-    // relation['e'] = input_id_left / 100
-    relation['w'] =  10
-    relation['u'] =  10
-    relation['e'] = 0.1
+    let input_id_left = obj['this'].shadowRoot.querySelector('#left').value
+    let input_id_center = obj['this'].shadowRoot.querySelector('#center').value
+    let input_id_right = obj['this'].shadowRoot.querySelector('#right').value
+    relation['w'] = input_id_right
+    relation['u'] = input_id_center
+    relation['e'] = input_id_left / 100
+    // relation['w'] =  10
+    // relation['u'] =  10
+    // relation['e'] = 0.1
     relation['decimals'] = description['details']
     relation['fee'] = {}
     relation['description'] = []
-
-    // let wavesEuro = await dex['get']({type:'wavesEuro',pair:description['wavesEuro']}, obj)
-    // let euroWaves = wavesEuro
-    // let wavesUsd = await  dex['get']({type:'wavesUsd',pair:description['wavesUsd']}, obj)
-    // let usdWaves = wavesUsd
-    // let euroUsd =  await  dex['get']({type:'eurUsd',pair:description['euroUsd']}, obj)
-    // let usdEuro =  euroUsd
-
-    // console.assert(false, wavesEuro)
-    // console.log('~~~1~~~~~',eurUsd)
-    // console.log('~~~~~2~~~',wavesUsd)
-    // console.assert(false, wavesEuro)
-    // console.log(wavesUsd['bids'][i]['amount']/wvsAmount)
 
     let priceAssetDecimals =  {}
     let amountAssetDecimals = {}
