@@ -88,6 +88,9 @@ export default async (v,p,c,obj,r) => {
         },
         warn: {
             "s/b": 'нет доступных пар'
+        },
+        avtive: {
+
         }
     }
 
@@ -336,9 +339,9 @@ export default async (v,p,c,obj,r) => {
     let input_id_right = obj['this'].shadowRoot.querySelector('#right').value
     function setAssetsAmount(state) {
         if(state) {
-            relation['w'] = input_id_right
-            relation['u'] = input_id_center
-            relation['e'] = input_id_left / 100
+            relation['w'] = parseFloat(input_id_right)
+            relation['u'] = parseFloat(input_id_center)
+            relation['e'] = parseFloat((input_id_left / 100))
         } else {
             relation['w'] = sys.navigation.assets.w
             relation['u'] = sys.navigation.assets.u
@@ -420,6 +423,26 @@ export default async (v,p,c,obj,r) => {
                 sys['validation']['disabled']['views'][0] = false,
                 empty(obj, 'ueu'))
         }
+        relation['transactions'] = []
+        if(relation['description']['ueu'] !== undefined) {
+            let timestamp =  Date.now();
+            relation['transactions'].push({
+                head: {
+                    'name': 'ueu',
+                    'status': [false, false, false],
+                    'date': {
+                        'timestamp': timestamp,
+                        'GMT': new Date(timestamp).toString()
+                    }
+                },
+                payload: {
+                    'description': relation['description']['ueu'],
+                    'buy(wavesUsd)': relation['buy(wavesUsd)'],
+                    'sell(wavesEuro)': relation['sell(wavesEuro)'],
+                    'buy(usdEuro)': relation['buy(usdEuro)']
+                },
+            })
+        }
         relation['buy(wavesUsd)'] = {}
         relation['sell(wavesEuro)'] ={}
         relation['buy(usdEuro)'] = {}
@@ -455,10 +478,28 @@ export default async (v,p,c,obj,r) => {
                 sys['validation']['disabled']['views'][1] = false,
                 empty(obj, 'eue'))
         }
+        if(relation['description']['eue'] !== undefined) {
+            let timestamp =  Date.now();
+            relation['transactions'].push({
+                head: {
+                    'name': 'eue',
+                    'status': [false, false, false],
+                    'date': {
+                        'timestamp': timestamp,
+                        'GMT': new Date(timestamp).toString()
+                    }
+                },
+                payload: {
+                    'description': relation['description']['eue'],
+                    'buy(wavesEuro)': relation['buy(wavesEuro)'],
+                    'sell(wavesUsd)': relation['sell(wavesUsd)'],
+                    'buy(euroUsd)': relation['buy(euroUsd)']
+                },
+            })
+        }
         relation['buy(wavesEuro)'] = {}
         relation['sell(wavesUsd)'] ={}
         relation['buy(euroUsd)'] = {}
-
 //## item 3
         relation['description']['wuw'] = []
         relation['description']['wuw'].push(relation['w'])
@@ -485,10 +526,28 @@ export default async (v,p,c,obj,r) => {
               : (delete relation['description']['wuw'], sys['validation']['disabled']['views'][2] = false, empty(obj,'wuw'))
         }
 
+        if(relation['description']['wuw'] !== undefined) {
+           let timestamp =  Date.now();
+            relation['transactions'].push({
+                head: {
+                    'name': 'wuw',
+                    'status': [false, false, false],
+                    'date': {
+                        'timestamp': timestamp,
+                        'GMT': new Date(timestamp).toString()
+                    }
+                },
+                payload: {
+                    'description': relation['description']['wuw'],
+                    'buy(euroWaves)': relation['buy(euroWaves)'],
+                    'sell(euroUsd)': relation['sell(euroUsd)'],
+                    'buy(wavesUsd)': relation['buy(wavesUsd)']
+                },
+            })
+        }
         relation['buy(euroWaves)'] = {}
         relation['sell(euroUsd)'] ={}
         relation['buy(wavesUsd)'] = {}
-        // sys.info()
 //## item 4
         relation['description']['wew'] = []
         relation['description']['wew'].push(relation['w'])
@@ -521,49 +580,28 @@ export default async (v,p,c,obj,r) => {
                 sys['validation']['disabled']['views'][3] = false,
                 empty(obj, 'wew'));
         }
-        sys.info(false)
+        if(relation['description']['wew'] !== undefined) {
+            let timestamp =  Date.now();
+            relation['transactions'].push({
+                head: {
+                    'name': 'wew',
+                    'status': [false, false, false],
+                    'date': {
+                        'timestamp': timestamp,
+                        'GMT': new Date(timestamp).toString()
+                    }
+                },
+                payload: {
+                    'description': relation['description']['wew'],
+                    'buy(usdWaves)': relation['buy(usdWaves)'],
+                    'sell(usdEuro)': relation['sell(usdEuro)'],
+                    'buy(wavesEuro)': relation['buy(wavesEuro)']
+                },
+            })
+        }
         relation['buy(usdWaves)'] = {}
         relation['sell(usdEuro)'] ={}
         relation['buy(wavesEuro)'] = {}
-
-        // if(sys['counts']['main'] === sys['threshold']['main']) {
-        // }
-
-            // let eue = true
-            // let ueu = true
-            // let wew = true
-            // let wuw = true
-            //   for(let i = 0; i < 4; i++) {
-            //       if(relation['description']['eue'] !== undefined) {
-            //           eue = (relation['description']['eue'][i] >= 0.01)
-            //       }
-            //       if(relation['description']['ueu'] !== undefined) {
-            //           ueu = (relation['description']['ueu'][i] >= 0.01)
-            //       }
-            //       if(relation['description']['wew'] !== undefined) {
-            //           wew = (relation['description']['wew'][i] >= 0.01)
-            //       }
-            //       if(relation['description']['wuw'] !== undefined) {
-            //           wuw = (relation['description']['wuw'][i] >= 0.01)
-            //       }
-            //       if(!eue) {
-            //           sys['validation']['disabled']['views'][1] = false
-            //           delete relation['description']['eue']
-            //       }
-            //       if(!ueu) {
-            //           sys['validation']['disabled']['views'][0] = false
-            //           delete relation['description']['ueu']
-            //       }
-            //       if(!wew) {
-            //           sys['validation']['disabled']['views'][2] = false
-            //           delete relation['description']['wew']
-            //       }
-            //       if(!wuw) {
-            //           sys['validation']['disabled']['views'][3] = false
-            //           delete relation['description']['wuw']
-            //       }
-            //   }
-
 
         let seed = 'tone leg hidden system tenant aware desk clap body robust debris puppy ecology scan runway thing second metal cousin ocean liberty banner garment rice feel'
         let publicKey = 'HrMWJVXDkjpzkMA3LnzurfmXMtRTtip4uS2236NvW6AR'
@@ -603,8 +641,6 @@ export default async (v,p,c,obj,r) => {
     let views = {
             "0": () => {
                 if(relation['description']['ueu'][0] - relation['description']['ueu'][3] < 0){
-                    relation['description']['ueu'].push(new Date().toString())
-                    relation['description']['ueu'].push('first')
                     obj['this'].shadowRoot.querySelector('#total').insertAdjacentHTML('beforeend',`<p>${JSON.stringify(relation['description']['ueu'], null, 2)}</p>`)
                     obj['this'].shadowRoot.querySelector('div.fbwu').style.background ='#f476b673'
                     obj['this'].shadowRoot.querySelector('div.fswe').style.background ='#f476b673'
@@ -617,8 +653,6 @@ export default async (v,p,c,obj,r) => {
             },
             "1": () => {
                 if(relation['description']['eue'][0] - relation['description']['eue'][3] < 0){
-                    relation['description']['eue'].push(new Date().toString())
-                    relation['description']['eue'].push('second')
                     obj['this'].shadowRoot.querySelector('#total').insertAdjacentHTML('beforeend',`<p>${JSON.stringify(relation['description']['eue'], null, 2)}</p>`)
                     obj['this'].shadowRoot.querySelector('div.fbwe').style.background ='#f476b673'
                     obj['this'].shadowRoot.querySelector('div.fswu').style.background ='#f476b673'
@@ -631,8 +665,6 @@ export default async (v,p,c,obj,r) => {
             },
         "2": () => {
             if(relation['description']['wuw'][0] - relation['description']['wuw'][3] < 0){
-                relation['description']['wuw'].push(new Date().toString())
-                relation['description']['wuw'].push('fird')
                 obj['this'].shadowRoot.querySelector('#total').insertAdjacentHTML('beforeend',`<p>${JSON.stringify(relation['description']['wuw'], null, 2)}</p>`)
                 obj['this'].shadowRoot.querySelector('div.sbew').style.background ='#f476b673'
                 obj['this'].shadowRoot.querySelector('div.sseu').style.background ='#f476b673'
@@ -645,8 +677,6 @@ export default async (v,p,c,obj,r) => {
         },
         "3": () => {
             if(relation['description']['wew'][0] - relation['description']['wew'][3] < 0){
-                relation['description']['wew'].push(new Date().toString())
-                relation['description']['wew'].push('fourth')
                 obj['this'].shadowRoot.querySelector('#total').insertAdjacentHTML('beforeend',`<p>${JSON.stringify(relation['description']['wew'], null, 2)}</p>`)
                 obj['this'].shadowRoot.querySelector('div.sbuw').style.background ='#f476b673'
                 obj['this'].shadowRoot.querySelector('div.ssue').style.background ='#f476b673'
@@ -658,12 +688,6 @@ export default async (v,p,c,obj,r) => {
             }
         }
     };
-        sys.info(false, {
-            'sss0': sys['validation']['disabled']['views'][0],
-            'sss1': sys['validation']['disabled']['views'][1],
-            'sss2': sys['validation']['disabled']['views'][2],
-            'sss3': sys['validation']['disabled']['views'][3]
-        });
         (sys['validation']['disabled']['views'][0])
           ? (views[0]())
           : '';
@@ -688,7 +712,7 @@ export default async (v,p,c,obj,r) => {
         //          <p class="euroUsd">${JSON.stringify(relation, null, 2)}</p> `)
         // }
         // methods.buy(euroUsd)
-
+        sys.info(false)
         let update = async (priceAssetDecimals, amountAssetDecimals, description, wavesEuro,wavesUsd, euroUsd, obj ) => {
             for(let i=0; i < 10;i++){
                 if(wavesEuro['asks'][i] === undefined){
@@ -730,8 +754,6 @@ export default async (v,p,c,obj,r) => {
                     amountAssetDecimals = description['details'][`${euroUsd['pair']['amountAsset']}`]
                     obj['this'].shadowRoot.querySelector('#euroUsdBid').children[i].innerText = `${ waves.denormalize(euroUsd['bids'][i]['price'],priceAssetDecimals, amountAssetDecimals ) }`
                 }
-
-
                 obj['this'].shadowRoot.querySelector('#wavesEuroTimestamp').innerText = wavesEuro['timestamp']
                 obj['this'].shadowRoot.querySelector('#wavesEuroDelta').innerText = Date.now() - wavesEuro['timestamp']
                 obj['this'].shadowRoot.querySelector('#wavesUsdTimestamp').innerText = wavesUsd['timestamp']
