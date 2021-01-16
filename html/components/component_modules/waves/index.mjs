@@ -94,11 +94,11 @@ export default class Waves {
 
                 })
                 orders = await orders.json()
-                resolve(Object.assign(orders, {
+                resolve({
                     _scriptDir: import.meta.url,
                     status: true,
-                    message: 'waves.mjs'
-                }))
+                    message: orders
+                })
             } catch (e) {
                 resolve({
                     _scriptDir: import.meta.url,

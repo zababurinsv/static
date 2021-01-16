@@ -56,6 +56,9 @@ export default {
     T:['https://matcher-testnet.waves.exchange'],
     W:['https://matcher.waves.exchange']
   },
+  timestamp: () => {
+    return Date.now()
+  },
   WAVES: 10 ** 8,
   price: 10 ** 6,
   fee: 0.003,
@@ -99,6 +102,15 @@ export default {
           address: "3Mr6qVieFjKZfE8Z2hxLSS1HBZCFMdB4zmy",
           privateKey: "ABLc5hzaxKFW7iFGz23YBExDT7n6EFHWgncvEh3aF8LV",
           publicKey: "9kz1ogj2BmFYqjEKw7aVXJ7ckEEB27jfcN3Grzo8fxSz",
+        },{
+          chainId: "T",
+          isScripted: false,
+          label: "cooper",
+          seed: "tone leg hidden system tenant aware desk clap body robust debris puppy ecology scan runway thing second metal cousin ocean liberty banner garment rice feel",
+          wavesBalance: 0,
+          address: "3MxxT4EmVq5L54bNGVaNm8nRTAvTnDYVS4E",
+          privateKey: "BJDodJ9fYxsu1Zdtw4JzfRvsHki4De5W5XGKNuptXbyf",
+          publicKey: "HrMWJVXDkjpzkMA3LnzurfmXMtRTtip4uS2236NvW6AR",
         }]
       },
       W: {}

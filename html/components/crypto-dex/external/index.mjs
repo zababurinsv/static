@@ -3,7 +3,7 @@ import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.m
 import Waves from '/static/html/components/component_modules/waves/index.mjs'
 import task from '/static/html/components/component_modules/heap/index.mjs'
 import { store } from '/static/html/components/component_modules/storage/index.mjs'
-
+import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
 function count (obj) {
     let countDownDate = Date.now();
     let x = setInterval(function() {
@@ -33,7 +33,6 @@ function count (obj) {
 export default async (v,p,c,obj,r) => {
     let methods = (await import('/static/html/components/component_modules/dex/index.mjs'))['default']
     let relation = {}
-    let wallet = {}
     let waves = new Waves()
 
     let sys = {
@@ -285,7 +284,6 @@ export default async (v,p,c,obj,r) => {
         eth:'474jTeYx2r2Va35794tCScAXWJG9hU2HcgxzMowaZUnu',
         usdt:'34N9YcEETLWn93qYQ64EsP1x89tSruJU44RrEMSXXEPJ'
     }
-
     let description = {
         wavesEuro:{
             amountAsset: assets.eth,
@@ -351,7 +349,6 @@ export default async (v,p,c,obj,r) => {
     (sys.navigation.assets.status)
       ? setAssetsAmount(true)
       : setAssetsAmount(false)
-
 
     relation['decimals'] = description['details']
     relation['fee'] = {}
@@ -586,38 +583,39 @@ export default async (v,p,c,obj,r) => {
         relation['buy(usdWaves)'] = {}
         relation['sell(usdEuro)'] ={}
         relation['buy(wavesEuro)'] = {}
-
-        let seed = 'tone leg hidden system tenant aware desk clap body robust debris puppy ecology scan runway thing second metal cousin ocean liberty banner garment rice feel'
-        let publicKey = 'HrMWJVXDkjpzkMA3LnzurfmXMtRTtip4uS2236NvW6AR'
-        let timestamp = Date.now();
-        let signature = await task.set(true,'W','8',{
-            seed:seed,
-            publicKey:publicKey,
-            timestamp:timestamp
+//## get order
+        let timestamp = config['timestamp']()
+        let signature = await task.set(true,'T','8',{
+            seed: config['accountsStore']['accountGroups']['T']['clients'][3]['seed'],
+            publicKey: config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
+            timestamp: timestamp
         },'/assets/signature/{assetId}')
-
-        let getOrders = await  task.set(true, {
+        let orders = await  task.set(true, {
             timestamp:timestamp,
             signature:signature,
-            type:'W'
+            type:'T'
         },'7',{
             property:'получаем ордера',
-            publicKey:publicKey,
-            substrate:publicKey,
+            publicKey:config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
             relation:'T'
         },'/matcher/orderbook/{publicKey}')
-        if(getOrders.length > 2){
-            // let object = JSON.stringify({
-            //     sender: publicKey,
-            //     timestamp: timestamp,
-            //     signature: signature,
-            //     orderId: null
-            // })
-            // await task.set(true, 'T','7',object,'/matcher/orderbook/cancel')
+        sys.info(false, orders.message)
+        if(orders.message.length > 2) {
+            let object = JSON.stringify({
+                sender: config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
+                timestamp: timestamp,
+                signature: signature,
+                orderId: null
+            })
+            await task.set(true, 'T','7',object,'/matcher/orderbook/cancel')
             // await task.set(true, 'T','7',{},'/storage/delete/all')
         }else{
-            // console.assert(false, idbOrders)
-            // let order = await task.set(true,'T','8',relation['system']['items']['eue']['substrate'],'/matcher/orderbook/set')
+           let order = await task.set(
+              true,
+              'T',
+              '8',
+              sys.relation.transactions.eue.description,
+              '/matcher/orderbook/set')
             // await task.set(true, 'T','7',order,'/storage/set/item')
         }
     let views = {

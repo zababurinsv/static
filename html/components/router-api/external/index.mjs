@@ -1,9 +1,9 @@
 import Waves from '/static/html/components/component_modules/waves/index.mjs'
 import task from '/static/html/components/component_modules/heap/index.mjs'
 import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
+let waves = new Waves
 
 export default (()=>{
-    let waves = new Waves()
   task.get(true, 'await', '5', '','/matcher/orderbook/{publicKey}',async (event)=>{
       let object = event;
       let orders = await waves.getOrders(true, {
@@ -11,7 +11,11 @@ export default (()=>{
         signature:object.property.signature,
         type:object.property.type
       }, '3', object.substrate.publicKey,`${object.substrate.relation}`)
-      object.callback(orders)
+      object.callback({
+        status: orders.status,
+        message: orders.message,
+        _scriptDir: import.meta.url
+      })
     })
 
     task.get(true, 'await', '5', '','/matcher/orderbook',async (event)=>{
@@ -58,7 +62,7 @@ export default (()=>{
       item['id'] = ''
       item['orders'] = {}
       item['keys'] = {}
-
+      console.assert(false,object )
       let id = []
       for(let it of object['substrate']){
         let order = await waves.order(true, object['property'] , '3', it, object['relation'])
