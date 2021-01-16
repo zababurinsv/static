@@ -683,7 +683,7 @@ export default async (v,p,c,obj,r) => {
           ? (views[3]())
           : '';
 
-        sys.info(false)
+        // sys.info(false)
         let update = async (priceAssetDecimals, amountAssetDecimals, description, wavesEuro,wavesUsd, euroUsd, obj ) => {
             for(let i=0; i < 10;i++) {
                 if(wavesEuro['asks'][i] !== undefined) {
