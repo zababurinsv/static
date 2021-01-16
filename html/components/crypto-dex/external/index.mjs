@@ -606,8 +606,6 @@ export default async (v,p,c,obj,r) => {
             substrate:publicKey,
             relation:'T'
         },'/matcher/orderbook/{publicKey}')
-        // let idbOrders = (await store).set(true, 'T','7','monopoly','/storage/get/all')
-        // console.assert(false,await idbOrders)
         if(getOrders.length > 2){
             // let object = JSON.stringify({
             //     sender: publicKey,
@@ -685,55 +683,35 @@ export default async (v,p,c,obj,r) => {
           ? (views[3]())
           : '';
 
-        // console.assert(false, relation)
-        // console.log('~~~~>>', relation)
-        // relation.timestamp =  new Date();
-        // if((relation['buy(usdEuro)'] - relation['u']) > 0){
-
-        //  }
-        // if((relation['buy(euroUsd)'] - relation['e']) > 0){
-        //     obj['this'].shadowRoot.querySelector('#total').insertAdjacentHTML('beforeend',`
-        //          <p class="euroUsd">${JSON.stringify(relation, null, 2)}</p> `)
-        // }
-        // methods.buy(euroUsd)
         sys.info(false)
         let update = async (priceAssetDecimals, amountAssetDecimals, description, wavesEuro,wavesUsd, euroUsd, obj ) => {
-            for(let i=0; i < 10;i++){
-                if(wavesEuro['asks'][i] === undefined){
-                }else{
+            for(let i=0; i < 10;i++) {
+                if(wavesEuro['asks'][i] !== undefined) {
                     priceAssetDecimals =  description['details'][`${wavesEuro['pair']['priceAsset']}`]
                     amountAssetDecimals = description['details'][`${wavesEuro['pair']['amountAsset']}`]
                     obj['this'].shadowRoot.querySelector('#wavesEuroAsk').children[i].innerText = `${ waves.denormalize(wavesEuro['asks'][i]['price'],priceAssetDecimals, amountAssetDecimals ) }`
                 }
-                if(wavesEuro['bids'][i] === undefined){
-                }else{
+                if(wavesEuro['bids'][i] !== undefined) {
                     priceAssetDecimals =  description['details'][`${wavesEuro['pair']['priceAsset']}`]
                     amountAssetDecimals = description['details'][`${wavesEuro['pair']['amountAsset']}`]
                     obj['this'].shadowRoot.querySelector('#wavesEuroBid').children[i].innerText = `${ waves.denormalize(wavesEuro['bids'][i]['price'],priceAssetDecimals, amountAssetDecimals ) }`
                 }
-
-                if(wavesUsd['asks'][i] === undefined){
-                }else{
+                if(wavesUsd['asks'][i] !== undefined) {
                     priceAssetDecimals =  description['details'][`${wavesUsd['pair']['priceAsset']}`]
                     amountAssetDecimals = description['details'][`${wavesUsd['pair']['amountAsset']}`]
                     obj['this'].shadowRoot.querySelector('#wavesUsdAsk').children[i].innerText = `${ waves.denormalize(wavesUsd['asks'][i]['price'],priceAssetDecimals,amountAssetDecimals ) }`
                 }
-                if(wavesUsd['bids'][i] === undefined){
-                }else{
+                if(wavesUsd['bids'][i] !== undefined) {
                     priceAssetDecimals =  description['details'][`${wavesUsd['pair']['priceAsset']}`]
                     amountAssetDecimals = description['details'][`${wavesUsd['pair']['amountAsset']}`]
                     obj['this'].shadowRoot.querySelector('#wavesUsdBid').children[i].innerText =  `${ waves.denormalize(wavesUsd['bids'][i]['price'],priceAssetDecimals,amountAssetDecimals ) }`
                 }
-
-                if(euroUsd['asks'][i] === undefined){
-                }else{
+                if(euroUsd['asks'][i] !== undefined) {
                     priceAssetDecimals =  description['details'][`${euroUsd['pair']['priceAsset']}`]
                     amountAssetDecimals = description['details'][`${euroUsd['pair']['amountAsset']}`]
                     obj['this'].shadowRoot.querySelector('#euroUsdAsk').children[i].innerText =  `${ waves.denormalize(euroUsd['asks'][i]['price'],priceAssetDecimals, amountAssetDecimals) }`
                 }
-                if(euroUsd['bids'][i] === undefined){
-
-                }else{
+                if(euroUsd['bids'][i] !== undefined) {
                     priceAssetDecimals =  description['details'][`${euroUsd['pair']['priceAsset']}`]
                     amountAssetDecimals = description['details'][`${euroUsd['pair']['amountAsset']}`]
                     obj['this'].shadowRoot.querySelector('#euroUsdBid').children[i].innerText = `${ waves.denormalize(euroUsd['bids'][i]['price'],priceAssetDecimals, amountAssetDecimals ) }`
