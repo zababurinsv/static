@@ -39,7 +39,7 @@ export default async (v,p,c,obj,r) => {
     let sys = {
         _scriptDir: import.meta.url,
         validation: {
-            onhashchange: (...args) => { return ("onhashchange" in window)  },
+            "onhashchange": (...args) => { return ("onhashchange" in window)  },
             "disabled": {
                 "views": {
                     "0": true,
@@ -50,8 +50,87 @@ export default async (v,p,c,obj,r) => {
             },
             "input":{
                 "amount": true
+            },
+            "output": {
+                "amount": true
             }
         },
+        counts: {
+            "main": -1
+        },
+        threshold: {
+            "main": 0,
+            "amount": 0.01
+        },
+        navigation: {
+            "assets": {
+                "status": true,
+                "u": 10,
+                "w": 1,
+                "e": 10
+            }
+        },
+        info: (v = true, item = undefined) => {
+            if(typeof v === 'boolean') {
+                if (item === undefined) {
+                    (!v)
+                      ? console.log('system', sys)
+                      : console.assert(false, sys)
+                } else {
+                    sys.console = item;
+                    (!v)
+                      ? console.log('system', sys)
+                      : console.assert(false, sys)
+                }
+            } else {
+                console.assert(false, 'ведите правильное значение м должно быть boolean')
+            }
+        },
+        warn: {
+            "s/b": 'нет доступных пар'
+        }
+    }
+
+    function empty(obj,type){
+        switch (type) {
+            case 'ueu':
+                obj['this'].shadowRoot.querySelector('#fbwu').innerHTML = ``
+                obj['this'].shadowRoot.querySelector('#fswe').innerHTML = ``
+                obj['this'].shadowRoot.querySelector('#fbue').innerHTML = ``
+                obj['this'].shadowRoot.querySelector('#fbwu').innerHTML = `${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#fswe').innerHTML = `${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#fbue').innerHTML = `${sys['warn']['s/b']}`
+                break
+            case 'eue':
+                obj['this'].shadowRoot.querySelector('#fswu').innerHTML = ``
+                obj['this'].shadowRoot.querySelector('#fbwe').innerHTML = ``
+                obj['this'].shadowRoot.querySelector('#fbeu').innerHTML = ``
+                obj['this'].shadowRoot.querySelector('#fswu').innerHTML = `${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#fbwe').innerHTML = `${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#fbeu').innerHTML = `${sys['warn']['s/b']}`
+                break
+            case 'wuw':
+                obj['this'].shadowRoot.querySelector('#sbew').innerHTML = ``
+                obj['this'].shadowRoot.querySelector('#sseu').innerHTML = ``
+                obj['this'].shadowRoot.querySelector('#sbwu').innerHTML = ``
+                obj['this'].shadowRoot.querySelector('#sbew').innerHTML = `${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#sseu').innerHTML = `${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#sbwu').innerHTML = `${sys['warn']['s/b']}`
+                break
+            case 'wew':
+                obj['this'].shadowRoot.querySelector('#sbuw').innerHTML = ``
+                obj['this'].shadowRoot.querySelector('#ssue').innerHTML = ``
+                obj['this'].shadowRoot.querySelector('#sbwe').innerHTML = ``
+                obj['this'].shadowRoot.querySelector('#sbuw').innerHTML = `${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#ssue').innerHTML = `${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#sbwe').innerHTML = `${sys['warn']['s/b']}`
+                break
+            default:
+                console.assert(false, 'неизвестный тип', type, obj)
+                break
+
+        }
+
     }
     document.addEventListener('iframe',async (event)=>{
         if(event.detail === 'http://localhost:4999'){
@@ -129,7 +208,6 @@ export default async (v,p,c,obj,r) => {
             clearTimeout(timer);
         }, 250);
     },{passive:true})
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     obj['this'].shadowRoot.querySelector('#sbew').addEventListener('click',async (event)=>{
         event.currentTarget.style.background = '#faf671'
         let value =  event.currentTarget.innerHTML
@@ -256,19 +334,30 @@ export default async (v,p,c,obj,r) => {
     let input_id_left = obj['this'].shadowRoot.querySelector('#left').value
     let input_id_center = obj['this'].shadowRoot.querySelector('#center').value
     let input_id_right = obj['this'].shadowRoot.querySelector('#right').value
-    relation['w'] = input_id_right
-    relation['u'] = input_id_center
-    relation['e'] = input_id_left / 100
-    // relation['w'] =  10
-    // relation['u'] =  10
-    // relation['e'] = 0.1
+    function setAssetsAmount(state) {
+        if(state) {
+            relation['w'] = input_id_right
+            relation['u'] = input_id_center
+            relation['e'] = input_id_left / 100
+        } else {
+            relation['w'] = sys.navigation.assets.w
+            relation['u'] = sys.navigation.assets.u
+            relation['e'] = sys.navigation.assets.e / 100
+        }
+    }
+    (sys.navigation.assets.status)
+      ? setAssetsAmount(true)
+      : setAssetsAmount(false)
+
+
     relation['decimals'] = description['details']
     relation['fee'] = {}
     relation['description'] = []
-
+    sys.relation = relation
     let priceAssetDecimals =  {}
     let amountAssetDecimals = {}
     let timerId = setTimeout(async  function tick() {
+        sys['counts']['main'] ++
         relation['eue'] = undefined
         relation['ueu'] = undefined
         relation['wew'] = undefined
@@ -300,90 +389,181 @@ export default async (v,p,c,obj,r) => {
 
         relation['fee']['euro'] = ( 1/methods.denormalize(wavesEuro.asks[0]['price'],priceAssetDecimalsEuro,  amountAssetDecimalsEuro))*0.003
         relation['fee']['usd'] = ( 1/methods.denormalize(wavesUsd.asks[0]['price'],priceAssetDecimalsUsd,  amountAssetDecimalsUsd))*0.003
-
-        relation = await methods.buy(wavesUsd, relation['u'], relation, 'wavesUsd');
-        (sys['validation']['disabled']['views'][0])
-          ? obj['this'].shadowRoot.querySelector('#fbwu').innerHTML = `${description['name'][`${wavesUsd.pair.priceAsset}`]}=>${description['name'][`${wavesUsd.pair.amountAsset}`]}[(${relation['u']}*)${relation['buy(wavesUsd)']}]`
-          : obj['this'].shadowRoot.querySelector('#fbwu').innerHTML = 'disabled #fbwu'
-        relation = await methods.sell(wavesEuro, relation['buy(wavesUsd)'], relation, 'wavesEuro');
-        (sys['validation']['disabled']['views'][0])
-          ? obj['this'].shadowRoot.querySelector('#fswe').innerHTML = `${description['name'][`${wavesEuro.pair.priceAsset}`]}=>${description['name'][`${wavesEuro.pair.amountAsset}`]}[(${relation['buy(wavesUsd)']}*)${relation['sell(wavesEuro)']}]`
-          : obj['this'].shadowRoot.querySelector('#fswe').innerHTML = 'disabled #fswe'
-        relation = await methods.buy(euroUsd, relation['sell(wavesEuro)'], relation, 'usdEuro');
-        (sys['validation']['disabled']['views'][0])
-          ? obj['this'].shadowRoot.querySelector('#fbue').innerHTML = `${description['name'][`${euroUsd.pair.amountAsset}`]}=>${description['name'][`${euroUsd.pair.priceAsset}`]}[(${relation['sell(wavesEuro)']}*)${relation['buy(usdEuro)']}]`
-          : obj['this'].shadowRoot.querySelector('#fbue').innerHTML = 'disabled #fbue'
+//## item 1
         relation['description']['ueu'] = []
         relation['description']['ueu'].push(relation['u'])
-        relation['description']['ueu'].push(relation['buy(wavesUsd)'])
-        relation['description']['ueu'].push(relation['sell(wavesEuro)'])
-        relation['description']['ueu'].push(relation['buy(usdEuro)'])
+        relation = await methods.buy(wavesUsd, relation['u'], relation, 'wavesUsd');
+        ((relation['buy(wavesUsd)'] >= sys['threshold']['amount']))
+          ? (relation['description']['ueu'].push(relation['buy(wavesUsd)']),
+            sys['validation']['disabled']['views'][0] = true,
+            obj['this'].shadowRoot.querySelector('#fbwu').innerHTML = `${description['name'][`${wavesUsd.pair.priceAsset}`]}=>${description['name'][`${wavesUsd.pair.amountAsset}`]}[(${relation['u']}*)${relation['buy(wavesUsd)']}]`)
+          : (delete relation['description']['ueu'],
+            sys['validation']['disabled']['views'][0] = false,
+            empty(obj, 'ueu'))
+        if(relation['description']['ueu'] !== undefined) {
+          relation = await methods.sell(wavesEuro, relation['buy(wavesUsd)'], relation, 'wavesEuro');
+          ((relation['sell(wavesEuro)'] >= sys['threshold']['amount']))
+            ? (relation['description']['ueu'].push(relation['sell(wavesEuro)']),
+              sys['validation']['disabled']['views'][0] = true,
+              obj['this'].shadowRoot.querySelector('#fswe').innerHTML = `${description['name'][`${wavesEuro.pair.priceAsset}`]}=>${description['name'][`${wavesEuro.pair.amountAsset}`]}[(${relation['buy(wavesUsd)']}*)${relation['sell(wavesEuro)']}]`)
+            : (delete relation['description']['ueu'],
+              sys['validation']['disabled']['views'][0] = false,
+              empty(obj, 'ueu'))
+        }
+        if(relation['description']['ueu'] !== undefined) {
+            relation = await methods.buy(euroUsd, relation['sell(wavesEuro)'], relation, 'usdEuro');
+            ((relation['buy(usdEuro)'] >= sys['threshold']['amount']))
+              ? (relation['description']['ueu'].push(relation['buy(usdEuro)']),
+                sys['validation']['disabled']['views'][0] = true,
+                obj['this'].shadowRoot.querySelector('#fbue').innerHTML = `${description['name'][`${euroUsd.pair.amountAsset}`]}=>${description['name'][`${euroUsd.pair.priceAsset}`]}[(${relation['sell(wavesEuro)']}*)${relation['buy(usdEuro)']}]`)
+              : (delete relation['description']['ueu'],
+                sys['validation']['disabled']['views'][0] = false,
+                empty(obj, 'ueu'))
+        }
         relation['buy(wavesUsd)'] = {}
         relation['sell(wavesEuro)'] ={}
         relation['buy(usdEuro)'] = {}
-        relation = await methods.buy(wavesEuro, relation['e'], relation, 'wavesEuro');
-        (sys['validation']['disabled']['views'][1])
-          ? obj['this'].shadowRoot.querySelector('#fbwe').innerHTML = `${description['name'][`${wavesEuro.pair.amountAsset}`]}=>${description['name'][`${wavesEuro.pair.priceAsset}`]}[(${relation['e']}*)${relation['buy(wavesEuro)']}]`
-          : obj['this'].shadowRoot.querySelector('#fbwe').innerHTML = 'disabled #fbwe'
-        relation = await methods.sell(wavesUsd,relation['buy(wavesEuro)'], relation, 'wavesUsd');
-        (sys['validation']['disabled']['views'][1])
-          ? obj['this'].shadowRoot.querySelector('#fswu').innerHTML = `${description['name'][`${wavesUsd.pair.amountAsset}`]}=>${description['name'][`${wavesUsd.pair.priceAsset}`]}[(${relation['buy(wavesEuro)']}*)${relation['sell(wavesUsd)']}]`
-          : obj['this'].shadowRoot.querySelector('#fswu').innerHTML = 'disabled #fswu'
-        relation = await methods.buy(euroUsd,relation['sell(wavesUsd)'], relation, 'euroUsd');
-        (sys['validation']['disabled']['views'][1])
-          ? obj['this'].shadowRoot.querySelector('#fbeu').innerHTML = `${description['name'][`${euroUsd.pair.priceAsset}`]}=>${description['name'][`${euroUsd.pair.amountAsset}`]}[(${relation['sell(wavesUsd)']}*)${relation['buy(euroUsd)']}]`
-          : obj['this'].shadowRoot.querySelector('#fbeu').innerHTML = 'disabled #fbeu'
+//## item 2
         relation['description']['eue'] = []
         relation['description']['eue'].push(relation['e'])
-        relation['description']['eue'].push(relation['buy(wavesEuro)'])
-        relation['description']['eue'].push(relation['sell(wavesUsd)'])
-        relation['description']['eue'].push(relation['buy(euroUsd)'])
+        relation = await methods.buy(wavesEuro, relation['e'], relation, 'wavesEuro');
+        ((relation['buy(wavesEuro)'] >= sys['threshold']['amount']))
+          ? (relation['description']['eue'].push(relation['buy(wavesEuro)']),
+            sys['validation']['disabled']['views'][1] = true,
+            obj['this'].shadowRoot.querySelector('#fbwe').innerHTML = `${description['name'][`${wavesEuro.pair.amountAsset}`]}=>${description['name'][`${wavesEuro.pair.priceAsset}`]}[(${relation['e']}*)${relation['buy(wavesEuro)']}]`)
+          : (delete relation['description']['eue'],
+            sys['validation']['disabled']['views'][1] = false,
+            empty(obj,'eue'))
+
+        if(relation['description']['eue'] !== undefined) {
+            relation = await methods.sell(wavesUsd,relation['buy(wavesEuro)'], relation, 'wavesUsd');
+            ((relation['sell(wavesUsd)'] >= sys['threshold']['amount']))
+              ? (relation['description']['eue'].push(relation['sell(wavesUsd)']),
+                sys['validation']['disabled']['views'][1] = true,
+                obj['this'].shadowRoot.querySelector('#fswu').innerHTML = `${description['name'][`${wavesUsd.pair.amountAsset}`]}=>${description['name'][`${wavesUsd.pair.priceAsset}`]}[(${relation['buy(wavesEuro)']}*)${relation['sell(wavesUsd)']}]`)
+              : (delete relation['description']['eue'],
+                sys['validation']['disabled']['views'][1] = false,
+                empty(obj,'eue'))
+        }
+        if(relation['description']['eue'] !== undefined) {
+            relation = await methods.buy(euroUsd,relation['sell(wavesUsd)'], relation, 'euroUsd');
+            ((relation['buy(euroUsd)'] >= sys['threshold']['amount']))
+              ? (relation['description']['eue'].push(relation['buy(euroUsd)']),
+                sys['validation']['disabled']['views'][1] = true,
+                obj['this'].shadowRoot.querySelector('#fbeu').innerHTML = `${description['name'][`${euroUsd.pair.priceAsset}`]}=>${description['name'][`${euroUsd.pair.amountAsset}`]}[(${relation['sell(wavesUsd)']}*)${relation['buy(euroUsd)']}]`)
+              : (delete relation['description']['eue'],
+                sys['validation']['disabled']['views'][1] = false,
+                empty(obj, 'eue'))
+        }
         relation['buy(wavesEuro)'] = {}
         relation['sell(wavesUsd)'] ={}
         relation['buy(euroUsd)'] = {}
-        relation = await methods.buy(wavesEuro, relation['w'], relation, 'euroWaves');
-            (sys['validation']['disabled']['views'][2])
-            ? obj['this'].shadowRoot.querySelector('#sbew').innerHTML = `${description['name'][`${wavesEuro.pair.priceAsset}`]}=>${description['name'][`${wavesEuro.pair.amountAsset}`]}[(${relation['w']}*)${relation['buy(euroWaves)']}]`
-            : obj['this'].shadowRoot.querySelector('#sbew').innerHTML = 'disabled #sbew'
-        relation = await methods.sell(euroUsd,relation['buy(euroWaves)'], relation, 'euroUsd');
-            (sys['validation']['disabled']['views'][2])
-            ? obj['this'].shadowRoot.querySelector('#sseu').innerHTML = `${description['name'][`${euroUsd.pair.amountAsset}`]}=>${description['name'][`${euroUsd.pair.priceAsset}`]}[(${relation['buy(euroWaves)']}*)${relation['sell(euroUsd)']}]`
-            : obj['this'].shadowRoot.querySelector('#sseu').innerHTML = 'disabled #sseu'
-        relation = await methods.buy(wavesUsd,relation['sell(euroUsd)'], relation, 'wavesUsd');
-            (sys['validation']['disabled']['views'][2])
-            ? obj['this'].shadowRoot.querySelector('#sbwu').innerHTML = `${description['name'][`${wavesUsd.pair.priceAsset}`]}=>${description['name'][`${wavesUsd.pair.amountAsset}`]}[(${relation['sell(euroUsd)']}*)${relation['buy(wavesUsd)']}]`
-            : obj['this'].shadowRoot.querySelector('#sbwu').innerHTML = 'disabled #sbwu'
 
+//## item 3
         relation['description']['wuw'] = []
         relation['description']['wuw'].push(relation['w'])
-        relation['description']['wuw'].push(relation['buy(euroWaves)'])
-        relation['description']['wuw'].push(relation['sell(euroUsd)'])
-        relation['description']['wuw'].push(relation['buy(wavesUsd)'])
+        relation = await methods.buy(wavesEuro, relation['w'], relation, 'euroWaves');
+            ((relation['buy(euroWaves)'] >= sys['threshold']['amount']))
+            ? (relation['description']['wuw'].push(relation['buy(euroWaves)']),
+              sys['validation']['disabled']['views'][2] = true,
+              obj['this'].shadowRoot.querySelector('#sbew').innerHTML = `${description['name'][`${wavesEuro.pair.priceAsset}`]}=>${description['name'][`${wavesEuro.pair.amountAsset}`]}[(${relation['w']}*)${relation['buy(euroWaves)']}]`)
+            : (delete relation['description']['wuw'], sys['validation']['disabled']['views'][2] = false, empty(obj,'wuw'))
+        if(relation['description']['wuw'] !== undefined) {
+            relation = await methods.sell(euroUsd,relation['buy(euroWaves)'], relation, 'euroUsd');
+            ((relation['sell(euroUsd)'] >= sys['threshold']['amount']))
+              ? (relation['description']['wuw'].push(relation['sell(euroUsd)']),
+                sys['validation']['disabled']['views'][2] = true,
+                obj['this'].shadowRoot.querySelector('#sseu').innerHTML = `${description['name'][`${euroUsd.pair.amountAsset}`]}=>${description['name'][`${euroUsd.pair.priceAsset}`]}[(${relation['buy(euroWaves)']}*)${relation['sell(euroUsd)']}]`)
+              : (delete relation['description']['wuw'], sys['validation']['disabled']['views'][2] = false, empty(obj,'wuw'))
+        }
+        if(relation['description']['wuw'] !== undefined) {
+            relation = await methods.buy(wavesUsd,relation['sell(euroUsd)'], relation, 'wavesUsd');
+            ((relation['buy(wavesUsd)'] >= sys['threshold']['amount']))
+              ? (relation['description']['wuw'].push(relation['buy(wavesUsd)']),
+                sys['validation']['disabled']['views'][2] = true,
+                obj['this'].shadowRoot.querySelector('#sbwu').innerHTML = `${description['name'][`${wavesUsd.pair.priceAsset}`]}=>${description['name'][`${wavesUsd.pair.amountAsset}`]}[(${relation['sell(euroUsd)']}*)${relation['buy(wavesUsd)']}]`)
+              : (delete relation['description']['wuw'], sys['validation']['disabled']['views'][2] = false, empty(obj,'wuw'))
+        }
+
         relation['buy(euroWaves)'] = {}
         relation['sell(euroUsd)'] ={}
         relation['buy(wavesUsd)'] = {}
-
-        relation = await methods.buy(wavesUsd, relation['w'], relation, 'usdWaves');
-        (sys['validation']['disabled']['views'][3])
-          ? obj['this'].shadowRoot.querySelector('#sbuw').innerHTML = `${description['name'][`${wavesUsd.pair.amountAsset}`]}=>${description['name'][`${wavesUsd.pair.priceAsset}`]}[(${relation['w']}*)${relation['buy(usdWaves)']}]`
-          : obj['this'].shadowRoot.querySelector('#sbuw').innerHTML = 'disabled #sbuw'
-        relation = await methods.sell(euroUsd,relation['buy(usdWaves)'], relation, 'usdEuro');
-        (sys['validation']['disabled']['views'][3])
-          ? obj['this'].shadowRoot.querySelector('#ssue').innerHTML = `${description['name'][`${euroUsd.pair.priceAsset}`]}=>${description['name'][`${euroUsd.pair.amountAsset}`]}[(${relation['buy(usdWaves)']}*)${relation['sell(usdEuro)']}]`
-          : obj['this'].shadowRoot.querySelector('#ssue').innerHTML = 'disabled #sseu'
-        relation = await methods.buy(wavesEuro,relation['sell(usdEuro)'], relation, 'wavesEuro');
-        (sys['validation']['disabled']['views'][3])
-          ? obj['this'].shadowRoot.querySelector('#sbwe').innerHTML = `${description['name'][`${wavesEuro.pair.amountAsset}`]}=>${description['name'][`${wavesEuro.pair.priceAsset}`]}[(${relation['sell(usdEuro)']}*)${relation['buy(wavesEuro)']}]`
-          : obj['this'].shadowRoot.querySelector('#sbwe').innerHTML = 'disabled #sseu'
-
+        // sys.info()
+//## item 4
         relation['description']['wew'] = []
         relation['description']['wew'].push(relation['w'])
-        relation['description']['wew'].push(relation['buy(usdWaves)'])
-        relation['description']['wew'].push(relation['sell(usdEuro)'])
-        relation['description']['wew'].push(relation['buy(wavesEuro)'])
+        relation = await methods.buy(wavesUsd, relation['w'], relation, 'usdWaves');
+        ((relation['buy(usdWaves)'] >= sys['threshold']['amount']))
+          ? (relation['description']['wew'].push(relation['buy(usdWaves)']),
+            sys['validation']['disabled']['views'][3] = true,
+            obj['this'].shadowRoot.querySelector('#sbuw').innerHTML = `${description['name'][`${wavesUsd.pair.amountAsset}`]}=>${description['name'][`${wavesUsd.pair.priceAsset}`]}[(${relation['w']}*)${relation['buy(usdWaves)']}]`)
+          : (delete relation['description']['wew'],
+            sys['validation']['disabled']['views'][3] = false,
+            empty(obj, 'wew'));
+
+        if(relation['description']['wew'] !== undefined) {
+            relation = await methods.sell(euroUsd,relation['buy(usdWaves)'], relation, 'usdEuro');
+            ((relation['sell(usdEuro)'] >= sys['threshold']['amount']))
+              ? (relation['description']['wew'].push(relation['sell(usdEuro)']),
+                sys['validation']['disabled']['views'][3] = true,
+                obj['this'].shadowRoot.querySelector('#ssue').innerHTML = `${description['name'][`${euroUsd.pair.priceAsset}`]}=>${description['name'][`${euroUsd.pair.amountAsset}`]}[(${relation['buy(usdWaves)']}*)${relation['sell(usdEuro)']}]`)
+              : (delete relation['description']['wew'],
+                sys['validation']['disabled']['views'][3] = false,
+                empty(obj, 'wew'));
+        }
+        if(relation['description']['wew'] !== undefined) {
+            relation = await methods.buy(wavesEuro,relation['sell(usdEuro)'], relation, 'wavesEuro');
+            ((relation['buy(wavesEuro)'] >= sys['threshold']['amount']))
+              ? (relation['description']['wew'].push(relation['buy(wavesEuro)']),
+                sys['validation']['disabled']['views'][3] = true,
+                obj['this'].shadowRoot.querySelector('#sbwe').innerHTML = `${description['name'][`${wavesEuro.pair.amountAsset}`]}=>${description['name'][`${wavesEuro.pair.priceAsset}`]}[(${relation['sell(usdEuro)']}*)${relation['buy(wavesEuro)']}]`)
+              : (delete relation['description']['wew'],
+                sys['validation']['disabled']['views'][3] = false,
+                empty(obj, 'wew'));
+        }
+        sys.info(false)
         relation['buy(usdWaves)'] = {}
         relation['sell(usdEuro)'] ={}
         relation['buy(wavesEuro)'] = {}
+
+        // if(sys['counts']['main'] === sys['threshold']['main']) {
+        // }
+
+            // let eue = true
+            // let ueu = true
+            // let wew = true
+            // let wuw = true
+            //   for(let i = 0; i < 4; i++) {
+            //       if(relation['description']['eue'] !== undefined) {
+            //           eue = (relation['description']['eue'][i] >= 0.01)
+            //       }
+            //       if(relation['description']['ueu'] !== undefined) {
+            //           ueu = (relation['description']['ueu'][i] >= 0.01)
+            //       }
+            //       if(relation['description']['wew'] !== undefined) {
+            //           wew = (relation['description']['wew'][i] >= 0.01)
+            //       }
+            //       if(relation['description']['wuw'] !== undefined) {
+            //           wuw = (relation['description']['wuw'][i] >= 0.01)
+            //       }
+            //       if(!eue) {
+            //           sys['validation']['disabled']['views'][1] = false
+            //           delete relation['description']['eue']
+            //       }
+            //       if(!ueu) {
+            //           sys['validation']['disabled']['views'][0] = false
+            //           delete relation['description']['ueu']
+            //       }
+            //       if(!wew) {
+            //           sys['validation']['disabled']['views'][2] = false
+            //           delete relation['description']['wew']
+            //       }
+            //       if(!wuw) {
+            //           sys['validation']['disabled']['views'][3] = false
+            //           delete relation['description']['wuw']
+            //       }
+            //   }
+
 
         let seed = 'tone leg hidden system tenant aware desk clap body robust debris puppy ecology scan runway thing second metal cousin ocean liberty banner garment rice feel'
         let publicKey = 'HrMWJVXDkjpzkMA3LnzurfmXMtRTtip4uS2236NvW6AR'
@@ -478,7 +658,12 @@ export default async (v,p,c,obj,r) => {
             }
         }
     };
-
+        sys.info(false, {
+            'sss0': sys['validation']['disabled']['views'][0],
+            'sss1': sys['validation']['disabled']['views'][1],
+            'sss2': sys['validation']['disabled']['views'][2],
+            'sss3': sys['validation']['disabled']['views'][3]
+        });
         (sys['validation']['disabled']['views'][0])
           ? (views[0]())
           : '';
