@@ -32,7 +32,8 @@ export default (()=>{
     })
 
     task.get(true, 'await', '5', '','/matcher/orderbook/cancel', async (object)=>{
-      let orders = await waves.cancelAllOrders(true, 'test', '3', object.substrate, object.property)
+      // console.assert(false, object.property)
+      let orders = await waves.cancelAllOrders(true, object.property, '3', object.substrate, object.property)
       object.callback(orders)
     })
 
@@ -59,11 +60,11 @@ export default (()=>{
 
     task.get(true, 'await', '5', '','/matcher/orderbook/set',async (object)=>{
       let item = {}
+      let id = []
       item['id'] = ''
       item['orders'] = {}
       item['keys'] = {}
       console.assert(false,object )
-      let id = []
       for(let it of object['substrate']){
         let order = await waves.order(true, object['property'] , '3', it, object['relation'])
         if(order['_'] === 'error'){

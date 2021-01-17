@@ -1,8 +1,8 @@
 import colorlog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
-import queue from '/static/html/components/component_modules/queue/queue.mjs'
 import waves from '/static/html/components/component_modules/bundle/waves/waves.index.mjs'
 import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
 import task from '/static/html/components/component_modules/heap/index.mjs'
+import Axios from '/static/html/components/component_modules/axios/axios.mjs'
 let system = {
     net: 'T',
     wvs: 10 ** 8
@@ -111,22 +111,32 @@ export default class Waves {
     cancelAllOrders(view = true,property='',color = 'black', substrate={_:'order'},relation='order'  ){
         return new Promise(async (resolve, reject)=>{
             let order = {}
-            if(relation === 'T'){
-                let request = {
-                    method: 'POST',
-                    body:substrate,
-                    headers: {
-                        'Content-Type': 'application/json;charset=utf-8'
-                    },
-                }
-                order = await fetch(`${config[`${system.net}`][0]}/matcher/orderbook/cancel`,request)
-                resolve(await order.json())
+            if(property === 'T'){
+                // let request = {
+                //     method: 'POST',
+                //     url: `${config[`${property}`][0]}/matcher/orderbook/cancel`
+                //     data:substrate,
+                //     headers: {
+                //         'Content-Type': 'application/json;charset=utf-8'
+                //     },
+                // }
+                console.assert(false, substrate)
 
-            }else if(relation === 'W'){
+                // order = await axios.post('/user', request)
+                //   .then(function (response) {
+                //       console.log(response);
+                //   })
+                //   .catch(function (error) {
+                //       console.log(error);
+                //   });
+                // order = await fetch(request)
+                // resolve(await order.json())
+
+            } else if(property === 'W') {
 
 
-            }else{
-                console.warn( 'укажите тип сети t - тестнет w - майннет')
+            } else {
+                console.warn( 'укажите тип сети T - тестнет W - майннет')
                 resolve(false)
             }
 

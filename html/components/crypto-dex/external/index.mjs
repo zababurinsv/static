@@ -2,28 +2,21 @@ import iframe from '/static/html/components/component_modules/iframe/iframe.mjs'
 import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 import Waves from '/static/html/components/component_modules/waves/index.mjs'
 import task from '/static/html/components/component_modules/heap/index.mjs'
-import { store } from '/static/html/components/component_modules/storage/index.mjs'
 import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
 function count (obj) {
     let countDownDate = Date.now();
     let x = setInterval(function() {
-
-        // Get today's date and time
         let now = Date.now();
-        // Find the distance between now and the count down date
         let distance = now - countDownDate;
 
-        // Time calculations for days, hours, minutes and seconds
         let days = Math.floor(distance / (1000 * 60 * 60 * 24));
         let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        // Display the result in the element with id="demo"
         obj.this.shadowRoot.querySelector('.count-main').innerHTML = days + "d " + hours + "h "
           + minutes + "m " + seconds + "s ";
 
-        // If the count down is finished, write some text
         if (distance < 0) {
             clearInterval(x);
             obj.this.shadowRoot.querySelector('.count-main').innerHTML = "EXPIRED";
@@ -52,6 +45,12 @@ export default async (v,p,c,obj,r) => {
             },
             "output": {
                 "amount": true
+            },
+            "delete": {
+                "order": true
+            },
+            "set": {
+                "order": true
             }
         },
         counts: {
@@ -130,9 +129,7 @@ export default async (v,p,c,obj,r) => {
             default:
                 console.assert(false, 'неизвестный тип', type, obj)
                 break
-
         }
-
     }
     document.addEventListener('iframe',async (event)=>{
         if(event.detail === 'http://localhost:4999'){
@@ -270,6 +267,7 @@ export default async (v,p,c,obj,r) => {
             clearTimeout(timer);
         }, 250);
     },{passive:true})
+
     obj['this'].shadowRoot.querySelector('#left').addEventListener('input',async (e)=>{
         relation['e'] =  e.target.value / 100
     },{passive:true})
@@ -280,31 +278,39 @@ export default async (v,p,c,obj,r) => {
         relation['w'] =  e.target.value
     },{passive:true})
     let assets = {
-        waves:'WAVES',
-        eth:'474jTeYx2r2Va35794tCScAXWJG9hU2HcgxzMowaZUnu',
-        usdt:'34N9YcEETLWn93qYQ64EsP1x89tSruJU44RrEMSXXEPJ'
+        W: {
+            waves:'WAVES',
+            eth:'474jTeYx2r2Va35794tCScAXWJG9hU2HcgxzMowaZUnu',
+            usdt:'34N9YcEETLWn93qYQ64EsP1x89tSruJU44RrEMSXXEPJ'
+        },
+        T: {
+            waves:  'WAVES',
+            eth:    'BrmjyAWT5jjr3Wpsiyivyvg5vDuzoX2s93WgiexXetB3',
+            usdt:   'DMJeM9XJTEnhBmYrLBdVKkYx6Geb37e9pgyEc26R1JKZ'
+        }
     }
     let description = {
         wavesEuro:{
-            amountAsset: assets.eth,
-            priceAsset: assets.waves,
+            amountAsset: assets.W.eth,
+            priceAsset: assets.W.waves,
             tickSize:undefined,
         },
         euroUsd:{
-            amountAsset: assets.eth,
-            priceAsset: assets.usdt,
+            amountAsset: assets.W.eth,
+            priceAsset: assets.W.usdt,
             tickSize:undefined
         },
         wavesUsd:{
-            amountAsset: assets.usdt,
-            priceAsset: assets.waves,
+            amountAsset: assets.W.usdt,
+            priceAsset: assets.W.waves,
             tickSize:undefined
         },
         details:{},
         name:{},
         fee:{},
-        assetId:[assets.eth,assets.usdt]
+        assetId:[assets.W.eth,assets.W.usdt]
     }
+    sys.assets = assets
     let itemDetails = {}
     for(let item of description['assetId']){
         itemDetails[`${item}`] = await task.set(true,'W','8',item,'/assets/details/{assetId}')
@@ -450,7 +456,6 @@ export default async (v,p,c,obj,r) => {
           : (delete relation['description']['eue'],
             sys['validation']['disabled']['views'][1] = false,
             empty(obj,'eue'))
-
         if(relation['description']['eue'] !== undefined) {
             relation = await methods.sell(wavesUsd,relation['buy(wavesEuro)'], relation, 'wavesUsd');
             ((relation['sell(wavesUsd)'] >= sys['threshold']['amount']))
@@ -486,9 +491,9 @@ export default async (v,p,c,obj,r) => {
                 description: relation['description']['eue']
             }
         }
-        relation['buy(wavesEuro)'] = {}
-        relation['sell(wavesUsd)'] ={}
-        relation['buy(euroUsd)'] = {}
+        relation['buy(wavesEuro)']  = {}
+        relation['sell(wavesUsd)']  = {}
+        relation['buy(euroUsd)']    = {}
 //## item 3
         relation['description']['wuw'] = []
         relation['description']['wuw'].push(relation['w'])
@@ -580,9 +585,9 @@ export default async (v,p,c,obj,r) => {
                 description: relation['description']['wew']
             }
         }
-        relation['buy(usdWaves)'] = {}
-        relation['sell(usdEuro)'] ={}
-        relation['buy(wavesEuro)'] = {}
+        relation['buy(usdWaves)']   = {}
+        relation['sell(usdEuro)']   = {}
+        relation['buy(wavesEuro)']  = {}
 //## get order
         let timestamp = config['timestamp']()
         let signature = await task.set(true,'T','8',{
@@ -599,24 +604,28 @@ export default async (v,p,c,obj,r) => {
             publicKey:config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
             relation:'T'
         },'/matcher/orderbook/{publicKey}')
-        sys.info(false, orders.message)
-        if(orders.message.length > 2) {
-            let object = JSON.stringify({
-                sender: config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
-                timestamp: timestamp,
-                signature: signature,
-                orderId: null
-            })
-            await task.set(true, 'T','7',object,'/matcher/orderbook/cancel')
-            // await task.set(true, 'T','7',{},'/storage/delete/all')
-        }else{
-           let order = await task.set(
-              true,
-              'T',
-              '8',
-              sys.relation.transactions.eue.description,
-              '/matcher/orderbook/set')
-            // await task.set(true, 'T','7',order,'/storage/set/item')
+        sys.orders = orders
+        sys.validation.delete.order = true
+        if(sys.validation.set.order) {
+            if(isEmpty(orders)) {
+                let order = await task.set(true,'T','8', {
+                    assets: assets,
+                    transactions: sys.relation.transactions
+                },'/matcher/orderbook/set')
+                sys.info(false, order)
+            }
+        }
+        if(sys.validation.delete.order) {
+            if(!isEmpty(orders.message)) {
+                let object = JSON.stringify({
+                    sender: config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
+                    timestamp: timestamp,
+                    signature: signature,
+                    orderId: null
+                })
+               let canceled = await task.set(true, 'T','7',object,'/matcher/orderbook/cancel')
+                sys.info(false, canceled)
+            }
         }
     let views = {
             "0": () => {
@@ -668,19 +677,18 @@ export default async (v,p,c,obj,r) => {
             }
         }
     };
-        (sys['validation']['disabled']['views'][0])
-          ? (views[0]())
-          : '';
-        (sys['validation']['disabled']['views'][1])
-          ? (views[1]())
-          : '';
-        (sys['validation']['disabled']['views'][2])
-          ? (views[2]())
-          : '';
-        (sys['validation']['disabled']['views'][3])
-          ? (views[3]())
-          : '';
-
+    (sys['validation']['disabled']['views'][0])
+      ? (views[0]())
+      : '';
+    (sys['validation']['disabled']['views'][1])
+      ? (views[1]())
+      : '';
+    (sys['validation']['disabled']['views'][2])
+      ? (views[2]())
+      : '';
+    (sys['validation']['disabled']['views'][3])
+      ? (views[3]())
+      : '';
         // sys.info(false)
         let update = async (priceAssetDecimals, amountAssetDecimals, description, wavesEuro,wavesUsd, euroUsd, obj ) => {
             for(let i=0; i < 10;i++) {
