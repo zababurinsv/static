@@ -605,7 +605,8 @@ export default async (v,p,c,obj,r) => {
             relation:'T'
         },'/matcher/orderbook/{publicKey}')
         sys.orders = orders
-        sys.validation.delete.order = true
+        sys.validation.set.order = true
+       /*
         if(sys.validation.set.order) {
             if(isEmpty(orders)) {
                 let order = await task.set(true,'T','8', {
@@ -615,6 +616,9 @@ export default async (v,p,c,obj,r) => {
                 sys.info(false, order)
             }
         }
+        */
+        // console.log('~~~~~~~~>>>', sys.orders)
+        sys.validation.delete.order = true
         if(sys.validation.delete.order) {
             if(!isEmpty(orders.message)) {
                 let object = JSON.stringify({
@@ -624,9 +628,10 @@ export default async (v,p,c,obj,r) => {
                     orderId: null
                 })
                let canceled = await task.set(true, 'T','7',object,'/matcher/orderbook/cancel')
-                sys.info(false, canceled)
+              //  sys.info(false, object)
             }
         }
+        
     let views = {
             "0": () => {
                 if(relation['description']['ueu'][0] - relation['description']['ueu'][3] < 0){

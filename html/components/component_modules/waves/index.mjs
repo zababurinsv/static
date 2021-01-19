@@ -3,6 +3,7 @@ import waves from '/static/html/components/component_modules/bundle/waves/waves.
 import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
 import task from '/static/html/components/component_modules/heap/index.mjs'
 import Axios from '/static/html/components/component_modules/axios/axios.mjs'
+let axios = Axios()
 let system = {
     net: 'T',
     wvs: 10 ** 8
@@ -112,15 +113,18 @@ export default class Waves {
         return new Promise(async (resolve, reject)=>{
             let order = {}
             if(property === 'T'){
-                // let request = {
-                //     method: 'POST',
-                //     url: `${config[`${property}`][0]}/matcher/orderbook/cancel`
-                //     data:substrate,
-                //     headers: {
-                //         'Content-Type': 'application/json;charset=utf-8'
-                //     },
-                // }
-                console.assert(false, substrate)
+               
+                let request = {
+                    method: 'POST',
+                    url: `${config['matcher'][`${property}`][0]}/matcher/orderbook/cancel`,
+                    data:substrate,
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                }
+
+                order = await axios.post(request)
+                console.log('ddddddddddddddd',order)
 
                 // order = await axios.post('/user', request)
                 //   .then(function (response) {
