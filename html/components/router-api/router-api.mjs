@@ -6,8 +6,6 @@ import task from '/static/html/components/component_modules/heap/index.mjs'
 import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
 
 import api from '/static/html/components/router-api/external/index.mjs'
-// storageApi()
-
 customElements.define('router-api',
     class extends HTMLElement {
         static get observedAttributes () {
@@ -17,7 +15,6 @@ customElements.define('router-api',
             super()
             let white = []
             let property = []
-
             let typeSupported = []
             let words = []
 

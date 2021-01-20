@@ -3,12 +3,11 @@ import waves from '/static/html/components/component_modules/bundle/waves/waves.
 import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
 import task from '/static/html/components/component_modules/heap/index.mjs'
 import Axios from '/static/html/components/component_modules/axios/axios.mjs'
-let axios = Axios()
+let axios = Axios['default']()
 let system = {
     net: 'T',
     wvs: 10 ** 8
 }
-
 export default class Waves {
     constructor(...args) {
         this.bank = this.bank.bind(this)
@@ -73,12 +72,26 @@ export default class Waves {
     }
     getNFT(address='', limit = 1, after = undefined, type){
         return new Promise(async (resolve, reject)=>{
+           try {
             let balance = {}
             if(after === undefined){
                 balance = await fetch(`${config[`${type}`][0]}/assets/nft/${address}/limit/${limit}`)
             }else{
                 balance = await fetch(`${config[`${type}`][0]}/assets/nft/${address}/limit/${limit}?after=${after}`)
             }
+            resolve({
+                _scriptDir: import.meta.url,
+                status: true,
+                message:await balance.json()
+            })   
+            }catch(e) {
+                resolve({
+                    _scriptDir: import.meta.url,
+                    status: false,
+                    message: e
+                })
+           }
+            
             resolve(await balance.json())
         })
     }
@@ -112,6 +125,7 @@ export default class Waves {
     cancelAllOrders(view = true,property='',color = 'black', substrate={_:'order'},relation='order'  ){
         return new Promise(async (resolve, reject)=>{
             let order = {}
+            await axios
             if(property === 'T'){
                
                 let request = {
@@ -122,9 +136,8 @@ export default class Waves {
                         'Content-Type': 'application/json;charset=utf-8'
                     },
                 }
-
-                order = await axios.post(request)
-                console.log('ddddddddddddddd',order)
+               // order = await axios.post(request)
+                // console.log('ddddddddddddddd',order)
 
                 // order = await axios.post('/user', request)
                 //   .then(function (response) {

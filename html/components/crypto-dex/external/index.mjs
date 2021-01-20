@@ -24,6 +24,8 @@ function count (obj) {
     }, 1000);
 }
 export default async (v,p,c,obj,r) => {
+
+    console.log('ddddddddd')
     let methods = (await import('/static/html/components/component_modules/dex/index.mjs'))['default']
     let relation = {}
     let waves = new Waves()

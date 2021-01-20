@@ -13,6 +13,7 @@ let system = {
     }
 }
 export default (async ()=> {
+    console.log('# waves.game.actions')
     task.get(true, 'await', '5', '','/create/nft', async (object)=>{
         if(object.view) {
             let message = await waves.createNFT(object.views, object.property,object.color,object.substrate, object.relation)
@@ -39,7 +40,7 @@ export default (async ()=> {
                   config['accountsStore']['accountGroups'][`${object.property}`]['address'],
                   100, undefined, object.property)
                 if (isEmpty(object.substrate.name)) {
-                    message = nft
+                    message = nft.message
                 } else {
                     if (nft.length !== 0) {
                         for(let item of nft) {

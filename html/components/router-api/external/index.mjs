@@ -3,7 +3,8 @@ import task from '/static/html/components/component_modules/heap/index.mjs'
 import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
 let waves = new Waves
 
-export default (()=>{
+export default (()=> {
+  console.log('# router-api')
   task.get(true, 'await', '5', '','/matcher/orderbook/{publicKey}',async (event)=>{
       let object = event;
       let orders = await waves.getOrders(true, {
@@ -20,7 +21,6 @@ export default (()=>{
 
     task.get(true, 'await', '5', '','/matcher/orderbook',async (event)=>{
       let object = event;
-      console.assert(false, object,'dddddddssss')
       let order = await waves.order(true, object.property, '3', object.substrate.substrate, object.substrate.relation)
       object.callback(order)
     })
