@@ -1,7 +1,6 @@
 import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 import emoji from '/static/html/components/component_modules/emoji/emoji.mjs'
 import task from '/static/html/components/component_modules/heap/index.mjs'
-import lib from '/static/html/components/component_modules/bundle/waves/waves.index.mjs'
 import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
 import Waves from '/static/html/components/component_modules/waves/index.mjs'
 let waves = new Waves()

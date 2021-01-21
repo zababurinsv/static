@@ -3,7 +3,8 @@ import waves from '/static/html/components/component_modules/bundle/waves/waves.
 import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
 import task from '/static/html/components/component_modules/heap/index.mjs'
 import Axios from '/static/html/components/component_modules/axios/axios.mjs'
-let axios = Axios['default']()
+let axios = Axios['default']
+
 let system = {
     net: 'T',
     wvs: 10 ** 8
