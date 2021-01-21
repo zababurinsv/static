@@ -24,8 +24,6 @@ function count (obj) {
     }, 1000);
 }
 export default async (v,p,c,obj,r) => {
-
-    console.log('ddddddddd')
     let methods = (await import('/static/html/components/component_modules/dex/index.mjs'))['default']
     let relation = {}
     let waves = new Waves()
@@ -133,6 +131,7 @@ export default async (v,p,c,obj,r) => {
                 break
         }
     }
+    
     document.addEventListener('iframe',async (event)=>{
         if(event.detail === 'http://localhost:4999'){
             iframe.post(event.detail, {
@@ -191,7 +190,7 @@ export default async (v,p,c,obj,r) => {
     obj['this'].shadowRoot.querySelector('#fbwu').addEventListener('click',async (event)=>{
         event.currentTarget.style.background = '#faf671'
         let value =  event.currentTarget.innerHTML
-        value = value.split('*')[0].split('(')[1]
+        value3 = value.split('*')[0].split('(')[1]
         await navigator.clipboard.writeText(value)
 
         let timer = setTimeout((event)=>{
@@ -322,7 +321,7 @@ export default async (v,p,c,obj,r) => {
     description['details'][`WAVES`] = 8
     description['name'][`WAVES`] = `WAVES`
     count(obj)
-    for(let key in description){
+    for(let key in description) {
         switch (key) {
             case 'wavesEuro':
                 obj['this'].shadowRoot.querySelector('[for="left"]').insertAdjacentHTML('beforeend', `${description['name'][`${description[key]['amountAsset']}`]}`)
@@ -607,7 +606,7 @@ export default async (v,p,c,obj,r) => {
             relation:'T'
         },'/matcher/orderbook/{publicKey}')
         sys.orders = orders
-        sys.validation.set.order = true
+        // sys.validation.set.order = true
        /*
         if(sys.validation.set.order) {
             if(isEmpty(orders)) {
@@ -620,19 +619,19 @@ export default async (v,p,c,obj,r) => {
         }
         */
         // console.log('~~~~~~~~>>>', sys.orders)
-        sys.validation.delete.order = true
-        if(sys.validation.delete.order) {
-            if(!isEmpty(orders.message)) {
-                let object = JSON.stringify({
-                    sender: config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
-                    timestamp: timestamp,
-                    signature: signature,
-                    orderId: null
-                })
-               let canceled = await task.set(true, 'T','7',object,'/matcher/orderbook/cancel')
+        // sys.validation.delete.order = true
+        // if(sys.validation.delete.order) {
+            // if(!isEmpty(orders.message)) {
+                // let object = JSON.stringify({
+                    // sender: config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
+                    // timestamp: timestamp,
+                    // signature: signature,
+                    // orderId: null
+                // })
+            //    let canceled = await task.set(true, 'T','7',object,'/matcher/orderbook/cancel')
               //  sys.info(false, object)
-            }
-        }
+            // }
+        // }
         
     let views = {
             "0": () => {

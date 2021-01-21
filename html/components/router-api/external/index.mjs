@@ -53,7 +53,7 @@ export default (()=> {
     task.get(true, 'await', '5', '','/matcher/get/order',async (object)=>{
       let seed = 'tone leg hidden system tenant aware desk clap body robust debris puppy ecology scan runway thing second metal cousin ocean liberty banner garment rice feel'
       let response = await waves.order(true,object.property,'red', object.substrate, seed)
-      console.assert(false, response)
+      // console.assert(false, response)
       response = JSON.stringify(response)
       object.callback(response)
     })
@@ -64,7 +64,7 @@ export default (()=> {
       item['id'] = ''
       item['orders'] = {}
       item['keys'] = {}
-      console.assert(false,object )
+      // console.assert(false,object )
       for(let it of object['substrate']){
         let order = await waves.order(true, object['property'] , '3', it, object['relation'])
         if(order['_'] === 'error'){

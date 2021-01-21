@@ -91,8 +91,6 @@ export default class Waves {
                     message: e
                 })
            }
-            
-            resolve(await balance.json())
         })
     }
     getOrders(view = true,property='',color = 'black', substrate={_:'order'},relation='order'  ){
@@ -125,7 +123,7 @@ export default class Waves {
     cancelAllOrders(view = true,property='',color = 'black', substrate={_:'order'},relation='order'  ){
         return new Promise(async (resolve, reject)=>{
             let order = {}
-            await axios
+            // await axios
             if(property === 'T'){
                
                 let request = {

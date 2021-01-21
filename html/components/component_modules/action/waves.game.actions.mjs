@@ -42,8 +42,8 @@ export default (async ()=> {
                 if (isEmpty(object.substrate.name)) {
                     message = nft.message
                 } else {
-                    if (nft.length !== 0) {
-                        for(let item of nft) {
+                    if (nft.message.length !== 0) {
+                        for(let item of nft.message) {
                             if(item.description.toLowerCase().indexOf(object.substrate.description) !== -1) {
                                 if(!message) { message = [] }
                                 message.push(item)
@@ -53,6 +53,7 @@ export default (async ()=> {
 
                     }
                 }
+                console.log('message ations: ',message)
                 // await customEvents(true, 'отобразить данные на странице','3',object,'objectPlayer')
                 object.callback({
                     status: true,
