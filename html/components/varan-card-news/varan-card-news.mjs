@@ -1,1 +1,739 @@
-import staticProperty from"/static/html/components/component_modules/staticProperty/staticProperty.mjs";import setText from"/static/html/components/component_modules/setText/setText.mjs";import addEventListener from"/static/html/components/component_modules/addEventListener/addEventListener.mjs";import templateItem from"/static/html/components/component_modules/template/template.mjs";import store from"/static/html/components/component_modules/staticProperty/staticProperty.mjs";import action from"/static/html/components/component_modules/action/action.mjs";import matcher from"/static/html/components/component_modules/matcher/matcher.mjs";import isEmpty from"/static/html/components/component_modules/isEmpty/isEmpty.mjs";customElements.define("varan-card-news",class extends HTMLElement{static get observedAttributes(){return["feed"]}constructor(){super();let t=[],e=[],n=[],r=[];function o(e,n){return new Promise(function(n,r){if(e.verify=[],e.this.getAttribute("preset"))switch(e.this.getAttribute("preset")){case"default":e["path-template"]=`/static/html/components/${e.component}/template/${e.component}.html`,e.preset=`${e.this.getAttribute("preset")}`,e.verify.preset=!0;break;default:e["path-template"]=`/static/html/components/${e.component}/template/${e.this.getAttribute("preset")}.html`,e.preset=`${e.this.getAttribute("preset")}`,e.verify.preset=!0}else e["path-template"]=`/static/html/components/${e.component}/${e.component}.html`,e.verify.preset=!1;fetch(e["path-template"]).then(function(t){if(t.ok)return t.text()}).then(function(r){let o=(new DOMParser).parseFromString(r,"text/html");e.template=o.getElementsByTagName("template")[0].content.cloneNode(!0),function(e){return new Promise(function(n,r){e["path-external"]=`/static/html/components/${e.component}/external/${e.component}-external.html`,fetch(e["path-external"]).then(function(t){return!1===t.ok?t.ok:t.text()}).then(function(r){if(!1===r);else{let o=new DOMParser,a=o.parseFromString(r,"text/html");e.external=a.querySelectorAll("section"),function(e){return new Promise(function(n,r){e["external-property"]=t["external-property"];let o=[],a=[],i=[];for(let t=0;t<e.external.length;t++){for(let n=0;n<e.external[t].children.length;n++)switch(e.external[t].children[n].tagName){case"SCRIPT":e.external[t].getAttribute("id")&&(a.script=e.external[t].children[n]);break;case"COMPONENT-ID":a.id=e.external[t].children[n].innerText;break;case"COMPONENT-ACTION":for(let r=0;r<e.external[t].children[n].children.length;r++)i.push(e.external[t].children[n].children[r].innerText);a.actions=i}o.push(a),a=[]}e["external-property"]=o,n(e)}).catch(t=>{})}(e).then(t=>{0===t["external-property"].length?n(t):function(t){return new Promise(function(e,n){t["words-action"]=[];let r=[];for(let n=0;n<t["external-property"].length;n++){for(let e=0;e<t["external-property"][n].actions.length;e++)for(let o=0;o<t.words.length;o++)-1!==t["external-property"][n].actions[e].indexOf(t.words[o])&&("shadowRoot"!==t.words[o]&&"shadow"!==t.words[e]||(r.shadow=!0),"light"!==t.words[o]&&"лайт"!==t.words[e]||(r.light=!0),"editor"===t.words[o]&&(r.editor=!0),"слайдер"===t.words[o]&&(r["editor-slider"]=!0),"swap"===t.words[o]&&(r.swap=!0));t["words-action"]=r;for(let e in t["external-property"])for(let n in t["external-property"][e])switch(n){case"id":let r=document.createElement(t["external-property"][e][n]);r.setAttribute("type","external"),t.this.appendChild(r)}e(t)}})}(t).then(t=>{n(t)})})}}).catch(t=>{throw t})})}(e).then(t=>{(function(t,e,n){return new Promise(function(e,n){t["template-shadow"]=[],t["template-light"]=[];let r=[];r.swap=!1,r.blog=!1,r.external=!1,r.light=!1,r.slider=!1,r.one=!1,r.sliderText=!1,r.text=!1;for(let e=0;e<t.type.length;e++){if(-1!==t.type[e].indexOf("slider")&&t.type[e].split("-").length>1){r.slider=!0;for(let n in t.type[e].split("-"))switch(t.type[e].split("-")[n]){case"one":r.one=!0}}if(t.type[e].length)if(t.type[e].split("-").length>1)switch(t.type[e].split("-")[0]){case"blog":r.blog=!0;break;default:console.log("типы не отслеживаются",t.type[e])}else switch(t.type[e]){case"swap":r.swap=!0;break;case"external":r.external=!0;break;case"light":r.light=!0;break;case"slider":r.slider=!0;break;case"sliderText":r.sliderText=!0;break;case"text":r.text=!0}}if(t.this.getAttribute("parent")&&(t.parent=t.this.getAttribute("parent")),!0===r.swap){for(let e=0;e<t.this.children.length;e++)1===t.this.children[e].tagName.split("-").length?("view"===t.this.children[e].slot&&(t.this.children[e].className="wall"),t["template-light"].push(t.this.children[e])):!0===t.getAttribute(t.this.children[e],"light","template")?(t.this.children[e].setAttribute("type",`${t.this.children[e].getAttribute("type")}-external`),!1===t.parent?t.slot?t.this.children[e].setAttribute("parent",`${t.slot}`):t.this.children[e].setAttribute("parent",`${t.component}`):t.this.children[e].setAttribute("parent",`${t.parent}`),a(t.this.children[e],t),t["template-light"].push(t.this.children[e])):(t.this.children[e].setAttribute("type",`${t.this.children[e].getAttribute("type")}-external`),!1===t.parent?t.slot?t.this.children[e].setAttribute("parent",`${t.slot}`):t.this.children[e].setAttribute("parent",`${t.component}`):t.this.children[e].setAttribute("parent",`${t.parent}`),a(t.this.children[e],t),t["template-shadow"].push(t.this.children[e]));for(let e=0;e<t.template.children.length;e++)1===t.template.children[e].tagName.split("-").length?("view"===t.template.children[e].slot&&(t.template.children[e].className="wall"),t["template-light"].push(t.template.children[e])):!0===t.getAttribute(t.template.children[e],"light","template")?(t.template.children[e].setAttribute("type",`${t.template.children[e].getAttribute("type")}-external`),!1===t.parent?t.slot?t.this.children[e].setAttribute("parent",`${t.slot}`):t.this.children[e].setAttribute("parent",`${t.component}`):t.this.children[e].setAttribute("parent",`${t.parent}`),a(t.template.children[e],t),t["template-light"].push(t.template.children[e])):(t.template.children[e].setAttribute("type",`${t.template.children[e].getAttribute("type")}-external`),!1===t.parent?t.slot?t.this.children[e].setAttribute("parent",`${t.slot}`):t.this.children[e].setAttribute("parent",`${t.component}`):t.this.children[e].setAttribute("parent",`${t.parent}`),a(t.template.children[e],t),t["template-shadow"].push(t.template.children[e]))}else{for(let e=0;e<t.this.children.length;e++)1===t.this.children[e].tagName.split("-").length?("view"===t.this.children[e].slot&&(t.this.children[e].className="wall"),t["template-shadow"].push(t.this.children[e])):!0===t.getAttribute(t.this.children[e],"light","template")?(!1===t.parent?t.slot?t.this.children[e].setAttribute("parent",`${t.slot}`):t.this.children[e].setAttribute("parent",`${t.component}`):t.this.children[e].setAttribute("parent",`${t.parent}`),a(t.this.children[e],t),t["template-shadow"].push(t.this.children[e])):(!1===t.parent?t.slot?t.this.children[e].setAttribute("parent",`${t.slot}`):t.this.children[e].setAttribute("parent",`${t.component}`):t.this.children[e].setAttribute("parent",`${t.parent}`),a(t.this.children[e],t),t["template-light"].push(t.this.children[e]));for(let e=0;e<t.template.children.length;e++)1===t.template.children[e].tagName.split("-").length?("view"===t.template.children[e].slot&&(t.template.children[e].className="wall"),t["template-shadow"].push(t.template.children[e])):!0===t.getAttribute(t.template.children[e],"light","template")?(!1===t.parent?t.slot?t.this.children[e].setAttribute("parent",`${t.slot}`):t.this.children[e].setAttribute("parent",`${t.component}`):t.this.children[e].setAttribute("parent",`${t.parent}`),a(t.template.children[e],t),t["template-shadow"].push(t.template.children[e])):(!1===t.parent?t.slot?t.this.children[e].setAttribute("parent",`${t.slot}`):t.this.children[e].setAttribute("parent",`${t.component}`):t.this.children[e].setAttribute("parent",`${t.parent}`),a(t.template.children[e],t),t["template-light"].push(t.template.children[e]))}for(let e in r)t.verify[e]=r[e];e(t)})})(t,t["type-swap"],t["type-external"]).then(t=>{if(!0===t.verify.swap){if(0!==t["template-light"].length)for(let e=0;e<t["template-light"].length;e++)t.this.prepend(t["template-light"][e]);if(0!==t["template-shadow"].length){t.this.attachShadow({mode:"open"}),t.shadowRoot=!0;for(let e=0;e<t["template-shadow"].length;e++)t.this.shadowRoot.appendChild(t["template-shadow"][e])}}else{if(0!==t["template-light"].length)for(let e in t["template-light"])t.this.appendChild(t["template-light"][e]);if(0!==t["template-shadow"].length){t.this.attachShadow({mode:"open"}),t.shadowRoot=!0;for(let e in t["template-shadow"])t.this.shadowRoot.appendChild(t["template-shadow"][e])}}n(t)})})}).catch(t=>t)})}function a(t,e){return new Promise(function(n,r){let o=!1;for(let e=0;e<document.querySelectorAll("script").length;e++)-1!==document.querySelectorAll("script")[e].src.indexOf(t.tagName.toLowerCase())&&(o=!0);if(!0===o)console.log("модуль загружен");else{const o=document.createElement("script");o.src=`/static/html/components/${t.tagName.toLowerCase()}/${t.tagName.toLowerCase()}.mjs`,o.type="module",o.setAttribute("async",""),o.onload=n,o.onerror=r,e.this.appendChild(o)}})}var i;e.push("component-id"),e.push("script"),e.push("component-action"),n.push("h1"),n.push("innerText"),r.push("shadowRoot"),r.push("head"),r.push("shadow"),r.push("light"),r.push("lightDom"),r.push("editor"),r.push("слайдер"),r.push("swap"),t.this=this,t["type-supported"]=n,(i=this,new Promise(function(t,e){let n=[];n.staticProperty=[],n.staticProperty.c=0,n.state=[],n.state.push("shadow"),n.state.push("light"),n.words=r,n.parent=!1,n["type-swap"]=!1,n["type-external"]=!1,n["document-offsetWidth"]=document.body.offsetWidth;let o=!1;if(n.getAttribute=((t,e,n)=>{if("template"===n){if(!t.getAttribute("type"))return t.setAttribute("type","default"),!1;for(let n=0;n<t.getAttribute("type").split("-").length;n++)t.getAttribute("type").split("-")[n]===e&&(o=!0);return o}if(t[`verify-${e}`]=!1,0===t.this.getAttribute("type").split("-").length)return!1;for(let n=0;n<t.this.getAttribute("type").split("-").length;n++)t.this.getAttribute("type").split("-")[n]===e?t[`verify-${e}`]=!0:t[`verify-${e}`]=!1;return console.assert(!1,t),t[`verify-${e}`]}),i.tagName.toLowerCase()&&(n.component=i.tagName.toLowerCase()),"object"!=typeof i);else{if(i.getAttribute("type")){n.type=i.getAttribute("type").split("-");for(let t=0;t<n.type.length;t++)n.type[t]=n.type[t].replace(/:/g,"-");for(let t in n.type)switch(n.type[t]){case"swap":n["type-swap"]=!0;break;case"external":n["type-external"]=!0}}else n.type=["default"],i.setAttribute("type","default");if(i.slot?n.slot=i.slot:(i.slot=i.tagName.toLowerCase(),n.slot=i.slot),i.getAttribute("type")){let t=!1;for(let e in i.getAttribute("type").split("-"))-1!==i.getAttribute("type").split("-")[e].indexOf("style:")&&(t=!0);n["style-custom"]=!0===t?"not-default":"default"}}n.shadowRoot=!1,n.this=i,t(n)})).then(t=>{o(t).then(t=>{(function(t){return new Promise(function(e,n){let r=document.createElement("style"),o=document.createElement("style"),a={};(a=t.slot?t.slot:t.parent)||console.assert(!1,"не установленны ни слот ни парент");for(let e=0;e<t.type.length;e++)"swap"===t.type[e]?"scoped"===t.type[e]&&r.setAttribute("scoped",""):"scoped"===t.type[e]&&o.setAttribute("scoped","");for(let n=0;n<t.state.length;n++){switch(t[`path-style-${t.state[n]}`]=`@import '/static/html/components/${t.component}/${t.state[n]}/${t.component}.css'; @import '/static/html/components/${t.component}/${t.state[n]}/${t.component}-custom.css';`,t.state[n]){case"shadow":!0===t.verify.preset&&(t[`path-style-${t.state[n]}-preset`]=`@import '/static/html/components/${t.component}/template/${a}.css';`),r.innerText=t[`path-style-${t.state[n]}`]+t[`path-style-${t.state[n]}-preset`];break;case"light":!0===t.verify.preset&&(t[`path-style-${t.state[n]}-preset`]=`@import '/static/html/components/${t.component}/template/${a}.css';`),o.innerText=t[`path-style-${t.state[n]}`]+t[`path-style-${t.state[n]}-preset`]}"swap"===t.state[n]?!0===t.shadowRoot?(t.this.shadowRoot.appendChild(o),t.this.appendChild(r),e(t)):t.this.appendChild(r):!0===t.shadowRoot?(t.this.shadowRoot.appendChild(r),t.this.appendChild(o),e(t)):t.this.appendChild(o)}e(t)})})(t).then(t=>{!async function(t){function e(t){let e=Math.floor(t/1e3),n=Math.floor(e/3600);e-=3600*n;let r=Math.floor(e/60);return e=("00"+(e=""+(e-=60*r))).substring(e.length),n>0?(r=("00"+(r=r<10?"0"+r:""+r)).substring(r.length),n+":"+r+":"+e):"00:"+(r=r<10?"0"+r:""+r)+":"+e}function n(t){return new Promise(async function(n,r){let o=setTimeout(async function r(){let a=await matcher.server({path:`/timer/${t.id}`,type:"timer"},"get","type");if(a.mongo.time<=0){t.data.innerText="завершён";let e=0;console.log(a.mongo);for(let t=0;t<a.mongo.auction.count.length;t++)a.mongo.auction.count[t]===a.mongo.auction.winner&&e++;let r=a.mongo.auction.winner,i=10*+a.mongo.auction.lotAmount,s=await matcher.server({path:"/winner",type:"winner",data:{auctionId:a.mongo.auction.auctionId,winner:r,endHeight:a.mongo.auction.endHeight,lotAmount:i,bid:e}},"set","type");await window.wt.nodeInteraction.waitForTx(s.mongo.id,{apiBase:"https://nodes-testnet.wavesnodes.com"});let l=await WavesKeeper.publicState(),c=await matcher.server({input:"waves-auth",path:`/winner/${l.account.address}`,type:"winner"},"get","type");if(c.mongo.length>0){let t=document.createElement("div");t.className="winner";for(let e=0;e<c.mongo.length;e++){let n=+c.mongo[e].winner.payment[0].amount/1e8+.014;n=n.toFixed(3);let r=`<div class="info">\n                                    <div> Лот: ${c.mongo[e].object}</div>\n                                    <div class="priceLot"> Стоимость лота: ${n} Waves</div>\n                                    <button class="pay ${c.mongo[e].object}">Оплатить</button>\n                              </div>`;t.insertAdjacentHTML("beforeend",r)}let e=await store({input:"varan-card-news",type:"all"},"get","type");e["waves-auth"][0].this.shadowRoot.querySelector("#winner").style.display="flex",e["waves-auth"][0].this.shadowRoot.querySelector("#winner").innerHTML="",e["waves-auth"][0].this.shadowRoot.querySelector("#winner").appendChild(t);let n=e["waves-auth"][0].this.shadowRoot.querySelectorAll(".pay");for(let t=0;t<n.length;t++)await addEventListener({input:"waves-auth",data:n[t],type:"payLot"},"set","type")}clearTimeout(o),n(t.data.innerText)}else{let n=a.mongo,i=+n.lotAmount;i=i.toFixed(1),t.info.name.innerText=`${n.winner}`,t.info.price.innerText=`Waves: ${i}`;let s=0;for(let t=0;t<n.count.length;t++)n.count[t]===n.winner&&s++;let l=+n.lotAmount,c=l+.014;c=c.toFixed(3),t.info.outPrice.innerText=`Waves: ${c}`,t.data.innerText=e(n.time),o=setTimeout(r,900)}},900)})}let r=!1;for(let e=0;e<t.this.slot.split("-").length;e++)"admin"===t.this.slot.split("-")[e]&&(r=!0);let o={};if(r){await store({input:"varan-card-news",this:t.this,img:t.this.shadowRoot.querySelector(".imgBidAdmin"),slot:t.slot,parent:t.this.getAttribute("parent"),type:"obj"},"set","type");let e=await action({input:"lacerta-card-news",type:"itemsBid",name:"itemsBid"},"get","type");if(isEmpty(e.mongo))console.warn("нет объектов");else{t.this.shadowRoot.querySelector(".section").innerHTML="";for(let n=0;n<e.mongo.length;n++){let r=await templateItem({input:"varan-cards-news-admin",data:e.mongo[n].item,type:"cardAdmin"},"get","type");t.this.shadowRoot.querySelector(".section").insertAdjacentHTML("beforeend",r);let o=t.this.shadowRoot.querySelector(`.timestamp_${Date.parse(e.mongo[n].item.date_modified)}`);o.querySelector(".change").addEventListener("click",async e=>{let n=e.target,r=!1;for(;!r;)"DIV"===n.tagName&&n.className.indexOf("item")>-1?r=!0:n=n.parentNode;let o={};o.timestamp=+n.className.split("_")[1],o.iso=new Date(o.timestamp).toISOString(),o.utc=new Date(o.timestamp).toUTCString();let a=await matcher.server({path:`/timer/${o.timestamp}`,type:"timer"},"get","type");-2===a.mongo.time?(n.querySelector(".change").innerText="данные добавляются",n.querySelector(".change").disabled=!0,staticProperty({type:"task",task:{button:n.querySelector(".change"),type:"update",date:o,this:t.this},name:"bid"},"task","type")):alert("Проходит аукцион, редактирование невозможно")}),o.querySelector(".delete").addEventListener("click",async t=>{let e=t.target,n=!1;for(;!n;)"DIV"===e.tagName&&e.className.indexOf("item")>-1?n=!0:e=e.parentNode;let r={};r.timestamp=+e.className.split("_")[1],r.iso=new Date(r.timestamp).toISOString(),r.utc=new Date(r.timestamp).toUTCString();let o=await matcher.server({path:`/timer/${r.timestamp}`,type:"timer"},"get","type");if(-2===o.mongo.time){let t=confirm("Вы точно хотите удалить новость ?");t&&(e.querySelector(".change").remove(),e.querySelector(".delete").innerText="Идёт процесс удаления",e.querySelector(".delete").style.backgroundColor="red",e.querySelector(".delete").disabled=!0,staticProperty({type:"task",task:{type:"delete",date:r,remove:e},name:"bid"},"task","type"))}else alert("Проходит аукцион, вы не можете удалить товар")})}}t.this.shadowRoot.querySelector("#image").onchange=function(e){let n=new CustomEvent("sideBarCrop",{detail:{id:t.component,slot:t.slot,file:e.target.files[0]}});document.dispatchEvent(n),e.target.value=""}}else{await store({input:"varan-card-news",this:t.this,img:t.this.shadowRoot.querySelector(".imgBidAdmin"),slot:t.slot,parent:t.this.getAttribute("parent"),type:"obj"},"set","type");let r={};if(r=await action({input:"lacerta-card-news",type:"itemsBid",name:"itemsBid"},"get","type"),isEmpty(r))console.warn("нет объектов");else{t.this.shadowRoot.querySelector(".section").innerHTML="";for(let a=0;a<r.mongo.length;a++){o=await templateItem({input:"bid_card",data:r.mongo[a].item,type:"card"},"get","type"),t.this.shadowRoot.querySelector(".section").insertAdjacentHTML("beforeend",o);let i=Date.parse(r.mongo[a].item.date_modified),s=t.this.shadowRoot.querySelector(`.timestamp_${i}`),l=await matcher.server({path:`/timer/${i}`,type:"timer"},"get","type");-2===l.mongo.time||(-1===l.mongo.time?console.assert(!1):(s.querySelector(".outPrice").innerText=`Waves: ${l.mongo.lotAmount}`,s.querySelector(".name").innerText=l.mongo.winer,s.querySelector(".sellButton").innerText="Аукцион",s.querySelector(".sellButton").disabled=!0,s.querySelector(".timer").innerText=e(l.mongo.time),s.classList.add("timer"),n({id:i,data:s.querySelector(".timer"),this:s,info:{name:s.querySelector(".name"),price:s.querySelector(".price"),outPrice:s.querySelector(".outPrice")}}).then(t=>{s.querySelector(".sellButton").innerText="Старт"}))),s.querySelector(".bidButton").addEventListener("click",async t=>{let e=t.target,n=!1;for(;!n;)"DIV"===e.tagName&&e.className.indexOf("item")>-1?n=!0:e=e.parentNode;e.querySelector(".bidButton").innerText="делается ставка",e.querySelector(".bidButton").disabled=!0;let r=await matcher.server({path:`/timer/${i}`,type:"timer"},"get","type");if(-2===r.mongo.time)alert("Аукцион ещё не начался"),e.querySelector(".bidButton").innerText="ставка",e.querySelector(".bidButton").disabled=!1;else if(-1===r.mongo.time)alert("Аукцион ещё не начался"),e.querySelector(".bidButton").innerText="ставка",e.querySelector(".bidButton").disabled=!1;else try{let t=await WavesKeeper.publicState();if(t.account.balance.available<1e8)alert("У вас недостаточно средств, что бы сделать ставку"),e.querySelector(".bidButton").innerText="ставка",e.querySelector(".bidButton").disabled=!1;else{let n=e.className.split("_")[1];n=+(n=n.split(" ")[0]);let r=await matcher.server({path:`/timer/${n}`,type:"timer"},"get","type"),o=0;for(let e=0;e<r.mongo.count.length;e++)r.mongo.count[e]===t.account.address&&o++;let a=1.014,i=+t.account.balance.available/1e8;if(i<a)alert("у вас не достаточно средств для ставки"),e.querySelector(".bidButton").innerText="ставка",e.querySelector(".bidButton").disabled=!1;else{let r=await matcher.server({path:`/checked/${n}`,type:"account",data:{account:t.account.address}},"checked","type");if(-3===r.mongo.update)alert("Вы уже сделали последнюю ставку"),e.querySelector(".bidButton").innerText="ставка",e.querySelector(".bidButton").disabled=!1;else{let o=0;for(let t=0;t<r.mongo.auction.count.length;t++)r.mongo.auction.count[t]===r.mongo.auction.winner&&o++;let a=parseInt(10*+r.mongo.auction.lotAmount,10),i=r.mongo.auction.auctionId,s=+r.mongo.auction.endHeight;try{let r={},l=await fetch(`https://nodes-testnet.wavesnodes.com/addresses/scriptInfo/${t.account.address}`);l=(l=await l.json()).extraFee/1e8+.005,l=parseFloat(l.toFixed(4),10),r={type:16,data:{fee:{tokens:`${l}`,assetId:"WAVES"},dApp:window.wt.dappaddress,call:{function:"bid",args:[{type:"string",value:i},{type:"integer",value:o},{type:"integer",value:a},{type:"integer",value:s}]},payment:[{amount:1e8,assetId:null}]}},e.querySelector(".bidButton").innerText="завершение процесса";let c=await WavesKeeper.signAndPublishTransaction(r),p=await matcher.server({path:`/timer/${n}`,type:"account",data:{account:t.account.address}},"update","type");c=JSON.parse(c),await window.wt.nodeInteraction.waitForTx(c.id,{apiBase:"https://nodes-testnet.wavesnodes.com"}),e.querySelector(".name").innerText=`${p.mongo.data.auction.winner}`,e.querySelector(".price").innerText=`Waves: ${p.mongo.data.auction.lotAmount.toFixed(1)}`;let d=p.mongo.data.auction.lotAmount+.05;d=d.toFixed(3),e.querySelector(".outPrice").innerText=`Waves: ${d}`,e.querySelector(".bidButton").innerText="ставка",e.querySelector(".bidButton").disabled=!1}catch(t){console.warn("ошибка",t)}}}}}catch(t){alert("У вас не установлен Waves Keepper, работа без него в процессе разработки"),e.querySelector(".bidButton").innerText="ставка",e.querySelector(".bidButton").disabled=!1}}),s.querySelector(".sellButton").addEventListener("click",async t=>{let r=t.target,o=!1;for(;!o;)"DIV"===r.tagName&&r.className.indexOf("item")>-1?o=!0:r=r.parentNode;let a=+r.className.split("_")[1];try{let t=await WavesKeeper.publicState(),o=r.querySelector(".timer").innerText;o=o.split(":"),o=(o=60*parseInt(o[0],10)+parseInt(o[1],10)).toString();let s=await matcher.server({path:`/timer/${i}`,type:"timer"},"get","type");if(-2===s.mongo.time)if("завершён"===o.toLowerCase())alert("Аукцион прошёл, войдите в панель администратора, что создать новый");else{o=+o,o*=6e4;let i=t.account.balance.available/1e8;if(i<1.05)alert("У вас недостаточно средств для создания аукциона");else{r.querySelector(".sellButton").innerText="Создаётся аукцион",r.querySelector(".sellButton").disabled=!0;try{let i=await matcher.server({input:"caran-card-news",type:"nft",data:{id:`${a}`,dApp:window.wt.dappaddress},path:"/nft"},"get","type");await window.wt.nodeInteraction.waitForTx(i.mongo.id,{apiBase:"https://nodes-testnet.wavesnodes.com"});let s=r.querySelector(".price").innerText;s=parseInt(s.split(":")[1],10);let l={};l.organizer=t.account.address,l.lotAssetId="WAVES",l.lotAmount=s,l.startPrice=s,l.priceAssetId="WAVES",l.winner=t.account.address,l.winAmount=s,l.startHeight=i.mongo.timestamp,l.startTime=o,l.endHeight=i.mongo.timestamp+o,l.count=[],l.count.push(t.account.address),l.count=JSON.stringify(l.count),l.name=a;let c=await fetch(`https://nodes-testnet.wavesnodes.com/addresses/scriptInfo/${t.account.address}`);c=(c=await c.json()).extraFee/1e8+.005,c=parseFloat(c.toFixed(4),10);try{let o={type:16,data:{fee:{tokens:`${c}`,assetId:"WAVES"},dApp:window.wt.dappaddress,call:{function:"startAuction",args:[{type:"integer",value:l.endHeight},{type:"integer",value:l.startPrice},{type:"string",value:i.mongo.id},{type:"string",value:"WAVES"}]},payment:[{amount:1e8,assetId:null}]}};try{let a=await WavesKeeper.signAndPublishTransaction(o);a=JSON.parse(a),await window.wt.nodeInteraction.waitForTx(a.id,{apiBase:"https://nodes-testnet.wavesnodes.com"}),l.auctionId=i.mongo.id;let s=await matcher.server({path:"/auction",type:"auction",data:l},"set","type"),c=parseInt(l.lotAmount,10)+.005,p=parseInt(s.mongo.data.auction.endHeight,10)-Date.now();r.querySelector(".outPrice").innerText=`Waves: ${c}`,r.querySelector(".name").innerText=t.account.address,r.querySelector(".sellButton").innerText="Аукцион",r.querySelector(".timer").innerText=e(p),r.classList.add("timer"),n({id:l.name,data:r.querySelector(".timer"),this:r,info:{name:r.querySelector(".name"),price:r.querySelector(".price"),outPrice:r.querySelector(".outPrice")}}).then(t=>{r.querySelector(".sellButton").innerText="Старт"})}catch(t){console.warn(t),r.querySelector(".sellButton").innerText="Старт",r.querySelector(".sellButton").disabled=!1}}catch(t){console.warn(t),r.querySelector(".sellButton").innerText="Старт",r.querySelector(".sellButton").disabled=!1}}catch(t){console.warn(t),r.querySelector(".sellButton").innerText="Старт",r.querySelector(".sellButton").disabled=!1}}}else alert("Аукцион уже проходит")}catch(t){alert("У вас не установлен Waves Keepper, работа без него в процессе разработки")}})}!async function(){let r=setTimeout(async function o(){let a=await matcher.server({path:"/auction",type:"auctions"},"get","type"),i=t.this.shadowRoot.querySelectorAll(".item");for(let t=0;t<i.length;t++)if(i[t].className.indexOf("timer")>-1);else for(let r=0;r<a.mongo.length;r++)parseInt(a.mongo[r].object,10)===parseInt(i[t].className.split("_")[1],10)&&(i[t].querySelector(".outPrice").innerText=`Waves: ${a.mongo[r].auction.lotAmount}`,i[t].querySelector(".name").innerText=a.mongo[r].auction.winer,i[t].querySelector(".sellButton").innerText="Аукцион",i[t].querySelector(".sellButton").disabled=!0,i[t].querySelector(".timer").innerText=e(parseInt(a.mongo[r].auction.endHeight,10)-Date.now()),i[t].classList.add("timer"),n({id:a.mongo[r].object,data:i[t].querySelector(".timer"),this:i[t],info:{name:i[t].querySelector(".name"),price:i[t].querySelector(".price"),outPrice:i[t].querySelector(".outPrice")}}).then(e=>{i[t].querySelector(".sellButton").innerText="Старт"}));r=setTimeout(o,1e3)},1e3)}()}}}(t)})})})}});
+import modules from '/static/html/components/varan-card-news/external/index.mjs'
+customElements.define('varan-card-news',
+  class extends HTMLElement {
+    static get observedAttributes () {
+      return ['feed']
+    }
+    constructor () {
+      super()
+      let white = []
+      let property = []
+
+      let typeSupported = []
+      let words = []
+
+      property.push('component-id')
+      property.push('script')
+      property.push('component-action')
+      typeSupported.push('h1')
+      typeSupported.push('innerText')
+      words.push('shadowRoot')
+      words.push('head')
+      words.push('shadow')
+      words.push('light')
+      words.push('lightDom')
+      words.push('editor')
+      words.push('слайдер')
+      words.push('swap')
+      white['this'] = this
+      white['type-supported'] = typeSupported
+
+      function style (obj) {
+        return new Promise(function (resolve, reject) {
+          let styleS = document.createElement('style')
+          let styleL = document.createElement('style')
+          let name = {}
+          if(obj['preset']) {
+            name = obj['preset']
+          } else {
+            if (!obj['slot']) {
+              name = obj['parent']
+            } else {
+              name = obj['slot']
+            }
+          }
+          if (!name) {
+            console.assert(false, 'не установленны ни слот ни парент')
+          }
+
+          for (let key = 0; key < obj['type'].length; key++) {
+            if (obj['type'][key] === 'swap') {
+              if (obj['type'][key] === 'scoped') {
+                styleS.setAttribute('scoped', '')
+              }
+            } else {
+              if (obj['type'][key] === 'scoped') {
+                styleL.setAttribute('scoped', '')
+              }
+            }
+          }
+          if(obj['this'].dataset.css === "false") {
+            obj['this']['shadowRoot'].appendChild(styleS)
+            obj['this'].appendChild(styleL)
+          } else {
+            for (let state = 0; state < obj['state'].length; state++) {
+              obj[`path-style-${obj['state'][state]}`] = `@import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}.css'; @import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}-custom.css';`
+              switch (obj['state'][state]) {
+                case 'shadow':
+                  if (obj['verify']['preset'] === true) {
+                    obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${obj['preset']['dir']}/${obj['preset']['name']}.css';`
+                  }
+                  styleS.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
+                  break
+                case 'light':
+                  if (obj['verify']['preset'] === true) {
+                    obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${obj['preset']['dir']}/${obj['preset']['name']}.css';`
+                  }
+                  styleL.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
+                  break
+                default:
+                  // //console.log(`новый тип`, obj['state'][state])
+                  break
+              }
+              if (obj['state'][state] === 'swap') {
+                if (obj['shadowRoot'] === true) {
+                  obj['this']['shadowRoot'].appendChild(styleL)
+                  obj['this'].appendChild(styleS)
+                  resolve(obj)
+                } else {
+                  obj['this'].appendChild(styleS)
+                }
+              } else {
+                if (obj['shadowRoot'] === true) {
+                  obj['this']['shadowRoot'].appendChild(styleS)
+                  obj['this'].appendChild(styleL)
+                  resolve(obj)
+                } else {
+                  obj['this'].appendChild(styleL)
+                }
+              }
+            }
+          }
+          resolve(obj)
+        })
+      }
+      function objectProperty (obj) {
+        return new Promise(function (resolve, reject) {
+          let black = []
+          black['staticProperty'] = []
+          black['staticProperty']['c'] = 0
+          black['state'] = []
+          black['state'].push('shadow')
+          black['state'].push('light')
+          black['words'] = words
+          black['parent'] = false
+          black[`type-swap`] = false
+          black[`type-external`] = false
+          black[`document-offsetWidth`] = document['body'].offsetWidth
+          let verifyLight = false
+          black[`getAttribute`] = (obj, type, property) => {
+            if (property === 'template') {
+              if (!obj.getAttribute('type')) {
+                // //console.log('не установлен тип ставим default')
+                obj.setAttribute('type', 'default')
+                return false
+              } else {
+                for (let key = 0; key < obj.getAttribute('type').split('-').length; key++) {
+                  if (obj.getAttribute('type').split('-')[key] === type) {
+                    verifyLight = true
+                  }
+                }
+              }
+              return verifyLight
+            } else {
+              // //console.log(obj['this'].getAttribute('type'))
+              obj[`verify-${type}`] = false
+              if (obj['this'].getAttribute('type').split('-').length === 0) {
+                return false
+              } else {
+                for (let key = 0; key < obj['this'].getAttribute('type').split('-').length; key++) {
+                  if (obj['this'].getAttribute('type').split('-')[key] === type) {
+                    obj[`verify-${type}`] = true
+                  } else {
+                    obj[`verify-${type}`] = false
+                  }
+                }
+              }
+              console.assert(false, obj)
+              return obj[`verify-${type}`]
+            }
+          }
+          if (!obj.tagName.toLowerCase()) {
+            // //console.log('что то пошло не так middleware js objectProperty', '')
+          } else {
+            black[`component`] = obj.tagName.toLowerCase()
+          }
+          if (typeof (obj) !== 'object') {
+            // //console.log('objectProperty middleware.js пришёл не объект')
+          } else {
+            if (!obj.getAttribute('type')) {
+              black[`type`] = ['default']
+              // //console.log('нет типа ставим default')
+              obj.setAttribute('type', 'default')
+            } else {
+              black[`type`] = obj.getAttribute('type').split('-')
+              for (let type = 0; type < black[`type`].length; type++) {
+                black[`type`][type] = black[`type`][type].replace(/:/g, '-')
+              }
+              for (let key in black[`type`]) {
+                switch (black[`type`][key]) {
+                  case 'swap':
+                    black[`type-swap`] = true
+                    break
+                  case 'external':
+                    black[`type-external`] = true
+                    break
+                  default:
+                    // //console.log(`дополнительные типы`, black[`type`][key])
+                    break
+                }
+              }
+            }
+            if (!obj.slot) {
+              obj.slot = obj.tagName.toLowerCase()
+              black[`slot`] = obj.slot
+            } else {
+              black[`slot`] = obj.slot
+            }
+            if (!obj.getAttribute('type')) {
+            } else {
+              let veryfiStyle = false
+              for (let key in obj.getAttribute('type').split('-')) {
+                if (obj.getAttribute('type').split('-')[key].indexOf('style:') !== -1) {
+                  // //console.log('устанавливаются пути к стилям')
+                  veryfiStyle = true
+                }
+              }
+              if (veryfiStyle === true) {
+                black['style-custom'] = 'not-default'
+              } else {
+                black['style-custom'] = 'default'
+              }
+            }
+          }
+          black['shadowRoot'] = false
+          black['this'] = obj
+          resolve(black)
+        })
+      }
+
+      function externalProperty (obj) {
+        return new Promise(function (resolve, reject) {
+          obj['external-property'] = white['external-property']
+          let object = []
+          let component = []
+          let a = []
+          for (let key = 0; key < obj['external'].length; key++) {
+            for (let type = 0; type < obj['external'][key].children.length; type++) {
+              switch (obj['external'][key].children[type].tagName) {
+                case 'SCRIPT':
+                  if (!obj['external'][key].getAttribute('id')) {
+                    // //console.log('у компонента нет id нужно в external property script  получить id для загрузки скрипта')
+                  } else {
+                    component['script'] = obj['external'][key]['children'][type]
+                  }
+                  break
+                case 'COMPONENT-ID':
+                  component['id'] = obj['external'][key]['children'][type].innerText
+                  break
+                case 'COMPONENT-ACTION':
+                  for (let action = 0; action < obj['external'][key]['children'][type]['children'].length; action++) {
+                    a.push(obj['external'][key]['children'][type]['children'][action].innerText)
+                  }
+                  component['actions'] = a
+                  break
+                default:
+                  // //console.log(`Не отслеживается, по мере надобности добавляются [${obj['external'][key].children[type].tagName.toLowerCase()}]`)
+                  break
+              }
+            }
+            object.push(component)
+            component = []
+          }
+          obj['external-property'] = object
+          resolve(obj)
+        })
+          .catch(error => {
+            // //console.log('здесь я перехватывал отсутствие страницы но это убрал', error)
+          })
+      }
+
+
+      function getTemplate (obj, swap, external) {
+        return new Promise(function (resolve, reject) {
+          obj['template-shadow'] = []
+          obj['template-light'] = []
+          let verify = []
+          verify['swap'] = false
+          verify['blog'] = false
+          verify['external'] = false
+          verify['light'] = false
+          verify['slider'] = false
+          verify['one'] = false
+          verify['sliderText'] = false
+          verify['text'] = false
+          for (let type = 0; type < obj['type'].length; type++) {
+            if (obj['type'][type].indexOf('slider') !== -1) {
+              if (obj['type'][type].split('-').length > 1) {
+                verify['slider'] = true
+                for (let key in obj['type'][type].split('-')) {
+                  switch (obj['type'][type].split('-')[key]) {
+                    case 'one':
+                      verify['one'] = true
+                      break
+                    default:
+                      // //console.log(`~~~дополнительное свойство~~~`, obj['type'][type].split('-')[key])
+                      break
+                  }
+                }
+              }
+            }
+            if (obj['type'][type].length) {
+              if (obj['type'][type].split('-').length > 1) {
+                switch (obj['type'][type].split('-')[0]) {
+                  case 'blog':
+                    verify['blog'] = true
+                    break
+                  default:
+                    console.log(`типы не отслеживаются`, obj['type'][type])
+                    break
+                }
+              } else {
+                switch (obj['type'][type]) {
+                  case 'swap':
+                    verify['swap'] = true
+                    break
+                  case 'external':
+                    verify['external'] = true
+                    break
+                  case 'light':
+                    verify['light'] = true
+                    break
+                  case 'slider':
+                    verify['slider'] = true
+                    break
+                  case 'sliderText':
+                    verify['sliderText'] = true
+                    break
+                  case 'text':
+                    verify['text'] = true
+                    break
+                  default:
+                    // //console.log(`типы не отслеживаются`, obj['type'][type])
+                    break
+                }
+              }
+            }
+          }
+
+          /**
+           * цикл this
+           * цикл template
+           */
+          /**
+           * устанавливается свойство parent если его нет у родителя ставится по родителю
+           *
+           */
+          if(obj['this'].getAttribute('parent')){
+            obj['parent'] = obj['this'].getAttribute('parent')
+          }
+          if (verify['swap'] === true) {
+            for (let key = 0; key < obj['this'].children.length; key++) {
+              // //console.log('~~~~~~this~~~~~~~', obj['this'].children[key].tagName)
+              if (obj['this'].children[key].tagName.split('-').length === 1) {
+                if (obj['this'].children[key].slot === 'view') {
+                  obj['this'].children[key].className = 'wall'
+                }
+                obj['template-light'].push(obj['this'].children[key])
+              } else {
+                if (obj['getAttribute'](obj['this'].children[key], 'light', 'template') === true) {
+                  obj['this'].children[key].setAttribute('type', `${obj['this'].children[key].getAttribute('type')}-external`)
+                  if(obj['parent'] === false){
+                    if(!obj['slot']){
+                      obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                    }else{
+                      obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                    }
+                  }else{
+                    obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                  }
+
+                  scriptTemplate(obj['this'].children[key], obj)
+                  obj['template-light'].push(obj['this'].children[key])
+                } else {
+                  obj['this'].children[key].setAttribute('type', `${obj['this'].children[key].getAttribute('type')}-external`)
+                  /**
+                   * устанавливается свойство parent если его нет у родителя ставится по родителю
+                   *
+                   */
+                  if(obj['parent'] === false){
+                    if(!obj['slot']){
+                      obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                    }else{
+                      obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                    }
+                  }else{
+                    obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                  }
+                  scriptTemplate(obj['this'].children[key], obj)
+                  obj['template-shadow'].push(obj['this'].children[key])
+                }
+              }
+            }
+            for (let key = 0; key < obj['template'].children.length; key++) {
+              // //console.log('~~~~~~template~~~~~~~', obj['template'].children[key].tagName)
+              if (obj['template'].children[key].tagName.split('-').length === 1) {
+                if (obj['template'].children[key].slot === 'view') {
+                  obj['template'].children[key].className = 'wall'
+                }
+                obj['template-light'].push(obj['template'].children[key])
+              } else {
+                if (obj['getAttribute'](obj['template'].children[key], 'light', 'template') === true) {
+                  obj['template'].children[key].setAttribute('type', `${obj['template'].children[key].getAttribute('type')}-external`)
+                  if(obj['parent'] === false){
+                    if(!obj['slot']){
+                      obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                    }else{
+                      obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                    }
+                  }else{
+                    obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                  }
+                  scriptTemplate(obj['template'].children[key], obj)
+                  obj['template-light'].push(obj['template'].children[key])
+                } else {
+                  obj['template'].children[key].setAttribute('type', `${obj['template'].children[key].getAttribute('type')}-external`)
+                  if(obj['parent'] === false){
+                    if(!obj['slot']){
+                      obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                    }else{
+                      obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                    }
+                  }else{
+                    obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                  }
+                  scriptTemplate(obj['template'].children[key], obj)
+                  obj['template-shadow'].push(obj['template'].children[key])
+                }
+              }
+            }
+          } else {
+            for (let key = 0; key < obj['this'].children.length; key++) {
+              // //console.log('~~~~~~this~~~~~~~', obj['this'].children[key].tagName)
+              if (obj['this'].children[key].tagName.split('-').length === 1) {
+                if (obj['this'].children[key].slot === 'view') {
+                  obj['this'].children[key].className = 'wall'
+                }
+                obj['template-shadow'].push(obj['this'].children[key])
+              } else {
+                if (obj['getAttribute'](obj['this'].children[key], 'light', 'template') === true) {
+                  if(obj['parent'] === false){
+                    if(!obj['slot']){
+                      obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                    }else{
+                      obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                    }
+                  }else{
+                    obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                  }
+                  scriptTemplate(obj['this'].children[key], obj)
+                  obj['template-shadow'].push(obj['this'].children[key])
+                } else {
+                  if(obj['parent'] === false){
+                    if(!obj['slot']){
+                      obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                    }else{
+                      obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                    }
+                  }else{
+                    obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                  }
+                  scriptTemplate(obj['this'].children[key], obj)
+                  obj['template-light'].push(obj['this'].children[key])
+                }
+              }
+            }
+            for (let key = 0; key < obj['template'].children.length; key++) {
+              // //console.log('~~~~~~template~~~~~~~', obj['template'].children[key].tagName)
+              if (obj['template'].children[key].tagName.split('-').length === 1) {
+                if (obj['template'].children[key].slot === 'view') {
+                  obj['template'].children[key].className = 'wall'
+                }
+                obj['template-shadow'].push(obj['template'].children[key])
+              } else {
+                if (obj['getAttribute'](obj['template'].children[key], 'light', 'template') === true) {
+                  if(obj['parent'] === false){
+                    if(!obj['slot']){
+                      obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                    }else{
+                      obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                    }
+                  }else{
+                    obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                  }
+                  scriptTemplate(obj['template'].children[key], obj)
+                  obj['template-shadow'].push(obj['template'].children[key])
+                } else {
+                  if(obj['parent'] === false){
+                    if(!obj['slot']){
+                      obj['this'].children[key].setAttribute('parent', `${obj['component']}`)
+                    }else{
+                      obj['this'].children[key].setAttribute('parent', `${obj['slot']}`)
+                    }
+                  }else{
+                    obj['this'].children[key].setAttribute('parent', `${obj['parent']}`)
+                  }
+                  scriptTemplate(obj['template'].children[key], obj)
+                  obj['template-light'].push(obj['template'].children[key])
+                }
+              }
+            }
+          }
+          for (let key in verify) {
+            obj['verify'][key] = verify[key]
+          }
+          resolve(obj)
+        })
+      }
+      function template (obj, type) {
+        return new Promise(function (resolve, reject) {
+          obj['verify'] = []
+
+          if (!obj['this'].getAttribute('preset')) {
+            obj['path-template'] = `/static/html/components/${obj['component']}/${obj['component']}.html`
+            obj['verify']['preset'] = false
+          } else {
+            switch(obj['this'].getAttribute('preset')){
+              case 'default':
+                obj['path-template'] = `/static/html/components/${obj['component']}/template/default/index.html`
+                obj['preset'] = {
+                  dir:'default',
+                  name:'index',
+                  dirName:`${obj['this'].getAttribute('preset')}`,
+                  status:true
+                }
+                obj['verify']['preset'] = true
+                break
+              default:
+                let substrate = (obj['this'].getAttribute('preset')).split('-')
+
+                let dir = {}
+                let name = {}
+                if( substrate.length >= 3) {
+                  dir = `${substrate[0]}-${substrate[1]}`
+                  name = substrate.filter((word, index, arr)=>{
+                    if(index > 1) {
+                      return word
+                    }
+                  });
+                  // console.assert(false,name, dir )
+                  name = name.join('-')
+                  obj['path-template'] = `/static/html/components/${obj['component']}/template/${dir}/${name}.html`
+                  obj['verify']['preset'] = true
+                  obj['preset'] = {
+                    dir:dir,
+                    name:name,
+                    status:true
+                  }
+                }else if(substrate.length === 2){
+                  dir = `${substrate[0]}-${substrate[1]}`
+                  name =`index`
+                  obj['path-template'] = `/static/html/components/${obj['component']}/template/${dir}/${name}.html`
+                  obj['verify']['preset'] = true
+                  obj['preset'] = {
+                    dir:dir,
+                    name:name,
+                    status:true
+                  }
+                } else if(substrate.length === 1) {
+                  dir = `${substrate[0]}`
+                  name =`index`
+                  obj['path-template'] = `/static/html/components/${obj['component']}/template/${dir}/${name}.html`
+                  obj['verify']['preset'] = true
+                  obj['preset'] = {
+                    dir:dir,
+                    name:name,
+                    status:true
+                  }
+                }else {
+                  console.assert(false, 'не загружается пресет')
+                }
+                break
+            }
+          }
+          fetch(obj['path-template'])
+            .then(function (response) {
+              if (response.ok) {
+                return response.text()
+              }
+            }).then(function (body) {
+            let parser = new DOMParser()
+            let doc = parser.parseFromString(body, 'text/html')
+            obj['template'] = doc.getElementsByTagName('template')[0].content.cloneNode(true)
+            external(obj)
+              .then((obj) => {
+                getTemplate(obj, obj['type-swap'], obj['type-external'])
+                  .then((obj) => {
+                    if (obj['verify']['swap'] === true) {
+
+                      if (obj['template-light'].length !== 0) {
+                        for (let key = 0; key < obj['template-light'].length; key++) {
+                          //console.log('2222222222111111111111222222222222', obj['template-light'][key])
+                          obj['this']['prepend'](obj['template-light'][key])
+                          // console.assert(false, obj['template-light'][key])
+                        }
+                      }
+                      if (obj['template-shadow'].length !== 0) {
+                        obj['this']['attachShadow']({mode: 'open'})
+                        obj['shadowRoot'] = true
+                        for (let key = 0; key < obj['template-shadow'].length; key++) {
+
+                          obj['this']['shadowRoot']['appendChild'](obj['template-shadow'][key])
+                        }
+                      }
+
+                    } else {
+                      if (obj['template-light'].length !== 0) {
+                        for (let key in obj['template-light']) {
+                          obj['this']['appendChild'](obj['template-light'][key])
+                        }
+                      }
+                      if (obj['template-shadow'].length !== 0) {
+                        obj['this']['attachShadow']({mode: 'open'})
+                        obj['shadowRoot'] = true
+                        for (let key in obj['template-shadow']) {
+                          obj['this']['shadowRoot']['appendChild'](obj['template-shadow'][key])
+                        }
+                      }
+
+                    }
+                    resolve(obj)
+                  })
+              })
+          })
+            .catch(error => {
+              return error
+            })
+        })
+      }
+
+      function renderExternal (obj) {
+        return new Promise(function (resolve, reject) {
+          obj['words-action'] = []
+          let wordsAction = []
+          for (let key = 0; key < obj['external-property'].length; key++) {
+            for (let words = 0; words < obj['external-property'][key]['actions'].length; words++) {
+              for (let verify = 0; verify < obj['words'].length; verify++) {
+                if (obj['external-property'][key]['actions'][words].indexOf(obj['words'][verify]) !== -1) {
+                  if (obj['words'][verify] === 'shadowRoot' || obj['words'][words] === 'shadow') {
+                    wordsAction['shadow'] = true
+                  }
+                  if (obj['words'][verify] === 'light' || obj['words'][words] === 'лайт') {
+                    wordsAction['light'] = true
+                  }
+                  if (obj['words'][verify] === 'editor') {
+                    wordsAction['editor'] = true
+                  }
+                  if (obj['words'][verify] === 'слайдер') {
+                    wordsAction['editor-slider'] = true
+                  }
+                  if (obj['words'][verify] === 'swap') {
+                    wordsAction['swap'] = true
+                  }
+                }
+              }
+            }
+            obj['words-action'] = wordsAction
+
+            for (let key in obj['external-property']) {
+              for (let type in obj['external-property'][key]) {
+                switch (type) {
+                  case 'id':
+                    let doc = document.createElement(obj['external-property'][key][type])
+                    doc.setAttribute('type', 'external')
+                    obj['this'].appendChild(doc)
+                    break
+                  default:
+                    // //console.log(`какой то неизвестный тип`, type)
+                    break
+                }
+              }
+            }
+            resolve(obj)
+          }
+        })
+      }
+
+      function external (obj) {
+        return new Promise(function (resolve, reject) {
+          obj['path-external'] = `/static/html/components/${obj['component']}/external/${obj['component']}-external.xml`
+          fetch(obj['path-external'])
+            .then(function (response) {
+              if (response.ok === false) {
+                return response.ok
+              } else {
+                return response.text()
+              }
+            })
+            .then(function (data) {
+              if (data === false) {
+              } else {
+                let parser = new DOMParser()
+                let doc = parser.parseFromString(data, 'text/html')
+                obj['external'] = doc.querySelectorAll('section')
+                externalProperty(obj)
+                  .then((obj) => {
+                    if (obj['external-property'].length === 0) {
+                      resolve(obj)
+                    } else {
+                      renderExternal(obj)
+                        .then((obj) => {
+                          resolve(obj)
+                        })
+                    }
+                  })
+              }
+            })
+            .catch(error => {
+              throw error
+            })
+        })
+      }
+      function getElementsByClassName (obj, type) {
+        return new Promise(function (resolve, reject) {
+          for (let state = 0; state < obj['state'].length; state++) {
+            for (let key = 0; key < obj[`template-${obj['state'][state]}`].length; key++) {
+              if (obj[`template-${obj['state'][state]}`][key].getElementsByClassName(type).length === 0) {
+
+              } else {
+                obj['slider'] = obj[`template-${obj['state'][state]}`][key].getElementsByClassName(type)[0]
+                resolve(obj[`template-${obj['state'][state]}`][key].getElementsByClassName(type)[0])
+              }
+            }
+          }
+        })
+      }
+      function scriptTemplate (obj, parent) {
+        return new Promise(function (resolve, reject) {
+          let verify = false
+          for (let i = 0; i < document.querySelectorAll('script').length; i++) {
+            if (document.querySelectorAll('script')[i].src.indexOf(obj.tagName.toLowerCase()) !== -1) {
+              verify = true
+            }
+          }
+          if (verify === true) {
+            console.log('модуль загружен')
+          } else {
+            const script = document.createElement('script')
+            script.src = `/static/html/components/${obj.tagName.toLowerCase()}/${obj.tagName.toLowerCase()}.mjs`
+            script.type = 'module'
+            script.setAttribute('async', '')
+            script.onload = resolve
+            script.onerror = reject
+
+            parent['this'].appendChild(script)
+          }
+        })
+      }
+      objectProperty(this)
+        .then((obj) => {
+          template(obj)
+            .then((obj) => {
+              style(obj)
+                .then((obj) => {
+                  modules(true,0,'red',obj,'varan-card-news')
+                })
+            })
+        })
+    }
+  })

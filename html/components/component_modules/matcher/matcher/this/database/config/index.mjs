@@ -11,10 +11,9 @@ config['local']['1.0'] = 'http://localhost:3002'
 config['now']['0.6'] = 'https://soundlane-b2b652bpi.now.sh'
 
 config['mongo'] = {}
-// config['mongo']['local'] = 'http://localhost:3003'
 config['mongo']['web'] = 'https://server-mongo.zababurinsv.now.sh'
 // config['mongo']['web'] = 'http://localhost:3003'
-// config['mongo']['web'] = 'http://localhost:3003'
+// config['mongo']['web'] = 'http://localhost:3001'
 
 config['waves'] = {}
 // config['waves']['local'] = 'http://localhost:3005'
@@ -34,9 +33,9 @@ config['email']['web'] = 'https://email.zababurinsv.now.sh'
 
 
 config['account'] = {}
-config['account']['local'] = 'http://localhost:3009'
-config['account']['web'] = 'https://account-git-master.szababurinv.now.sh'
+config['account']['web'] = 'https://web3-server-account.vercel.app'
 // config['account']['web'] = 'http://localhost:3009'
+// config['account']['web'] = 'http://localhost:3001'
 
 config['account']['dappaddress'] = '3N8n4Lc8BMsPPyVHJXTivQWs7ER61bB7wQn'
 config['account']['this'] = `${config['account']['dappaddress']}?matches=`
