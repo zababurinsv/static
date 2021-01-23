@@ -22,8 +22,7 @@ config['waves']['web'] = 'https://waves.zababurinsv.now.sh'
 
 
 config['store'] = {}
-config['store']['local'] = 'http://localhost:4000'
-config['store']['localNow'] = 'http://localhost:3000'
+// config['store']['web'] = 'http://localhost:4000'
 config['store']['web'] = 'https://server-webdav.now.sh'
 
 config['email'] = {}

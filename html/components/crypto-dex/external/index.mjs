@@ -27,7 +27,6 @@ export default async (v,p,c,obj,r) => {
     let methods = (await import('/static/html/components/component_modules/dex/index.mjs'))['default']
     let relation = {}
     let waves = new Waves()
-
     let sys = {
         _scriptDir: import.meta.url,
         validation: {
@@ -63,7 +62,7 @@ export default async (v,p,c,obj,r) => {
         navigation: {
             "assets": {
                 "status": true,
-                "u": 10,
+                "u": 100,
                 "w": 1,
                 "e": 10
             }
@@ -87,14 +86,15 @@ export default async (v,p,c,obj,r) => {
         warn: {
             "s/b": 'нет доступных пар'
         },
-        avtive: {
-
-        }
+        active: []
     }
 
     function empty(obj,type){
         switch (type) {
             case 'ueu':
+                obj['this'].shadowRoot.querySelector('div.fbwu').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('div.fswe').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('div.fbue').style.background ='#7694f473'
                 obj['this'].shadowRoot.querySelector('#fbwu').innerHTML = ``
                 obj['this'].shadowRoot.querySelector('#fswe').innerHTML = ``
                 obj['this'].shadowRoot.querySelector('#fbue').innerHTML = ``
@@ -103,6 +103,9 @@ export default async (v,p,c,obj,r) => {
                 obj['this'].shadowRoot.querySelector('#fbue').innerHTML = `${sys['warn']['s/b']}`
                 break
             case 'eue':
+                obj['this'].shadowRoot.querySelector('div.fbwe').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('div.fswu').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('div.fbeu').style.background ='#7694f473'
                 obj['this'].shadowRoot.querySelector('#fswu').innerHTML = ``
                 obj['this'].shadowRoot.querySelector('#fbwe').innerHTML = ``
                 obj['this'].shadowRoot.querySelector('#fbeu').innerHTML = ``
@@ -111,6 +114,9 @@ export default async (v,p,c,obj,r) => {
                 obj['this'].shadowRoot.querySelector('#fbeu').innerHTML = `${sys['warn']['s/b']}`
                 break
             case 'wuw':
+                obj['this'].shadowRoot.querySelector('div.sbew').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('div.sseu').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('div.sbwu').style.background ='#7694f473'
                 obj['this'].shadowRoot.querySelector('#sbew').innerHTML = ``
                 obj['this'].shadowRoot.querySelector('#sseu').innerHTML = ``
                 obj['this'].shadowRoot.querySelector('#sbwu').innerHTML = ``
@@ -119,6 +125,9 @@ export default async (v,p,c,obj,r) => {
                 obj['this'].shadowRoot.querySelector('#sbwu').innerHTML = `${sys['warn']['s/b']}`
                 break
             case 'wew':
+                obj['this'].shadowRoot.querySelector('div.sbuw').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('div.ssue').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('div.sbwe').style.background ='#7694f473'
                 obj['this'].shadowRoot.querySelector('#sbuw').innerHTML = ``
                 obj['this'].shadowRoot.querySelector('#ssue').innerHTML = ``
                 obj['this'].shadowRoot.querySelector('#sbwe').innerHTML = ``
@@ -190,10 +199,10 @@ export default async (v,p,c,obj,r) => {
     obj['this'].shadowRoot.querySelector('#fbwu').addEventListener('click',async (event)=>{
         event.currentTarget.style.background = '#faf671'
         let value =  event.currentTarget.innerHTML
-        value3 = value.split('*')[0].split('(')[1]
+        value = value.split('*')[0].split('(')[1]
         await navigator.clipboard.writeText(value)
 
-        let timer = setTimeout((event)=>{
+        let timer = setTimeout((event) => {
             obj['this'].shadowRoot.querySelector('#fbwu').style.background = 'transparent'
             clearTimeout(timer);
         }, 250);
@@ -438,9 +447,10 @@ export default async (v,p,c,obj,r) => {
                         'timestamp': timestamp,
                         'GMT': new Date(timestamp).toString()
                     },
-                    'roadmap': 'buy(wavesUsd) sell(wavesEuro) buy(usdEuro)'
+                    'roadmap': relation['ueu']
                 },
-                description: relation['description']['ueu']
+                description: relation['description']['ueu'],
+                assets: assets
             }
         }
         relation['buy(wavesUsd)'] = {}
@@ -487,9 +497,10 @@ export default async (v,p,c,obj,r) => {
                         'timestamp': timestamp,
                         'GMT': new Date(timestamp).toString()
                     },
-                    'roadmap': 'buy(wavesEuro) sell(wavesUsd) buy(euroUsd)'
+                    'roadmap': relation['eue']
                 },
-                description: relation['description']['eue']
+                description: relation['description']['eue'],
+                assets: assets
             }
         }
         relation['buy(wavesEuro)']  = {}
@@ -520,7 +531,6 @@ export default async (v,p,c,obj,r) => {
                 obj['this'].shadowRoot.querySelector('#sbwu').innerHTML = `${description['name'][`${wavesUsd.pair.priceAsset}`]}=>${description['name'][`${wavesUsd.pair.amountAsset}`]}[(${relation['sell(euroUsd)']}*)${relation['buy(wavesUsd)']}]`)
               : (delete relation['description']['wuw'], sys['validation']['disabled']['views'][2] = false, empty(obj,'wuw'))
         }
-
         if(relation['description']['wuw'] !== undefined) {
            let timestamp =  Date.now();
             relation['transactions']['wuw'] = {
@@ -531,9 +541,10 @@ export default async (v,p,c,obj,r) => {
                         'timestamp': timestamp,
                         'GMT': new Date(timestamp).toString()
                     },
-                    'roadmap': 'buy(euroWaves) sell(euroUsd) buy(wavesUsd)'
+                    'roadmap': relation['wuw']
                 },
                 description: relation['description']['wuw'],
+                assets: assets
             }
         }
         relation['buy(euroWaves)'] = {}
@@ -581,9 +592,10 @@ export default async (v,p,c,obj,r) => {
                         'timestamp': timestamp,
                         'GMT': new Date(timestamp).toString()
                     },
-                    'roadmap': 'buy(usdWaves) sell(usdEuro) buy(wavesEuro)'
+                    'roadmap': relation['wew']
                 },
-                description: relation['description']['wew']
+                description: relation['description']['wew'],
+                assets: assets
             }
         }
         relation['buy(usdWaves)']   = {}
@@ -595,7 +607,7 @@ export default async (v,p,c,obj,r) => {
             seed: config['accountsStore']['accountGroups']['T']['clients'][3]['seed'],
             publicKey: config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
             timestamp: timestamp
-        },'/assets/signature/{assetId}')
+        },'/assets/signature/{assetId}');
         let orders = await  task.set(true, {
             timestamp:timestamp,
             signature:signature,
@@ -606,18 +618,19 @@ export default async (v,p,c,obj,r) => {
             relation:'T'
         },'/matcher/orderbook/{publicKey}')
         sys.orders = orders
-        // sys.validation.set.order = true
-       /*
-        if(sys.validation.set.order) {
-            if(isEmpty(orders)) {
-                let order = await task.set(true,'T','8', {
-                    assets: assets,
-                    transactions: sys.relation.transactions
-                },'/matcher/orderbook/set')
-                sys.info(false, order)
+        if(orders.status) {
+            for(let i =0; i < orders.message.length; i++) {
             }
+            console.log('active orders:', orders.message)
+        } else {
+            console.warn(orders.message)
         }
-        */
+        sys.validation.set.order = true
+        if(sys.validation.set.order) {
+            // console.assert(false, sys.relation.transactions)
+            // setTask(true, 'T', 'red', sys.relation.transactions.ueu, '/matcher/orderbook/set')
+        }
+
         // console.log('~~~~~~~~>>>', sys.orders)
         // sys.validation.delete.order = true
         // if(sys.validation.delete.order) {
@@ -632,10 +645,29 @@ export default async (v,p,c,obj,r) => {
               //  sys.info(false, object)
             // }
         // }
-        
+
+    function setTask(v,p,c,s,r) {
+        return new Promise(async function (resolve, reject) {
+            let req = await task.set(v,p,c,s,r);
+            (req.status)
+              ? (sys.active.push(s),
+                resolve({
+                    status: true,
+                    message: req.message,
+                    _scriptDir: import.meta.url
+                }))
+              : (resolve({
+                  status: false,
+                  message: req.message,
+                  _scriptDir: import.meta.url
+              }))
+        })
+    }
+
     let views = {
             "0": () => {
                 if(relation['description']['ueu'][0] - relation['description']['ueu'][3] < 0){
+                    setTask(true, 'T', 'red', sys.relation.transactions.ueu, '/matcher/orderbook/set')
                     obj['this'].shadowRoot.querySelector('#total').insertAdjacentHTML('beforeend',`<p>${JSON.stringify(relation['description']['ueu'], null, 2)}</p>`)
                     obj['this'].shadowRoot.querySelector('div.fbwu').style.background ='#f476b673'
                     obj['this'].shadowRoot.querySelector('div.fswe').style.background ='#f476b673'
@@ -648,6 +680,7 @@ export default async (v,p,c,obj,r) => {
             },
             "1": () => {
                 if(relation['description']['eue'][0] - relation['description']['eue'][3] < 0){
+                    setTask(true, 'T', 'red', sys.relation.transactions.eue, '/matcher/orderbook/set')
                     obj['this'].shadowRoot.querySelector('#total').insertAdjacentHTML('beforeend',`<p>${JSON.stringify(relation['transactions']['eue'], null, 2)}</p>`)
                     obj['this'].shadowRoot.querySelector('div.fbwe').style.background ='#f476b673'
                     obj['this'].shadowRoot.querySelector('div.fswu').style.background ='#f476b673'
@@ -660,6 +693,7 @@ export default async (v,p,c,obj,r) => {
             },
         "2": () => {
             if(relation['description']['wuw'][0] - relation['description']['wuw'][3] < 0){
+                setTask(true, 'T', 'red', sys.relation.transactions.wuw, '/matcher/orderbook/set')
                 obj['this'].shadowRoot.querySelector('#total').insertAdjacentHTML('beforeend',`<p>${JSON.stringify(relation['transactions']['wuw'], null, 2)}</p>`)
                 obj['this'].shadowRoot.querySelector('div.sbew').style.background ='#f476b673'
                 obj['this'].shadowRoot.querySelector('div.sseu').style.background ='#f476b673'
@@ -672,6 +706,7 @@ export default async (v,p,c,obj,r) => {
         },
         "3": () => {
             if(relation['description']['wew'][0] - relation['description']['wew'][3] < 0){
+                setTask(true, 'T', 'red', sys.relation.transactions.wew, '/matcher/orderbook/set')
                 obj['this'].shadowRoot.querySelector('#total').insertAdjacentHTML('beforeend',`<p>${JSON.stringify(relation['transactions']['wew'], null, 2)}</p>`)
                 obj['this'].shadowRoot.querySelector('div.sbuw').style.background ='#f476b673'
                 obj['this'].shadowRoot.querySelector('div.ssue').style.background ='#f476b673'
@@ -737,6 +772,7 @@ export default async (v,p,c,obj,r) => {
             }
             return true
         }
+        // console.log('active order: ', sys.active)
         update(priceAssetDecimals, amountAssetDecimals, description, wavesEuro,wavesUsd, euroUsd, obj )
         timerId = setTimeout(tick, 3000);
     }, 3000);

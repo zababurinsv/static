@@ -59,27 +59,46 @@ export default (()=> {
     })
 
     task.get(true, 'await', '5', '','/matcher/orderbook/set',async (object)=>{
-      let item = {}
-      let id = []
-      item['id'] = ''
-      item['orders'] = {}
-      item['keys'] = {}
-      // console.assert(false,object )
-      for(let it of object['substrate']){
-        let order = await waves.order(true, object['property'] , '3', it, object['relation'])
-        if(order['_'] === 'error'){
-          id.push('error')
-          item['orders'][`error-${item['orders']['length']}`]
-        }else{
-          item['orders'][`${order.message.id}`] = order
-          id.push(order.message.id)
-        }
+      try {
+        // console.assert(false, object)
+        // for(let order of object.substrate.transactions) {
+        //
+        // }
+        // let order = await waves.order(true, object['property'] , '3', order, object['relation'])
+        // let item = {}
+        // let id = []
+        // item['id'] = ''
+        // item['orders'] = {}
+        // item['keys'] = {}
+        // console.assert(false,object )
+        // console.assert(false, {
+        //   order:order,
+        //   object:object
+        // })
+        // for(let order of object['substrate']) {
+        //
+        //   if(order['_'] === 'error'){
+        //     id.push('error')
+        //     item['orders'][`error-${item['orders']['length']}`]
+        //   }else{
+        //     item['orders'][`${order.message.id}`] = order
+        //     id.push(order.message.id)
+        //   }
+        // }
+        // item['keys'] = Object.keys(item['orders'])
+        // item['id'] =id.join('-')
+        object.callback({
+          status: true,
+          message: 'test',
+          _scriptDir: import.meta.url
+        })
+      } catch (e) {
+        object.callback({
+          status: false,
+          message: e,
+          _scriptDir: import.meta.url
+        })
       }
-      item['keys'] = Object.keys(item['orders'])
-      item['id'] =id.join('-')
-
-
-      object.callback(item)
     })
     // document.addEventListener('/matcher/orderbook/{publicKey}',async (event)=>{
     //     event.detail.callback(waves)

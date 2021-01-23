@@ -52,7 +52,6 @@ export default (async ()=> {
 
                     }
                 }
-                console.log('message ations: ',message)
                 // await customEvents(true, 'отобразить данные на странице','3',object,'objectPlayer')
                 object.callback({
                     status: true,
