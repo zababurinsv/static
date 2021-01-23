@@ -61,10 +61,10 @@ export default async (v,p,c,obj,r) => {
         },
         navigation: {
             "assets": {
-                "status": true,
-                "u": 100,
-                "w": 1,
-                "e": 10
+                "status": false,
+                "e": 10,
+                "u": 14,
+                "w": 10
             }
         },
         info: (v = true, item = undefined) => {
@@ -626,25 +626,25 @@ export default async (v,p,c,obj,r) => {
             console.warn(orders.message)
         }
         sys.validation.set.order = true
+        sys.validation.delete.order = true
         if(sys.validation.set.order) {
             // console.assert(false, sys.relation.transactions)
             // setTask(true, 'T', 'red', sys.relation.transactions.ueu, '/matcher/orderbook/set')
         }
 
         // console.log('~~~~~~~~>>>', sys.orders)
-        // sys.validation.delete.order = true
-        // if(sys.validation.delete.order) {
-            // if(!isEmpty(orders.message)) {
-                // let object = JSON.stringify({
-                    // sender: config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
-                    // timestamp: timestamp,
-                    // signature: signature,
-                    // orderId: null
-                // })
-            //    let canceled = await task.set(true, 'T','7',object,'/matcher/orderbook/cancel')
-              //  sys.info(false, object)
-            // }
-        // }
+
+        if(sys.validation.delete.order) {
+            if(!isEmpty(orders.message)) {
+                let object = JSON.stringify({
+                    sender: config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
+                    timestamp: timestamp,
+                    signature: signature,
+                    orderId: null
+                })
+                setTask(true, 'T','7',object,'/matcher/orderbook/cancel')
+            }
+        }
 
     function setTask(v,p,c,s,r) {
         return new Promise(async function (resolve, reject) {

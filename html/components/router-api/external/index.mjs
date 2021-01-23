@@ -31,8 +31,7 @@ export default (()=> {
       object.callback(balance)
     })
 
-    task.get(true, 'await', '5', '','/matcher/orderbook/cancel', async (object)=>{
-      // console.assert(false, object.property)
+    task.get(true, 'await', '5', '','/matcher/orderbook/cancel', async (object) => {
       let orders = await waves.cancelAllOrders(true, object.property, '3', object.substrate, object.property)
       object.callback(orders)
     })

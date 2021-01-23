@@ -25,7 +25,11 @@ export default class Waves {
         this.order = this.order.bind(this)
         this.cancelAllOrders = this.cancelAllOrders.bind(this)
         this.getOrders = this.getOrders.bind(this)
-        document.addEventListener('typeScript-end', this.end)
+        this.UserException = this.UserException.bind(this)
+    }
+    UserException(message) {
+        this.message = message;
+        this._scriptDir = import.meta.url;
     }
     createNFT(view = true,property='a',color = 'black', substrate={_:'button'},relation='transfer'  ) {
         return new Promise(async (resolve, reject) => {
@@ -123,39 +127,72 @@ export default class Waves {
     }
     cancelAllOrders(view = true,property='',color = 'black', substrate={_:'order'},relation='order'  ){
         return new Promise(async (resolve, reject)=>{
-            let order = {}
-            // await axios
-            if(property === 'T'){
-               
-                let request = {
-                    method: 'POST',
-                    url: `${config['matcher'][`${property}`][0]}/matcher/orderbook/cancel`,
-                    data:substrate,
-                    headers: {
-                        'Content-Type': 'application/json;charset=utf-8'
-                    },
-                }
-               // order = await axios.post(request)
-                // console.log('ddddddddddddddd',order)
+         try {
+             // let order = {}
+             let url = ''
+             switch (property) {
+                 case 'T':
+                     url = `${config['matcher'][`${property}`][0]}/matcher/orderbook/cancel`
+                     break
+                 case 'W':
+                     url = `${config['matcher'][`${property}`][0]}/matcher/orderbook/cancel`
+                     break
+                 default:
+                     console.warn({
+                         _scriptDir: import.meta.url,
+                         message: `неизвестное свойство ${property}`
+                     })
+                     break
+             }
+             // console.assert(false, substrate)
+             // let cancel = axios({
+             //     method: 'post',
+             //     url: url,
+             //     data: substrate
+             // });
+             // await axios
+             // if(property === 'T'){
 
-                // order = await axios.post('/user', request)
-                //   .then(function (response) {
-                //       console.log(response);
-                //   })
-                //   .catch(function (error) {
-                //       console.log(error);
-                //   });
-                // order = await fetch(request)
-                // resolve(await order.json())
+                 let request = {
+                     method: 'post',
+                     url: `${config['matcher'][`${property}`][0]}/matcher/orderbook/cancel`,
+                     data:substrate,
+                     headers: {
+                         'Content-Type': 'application/json;charset=utf-8'
+                     },
+                 }
+                 let  order = await axios(request)
+                 console.assert(false, order)
 
-            } else if(property === 'W') {
+                 // order = await axios.post('/user', request)
+                 //   .then(function (response) {
+                 //       console.log(response);
+                 //   })
+                 //   .catch(function (error) {
+                 //       console.log(error);
+                 //   });
+                 // order = await fetch(request)
+                 // resolve(await order.json())
+
+             // } else if(property === 'W') {
 
 
-            } else {
-                console.warn( 'укажите тип сети T - тестнет W - майннет')
-                resolve(false)
+             // } else {
+             //     console.warn( 'укажите тип сети T - тестнет W - майннет')
+             //     resolve(false)
+             // }
+                resolve({
+                    _scriptDir: import.meta.url,
+                    status: true,
+                    message: 'test'
+                })
+            } catch (e) {
+                resolve({
+                    _scriptDir: import.meta.url,
+                    status: false,
+                    message: e
+                })
             }
-
         })
     }
     order(view = true,property='',color = 'black', substrate={_:'order'},relation='order'  ){
