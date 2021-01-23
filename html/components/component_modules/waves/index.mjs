@@ -63,6 +63,7 @@ export default class Waves {
                 })
                 resolve({
                     status: true,
+                    success: true,
                     message: message,
                     _scriptDir: import.meta.url
                 })
@@ -70,6 +71,7 @@ export default class Waves {
                 resolve({
                     status:false,
                     message: e,
+                    success: false,
                     _scriptDir: import.meta.url
                 })
             }
@@ -86,13 +88,15 @@ export default class Waves {
             }
             resolve({
                 _scriptDir: import.meta.url,
-                status: true,
+                status: 'ok',
+                success: true,
                 message:await balance.json()
             })   
             }catch(e) {
                 resolve({
                     _scriptDir: import.meta.url,
                     status: false,
+                    success: false,
                     message: e
                 })
            }
@@ -113,13 +117,15 @@ export default class Waves {
                 orders = await orders.json()
                 resolve({
                     _scriptDir: import.meta.url,
-                    status: true,
+                    status: 'ok',
+                    success: true,
                     message: orders
                 })
             } catch (e) {
                 resolve({
                     _scriptDir: import.meta.url,
-                    status: false,
+                    status: 'error',
+                    success: false,
                     message: e
                 })
             }
@@ -140,7 +146,9 @@ export default class Waves {
                  default:
                      console.warn({
                          _scriptDir: import.meta.url,
-                         message: `неизвестное свойство ${property}`
+                         message: `неизвестное свойство ${property}`,
+                         success: false,
+                         status: 'unknown type'
                      })
                      break
              }
@@ -183,13 +191,15 @@ export default class Waves {
              // }
                 resolve({
                     _scriptDir: import.meta.url,
-                    status: true,
-                    message: 'test'
+                    status: 'ok',
+                    message: 'test',
+                    success: true,
                 })
             } catch (e) {
                 resolve({
                     _scriptDir: import.meta.url,
-                    status: false,
+                    status: 'not ok',
+                    success: false,
                     message: e
                 })
             }
@@ -197,35 +207,51 @@ export default class Waves {
     }
     order(view = true,property='',color = 'black', substrate={_:'order'},relation='order'  ){
         return new Promise(async (resolve, reject)=>{
-            // console.assert(false, relation,'ddddddddd', substrate, )
-            let order = {}
-            if(property === 'T') {
-                let request = {
-                    method: 'POST',
-                    body:substrate,
-                    headers: {
-                        'Content-Type': 'application/json;charset=utf-8'
-                    },
-                }
-                order = await fetch(`${config['matcher'][`${property}`][0]}/matcher/orderbook`,request)
-                resolve(await order.json())
+           try {
+               let order = {}
+               if(property === 'T') {
+                   let request = {
+                       method: 'POST',
+                       body:substrate,
+                       headers: {
+                           'Content-Type': 'application/json;charset=utf-8'
+                       },
+                   }
+                   order = await fetch(`${config['matcher'][`${property}`][0]}/matcher/orderbook`,request)
+                   resolve(await order.json())
 
-            }else if(property === 'W'){
-                let request = {
-                    method: 'POST',
-                    body:substrate,
-                    headers: {
-                        'Content-Type': 'application/json;charset=utf-8'
-                    },
-                }
-                order = await fetch(`${config['matcher'][`${property}`][0]}/matcher/orderbook`,request)
-                console.assert(false,order)
-                resolve(await order.json())
-            }else{
-                console.warn( 'укажите тип сети T - тестнет W - майннет', property)
-                resolve(false)
-            }
-
+               }else if(property === 'W'){
+                   let request = {
+                       method: 'POST',
+                       body:substrate,
+                       headers: {
+                           'Content-Type': 'application/json;charset=utf-8'
+                       },
+                   }
+                   order = await fetch(`${config['matcher'][`${property}`][0]}/matcher/orderbook`,request)
+                   console.assert(false,order)
+                   resolve({
+                       _scriptDir: import.meta.url,
+                       status: 'ok',
+                       success: true,
+                       message: await order.json()
+                   })
+               }else{
+                   resolve({
+                       _scriptDir: import.meta.url,
+                       status: 'ok',
+                       success: false,
+                       message: `укажите тип сети T - тестнет W - майннет ${ property }`
+                   })
+               }
+           } catch (e) {
+               resolve({
+                   _scriptDir: import.meta.url,
+                   status: 'ok',
+                   success: false,
+                   message: await order.json()
+               })
+           }
         })
     }
     denormalize(price, priceAssetDecimals, amountAssetDecimals){
@@ -239,13 +265,15 @@ export default class Waves {
                 balance = await balance.json()
                 resolve(Object.assign(balance, {
                     _scriptDir: import.meta.url,
-                    status: true,
+                    status: 'ok',
+                    success: true,
                     message: 'waves.mjs'
                 }))
             } catch (e) {
                 resolve(Object.assign(balance, {
                     _scriptDir: import.meta.url,
                     status: false,
+                    success: false,
                     message: e
                 }))
             }
@@ -257,13 +285,15 @@ export default class Waves {
                 let balance = await fetch(`${config[`${system.net}`][0]}/addresses/balance/${id}`)
                 balance = await balance.json()
                 resolve({
-                    status: true,
+                    status: 'ok',
+                    success: true,
                     message: balance,
                     _scriptDir: import.meta.url
                 })
             } catch (e) {
                 resolve({
-                    status: false,
+                    status: 'not ok',
+                    success: false,
                     message: e,
                     _scriptDir: import.meta.url
                 })

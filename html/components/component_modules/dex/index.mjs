@@ -34,13 +34,15 @@ export default (()=>{
                         })
                       resolve( {
                           _scriptDir: import.meta.url,
-                          status: true,
+                          status: '',
+                          success: true,
                           message: response.data
                       })
                     } catch (e) {
                         resolve({
                             _scriptDir: import.meta.url,
-                            status: false,
+                            status: '',
+                            success: false,
                             message: e
                         })
                     }
@@ -59,13 +61,15 @@ export default (()=>{
                         })
                         resolve( {
                             _scriptDir: import.meta.url,
-                            status: true,
+                            status: '',
+                            success: true,
                             message: response.data
                         })
                     } catch (e) {
                         resolve({
                             _scriptDir: import.meta.url,
                             status: false,
+                            success: false,
                             message: e
                         })
                     }
@@ -84,13 +88,15 @@ export default (()=>{
                         })
                         resolve( {
                             _scriptDir: import.meta.url,
-                            status: true,
+                            status: '',
+                            success: true,
                             message: response.data
                         })
                     } catch (e) {
                         resolve({
                             _scriptDir: import.meta.url,
-                            status: false,
+                            status: '',
+                            success: false,
                             message: e
                         })
                     }
@@ -164,7 +170,7 @@ export default (()=>{
                                                 // obj['system']['items']['eue']['substrate'].push(order)
                                             }
 
-                                            if(obj['wew'] != undefined){
+                                            if(obj['wew'] !== undefined){
                                                 obj['wew']['buy(wavesEuro)'] = {}
                                                 obj['wew']['buy(wavesEuro)']['amount'] = amount
                                                 obj['wew']['buy(wavesEuro)']['price'] = bidPrice

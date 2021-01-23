@@ -14,6 +14,7 @@ export default (()=> {
       }, '3', object.substrate.publicKey,`${object.substrate.relation}`)
       object.callback({
         status: orders.status,
+        success: orders.success,
         message: orders.message,
         _scriptDir: import.meta.url
       })

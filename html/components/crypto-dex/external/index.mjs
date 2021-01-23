@@ -24,7 +24,7 @@ function count (obj) {
     }, 1000);
 }
 export default async (v,p,c,obj,r) => {
-    let methods = (await import('/static/html/components/component_modules/dex/index.mjs'))['default']
+    let dex = (await import('/static/html/components/component_modules/dex/index.mjs'))['default']
     let relation = {}
     let waves = new Waves()
     let sys = {
@@ -61,7 +61,7 @@ export default async (v,p,c,obj,r) => {
         },
         navigation: {
             "assets": {
-                "status": false,
+                "success": false,
                 "e": 10,
                 "u": 14,
                 "w": 10
@@ -379,20 +379,20 @@ export default async (v,p,c,obj,r) => {
         relation['wew'] = undefined
         relation['wuw'] = undefined
 
-        let wavesEuro = await methods.wavesEuro({net:'W',pair:description['wavesEuro']}, obj)
-        let wavesUsd = await  methods.wavesUsd({net:'W', pair:description['wavesUsd']}, obj)
-        let euroUsd =  await  methods.eurUsd({net:'W',pair:description['euroUsd']}, obj)
-        while (!wavesEuro.status) {
+        let wavesEuro = await dex.wavesEuro({net:'W',pair:description['wavesEuro']}, obj)
+        let wavesUsd = await  dex.wavesUsd({net:'W', pair:description['wavesUsd']}, obj)
+        let euroUsd =  await  dex.eurUsd({net:'W',pair:description['euroUsd']}, obj)
+        while (!wavesEuro.success) {
             console.warn('запрос не сработал 1')
-            wavesEuro = await methods.wavesEuro({net:'W',pair:description['wavesEuro']}, obj)
+            wavesEuro = await dex.wavesEuro({net:'W',pair:description['wavesEuro']}, obj)
         }
-        while (!wavesUsd.status) {
+        while (!wavesUsd.success) {
             console.warn('запрос не сработал 2')
-            wavesUsd = await  methods.wavesUsd({net:'W', pair:description['wavesUsd']}, obj)
+            wavesUsd = await  dex.wavesUsd({net:'W', pair:description['wavesUsd']}, obj)
         }
-        while (!euroUsd.status) {
+        while (!euroUsd.success) {
             console.warn('запрос не сработал 3')
-            euroUsd = await  methods.eurUsd({net:'W',pair:description['euroUsd']}, obj)
+            euroUsd = await  dex.eurUsd({net:'W',pair:description['euroUsd']}, obj)
         }
         wavesEuro = wavesEuro.message
         wavesUsd = wavesUsd.message
@@ -403,12 +403,12 @@ export default async (v,p,c,obj,r) => {
         let priceAssetDecimalsUsd =  description['details'][`${wavesUsd['pair']['priceAsset']}`]
         let amountAssetDecimalsUsd = description['details'][`${wavesUsd['pair']['amountAsset']}`]
 
-        relation['fee']['euro'] = ( 1/methods.denormalize(wavesEuro.asks[0]['price'],priceAssetDecimalsEuro,  amountAssetDecimalsEuro))*0.003
-        relation['fee']['usd'] = ( 1/methods.denormalize(wavesUsd.asks[0]['price'],priceAssetDecimalsUsd,  amountAssetDecimalsUsd))*0.003
+        relation['fee']['euro'] = ( 1/dex.denormalize(wavesEuro.asks[0]['price'],priceAssetDecimalsEuro,  amountAssetDecimalsEuro))*0.003
+        relation['fee']['usd'] = ( 1/dex.denormalize(wavesUsd.asks[0]['price'],priceAssetDecimalsUsd,  amountAssetDecimalsUsd))*0.003
 //## item 1
         relation['description']['ueu'] = []
         relation['description']['ueu'].push(relation['u'])
-        relation = await methods.buy(wavesUsd, relation['u'], relation, 'wavesUsd');
+        relation = await dex.buy(wavesUsd, relation['u'], relation, 'wavesUsd');
         ((relation['buy(wavesUsd)'] >= sys['threshold']['amount']))
           ? (relation['description']['ueu'].push(relation['buy(wavesUsd)']),
             sys['validation']['disabled']['views'][0] = true,
@@ -417,7 +417,7 @@ export default async (v,p,c,obj,r) => {
             sys['validation']['disabled']['views'][0] = false,
             empty(obj, 'ueu'))
         if(relation['description']['ueu'] !== undefined) {
-          relation = await methods.sell(wavesEuro, relation['buy(wavesUsd)'], relation, 'wavesEuro');
+          relation = await dex.sell(wavesEuro, relation['buy(wavesUsd)'], relation, 'wavesEuro');
           ((relation['sell(wavesEuro)'] >= sys['threshold']['amount']))
             ? (relation['description']['ueu'].push(relation['sell(wavesEuro)']),
               sys['validation']['disabled']['views'][0] = true,
@@ -427,7 +427,7 @@ export default async (v,p,c,obj,r) => {
               empty(obj, 'ueu'))
         }
         if(relation['description']['ueu'] !== undefined) {
-            relation = await methods.buy(euroUsd, relation['sell(wavesEuro)'], relation, 'usdEuro');
+            relation = await dex.buy(euroUsd, relation['sell(wavesEuro)'], relation, 'usdEuro');
             ((relation['buy(usdEuro)'] >= sys['threshold']['amount']))
               ? (relation['description']['ueu'].push(relation['buy(usdEuro)']),
                 sys['validation']['disabled']['views'][0] = true,
@@ -442,7 +442,7 @@ export default async (v,p,c,obj,r) => {
             relation['transactions']['ueu'] = {
                 head: {
                     'name': 'ueu',
-                    'status': [false, false, false],
+                    'success': [false, false, false],
                     'date': {
                         'timestamp': timestamp,
                         'GMT': new Date(timestamp).toString()
@@ -459,7 +459,7 @@ export default async (v,p,c,obj,r) => {
 //## item 2
         relation['description']['eue'] = []
         relation['description']['eue'].push(relation['e'])
-        relation = await methods.buy(wavesEuro, relation['e'], relation, 'wavesEuro');
+        relation = await dex.buy(wavesEuro, relation['e'], relation, 'wavesEuro');
         ((relation['buy(wavesEuro)'] >= sys['threshold']['amount']))
           ? (relation['description']['eue'].push(relation['buy(wavesEuro)']),
             sys['validation']['disabled']['views'][1] = true,
@@ -468,7 +468,7 @@ export default async (v,p,c,obj,r) => {
             sys['validation']['disabled']['views'][1] = false,
             empty(obj,'eue'))
         if(relation['description']['eue'] !== undefined) {
-            relation = await methods.sell(wavesUsd,relation['buy(wavesEuro)'], relation, 'wavesUsd');
+            relation = await dex.sell(wavesUsd,relation['buy(wavesEuro)'], relation, 'wavesUsd');
             ((relation['sell(wavesUsd)'] >= sys['threshold']['amount']))
               ? (relation['description']['eue'].push(relation['sell(wavesUsd)']),
                 sys['validation']['disabled']['views'][1] = true,
@@ -478,7 +478,7 @@ export default async (v,p,c,obj,r) => {
                 empty(obj,'eue'))
         }
         if(relation['description']['eue'] !== undefined) {
-            relation = await methods.buy(euroUsd,relation['sell(wavesUsd)'], relation, 'euroUsd');
+            relation = await dex.buy(euroUsd,relation['sell(wavesUsd)'], relation, 'euroUsd');
             ((relation['buy(euroUsd)'] >= sys['threshold']['amount']))
               ? (relation['description']['eue'].push(relation['buy(euroUsd)']),
                 sys['validation']['disabled']['views'][1] = true,
@@ -492,7 +492,7 @@ export default async (v,p,c,obj,r) => {
             relation['transactions']['eue'] = {
                 head: {
                     'name': 'eue',
-                    'status': [false, false, false],
+                    'success': [false, false, false],
                     'date': {
                         'timestamp': timestamp,
                         'GMT': new Date(timestamp).toString()
@@ -509,14 +509,14 @@ export default async (v,p,c,obj,r) => {
 //## item 3
         relation['description']['wuw'] = []
         relation['description']['wuw'].push(relation['w'])
-        relation = await methods.buy(wavesEuro, relation['w'], relation, 'euroWaves');
+        relation = await dex.buy(wavesEuro, relation['w'], relation, 'euroWaves');
             ((relation['buy(euroWaves)'] >= sys['threshold']['amount']))
             ? (relation['description']['wuw'].push(relation['buy(euroWaves)']),
               sys['validation']['disabled']['views'][2] = true,
               obj['this'].shadowRoot.querySelector('#sbew').innerHTML = `${description['name'][`${wavesEuro.pair.priceAsset}`]}=>${description['name'][`${wavesEuro.pair.amountAsset}`]}[(${relation['w']}*)${relation['buy(euroWaves)']}]`)
             : (delete relation['description']['wuw'], sys['validation']['disabled']['views'][2] = false, empty(obj,'wuw'))
         if(relation['description']['wuw'] !== undefined) {
-            relation = await methods.sell(euroUsd,relation['buy(euroWaves)'], relation, 'euroUsd');
+            relation = await dex.sell(euroUsd,relation['buy(euroWaves)'], relation, 'euroUsd');
             ((relation['sell(euroUsd)'] >= sys['threshold']['amount']))
               ? (relation['description']['wuw'].push(relation['sell(euroUsd)']),
                 sys['validation']['disabled']['views'][2] = true,
@@ -524,7 +524,7 @@ export default async (v,p,c,obj,r) => {
               : (delete relation['description']['wuw'], sys['validation']['disabled']['views'][2] = false, empty(obj,'wuw'))
         }
         if(relation['description']['wuw'] !== undefined) {
-            relation = await methods.buy(wavesUsd,relation['sell(euroUsd)'], relation, 'wavesUsd');
+            relation = await dex.buy(wavesUsd,relation['sell(euroUsd)'], relation, 'wavesUsd');
             ((relation['buy(wavesUsd)'] >= sys['threshold']['amount']))
               ? (relation['description']['wuw'].push(relation['buy(wavesUsd)']),
                 sys['validation']['disabled']['views'][2] = true,
@@ -536,7 +536,7 @@ export default async (v,p,c,obj,r) => {
             relation['transactions']['wuw'] = {
                 head: {
                     'name': 'wuw',
-                    'status': [false, false, false],
+                    'success': [false, false, false],
                     'date': {
                         'timestamp': timestamp,
                         'GMT': new Date(timestamp).toString()
@@ -553,7 +553,7 @@ export default async (v,p,c,obj,r) => {
 //## item 4
         relation['description']['wew'] = []
         relation['description']['wew'].push(relation['w'])
-        relation = await methods.buy(wavesUsd, relation['w'], relation, 'usdWaves');
+        relation = await dex.buy(wavesUsd, relation['w'], relation, 'usdWaves');
         ((relation['buy(usdWaves)'] >= sys['threshold']['amount']))
           ? (relation['description']['wew'].push(relation['buy(usdWaves)']),
             sys['validation']['disabled']['views'][3] = true,
@@ -563,7 +563,7 @@ export default async (v,p,c,obj,r) => {
             empty(obj, 'wew'));
 
         if(relation['description']['wew'] !== undefined) {
-            relation = await methods.sell(euroUsd,relation['buy(usdWaves)'], relation, 'usdEuro');
+            relation = await dex.sell(euroUsd,relation['buy(usdWaves)'], relation, 'usdEuro');
             ((relation['sell(usdEuro)'] >= sys['threshold']['amount']))
               ? (relation['description']['wew'].push(relation['sell(usdEuro)']),
                 sys['validation']['disabled']['views'][3] = true,
@@ -573,7 +573,7 @@ export default async (v,p,c,obj,r) => {
                 empty(obj, 'wew'));
         }
         if(relation['description']['wew'] !== undefined) {
-            relation = await methods.buy(wavesEuro,relation['sell(usdEuro)'], relation, 'wavesEuro');
+            relation = await dex.buy(wavesEuro,relation['sell(usdEuro)'], relation, 'wavesEuro');
             ((relation['buy(wavesEuro)'] >= sys['threshold']['amount']))
               ? (relation['description']['wew'].push(relation['buy(wavesEuro)']),
                 sys['validation']['disabled']['views'][3] = true,
@@ -587,7 +587,7 @@ export default async (v,p,c,obj,r) => {
             relation['transactions']['wew'] = {
                 head: {
                     'name': 'wew',
-                    'status': [false, false, false],
+                    'success': [false, false, false],
                     'date': {
                         'timestamp': timestamp,
                         'GMT': new Date(timestamp).toString()
@@ -616,9 +616,9 @@ export default async (v,p,c,obj,r) => {
             property:'получаем ордера',
             publicKey:config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
             relation:'T'
-        },'/matcher/orderbook/{publicKey}')
+        },'/matcher/orderbook/{publicKey}');
         sys.orders = orders
-        if(orders.status) {
+        if(orders.success) {
             for(let i =0; i < orders.message.length; i++) {
             }
             console.log('active orders:', orders.message)
@@ -649,15 +649,17 @@ export default async (v,p,c,obj,r) => {
     function setTask(v,p,c,s,r) {
         return new Promise(async function (resolve, reject) {
             let req = await task.set(v,p,c,s,r);
-            (req.status)
+            (req.success)
               ? (sys.active.push(s),
                 resolve({
-                    status: true,
+                    status: 'ok',
+                    success: true,
                     message: req.message,
                     _scriptDir: import.meta.url
                 }))
               : (resolve({
-                  status: false,
+                  status: 'not ok',
+                  success: false,
                   message: req.message,
                   _scriptDir: import.meta.url
               }))

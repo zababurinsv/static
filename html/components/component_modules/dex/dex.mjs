@@ -28,7 +28,8 @@ export default {
                                     if (!response.ok) {
                                         resolve({
                                             _scriptDir: import.meta.url,
-                                            status: false,
+                                            status: 'not ok',
+                                            success: false,
                                             message: response.status
                                         })
                                     } else {
@@ -37,7 +38,8 @@ export default {
                                 } catch (e) {
                                     resolve({
                                         _scriptDir: import.meta.url,
-                                        status: false,
+                                        status: '',
+                                        success: false,
                                         message: e
                                     })
                                 }
@@ -91,7 +93,8 @@ export default {
                                     if (!response.ok) {
                                         reject({
                                             _scriptDir: import.meta.url,
-                                            status: false,
+                                            status: '',
+                                            success: false,
                                             message: response.status
                                         })
                                     } else {
@@ -101,7 +104,8 @@ export default {
                                 } catch (e) {
                                     reject({
                                         _scriptDir: import.meta.url,
-                                        status: false,
+                                        status: '',
+                                        success: false,
                                         message: e
                                     })
                                 }
@@ -123,7 +127,8 @@ export default {
                                 if (!response.ok) {
                                     reject({
                                         _scriptDir: import.meta.url,
-                                        status: false,
+                                        status: '',
+                                        success: false,
                                         message: response.status
                                     })
                                 } else {
@@ -132,7 +137,8 @@ export default {
                             } catch (e) {
                                 reject({
                                     _scriptDir: import.meta.url,
-                                    status: false,
+                                    status: '',
+                                    success: false,
                                     message: e
                                 })
                             }
