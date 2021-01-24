@@ -142,7 +142,6 @@ export default (()=> {
         })
       }
     } catch (e) {
-      console.assert(false, e)
       object.callback({
         status: 'no ok',
         success: false,

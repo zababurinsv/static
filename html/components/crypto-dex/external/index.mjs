@@ -658,16 +658,20 @@ export default async (v,p,c,obj,r) => {
         }
 
         if(sys.validation.delete.order) {
-            console.assert(false, orders)
             if(!isEmpty(orders.message)) {
                 let timestamp = config['timestamp']()
+                let signature = await task.set(true,'T','8',{
+                    seed: config['accountsStore']['accountGroups']['T']['clients'][3]['seed'],
+                    publicKey: config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
+                    timestamp: timestamp.now
+                },'/assets/signature/{assetId}');
                 let object = JSON.stringify({
                     sender: config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
                     timestamp: timestamp.now,
                     signature: signature,
                     orderId: null
                 })
-                setTask(true, 'T','7',object,'/matcher/orderbook/cancel')
+               let cancelOrder = await setTask(true, 'T','7',object,'/matcher/orderbook/cancel')
             }
         }
     function setTask(v,p,c,s,r) {
