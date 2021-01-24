@@ -56,21 +56,48 @@ export default (()=> {
 
   task.get(true, 'await', '5', '','/matcher/orderbook/set',async (object)=>{
     try {
+      console.assert(false, object.substrate.head.name)
       let keys = Object.keys(object.substrate.description)
-      for( let item of keys) {
-        switch (order) {
-          case 'buy(euroWaves)':
-            let buy_euroWaves = await waves.order(true, object['property'] , '3', order, object['relation'])
-            break
-          case 'sell(euroUsd)':
-            let sell_euroUsd = await waves.order(true, object['property'] , '3', order, object['relation'])
-            break
-          case 'buy(wavesUsd)':
-            let buy_wavesUsd = await waves.order(true, object['property'] , '3', order, object['relation'])
-            break
-          default:
-            break
-        }
+      switch (object.substrate.description) {
+        case 'wuw':
+          for( let item of keys) {
+            if(item === 'buy(euroWaves)') {
+              let buy_euroWaves = await waves.order(true, object['property'] , '3', order, object['relation'])
+            } else if( item === 'sell(euroUsd)' ) {
+              let sell_euroUsd = await waves.order(true, object['property'] , '3', order, object['relation'])
+            } else if( item === 'buy(wavesUsd)' ) {
+              let buy_wavesUsd = await waves.order(true, object['property'] , '3', order, object['relation'])
+            } else {
+              object.callback({
+                  status: `неизвестный тип ${item}`,
+                  success: false,
+                  message: {
+                    buy_euroWaves: buy_euroWaves,
+                    sell_euroUsd: sell_euroUsd,
+                    buy_wavesUsd: buy_wavesUsd
+                  },
+                  _scriptDir: import.meta.url
+              })
+            }
+          }
+          (buy_euroWaves.success)
+          ? ''
+          : ''
+          (sell_euroUsd.success)
+          ? ''
+          : ''
+          (buy_wavesUsd.success)
+          ? ''
+          : ''
+          break
+        default:
+          object.callback({
+            status: 'no true',
+            success: false,
+            message: `неизвестный тип ${object.substrate.description}`,
+            _scriptDir: import.meta.url
+          })
+          break
       }
       // console.assert(false, keys)
       // for(let order of object.substrate.transactions) {
@@ -100,13 +127,15 @@ export default (()=> {
       // item['keys'] = Object.keys(item['orders'])
       // item['id'] =id.join('-')
       object.callback({
-        status: true,
+        status: 'ok',
+        success: true,
         message: 'test',
         _scriptDir: import.meta.url
       })
     } catch (e) {
       object.callback({
-        status: false,
+        status: 'no ok',
+        success: false,
         message: e,
         _scriptDir: import.meta.url
       })
