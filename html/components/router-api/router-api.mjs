@@ -1,4 +1,5 @@
-import modules from '/static/html/components/router-api/external/index.mjs'
+import api from '/static/html/components/router-api/external/index.mjs'
+import modules from '/static/html/components/router-api/external/modules.mjs'
 customElements.define('router-api',
   class extends HTMLElement {
       static get observedAttributes () {
