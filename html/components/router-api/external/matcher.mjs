@@ -56,11 +56,27 @@ export default (()=> {
 
   task.get(true, 'await', '5', '','/matcher/orderbook/set',async (object)=>{
     try {
-      // console.assert(false, object)
+      let keys = Object.keys(object.substrate.description)
+      for( let item of keys) {
+        switch (order) {
+          case 'buy(euroWaves)':
+            let buy_euroWaves = await waves.order(true, object['property'] , '3', order, object['relation'])
+            break
+          case 'sell(euroUsd)':
+            let sell_euroUsd = await waves.order(true, object['property'] , '3', order, object['relation'])
+            break
+          case 'buy(wavesUsd)':
+            let buy_wavesUsd = await waves.order(true, object['property'] , '3', order, object['relation'])
+            break
+          default:
+            break
+        }
+      }
+      // console.assert(false, keys)
       // for(let order of object.substrate.transactions) {
       //
       // }
-      // let order = await waves.order(true, object['property'] , '3', order, object['relation'])
+      //
       // let item = {}
       // let id = []
       // item['id'] = ''

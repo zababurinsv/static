@@ -446,10 +446,9 @@ export default async (v,p,c,obj,r) => {
                     'date': {
                         'timestamp': timestamp,
                         'GMT': new Date(timestamp).toString()
-                    },
-                    'roadmap': relation['ueu']
+                    }
                 },
-                description: relation['description']['ueu'],
+                description: relation['ueu'],
                 assets: assets
             }
         }
@@ -496,10 +495,9 @@ export default async (v,p,c,obj,r) => {
                     'date': {
                         'timestamp': timestamp,
                         'GMT': new Date(timestamp).toString()
-                    },
-                    'roadmap': relation['eue']
+                    }
                 },
-                description: relation['description']['eue'],
+                description: relation['eue'],
                 assets: assets
             }
         }
@@ -540,10 +538,9 @@ export default async (v,p,c,obj,r) => {
                     'date': {
                         'timestamp': timestamp,
                         'GMT': new Date(timestamp).toString()
-                    },
-                    'roadmap': relation['wuw']
+                    }
                 },
-                description: relation['description']['wuw'],
+                description: relation['wuw'],
                 assets: assets
             }
         }
@@ -592,9 +589,8 @@ export default async (v,p,c,obj,r) => {
                         'timestamp': timestamp,
                         'GMT': new Date(timestamp).toString()
                     },
-                    'roadmap': relation['wew']
                 },
-                description: relation['description']['wew'],
+                description: relation['wew'],
                 assets: assets
             }
         }
@@ -626,13 +622,11 @@ export default async (v,p,c,obj,r) => {
             console.warn(orders.message)
         }
         sys.validation.set.order = true
-        sys.validation.delete.order = true
-        if(sys.validation.set.order) {
-            // console.assert(false, sys.relation.transactions)
-            // setTask(true, 'T', 'red', sys.relation.transactions.ueu, '/matcher/orderbook/set')
-        }
+        sys.validation.delete.order = false
 
-        // console.log('~~~~~~~~>>>', sys.orders)
+        if(sys.validation.set.order) {
+            setTask(true, 'T', 'red', sys.relation.transactions.wuw, '/matcher/orderbook/set')
+        }
 
         if(sys.validation.delete.order) {
             if(!isEmpty(orders.message)) {
@@ -645,7 +639,6 @@ export default async (v,p,c,obj,r) => {
                 setTask(true, 'T','7',object,'/matcher/orderbook/cancel')
             }
         }
-
     function setTask(v,p,c,s,r) {
         return new Promise(async function (resolve, reject) {
             let req = await task.set(v,p,c,s,r);
@@ -683,7 +676,7 @@ export default async (v,p,c,obj,r) => {
             "1": () => {
                 if(relation['description']['eue'][0] - relation['description']['eue'][3] < 0){
                     setTask(true, 'T', 'red', sys.relation.transactions.eue, '/matcher/orderbook/set')
-                    obj['this'].shadowRoot.querySelector('#total').insertAdjacentHTML('beforeend',`<p>${JSON.stringify(relation['transactions']['eue'], null, 2)}</p>`)
+                    obj['this'].shadowRoot.querySelector('#total').insertAdjacentHTML('beforeend',`<p>${JSON.stringify(relation['description']['eue'], null, 2)}</p>`)
                     obj['this'].shadowRoot.querySelector('div.fbwe').style.background ='#f476b673'
                     obj['this'].shadowRoot.querySelector('div.fswu').style.background ='#f476b673'
                     obj['this'].shadowRoot.querySelector('div.fbeu').style.background ='#f476b673'
@@ -696,7 +689,7 @@ export default async (v,p,c,obj,r) => {
         "2": () => {
             if(relation['description']['wuw'][0] - relation['description']['wuw'][3] < 0){
                 setTask(true, 'T', 'red', sys.relation.transactions.wuw, '/matcher/orderbook/set')
-                obj['this'].shadowRoot.querySelector('#total').insertAdjacentHTML('beforeend',`<p>${JSON.stringify(relation['transactions']['wuw'], null, 2)}</p>`)
+                obj['this'].shadowRoot.querySelector('#total').insertAdjacentHTML('beforeend',`<p>${JSON.stringify(relation['description']['wuw'], null, 2)}</p>`)
                 obj['this'].shadowRoot.querySelector('div.sbew').style.background ='#f476b673'
                 obj['this'].shadowRoot.querySelector('div.sseu').style.background ='#f476b673'
                 obj['this'].shadowRoot.querySelector('div.sbwu').style.background ='#f476b673'
@@ -709,7 +702,7 @@ export default async (v,p,c,obj,r) => {
         "3": () => {
             if(relation['description']['wew'][0] - relation['description']['wew'][3] < 0){
                 setTask(true, 'T', 'red', sys.relation.transactions.wew, '/matcher/orderbook/set')
-                obj['this'].shadowRoot.querySelector('#total').insertAdjacentHTML('beforeend',`<p>${JSON.stringify(relation['transactions']['wew'], null, 2)}</p>`)
+                obj['this'].shadowRoot.querySelector('#total').insertAdjacentHTML('beforeend',`<p>${JSON.stringify(relation['description']['wew'], null, 2)}</p>`)
                 obj['this'].shadowRoot.querySelector('div.sbuw').style.background ='#f476b673'
                 obj['this'].shadowRoot.querySelector('div.ssue').style.background ='#f476b673'
                 obj['this'].shadowRoot.querySelector('div.sbwe').style.background ='#f476b673'
