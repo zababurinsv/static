@@ -57,7 +57,11 @@ export default {
     W:['https://matcher.waves.exchange']
   },
   timestamp: () => {
-    return Date.now()
+    let timestamp = Date.now()
+    return {
+      now: timestamp,
+      month: timestamp + 2592000000
+    }
   },
   WAVES: 10 ** 8,
   price: 10 ** 6,
@@ -105,7 +109,7 @@ export default {
         },{
           chainId: "T",
           isScripted: false,
-          label: "cooper",
+          label: "diana",
           seed: "tone leg hidden system tenant aware desk clap body robust debris puppy ecology scan runway thing second metal cousin ocean liberty banner garment rice feel",
           wavesBalance: 0,
           address: "3MxxT4EmVq5L54bNGVaNm8nRTAvTnDYVS4E",

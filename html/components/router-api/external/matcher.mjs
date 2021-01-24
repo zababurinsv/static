@@ -1,6 +1,7 @@
 import Waves from '/static/html/components/component_modules/waves/index.mjs'
 import task from '/static/html/components/component_modules/heap/index.mjs'
 import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
+import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 let waves = new Waves
 
 export default (()=> {
@@ -20,10 +21,9 @@ export default (()=> {
       })
     })
 
-  task.get(true, 'await', '5', '','/matcher/orderbook',async (event)=>{
-    let object = event;
-    let order = await waves.order(true, object.property, '3', object.substrate.substrate, object.substrate.relation)
-    object.callback(order)
+  task.get(true, 'await', '5', '','/matcher',async (object)=>{
+    let publickKey = await waves.matcher(true, object.property, '3', object.substrate.substrate, object.substrate.relation)
+    object.callback(publickKey)
   })
 
   task.get(true, 'await', '5', '','/matcher/orderbook/cancel', async (object) => {
@@ -54,41 +54,59 @@ export default (()=> {
     object.callback(response)
   })
 
-  task.get(true, 'await', '5', '','/matcher/orderbook/set',async (object)=>{
+  function matcher_orderbook(object, item, assets, orderType) {
+    return {
+      assets: {
+        amountAsset: object.substrate.assets[object.property][`${assets[0]}`],
+        priceAsset:  object.substrate.assets[object.property][`${assets[1]}`]
+      },
+      matcherPublicKey: object.substrate.head.matcherPublicKey,
+      amount: waves.amountNormalize(object.substrate.description[item].amount, object.substrate.decimals[`${assets[0]}`]),
+      price: waves.normalize(object.substrate.description[item].price,object.substrate.decimals[`${assets[0]}`],object.substrate.decimals[`${assets[1]}`]),
+      orderType:orderType
+    }
+  }
+  task.get(true, 'await', '5', '','/matcher/orderbook',async (object) => {
     try {
-      console.assert(false, object.substrate.head.name)
       let keys = Object.keys(object.substrate.description)
-      switch (object.substrate.description) {
+      switch (object.substrate.head.name) {
         case 'wuw':
+          let set = {
+            accept: [],
+            abort: []
+          }
+          let buy__euroWaves = {}
+          let sell__euroUsd = {}
+          let buy__wavesUsd = {}
           for( let item of keys) {
             if(item === 'buy(euroWaves)') {
-              let buy_euroWaves = await waves.order(true, object['property'] , '3', order, object['relation'])
+              buy__euroWaves = await waves.order(true, object['property'] , '3',matcher_orderbook(object, item, ['eth', 'waves'], 'buy'), object['relation'])
             } else if( item === 'sell(euroUsd)' ) {
-              let sell_euroUsd = await waves.order(true, object['property'] , '3', order, object['relation'])
+              sell__euroUsd = await waves.order(true, object['property'] , '3',matcher_orderbook(object, item, ['usdt', 'eth'], 'sell'), object['relation'])
             } else if( item === 'buy(wavesUsd)' ) {
-              let buy_wavesUsd = await waves.order(true, object['property'] , '3', order, object['relation'])
+              buy__wavesUsd =  await waves.order(true, object['property'] , '3',matcher_orderbook(object, item, ['usdt', 'waves'], 'buy'), object['relation'])
             } else {
               object.callback({
                   status: `неизвестный тип ${item}`,
                   success: false,
                   message: {
-                    buy_euroWaves: buy_euroWaves,
-                    sell_euroUsd: sell_euroUsd,
-                    buy_wavesUsd: buy_wavesUsd
+                    buy__euroWaves: buy__euroWaves,
+                    sell__euroUsd: sell__euroUsd,
+                    buy__wavesUsd: buy__wavesUsd
                   },
                   _scriptDir: import.meta.url
               })
             }
           }
-          (buy_euroWaves.success)
-          ? ''
-          : ''
-          (sell_euroUsd.success)
-          ? ''
-          : ''
-          (buy_wavesUsd.success)
-          ? ''
-          : ''
+          (buy__euroWaves.success)
+          ? set.accept.push(buy__euroWaves)
+          : set.abort.push(buy__euroWaves);
+          (sell__euroUsd.success)
+          ? set.accept.push(sell__euroUsd)
+          : set.abort.push(sell__euroUsd);
+          (buy__wavesUsd.success)
+          ? set.accept.push(buy__wavesUsd)
+          : set.abort.push(buy__wavesUsd);
           break
         default:
           object.callback({
@@ -99,39 +117,28 @@ export default (()=> {
           })
           break
       }
-      // console.assert(false, keys)
-      // for(let order of object.substrate.transactions) {
-      //
-      // }
-      //
-      // let item = {}
-      // let id = []
-      // item['id'] = ''
-      // item['orders'] = {}
-      // item['keys'] = {}
-      // console.assert(false,object )
-      // console.assert(false, {
-      //   order:order,
-      //   object:object
-      // })
-      // for(let order of object['substrate']) {
-      //
-      //   if(order['_'] === 'error'){
-      //     id.push('error')
-      //     item['orders'][`error-${item['orders']['length']}`]
-      //   }else{
-      //     item['orders'][`${order.message.id}`] = order
-      //     id.push(order.message.id)
-      //   }
-      // }
-      // item['keys'] = Object.keys(item['orders'])
-      // item['id'] =id.join('-')
-      object.callback({
-        status: 'ok',
-        success: true,
-        message: 'test',
-        _scriptDir: import.meta.url
-      })
+      if(isEmpty(set.abort)) {
+        object.callback({
+          status: 'ok',
+          success: true,
+          message: {
+            id: '',
+            case: set.accept
+          },
+          _scriptDir: import.meta.url
+        })
+      } else {
+        object.callback({
+          status: 'set_false',
+          success: true,
+          message: {
+            id: '',
+            true: set.accept,
+            false: set.abort
+          },
+          _scriptDir: import.meta.url
+        })
+      }
     } catch (e) {
       object.callback({
         status: 'no ok',

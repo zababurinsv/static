@@ -43,6 +43,7 @@ export default async (v,p,c,obj,r) => {
                 "amount": true
             },
             "output": {
+                "prod": false,
                 "amount": true
             },
             "delete": {
@@ -86,9 +87,14 @@ export default async (v,p,c,obj,r) => {
         warn: {
             "s/b": 'нет доступных пар'
         },
+        matcher: {
+            key: {
+              "T":  (await task.set(true,'T','8',{},'/matcher')).message.data,
+              "W":  (await task.set(true,'W','8',{},'/matcher')).message.data,
+            }
+        },
         active: []
     }
-
     function empty(obj,type){
         switch (type) {
             case 'ueu':
@@ -318,17 +324,27 @@ export default async (v,p,c,obj,r) => {
         details:{},
         name:{},
         fee:{},
-        assetId:[assets.W.eth,assets.W.usdt]
+        assetId:[assets.W.eth,assets.W.usdt],
+        T: {
+            "usdt": 6,
+            "waves": 8,
+            "eth":8
+        }
     }
     sys.assets = assets
     let itemDetails = {}
-    for(let item of description['assetId']){
+    for(let item of description['assetId']) {
         itemDetails[`${item}`] = await task.set(true,'W','8',item,'/assets/details/{assetId}')
         description['details'][`${item}`] = itemDetails[`${item}`]['decimals']
         description['name'][`${item}`] = itemDetails[`${item}`]['name']
     }
     description['details'][`WAVES`] = 8
     description['name'][`WAVES`] = `WAVES`
+    if(!sys.validation.output.prod) {
+        description.T.eth =   (await task.set(true,'T','8',assets.T.eth,'/assets/details/{assetId}')).decimals
+        description.T.usdt =  (await task.set(true,'T','8',assets.T.usdt,'/assets/details/{assetId}')).decimals
+        description.T.waves = 8
+    }
     count(obj)
     for(let key in description) {
         switch (key) {
@@ -441,14 +457,16 @@ export default async (v,p,c,obj,r) => {
             let timestamp =  Date.now();
             relation['transactions']['ueu'] = {
                 head: {
-                    'name': 'ueu',
+                    "name": 'ueu',
                     'success': [false, false, false],
+                    "matcherPublicKey": sys.matcher.key.T,
                     'date': {
                         'timestamp': timestamp,
                         'GMT': new Date(timestamp).toString()
                     }
                 },
                 description: relation['ueu'],
+                decimals: (!sys.validation.output.prod)?description.T:'надо подставить значения',
                 assets: assets
             }
         }
@@ -491,6 +509,7 @@ export default async (v,p,c,obj,r) => {
             relation['transactions']['eue'] = {
                 head: {
                     'name': 'eue',
+                    "matcherPublicKey": sys.matcher.key.T,
                     'success': [false, false, false],
                     'date': {
                         'timestamp': timestamp,
@@ -498,6 +517,7 @@ export default async (v,p,c,obj,r) => {
                     }
                 },
                 description: relation['eue'],
+                decimals: (!sys.validation.output.prod)?description.T:'надо подставить значения',
                 assets: assets
             }
         }
@@ -534,6 +554,7 @@ export default async (v,p,c,obj,r) => {
             relation['transactions']['wuw'] = {
                 head: {
                     'name': 'wuw',
+                    "matcherPublicKey": sys.matcher.key.T,
                     'success': [false, false, false],
                     'date': {
                         'timestamp': timestamp,
@@ -541,6 +562,7 @@ export default async (v,p,c,obj,r) => {
                     }
                 },
                 description: relation['wuw'],
+                decimals: (!sys.validation.output.prod)?description.T:'надо подставить значения',
                 assets: assets
             }
         }
@@ -583,14 +605,16 @@ export default async (v,p,c,obj,r) => {
             let timestamp =  Date.now();
             relation['transactions']['wew'] = {
                 head: {
-                    'name': 'wew',
-                    'success': [false, false, false],
-                    'date': {
-                        'timestamp': timestamp,
-                        'GMT': new Date(timestamp).toString()
-                    },
+                    "name": 'wew',
+                    "matcherPublicKey": sys.matcher.key.T,
+                    "success": [false, false, false],
+                    "date": {
+                        "timestamp": timestamp,
+                        "GMT": new Date(timestamp).toString()
+                    }
                 },
                 description: relation['wew'],
+                decimals: (!sys.validation.output.prod)?description.T:'надо подставить значения',
                 assets: assets
             }
         }
@@ -602,10 +626,10 @@ export default async (v,p,c,obj,r) => {
         let signature = await task.set(true,'T','8',{
             seed: config['accountsStore']['accountGroups']['T']['clients'][3]['seed'],
             publicKey: config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
-            timestamp: timestamp
+            timestamp: timestamp.now
         },'/assets/signature/{assetId}');
         let orders = await  task.set(true, {
-            timestamp:timestamp,
+            timestamp:timestamp.now,
             signature:signature,
             type:'T'
         },'7',{
@@ -625,14 +649,21 @@ export default async (v,p,c,obj,r) => {
         sys.validation.delete.order = false
 
         if(sys.validation.set.order) {
-            setTask(true, 'T', 'red', sys.relation.transactions.wuw, '/matcher/orderbook/set')
+            // let timestamp = config['timestamp']();
+            // let signature = await task.set(true,'T','8',{
+            //     seed: config['accountsStore']['accountGroups']['T']['clients'][3]['seed'],
+            //     publicKey: config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
+            //     timestamp:  timestamp.now
+            // },'/assets/signature/{assetId}');
+          let order = await setTask(true, 'T', 'red', sys.relation.transactions.wuw, '/matcher/orderbook')
         }
 
         if(sys.validation.delete.order) {
             if(!isEmpty(orders.message)) {
+                let timestamp = config['timestamp']()
                 let object = JSON.stringify({
                     sender: config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
-                    timestamp: timestamp,
+                    timestamp: timestamp.now,
                     signature: signature,
                     orderId: null
                 })
@@ -662,7 +693,7 @@ export default async (v,p,c,obj,r) => {
     let views = {
             "0": () => {
                 if(relation['description']['ueu'][0] - relation['description']['ueu'][3] < 0){
-                    setTask(true, 'T', 'red', sys.relation.transactions.ueu, '/matcher/orderbook/set')
+                    setTask(true, 'T', 'red', sys.relation.transactions.ueu, '/matcher/orderbook')
                     obj['this'].shadowRoot.querySelector('#total').insertAdjacentHTML('beforeend',`<p>${JSON.stringify(relation['description']['ueu'], null, 2)}</p>`)
                     obj['this'].shadowRoot.querySelector('div.fbwu').style.background ='#f476b673'
                     obj['this'].shadowRoot.querySelector('div.fswe').style.background ='#f476b673'
@@ -675,7 +706,7 @@ export default async (v,p,c,obj,r) => {
             },
             "1": () => {
                 if(relation['description']['eue'][0] - relation['description']['eue'][3] < 0){
-                    setTask(true, 'T', 'red', sys.relation.transactions.eue, '/matcher/orderbook/set')
+                    setTask(true, 'T', 'red', sys.relation.transactions.eue, '/matcher/orderbook')
                     obj['this'].shadowRoot.querySelector('#total').insertAdjacentHTML('beforeend',`<p>${JSON.stringify(relation['description']['eue'], null, 2)}</p>`)
                     obj['this'].shadowRoot.querySelector('div.fbwe').style.background ='#f476b673'
                     obj['this'].shadowRoot.querySelector('div.fswu').style.background ='#f476b673'
@@ -688,7 +719,7 @@ export default async (v,p,c,obj,r) => {
             },
         "2": () => {
             if(relation['description']['wuw'][0] - relation['description']['wuw'][3] < 0){
-                setTask(true, 'T', 'red', sys.relation.transactions.wuw, '/matcher/orderbook/set')
+                setTask(true, 'T', 'red', sys.relation.transactions.wuw, '/matcher/orderbook')
                 obj['this'].shadowRoot.querySelector('#total').insertAdjacentHTML('beforeend',`<p>${JSON.stringify(relation['description']['wuw'], null, 2)}</p>`)
                 obj['this'].shadowRoot.querySelector('div.sbew').style.background ='#f476b673'
                 obj['this'].shadowRoot.querySelector('div.sseu').style.background ='#f476b673'
@@ -701,7 +732,7 @@ export default async (v,p,c,obj,r) => {
         },
         "3": () => {
             if(relation['description']['wew'][0] - relation['description']['wew'][3] < 0){
-                setTask(true, 'T', 'red', sys.relation.transactions.wew, '/matcher/orderbook/set')
+                setTask(true, 'T', 'red', sys.relation.transactions.wew, '/matcher/orderbook')
                 obj['this'].shadowRoot.querySelector('#total').insertAdjacentHTML('beforeend',`<p>${JSON.stringify(relation['description']['wew'], null, 2)}</p>`)
                 obj['this'].shadowRoot.querySelector('div.sbuw').style.background ='#f476b673'
                 obj['this'].shadowRoot.querySelector('div.ssue').style.background ='#f476b673'

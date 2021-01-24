@@ -12,6 +12,7 @@ let system = {
 export default class Waves {
     constructor(...args) {
         this.bank = this.bank.bind(this)
+        this.matcher = this.matcher.bind(this)
         this.balance = this.balance.bind(this)
         this.wallet = this.wallet.bind(this)
         this.faucet = this.faucet.bind(this)
@@ -26,6 +27,31 @@ export default class Waves {
         this.cancelAllOrders = this.cancelAllOrders.bind(this)
         this.getOrders = this.getOrders.bind(this)
         this.UserException = this.UserException.bind(this)
+        this.amountNormalize = this.amountNormalize.bind(this)
+    }
+    matcher(view = true,property='T',color = 'black', substrate={ },relation='matcher'  ) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let request = {
+                    method: 'get',
+                    url: `${config['matcher'][`${property}`][0]}/matcher`,
+                }
+                let  key = await axios(request)
+                resolve({
+                    status: 'ok',
+                    success: true,
+                    message: key,
+                    _scriptDir: import.meta.url
+                })
+            } catch (e) {
+                resolve({
+                    status:false,
+                    message: e,
+                    success: false,
+                    _scriptDir: import.meta.url
+                })
+            }
+        })
     }
     UserException(message) {
         this.message = message;
@@ -134,129 +160,82 @@ export default class Waves {
     cancelAllOrders(view = true,property='',color = 'black', substrate={_:'order'},relation='order'  ){
         return new Promise(async (resolve, reject)=>{
          try {
-             // let order = {}
-             let url = ''
-             switch (property) {
-                 case 'T':
-                     url = `${config['matcher'][`${property}`][0]}/matcher/orderbook/cancel`
-                     break
-                 case 'W':
-                     url = `${config['matcher'][`${property}`][0]}/matcher/orderbook/cancel`
-                     break
-                 default:
-                     console.warn({
-                         _scriptDir: import.meta.url,
-                         message: `неизвестное свойство ${property}`,
-                         success: false,
-                         status: 'unknown type'
-                     })
-                     break
+             let request = {
+                 method: 'post',
+                 url: `${config['matcher'][`${property}`][0]}/matcher/orderbook/cancel`,
+                 data:substrate,
+                 headers: {
+                     'Content-Type': 'application/json;charset=utf-8'
+                 },
              }
-             // console.assert(false, substrate)
-             // let cancel = axios({
-             //     method: 'post',
-             //     url: url,
-             //     data: substrate
-             // });
-             // await axios
-             // if(property === 'T'){
-
-                 let request = {
-                     method: 'post',
-                     url: `${config['matcher'][`${property}`][0]}/matcher/orderbook/cancel`,
-                     data:substrate,
-                     headers: {
-                         'Content-Type': 'application/json;charset=utf-8'
-                     },
-                 }
-                 let  order = await axios(request)
-                 console.assert(false, order)
-
-                 // order = await axios.post('/user', request)
-                 //   .then(function (response) {
-                 //       console.log(response);
-                 //   })
-                 //   .catch(function (error) {
-                 //       console.log(error);
-                 //   });
-                 // order = await fetch(request)
-                 // resolve(await order.json())
-
-             // } else if(property === 'W') {
-
-
-             // } else {
-             //     console.warn( 'укажите тип сети T - тестнет W - майннет')
-             //     resolve(false)
-             // }
-                resolve({
-                    _scriptDir: import.meta.url,
-                    status: 'ok',
-                    message: 'test',
-                    success: true,
-                })
-            } catch (e) {
+             let  order = await axios(request)
+             resolve({
+                _scriptDir: import.meta.url,
+                status: 'ok',
+                message: order.data,
+                success: true,
+             })
+             } catch (e) {
                 resolve({
                     _scriptDir: import.meta.url,
                     status: 'not ok',
                     success: false,
                     message: e
                 })
-            }
+             }
         })
     }
     order(view = true,property='',color = 'black', substrate={_:'order'},relation='order'  ){
         return new Promise(async (resolve, reject)=>{
-           try {
-               let order = {}
-               if(property === 'T') {
-                   let request = {
-                       method: 'POST',
-                       body:substrate,
-                       headers: {
-                           'Content-Type': 'application/json;charset=utf-8'
-                       },
-                   }
-                   order = await fetch(`${config['matcher'][`${property}`][0]}/matcher/orderbook`,request)
-                   resolve(await order.json())
+            try {
+                console.assert(false, substrate.orderType)
+                let order = {
+                    amount: substrate.amount,
+                    price: substrate.price,
+                    priceAsset: substrate.assets.priceAsset,
+                    amountAsset: substrate.assets.amountAsset,
+                    matcherPublicKey: substrate.matcherPublicKey,
+                    orderType: substrate.orderType
+                }
+                order = waves.order(order, config['accountsStore']['accountGroups']['T']['clients'][3]['seed'])
 
-               }else if(property === 'W'){
-                   let request = {
-                       method: 'POST',
-                       body:substrate,
-                       headers: {
-                           'Content-Type': 'application/json;charset=utf-8'
-                       },
-                   }
-                   order = await fetch(`${config['matcher'][`${property}`][0]}/matcher/orderbook`,request)
-                   console.assert(false,order)
-                   resolve({
-                       _scriptDir: import.meta.url,
-                       status: 'ok',
-                       success: true,
-                       message: await order.json()
-                   })
-               }else{
-                   resolve({
-                       _scriptDir: import.meta.url,
-                       status: 'ok',
-                       success: false,
-                       message: `укажите тип сети T - тестнет W - майннет ${ property }`
-                   })
-               }
-           } catch (e) {
+                console.log(JSON.stringify(order))
+                let req = {
+                    method: 'post',
+                    url: `${config['matcher'][`${property}`][0]}/matcher/orderbook`,
+                    data: order,
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                }
+                let res = await axios(req)
+                console.assert(false, res)
+                resolve({
+                    _scriptDir: import.meta.url,
+                    status: res.data.status,
+                    success: res.data.success,
+                    message: res.data.message
+                })
+            } catch (e) {
                resolve({
                    _scriptDir: import.meta.url,
                    status: 'ok',
                    success: false,
-                   message: await order.json()
+                   message: e
                })
-           }
+            }
         })
     }
     denormalize(price, priceAssetDecimals, amountAssetDecimals){
         let wvsPrice = 10 ** (priceAssetDecimals - amountAssetDecimals + 8)
         return price/wvsPrice
+    }
+    normalize(price, amountAssetDecimals, priceAssetDecimals){
+        let wvsPrice = 10 ** (8 + priceAssetDecimals - amountAssetDecimals)
+        return price * wvsPrice
+    }
+    amountNormalize(amount, decimals) {
+        return amount * 10 ** decimals
     }
     details(v,p,c,s,r){
         return new Promise(async (resolve, reject)=>{

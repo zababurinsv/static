@@ -689,7 +689,3 @@ export default (()=>{
           ? object.staticProperty.class = new Class()
           : object.staticProperty.class
 })();
-
-/*
-
- */
