@@ -647,7 +647,6 @@ export default async (v,p,c,obj,r) => {
         }
         sys.validation.set.order = true
         sys.validation.delete.order = false
-
         if(sys.validation.set.order) {
             // let timestamp = config['timestamp']();
             // let signature = await task.set(true,'T','8',{

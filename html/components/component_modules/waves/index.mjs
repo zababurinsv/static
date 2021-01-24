@@ -188,7 +188,6 @@ export default class Waves {
     order(view = true,property='',color = 'black', substrate={_:'order'},relation='order'  ){
         return new Promise(async (resolve, reject)=>{
             try {
-                console.assert(false, substrate.orderType)
                 let order = {
                     amount: substrate.amount,
                     price: substrate.price,
@@ -198,8 +197,6 @@ export default class Waves {
                     orderType: substrate.orderType
                 }
                 order = waves.order(order, config['accountsStore']['accountGroups']['T']['clients'][3]['seed'])
-
-                console.log(JSON.stringify(order))
                 let req = {
                     method: 'post',
                     url: `${config['matcher'][`${property}`][0]}/matcher/orderbook`,

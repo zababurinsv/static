@@ -54,15 +54,17 @@ export default (()=> {
     object.callback(response)
   })
 
-  function matcher_orderbook(object, item, assets, orderType) {
+  function matcher_orderbook(object, item, assets, orderType, relation) {
+   let amount = waves.amountNormalize(object.substrate.description[item].amount_reverse, object.substrate.decimals[`${assets[1]}`])
+    let price = waves.normalize(object.substrate.description[item].price,object.substrate.decimals[`${assets[0]}`],object.substrate.decimals[`${assets[1]}`])
     return {
       assets: {
         amountAsset: object.substrate.assets[object.property][`${assets[0]}`],
         priceAsset:  object.substrate.assets[object.property][`${assets[1]}`]
       },
       matcherPublicKey: object.substrate.head.matcherPublicKey,
-      amount: waves.amountNormalize(object.substrate.description[item].amount, object.substrate.decimals[`${assets[0]}`]),
-      price: waves.normalize(object.substrate.description[item].price,object.substrate.decimals[`${assets[0]}`],object.substrate.decimals[`${assets[1]}`]),
+      amount: amount,
+      price: price,
       orderType:orderType
     }
   }
@@ -80,7 +82,7 @@ export default (()=> {
           let buy__wavesUsd = {}
           for( let item of keys) {
             if(item === 'buy(euroWaves)') {
-              buy__euroWaves = await waves.order(true, object['property'] , '3',matcher_orderbook(object, item, ['eth', 'waves'], 'buy'), object['relation'])
+              buy__euroWaves = await waves.order(true, object['property'] , '3',matcher_orderbook(object, item, ['eth', 'waves'], 'buy', true), object['relation'])
             } else if( item === 'sell(euroUsd)' ) {
               sell__euroUsd = await waves.order(true, object['property'] , '3',matcher_orderbook(object, item, ['usdt', 'eth'], 'sell'), object['relation'])
             } else if( item === 'buy(wavesUsd)' ) {
