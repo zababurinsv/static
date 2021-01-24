@@ -36,16 +36,6 @@ export default (()=> {
     object.callback(orders)
   })
 
-  task.get(true, 'await', '5', '','/matcher/orders/{address}/cancel', async (object) => {
-    let orders = await waves.cancelAllOrders(true, object.property, '3', object.substrate, object.property)
-    object.callback(orders)
-  })
-
-  task.get(true, 'await', '5', '','/matcher/orders/{address}/cancel', async (object) => {
-    let orders = await waves.cancelAllOrders(true, object.property, '3', object.substrate, object.property)
-    object.callback(orders)
-  })
-
   task.get(true, 'await', '5', '','/matcher/get/order',async (object)=>{
     let seed = 'tone leg hidden system tenant aware desk clap body robust debris puppy ecology scan runway thing second metal cousin ocean liberty banner garment rice feel'
     let response = await waves.order(true,object.property,'red', object.substrate, seed)
@@ -71,12 +61,12 @@ export default (()=> {
   task.get(true, 'await', '5', '','/matcher/orderbook',async (object) => {
     try {
       let keys = Object.keys(object.substrate.description)
+      let set = {
+        accept: [],
+        abort: []
+      }
       switch (object.substrate.head.name) {
         case 'wuw':
-          let set = {
-            accept: [],
-            abort: []
-          }
           let buy__euroWaves = {}
           let sell__euroUsd = {}
           let buy__wavesUsd = {}
@@ -88,30 +78,40 @@ export default (()=> {
             } else if( item === 'buy(wavesUsd)' ) {
               buy__wavesUsd =  await waves.order(true, object['property'] , '3',matcher_orderbook(object, item, ['usdt', 'waves'], 'buy'), object['relation'])
             } else {
-              object.callback({
-                  status: `неизвестный тип ${item}`,
-                  success: false,
-                  message: {
-                    buy__euroWaves: buy__euroWaves,
-                    sell__euroUsd: sell__euroUsd,
-                    buy__wavesUsd: buy__wavesUsd
-                  },
-                  _scriptDir: import.meta.url
-              })
+            console.assert(false, {
+              _scriptDir: import.meta.url,
+              message: `неизвестный тип ${item}`
+            })
+            object.callback({
+                status: `неизвестный тип ${item}`,
+                success: false,
+                message: {
+                  buy__euroWaves: buy__euroWaves,
+                  sell__euroUsd: sell__euroUsd,
+                  buy__wavesUsd: buy__wavesUsd
+                },
+                _scriptDir: import.meta.url
+            })
             }
-          }
+          };
           (buy__euroWaves.success)
           ? set.accept.push(buy__euroWaves)
-          : set.abort.push(buy__euroWaves);
+          : (buy__euroWaves.message = buy__euroWaves.message.response.data,
+             buy__euroWaves.status = buy__euroWaves.message.status,
+             set.abort.push(buy__euroWaves));
           (sell__euroUsd.success)
           ? set.accept.push(sell__euroUsd)
-          : set.abort.push(sell__euroUsd);
+          : (sell__euroUsd.message = sell__euroUsd.message.response.data,
+             sell__euroUsd.status = sell__euroUsd.message.status,
+             set.abort.push(sell__euroUsd));
           (buy__wavesUsd.success)
           ? set.accept.push(buy__wavesUsd)
-          : set.abort.push(buy__wavesUsd);
+          : (buy__wavesUsd.message = buy__wavesUsd.message.response.data,
+             buy__wavesUsd.status = buy__wavesUsd.message.status,
+             set.abort.push(buy__wavesUsd));
           break
         default:
-          object.callback({
+          console.warn({
             status: 'no true',
             success: false,
             message: `неизвестный тип ${object.substrate.description}`,
@@ -132,7 +132,7 @@ export default (()=> {
       } else {
         object.callback({
           status: 'set_false',
-          success: true,
+          success: false,
           message: {
             id: '',
             true: set.accept,
@@ -142,6 +142,7 @@ export default (()=> {
         })
       }
     } catch (e) {
+      console.assert(false, e)
       object.callback({
         status: 'no ok',
         success: false,

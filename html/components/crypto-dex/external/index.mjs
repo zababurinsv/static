@@ -645,8 +645,8 @@ export default async (v,p,c,obj,r) => {
         } else {
             console.warn(orders.message)
         }
-        sys.validation.set.order = true
-        sys.validation.delete.order = false
+        sys.validation.set.order = false
+        sys.validation.delete.order = true
         if(sys.validation.set.order) {
             // let timestamp = config['timestamp']();
             // let signature = await task.set(true,'T','8',{
@@ -654,10 +654,11 @@ export default async (v,p,c,obj,r) => {
             //     publicKey: config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
             //     timestamp:  timestamp.now
             // },'/assets/signature/{assetId}');
-          let order = await setTask(true, 'T', 'red', sys.relation.transactions.wuw, '/matcher/orderbook')
+          let order = await setTask(true, 'T', 'red', sys.relation.transactions.wuw, '/matcher/orderbook');
         }
 
         if(sys.validation.delete.order) {
+            console.assert(false, orders)
             if(!isEmpty(orders.message)) {
                 let timestamp = config['timestamp']()
                 let object = JSON.stringify({
@@ -675,16 +676,16 @@ export default async (v,p,c,obj,r) => {
             (req.success)
               ? (sys.active.push(s),
                 resolve({
-                    status: 'ok',
-                    success: true,
+                    status: req.status,
+                    success: req.success,
                     message: req.message,
-                    _scriptDir: import.meta.url
+                    _scriptDir: req._scriptDir
                 }))
               : (resolve({
-                  status: 'not ok',
-                  success: false,
+                  status: req.status,
+                  success: req.success,
                   message: req.message,
-                  _scriptDir: import.meta.url
+                  _scriptDir: req._scriptDir
               }))
         })
     }

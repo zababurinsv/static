@@ -187,39 +187,38 @@ export default class Waves {
     }
     order(view = true,property='',color = 'black', substrate={_:'order'},relation='order'  ){
         return new Promise(async (resolve, reject)=>{
-            try {
-                let order = {
-                    amount: substrate.amount,
-                    price: substrate.price,
-                    priceAsset: substrate.assets.priceAsset,
-                    amountAsset: substrate.assets.amountAsset,
-                    matcherPublicKey: substrate.matcherPublicKey,
-                    orderType: substrate.orderType
-                }
-                order = waves.order(order, config['accountsStore']['accountGroups']['T']['clients'][3]['seed'])
-                let req = {
-                    method: 'post',
-                    url: `${config['matcher'][`${property}`][0]}/matcher/orderbook`,
-                    data: order,
-                    headers: {
-                        'Content-Type': 'application/json;charset=utf-8'
-                    },
-                }
-                let res = await axios(req)
-                resolve({
-                    _scriptDir: import.meta.url,
-                    status: res.data.status,
-                    success: res.data.success,
-                    message: res.data.message
-                })
-            } catch (e) {
-               resolve({
-                   _scriptDir: import.meta.url,
-                   status: 'ok',
-                   success: false,
-                   message: e
-               })
+            let order = {
+                amount: substrate.amount,
+                price: substrate.price,
+                priceAsset: substrate.assets.priceAsset,
+                amountAsset: substrate.assets.amountAsset,
+                matcherPublicKey: substrate.matcherPublicKey,
+                orderType: substrate.orderType
             }
+            order = waves.order(order, config['accountsStore']['accountGroups']['T']['clients'][3]['seed'])
+            axios({
+                method: 'post',
+                url: `${config['matcher'][`${property}`][0]}/matcher/orderbook`,
+                data: order,
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+            }).then(function (res) {
+                  resolve({
+                      _scriptDir: import.meta.url,
+                      status: res.data.status,
+                      success: res.data.success,
+                      message: res.data.message
+                  })
+              })
+              .catch(function (e) {
+                  resolve({
+                      _scriptDir: import.meta.url,
+                      status: 'not ok',
+                      success: false,
+                      message: e
+                  })
+              });
         })
     }
     denormalize(price, priceAssetDecimals, amountAssetDecimals){
