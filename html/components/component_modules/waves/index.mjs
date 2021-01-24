@@ -206,7 +206,6 @@ export default class Waves {
                     },
                 }
                 let res = await axios(req)
-                console.assert(false, res)
                 resolve({
                     _scriptDir: import.meta.url,
                     status: res.data.status,
