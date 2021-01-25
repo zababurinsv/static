@@ -32,6 +32,23 @@ export default {
       "priceAssets":[]
     },
   },
+  "assetPair": {
+    "S": {
+      "first": 8,
+      "second":8,
+      "third": 8
+    },
+    "W": {
+      "first": 0,
+      "second":0,
+      "third": 0
+    },
+    "T": {
+      "first": 0,
+      "second":0,
+      "third": 0
+    }
+  },
   "decimals": {
     "S": {
       "first": 0,
