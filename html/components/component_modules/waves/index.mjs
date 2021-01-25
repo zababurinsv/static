@@ -13,6 +13,7 @@ export default class Waves {
     constructor(...args) {
         this.bank = this.bank.bind(this)
         this.matcher = this.matcher.bind(this)
+        this.settings = this.settings.bind(this)
         this.balance = this.balance.bind(this)
         this.wallet = this.wallet.bind(this)
         this.faucet = this.faucet.bind(this)
@@ -51,6 +52,30 @@ export default class Waves {
                     _scriptDir: import.meta.url
                 })
             }
+        })
+    }
+    settings(view = true,property='T',color = 'black', substrate={ },relation='matcher'  ) {
+        return new Promise(async (resolve, reject) => {
+            await axios({
+                method: 'get',
+                url: `${config['matcher'][`${property}`][0]}/matcher/settings`,
+            })
+            .then(function (res) {
+                resolve({
+                    status: true,
+                    success: true,
+                    message: res.data,
+                    _scriptDir: import.meta.url
+                })
+            })
+            .catch(function (e) {
+                resolve({
+                    status:false,
+                    message: e,
+                    success: false,
+                    _scriptDir: import.meta.url
+                })
+            });
         })
     }
     UserException(message) {
@@ -196,6 +221,7 @@ export default class Waves {
                 orderType: substrate.orderType
             }
             order = waves.order(order, config['accountsStore']['accountGroups']['T']['clients'][3]['seed'])
+          console.assert(false, JSON.stringify(order))
             axios({
                 method: 'post',
                 url: `${config['matcher'][`${property}`][0]}/matcher/orderbook`,

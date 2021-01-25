@@ -3,6 +3,8 @@ import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.m
 import Waves from '/static/html/components/component_modules/waves/index.mjs'
 import task from '/static/html/components/component_modules/heap/index.mjs'
 import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
+import Assets from '/static/html/components/crypto-dex/external/assets/index.mjs'
+import events from '/static/html/components/crypto-dex/external/events.mjs'
 function count (obj) {
     let countDownDate = Date.now();
     let x = setInterval(function() {
@@ -23,10 +25,82 @@ function count (obj) {
         }
     }, 1000);
 }
+
+function pairs(type = undefined) {
+    return new Promise(async (resolve, reject) => {
+        let testnet = await task.set(true, 'T', 'green', '','/matcher/settings')
+        let mainnet = await task.set(true, 'W', 'green', '','/matcher/settings')
+        let assets = Assets(type)
+        for(let type in assets) {
+            if(type !== 'head' && type !== 'aside' && type !== 'footer' && type !== 'header') {
+                for(let key in assets[type]) {
+                    if(assets[type][key] !== 'WAVES' && type !== 'S') {
+                        let details = await task.set(true,type,'8',assets[type][key],'/assets/details/{assetId}')
+                        assets.head.decimals[type][key] = details.decimals
+                        assets.head.assets[type][key] = details.name
+                    } else {
+                        assets.head.decimals[type][key] = 8
+                    }
+                }
+            }
+        }
+        assets.head.matcher.T.matcherPublicKey = testnet.message.matcherPublicKey
+        assets.head.matcher.W.matcherPublicKey = mainnet.message.matcherPublicKey
+        assets.head.matcher.T.priceAssets = testnet.message.priceAssets
+        assets.head.matcher.W.priceAssets = mainnet.message.priceAssets
+
+        // for(let item of description['assetId']) {
+        //     itemDetails[`${item}`] = await task.set(true,'W','8',item,'/assets/details/{assetId}')
+        //     description['details'][`${item}`] = itemDetails[`${item}`]['decimals']
+        //     description['name'][`${item}`] = itemDetails[`${item}`]['name']
+        // }
+        // description['details'][`WAVES`] = 8
+        // description['name'][`WAVES`] = `WAVES`
+
+        console.assert(false, assets)
+        resolve({
+            "T": testnet,
+            "W": mainnet
+        })
+    })
+}
+
 export default async (v,p,c,obj,r) => {
+    events(v,p,c,obj,r)
     let dex = (await import('/static/html/components/component_modules/dex/index.mjs'))['default']
+    // console.assert(false, pairs__waves_eurn_usdn)
     let relation = {}
     let waves = new Waves()
+    let description = await pairs()
+    console.assert(false, description)
+    /*
+    let description = {
+        wavesEuro:{
+            amountAsset: assets.W.eth,
+            priceAsset: assets.W.waves,
+            tickSize:undefined,
+        },
+        euroUsd:{
+            amountAsset: assets.W.eth,
+            priceAsset: assets.W.usdt,
+            tickSize:undefined
+        },
+        wavesUsd:{
+            amountAsset: assets.W.usdt,
+            priceAsset: assets.W.waves,
+            tickSize:undefined
+        },
+        details:{},
+        name:{},
+        fee:{},
+        assetId:[assets.W.eth,assets.W.usdt],
+        T: {
+            "usdt": 6,
+            "waves": 8,
+            "eth":8
+        }
+    }
+     */
     let sys = {
         _scriptDir: import.meta.url,
         validation: {
@@ -64,7 +138,7 @@ export default async (v,p,c,obj,r) => {
             "assets": {
                 "success": false,
                 "e": 10,
-                "u": 14,
+                "u": 10,
                 "w": 10
             }
         },
@@ -94,6 +168,26 @@ export default async (v,p,c,obj,r) => {
             }
         },
         active: []
+    }
+
+    function setTask(v,p,c,s,r) {
+        return new Promise(async function (resolve, reject) {
+            let req = await task.set(v,p,c,s,r);
+            (req.success)
+              ? (sys.active.push(s),
+                resolve({
+                    status: req.status,
+                    success: req.success,
+                    message: req.message,
+                    _scriptDir: req._scriptDir
+                }))
+              : (resolve({
+                  status: req.status,
+                  success: req.success,
+                  message: req.message,
+                  _scriptDir: req._scriptDir
+              }))
+        })
     }
     function empty(obj,type){
         switch (type) {
@@ -146,143 +240,6 @@ export default async (v,p,c,obj,r) => {
                 break
         }
     }
-    
-    document.addEventListener('iframe',async (event)=>{
-        if(event.detail === 'http://localhost:4999'){
-            iframe.post(event.detail, {
-                view:true,
-                property:'прослушиваем получение кошелька',
-                color:'6',
-                substrate:{},
-                relation:'await-wallet'
-            },async (event)=>{
-
-                console.log('--->>>>>', event)
-            })
-        }
-    })
-
-    obj['this'].shadowRoot.querySelector('#fswe').addEventListener('click',async (event)=>{
-        event.currentTarget.style.background = '#faf671'
-        let value =  event.currentTarget.innerHTML
-        value = value.split('*')[0].split('(')[1]
-        await navigator.clipboard.writeText(value)
-        let timer = setTimeout((event)=>{
-            obj['this'].shadowRoot.querySelector('#fswe').style.background = 'transparent'
-            clearTimeout(timer);
-        }, 250);
-    },{passive:true})
-    obj['this'].shadowRoot.querySelector('#fbwe').addEventListener('click',async (event)=>{
-        event.currentTarget.style.background = '#faf671'
-        let value =  event.currentTarget.innerHTML
-        value = value.split('*')[0].split('(')[1]
-        await navigator.clipboard.writeText(value)
-        let timer = setTimeout((event)=>{
-            obj['this'].shadowRoot.querySelector('#fbwe').style.background = 'transparent'
-            clearTimeout(timer);
-        }, 250);
-    },{passive:true})
-    obj['this'].shadowRoot.querySelector('#fbue').addEventListener('click',async (event)=>{
-        event.currentTarget.style.background = '#faf671'
-        let value =  event.currentTarget.innerHTML
-        value = value.split('*')[0].split('(')[1]
-        await navigator.clipboard.writeText(value)
-        let timer = setTimeout((event)=>{
-            obj['this'].shadowRoot.querySelector('#fbue').style.background = 'transparent'
-            clearTimeout(timer);
-        }, 250);
-    })
-    obj['this'].shadowRoot.querySelector('#fbeu').addEventListener('click',async (event)=>{
-        event.currentTarget.style.background = '#faf671'
-        let value =  event.currentTarget.innerHTML
-        value = value.split('*')[0].split('(')[1]
-        await navigator.clipboard.writeText(value)
-        let timer = setTimeout((event)=>{
-            obj['this'].shadowRoot.querySelector('#fbeu').style.background = 'transparent'
-            clearTimeout(timer);
-        }, 250);
-    })
-    obj['this'].shadowRoot.querySelector('#fbwu').addEventListener('click',async (event)=>{
-        event.currentTarget.style.background = '#faf671'
-        let value =  event.currentTarget.innerHTML
-        value = value.split('*')[0].split('(')[1]
-        await navigator.clipboard.writeText(value)
-
-        let timer = setTimeout((event) => {
-            obj['this'].shadowRoot.querySelector('#fbwu').style.background = 'transparent'
-            clearTimeout(timer);
-        }, 250);
-    },{passive:true})
-    obj['this'].shadowRoot.querySelector('#fswu').addEventListener('click',async (event)=>{
-        event.currentTarget.style.background = '#faf671'
-        let value =  event.currentTarget.innerHTML
-        value = value.split('*')[0].split('(')[1]
-        await navigator.clipboard.writeText(value)
-        let timer = setTimeout((event)=>{
-            obj['this'].shadowRoot.querySelector('#fswu').style.background = 'transparent'
-            clearTimeout(timer);
-        }, 250);
-    },{passive:true})
-    obj['this'].shadowRoot.querySelector('#sbew').addEventListener('click',async (event)=>{
-        event.currentTarget.style.background = '#faf671'
-        let value =  event.currentTarget.innerHTML
-        value = value.split('*')[0].split('(')[1]
-        await navigator.clipboard.writeText(value)
-        let timer = setTimeout((event)=>{
-            obj['this'].shadowRoot.querySelector('#sbew').style.background = 'transparent'
-            clearTimeout(timer);
-        }, 250);
-    },{passive:true})
-    obj['this'].shadowRoot.querySelector('#sbwe').addEventListener('click',async (event)=>{
-        event.currentTarget.style.background = '#faf671'
-        let value =  event.currentTarget.innerHTML
-        value = value.split('*')[0].split('(')[1]
-        await navigator.clipboard.writeText(value)
-        let timer = setTimeout((event)=>{
-            obj['this'].shadowRoot.querySelector('#sbwe').style.background = 'transparent'
-            clearTimeout(timer);
-        }, 250);
-    },{passive:true})
-    obj['this'].shadowRoot.querySelector('#sseu').addEventListener('click',async (event)=>{
-        event.currentTarget.style.background = '#faf671'
-        let value =  event.currentTarget.innerHTML
-        value = value.split('*')[0].split('(')[1]
-        await navigator.clipboard.writeText(value)
-        let timer = setTimeout((event)=>{
-            obj['this'].shadowRoot.querySelector('#sseu').style.background = 'transparent'
-            clearTimeout(timer);
-        }, 250);
-    },{passive:true})
-    obj['this'].shadowRoot.querySelector('#ssue').addEventListener('click',async (event)=>{
-        event.currentTarget.style.background = '#faf671'
-        let value =  event.currentTarget.innerHTML
-        value = value.split('*')[0].split('(')[1]
-        await navigator.clipboard.writeText(value)
-        let timer = setTimeout((event)=>{
-            obj['this'].shadowRoot.querySelector('#ssue').style.background = 'transparent'
-            clearTimeout(timer);
-        }, 250);
-    },{passive:true})
-    obj['this'].shadowRoot.querySelector('#sbwu').addEventListener('click',async (event)=>{
-        event.currentTarget.style.background = '#faf671'
-        let value =  event.currentTarget.innerHTML
-        value = value.split('*')[0].split('(')[1]
-        await navigator.clipboard.writeText(value)
-        let timer = setTimeout((event)=>{
-            obj['this'].shadowRoot.querySelector('#sbwu').style.background = 'transparent'
-            clearTimeout(timer);
-        }, 250);
-    },{passive:true})
-    obj['this'].shadowRoot.querySelector('#sbuw').addEventListener('click',async (event)=>{
-        event.currentTarget.style.background = '#faf671'
-        let value =  event.currentTarget.innerHTML
-        value = value.split('*')[0].split('(')[1]
-        await navigator.clipboard.writeText(value)
-        let timer = setTimeout((event)=>{
-            obj['this'].shadowRoot.querySelector('#sbuw').style.background = 'transparent'
-            clearTimeout(timer);
-        }, 250);
-    },{passive:true})
 
     obj['this'].shadowRoot.querySelector('#left').addEventListener('input',async (e)=>{
         relation['e'] =  e.target.value / 100
@@ -293,45 +250,7 @@ export default async (v,p,c,obj,r) => {
     obj['this'].shadowRoot.querySelector('#right').addEventListener('input',async (e)=>{
         relation['w'] =  e.target.value
     },{passive:true})
-    let assets = {
-        W: {
-            waves:'WAVES',
-            eth:'474jTeYx2r2Va35794tCScAXWJG9hU2HcgxzMowaZUnu',
-            usdt:'34N9YcEETLWn93qYQ64EsP1x89tSruJU44RrEMSXXEPJ'
-        },
-        T: {
-            waves:  'WAVES',
-            eth:    'BrmjyAWT5jjr3Wpsiyivyvg5vDuzoX2s93WgiexXetB3',
-            usdt:   'DMJeM9XJTEnhBmYrLBdVKkYx6Geb37e9pgyEc26R1JKZ'
-        }
-    }
-    let description = {
-        wavesEuro:{
-            amountAsset: assets.W.eth,
-            priceAsset: assets.W.waves,
-            tickSize:undefined,
-        },
-        euroUsd:{
-            amountAsset: assets.W.eth,
-            priceAsset: assets.W.usdt,
-            tickSize:undefined
-        },
-        wavesUsd:{
-            amountAsset: assets.W.usdt,
-            priceAsset: assets.W.waves,
-            tickSize:undefined
-        },
-        details:{},
-        name:{},
-        fee:{},
-        assetId:[assets.W.eth,assets.W.usdt],
-        T: {
-            "usdt": 6,
-            "waves": 8,
-            "eth":8
-        }
-    }
-    sys.assets = assets
+
     let itemDetails = {}
     for(let item of description['assetId']) {
         itemDetails[`${item}`] = await task.set(true,'W','8',item,'/assets/details/{assetId}')
@@ -371,11 +290,11 @@ export default async (v,p,c,obj,r) => {
         if(state) {
             relation['w'] = parseFloat(input_id_right)
             relation['u'] = parseFloat(input_id_center)
-            relation['e'] = parseFloat((input_id_left / 100))
+            relation['e'] = parseFloat((input_id_left))
         } else {
             relation['w'] = sys.navigation.assets.w
             relation['u'] = sys.navigation.assets.u
-            relation['e'] = sys.navigation.assets.e / 100
+            relation['e'] = sys.navigation.assets.e
         }
     }
     (sys.navigation.assets.status)
@@ -433,7 +352,9 @@ export default async (v,p,c,obj,r) => {
             sys['validation']['disabled']['views'][0] = false,
             empty(obj, 'ueu'))
         if(relation['description']['ueu'] !== undefined) {
+            console.assert(false)
           relation = await dex.sell(wavesEuro, relation['buy(wavesUsd)'], relation, 'wavesEuro');
+            console.assert(false, `${description['name'][`${wavesEuro.pair.priceAsset}`]}=>${description['name'][`${wavesEuro.pair.amountAsset}`]}[(${relation['buy(wavesUsd)']}*)${relation['sell(wavesEuro)']}]` )
           ((relation['sell(wavesEuro)'] >= sys['threshold']['amount']))
             ? (relation['description']['ueu'].push(relation['sell(wavesEuro)']),
               sys['validation']['disabled']['views'][0] = true,
@@ -473,6 +394,7 @@ export default async (v,p,c,obj,r) => {
         relation['buy(wavesUsd)'] = {}
         relation['sell(wavesEuro)'] ={}
         relation['buy(usdEuro)'] = {}
+
 //## item 2
         relation['description']['eue'] = []
         relation['description']['eue'].push(relation['e'])
@@ -645,8 +567,8 @@ export default async (v,p,c,obj,r) => {
         } else {
             console.warn(orders.message)
         }
-        sys.validation.set.order = false
-        sys.validation.delete.order = true
+        sys.validation.set.order = true
+        sys.validation.delete.order = false
         if(sys.validation.set.order) {
             // let timestamp = config['timestamp']();
             // let signature = await task.set(true,'T','8',{
@@ -654,6 +576,7 @@ export default async (v,p,c,obj,r) => {
             //     publicKey: config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
             //     timestamp:  timestamp.now
             // },'/assets/signature/{assetId}');
+            console.assert(false, sys.relation.transactions)
           let order = await setTask(true, 'T', 'red', sys.relation.transactions.wuw, '/matcher/orderbook');
         }
 
@@ -674,26 +597,6 @@ export default async (v,p,c,obj,r) => {
                let cancelOrder = await setTask(true, 'T','7',object,'/matcher/orderbook/cancel')
             }
         }
-    function setTask(v,p,c,s,r) {
-        return new Promise(async function (resolve, reject) {
-            let req = await task.set(v,p,c,s,r);
-            (req.success)
-              ? (sys.active.push(s),
-                resolve({
-                    status: req.status,
-                    success: req.success,
-                    message: req.message,
-                    _scriptDir: req._scriptDir
-                }))
-              : (resolve({
-                  status: req.status,
-                  success: req.success,
-                  message: req.message,
-                  _scriptDir: req._scriptDir
-              }))
-        })
-    }
-
     let views = {
             "0": () => {
                 if(relation['description']['ueu'][0] - relation['description']['ueu'][3] < 0){

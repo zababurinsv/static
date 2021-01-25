@@ -26,6 +26,11 @@ export default (()=> {
     object.callback(publickKey)
   })
 
+  task.get(true, 'await', '5', '','/matcher/settings',async (object)=>{
+    let settings = await waves.settings(true, object.property, '3', object.substrate.substrate, object.substrate.relation)
+    object.callback(settings)
+  })
+
   task.get(true, 'await', '5', '','/matcher/orderbook/cancel', async (object) => {
     let orders = await waves.cancelAllOrders(true, object.property, '3', object.substrate, object.property)
     object.callback(orders)
