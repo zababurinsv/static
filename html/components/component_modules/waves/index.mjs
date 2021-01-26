@@ -29,6 +29,14 @@ export default class Waves {
         this.getOrders = this.getOrders.bind(this)
         this.UserException = this.UserException.bind(this)
         this.amountNormalize = this.amountNormalize.bind(this)
+        this.compareUint8Arrays = this.compareUint8Arrays.bind(this)
+    }
+    compareUint8Arrays(arr1, arr2) {
+        //  true    - arr1 bigger
+        //  false    - arr2 bigger
+        let item1 = waves.base58.decode(arr1)
+        let item2 = waves.base58.decode(arr2)
+        return item1.toString('hex') > item2.toString('hex');
     }
     matcher(view = true,property='T',color = 'black', substrate={ },relation='matcher'  ) {
         return new Promise(async (resolve, reject) => {

@@ -1,6 +1,7 @@
 export default {
   "version": 1,
   "success": false,
+  "_scriptDir": import.meta.url,
   "assets": {
     "S": {
       "first":  "WAVES",
@@ -18,6 +19,11 @@ export default {
       "third":  "USDN"
     }
   },
+  "assetId": {
+    "S": { },
+    "W": { },
+    "T": { }
+  },
   "matcher": {
     "S": {
       "matcherPublicKey": "",
@@ -34,19 +40,19 @@ export default {
   },
   "assetPair": {
     "S": {
-      "first": 8,
-      "second":8,
-      "third": 8
+      "first": 100000000,
+      "second":100000000,
+      "third": 100000000
     },
     "W": {
-      "first": 0,
-      "second":0,
-      "third": 0
+      "first": 100000000,
+      "second":100000000,
+      "third": 100000000
     },
     "T": {
-      "first": 0,
-      "second":0,
-      "third": 0
+      "first": 100000000,
+      "second":100000000,
+      "third": 100000000
     }
   },
   "decimals": {

@@ -5,6 +5,7 @@ import task from '/static/html/components/component_modules/heap/index.mjs'
 import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
 import Assets from '/static/html/components/crypto-dex/external/assets/index.mjs'
 import events from '/static/html/components/crypto-dex/external/events.mjs'
+const waves = new Waves()
 function count (obj) {
     let countDownDate = Date.now();
     let x = setInterval(function() {
@@ -25,80 +26,82 @@ function count (obj) {
         }
     }, 1000);
 }
-
 function pairs(type = undefined) {
     return new Promise(async (resolve, reject) => {
-        let assets = Assets(type)
-        let testnet = await task.set(true, 'T', 'green', '','/matcher/settings')
-        let mainnet = await task.set(true, 'W', 'green', '','/matcher/settings')
-        assets.head.matcher.W.matcherPublicKey = mainnet.message.matcherPublicKey
-        assets.head.matcher.W.priceAssets = mainnet.message.priceAssets
-        assets.head.matcher.T.matcherPublicKey = testnet.message.matcherPublicKey
-        assets.head.matcher.T.priceAssets = testnet.message.priceAssets
-        assets.head.matcher.S.matcherPublicKey = testnet.message.matcherPublicKey
-        assets.head.matcher.S.priceAssets = testnet.message.priceAssets
-        for(let type in assets) {
-            if(type !== 'head' && type !== 'aside' && type !== 'footer' && type !== 'header' && type !== 'S') {
-                for(let key in assets[type]) {
-                    let details = {}
-                    if(assets[type][key] !== 'WAVES') {
-                        details = await task.set(true,type,'8',assets[type][key],'/assets/details/{assetId}')
-                        assets.head.decimals[type][key] = details.decimals
-                        assets.head.assets[type][key] = details.name
-                    } else {
-                        assets.head.decimals[type][key] = 8
-                    }
-                    for(let assetPair in assets.head.matcher[type].priceAssets) {
-                        if(assets[type][key] === assets.head.matcher[type].priceAssets[assetPair]) {
-                            assets.head.assetPair[type][key] = parseInt(assetPair, 10)
-                        }
-                    }
-                }
-            }
-        }
-        for(let type in assets.head.pairs) {
-            if(type !== 'S') {
-            for(let pair in assets.head.pairs[type]) {
-                let item = pair.split('/')
-                    if(assets.head.assetPair[type][`${item[0]}`] === assets.head.assetPair[type][`${item[1]}`]) {
-
-                    } else {
-                        if(assets.head.assetPair[type][`${item[0]}`] > assets.head.assetPair[type][`${item[1]}`]) {
-                            assets.head.pairs[type][pair]['amountAsset'] = assets[type][`${item[1]}`]
-                            assets.head.pairs[type][pair]['priceAsset'] = assets[type][`${item[0]}`]
+        try {
+            let assets = Assets(type)
+            let testnet = await task.set(true, 'T', 'green', '','/matcher/settings')
+            let mainnet = await task.set(true, 'W', 'green', '','/matcher/settings')
+            assets.head.matcher.W.matcherPublicKey = mainnet.message.matcherPublicKey
+            assets.head.matcher.W.priceAssets = mainnet.message.priceAssets
+            assets.head.matcher.T.matcherPublicKey = testnet.message.matcherPublicKey
+            assets.head.matcher.T.priceAssets = testnet.message.priceAssets
+            assets.head.matcher.S.matcherPublicKey = testnet.message.matcherPublicKey
+            assets.head.matcher.S.priceAssets = testnet.message.priceAssets
+            for(let type in assets) {
+                if(type !== 'head' && type !== 'aside' && type !== 'footer' && type !== 'header' && type !== 'S') {
+                    for(let key in assets[type]) {
+                        let details = {}
+                        if(assets[type][key] !== 'WAVES') {
+                            details = await task.set(true,type,'8',assets[type][key],'/assets/details/{assetId}')
+                            assets.head.decimals[type][key] = details.decimals
+                            assets.head.assets[type][key] = details.name
+                            assets.head.assetId[type][`${details.assetId}`] = {}
+                            assets.head.assetId[type][`${details.assetId}`]['name'] = details.name
+                            assets.head.assetId[type][`${details.assetId}`]['decimals'] = details.decimals
+                            assets.head.assetId[type][`${details.assetId}`]['key'] = key
                         } else {
-                            assets.head.pairs[type][pair]['amountAsset'] = assets[type][`${item[0]}`]
-                            assets.head.pairs[type][pair]['priceAsset'] = assets[type][`${item[1]}`]
+                            assets.head.assetId[type][`WAVES`] = { }
+                            assets.head.assetId[type][`WAVES`]['name'] = 'WAVES'
+                            assets.head.assetId[type][`WAVES`]['decimals'] = 8
+                            assets.head.assetId[type][`WAVES`]['key'] = key
+                            assets.head.decimals[type][key] = 8
+                        }
+                        for(let assetPair in assets.head.matcher[type].priceAssets) {
+                            if(assets[type][key] === assets.head.matcher[type].priceAssets[assetPair]) {
+                                assets.head.assetPair[type][key] = parseInt(assetPair, 10)
+                            }
                         }
                     }
                 }
             }
+            for(let type in assets.head.pairs) {
+                if(type !== 'S') {
+                    for(let pair in assets.head.pairs[type]) {
+                        let item = pair.split('/')
+                        if(assets.head.assetPair[type][`${item[0]}`] === assets.head.assetPair[type][`${item[1]}`]) {
+                            //console.log('gggggggggg',waves.compareUint8Arrays(assets[type][`${item[0]}`], assets[type][`${item[1]}`]))
+                        } else {
+                            if(assets.head.assetPair[type][`${item[0]}`] > assets.head.assetPair[type][`${item[1]}`]) {
+                                assets.head.pairs[type][pair]['amountAsset'] = assets[type][`${item[0]}`]
+                                assets.head.pairs[type][pair]['priceAsset'] = assets[type][`${item[1]}`]
+                            } else {
+                                assets.head.pairs[type][pair]['amountAsset'] = assets[type][`${item[1]}`]
+                                assets.head.pairs[type][pair]['priceAsset'] = assets[type][`${item[0]}`]
+                            }
+                        }
+                    }
+                }
+            }
+            assets.head.success = true
+            resolve(assets)
+        }catch (e) {
+            resolve({
+                status: 'not',
+                success: false,
+                message: e,
+                _scriptDir: import.meta.url
+            })
         }
-        // for(let item of description['assetId']) {
-        //     itemDetails[`${item}`] = await task.set(true,'W','8',item,'/assets/details/{assetId}')
-        //     description['details'][`${item}`] = itemDetails[`${item}`]['decimals']
-        //     description['name'][`${item}`] = itemDetails[`${item}`]['name']
-        // }
-        // description['details'][`WAVES`] = 8
-        // description['name'][`WAVES`] = `WAVES`
-
-        console.assert(false, assets)
-        resolve({
-            "T": testnet,
-            "W": mainnet
-        })
     })
 }
 
 export default async (v,p,c,obj,r) => {
     events(v,p,c,obj,r)
     let dex = (await import('/static/html/components/component_modules/dex/index.mjs'))['default']
-    // console.assert(false, pairs__waves_eurn_usdn)
     let relation = {}
-    let waves = new Waves()
-    let description = await pairs()
-    console.assert(false, description)
-    /*
+    let assets = await pairs()
+   /*
     let description = {
         wavesEuro:{
             amountAsset: assets.W.eth,
@@ -125,7 +128,7 @@ export default async (v,p,c,obj,r) => {
             "eth":8
         }
     }
-     */
+    */
     let sys = {
         _scriptDir: import.meta.url,
         validation: {
@@ -214,7 +217,7 @@ export default async (v,p,c,obj,r) => {
               }))
         })
     }
-    function empty(obj,type){
+    function empty(obj,type) {
         switch (type) {
             case 'ueu':
                 obj['this'].shadowRoot.querySelector('div.fbwu').style.background ='#7694f473'
@@ -275,39 +278,51 @@ export default async (v,p,c,obj,r) => {
     obj['this'].shadowRoot.querySelector('#right').addEventListener('input',async (e)=>{
         relation['w'] =  e.target.value
     },{passive:true})
-
-    let itemDetails = {}
-    for(let item of description['assetId']) {
-        itemDetails[`${item}`] = await task.set(true,'W','8',item,'/assets/details/{assetId}')
-        description['details'][`${item}`] = itemDetails[`${item}`]['decimals']
-        description['name'][`${item}`] = itemDetails[`${item}`]['name']
-    }
-    description['details'][`WAVES`] = 8
-    description['name'][`WAVES`] = `WAVES`
-    if(!sys.validation.output.prod) {
-        description.T.eth =   (await task.set(true,'T','8',assets.T.eth,'/assets/details/{assetId}')).decimals
-        description.T.usdt =  (await task.set(true,'T','8',assets.T.usdt,'/assets/details/{assetId}')).decimals
-        description.T.waves = 8
-    }
+    // let itemDetails = {}
+    // for(let item of description['assetId']) {
+    //     itemDetails[`${item}`] = await task.set(true,'W','8',item,'/assets/details/{assetId}')
+    //     description['details'][`${item}`] = itemDetails[`${item}`]['decimals']
+    //     description['name'][`${item}`] = itemDetails[`${item}`]['name']
+    // }
+    // description['details'][`WAVES`] = 8
+    // description['name'][`WAVES`] = `WAVES`
+    // if(!sys.validation.output.prod) {
+    //     description.T.eth =   (await task.set(true,'T','8',assets.T.eth,'/assets/details/{assetId}')).decimals
+    //     description.T.usdt =  (await task.set(true,'T','8',assets.T.usdt,'/assets/details/{assetId}')).decimals
+    //     description.T.waves = 8
+    // }
     count(obj)
-    for(let key in description) {
+    //wavesEuro
+    //euroUsd
+    //wavesUsd
+
+    for(let key in assets.head.pairs.W) {
+        let priceAsset = {}
+        let amountAsset = {}
         switch (key) {
-            case 'wavesEuro':
-                obj['this'].shadowRoot.querySelector('[for="left"]').insertAdjacentHTML('beforeend', `${description['name'][`${description[key]['amountAsset']}`]}`)
-                obj['this'].shadowRoot.querySelector('#preview-left').innerText =`${description['name'][`${description[key]['amountAsset']}`]}/${description['name'][`${description[key]['priceAsset']}`]}`
+            case 'first/second':
+                priceAsset = assets.head.assetId.W[`${assets.head.pairs.W[key].priceAsset}`].name
+                amountAsset = assets.head.assetId.W[`${assets.head.pairs.W[key].amountAsset}`].name
+                obj['this'].shadowRoot.querySelector('[for="left"]').insertAdjacentHTML('beforeend', `${assets.head.assetId.W[`${assets.W.first}`].name}`)
+                obj['this'].shadowRoot.querySelector('#preview-left').innerText =`${amountAsset}/${priceAsset}`
                 break
-            case 'euroUsd':
-                obj['this'].shadowRoot.querySelector('[for="center"]').insertAdjacentHTML('beforeend', `${description['name'][`${description[key]['priceAsset']}`]}`)
-                obj['this'].shadowRoot.querySelector('#preview-center').innerText =`${description['name'][`${description[key]['amountAsset']}`]}/${description['name'][`${description[key]['priceAsset']}`]}`
+            case 'second/third':
+                priceAsset = assets.head.assetId.W[`${assets.head.pairs.W[key].priceAsset}`].name
+                amountAsset = assets.head.assetId.W[`${assets.head.pairs.W[key].amountAsset}`].name
+                obj['this'].shadowRoot.querySelector('[for="center"]').insertAdjacentHTML('beforeend', `${assets.head.assetId.W[`${assets.W.second}`].name}`)
+                obj['this'].shadowRoot.querySelector('#preview-center').innerText =`${amountAsset}/${priceAsset}`
                 break
-            case 'wavesUsd':
-                obj['this'].shadowRoot.querySelector('[for="right"]').insertAdjacentHTML('beforeend', `${description['name'][`${description[key]['priceAsset']}`]}`)
-                obj['this'].shadowRoot.querySelector('#preview-right').innerText =`${description['name'][`${description[key]['amountAsset']}`]}/${description['name'][`${description[key]['priceAsset']}`]}`
+            case 'first/third':
+                priceAsset = assets.head.assetId.W[`${assets.head.pairs.W[key].priceAsset}`].name
+                amountAsset = assets.head.assetId.W[`${assets.head.pairs.W[key].amountAsset}`].name
+                obj['this'].shadowRoot.querySelector('[for="right"]').insertAdjacentHTML('beforeend', `${assets.head.assetId.W[`${assets.W.third}`].name}`)
+                obj['this'].shadowRoot.querySelector('#preview-right').innerText =`${amountAsset}/${priceAsset}`
                 break
             default:
                 break
         }
     }
+    console.assert(false)
     let input_id_left = obj['this'].shadowRoot.querySelector('#left').value
     let input_id_center = obj['this'].shadowRoot.querySelector('#center').value
     let input_id_right = obj['this'].shadowRoot.querySelector('#right').value
