@@ -67,17 +67,47 @@ export default {
     }
   },
   "pairs": {
-    "first/second":{
-      "amountAsset": "",
-      "priceAsset":  ""
+    "S": {
+      "first/second": {
+        "amountAsset": "",
+        "priceAsset":  ""
+      },
+      "second/third": {
+        "amountAsset": "",
+        "priceAsset":  ""
+      },
+      "first/third": {
+        "amountAsset": "",
+        "priceAsset":  ""
+      }
     },
-    "second/third":{
-      "amountAsset": "",
-      "priceAsset":  ""
+    "W": {
+      "first/second": {
+        "amountAsset": "",
+        "priceAsset":  ""
+      },
+      "second/third": {
+        "amountAsset": "",
+        "priceAsset":  ""
+      },
+      "first/third": {
+        "amountAsset": "",
+        "priceAsset":  ""
+      }
     },
-    "first/third":{
-      "amountAsset": "",
-      "priceAsset":  ""
+    "T": {
+      "first/second": {
+        "amountAsset": "",
+        "priceAsset":  ""
+      },
+      "second/third": {
+        "amountAsset": "",
+        "priceAsset":  ""
+      },
+      "first/third": {
+        "amountAsset": "",
+        "priceAsset":  ""
+      }
     }
   }
 }

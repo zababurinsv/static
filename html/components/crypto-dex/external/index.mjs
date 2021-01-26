@@ -38,30 +38,42 @@ function pairs(type = undefined) {
         assets.head.matcher.S.matcherPublicKey = testnet.message.matcherPublicKey
         assets.head.matcher.S.priceAssets = testnet.message.priceAssets
         for(let type in assets) {
-            if(type !== 'head' && type !== 'aside' && type !== 'footer' && type !== 'header') {
+            if(type !== 'head' && type !== 'aside' && type !== 'footer' && type !== 'header' && type !== 'S') {
                 for(let key in assets[type]) {
-                    if(type !== 'S') {
-                        let details = {}
-                        if(assets[type][key] !== 'WAVES') {
-                            details = await task.set(true,type,'8',assets[type][key],'/assets/details/{assetId}')
-                            assets.head.decimals[type][key] = details.decimals
-                            assets.head.assets[type][key] = details.name
-                        } else {
-                            assets.head.decimals[type][key] = 8
+                    let details = {}
+                    if(assets[type][key] !== 'WAVES') {
+                        details = await task.set(true,type,'8',assets[type][key],'/assets/details/{assetId}')
+                        assets.head.decimals[type][key] = details.decimals
+                        assets.head.assets[type][key] = details.name
+                    } else {
+                        assets.head.decimals[type][key] = 8
+                    }
+                    for(let assetPair in assets.head.matcher[type].priceAssets) {
+                        if(assets[type][key] === assets.head.matcher[type].priceAssets[assetPair]) {
+                            assets.head.assetPair[type][key] = parseInt(assetPair, 10)
                         }
-                        for(let assetPair in assets.head.matcher[type].priceAssets) {
-                            if(assets[type][key] === assets.head.matcher[type].priceAssets[assetPair]) {
-                                assets.head.assetPair[type][key] = parseInt(assetPair, 10)
-                            }
-                            // console.log('<<<-------', assets[type][key], '~~~~~~~>>>', assets.head.matcher[type].priceAssets[assetPair])
-                        }
-                        // console.log(assets.head.assetPair[type][key])
-                        // console.assert(false, assets[type][key])
                     }
                 }
             }
         }
+        for(let type in assets.head.pairs) {
+            if(type !== 'S') {
+            for(let pair in assets.head.pairs[type]) {
+                let item = pair.split('/')
+                    if(assets.head.assetPair[type][`${item[0]}`] === assets.head.assetPair[type][`${item[1]}`]) {
 
+                    } else {
+                        if(assets.head.assetPair[type][`${item[0]}`] > assets.head.assetPair[type][`${item[1]}`]) {
+                            assets.head.pairs[type][pair]['amountAsset'] = assets[type][`${item[1]}`]
+                            assets.head.pairs[type][pair]['priceAsset'] = assets[type][`${item[0]}`]
+                        } else {
+                            assets.head.pairs[type][pair]['amountAsset'] = assets[type][`${item[0]}`]
+                            assets.head.pairs[type][pair]['priceAsset'] = assets[type][`${item[1]}`]
+                        }
+                    }
+                }
+            }
+        }
         // for(let item of description['assetId']) {
         //     itemDetails[`${item}`] = await task.set(true,'W','8',item,'/assets/details/{assetId}')
         //     description['details'][`${item}`] = itemDetails[`${item}`]['decimals']
