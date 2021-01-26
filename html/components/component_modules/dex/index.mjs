@@ -15,71 +15,15 @@ export default (()=>{
                 this.buy = this.buy.bind(this)
                 this.sell = this.sell.bind(this)
                 this.denormalize = this.denormalize.bind(this)
-                this.end = this.end.bind(this)
-                this.wavesUsd = this.wavesUsd.bind(this)
-                this.eurUsd = this.eurUsd.bind(this)
-                this.wavesEuro = this.wavesEuro.bind(this)
-                document.addEventListener('typeScript-end-dex', this.end)
+                // e = second
+                // u = third
+                // w = first
+                this.orderbook = this.orderbook.bind(this)
             }
-            wavesUsd(obj, self) {
+            orderbook(amountAsset, priceAsset) {
                 return new Promise( async (resolve, reject) => {
                     try {
-                        let url = `${config['matcher'][`${obj.net}`]}/matcher/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}?depth=10`
-                        let json = {}
-                        let response = await axios.get(url,{
-                            method: `GET`,
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        })
-                      resolve( {
-                          _scriptDir: import.meta.url,
-                          status: '',
-                          success: true,
-                          message: response.data
-                      })
-                    } catch (e) {
-                        resolve({
-                            _scriptDir: import.meta.url,
-                            status: '',
-                            success: false,
-                            message: e
-                        })
-                    }
-                })
-            }
-            eurUsd(obj, self) {
-                return new Promise( async (resolve, reject) => {
-                    try {
-                        let url = `${config['matcher'][`${obj.net}`]}/matcher/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}?depth=10`
-                        let json = {}
-                        let response = await axios.get(url,{
-                            method: `GET`,
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        })
-                        resolve( {
-                            _scriptDir: import.meta.url,
-                            status: '',
-                            success: true,
-                            message: response.data
-                        })
-                    } catch (e) {
-                        resolve({
-                            _scriptDir: import.meta.url,
-                            status: false,
-                            success: false,
-                            message: e
-                        })
-                    }
-                })
-            }
-            wavesEuro(obj, self) {
-                return new Promise( async (resolve, reject) => {
-                    try {
-                        let url = `${config['matcher'][`${obj.net}`]}/matcher/orderbook/${obj['pair']['amountAsset']}/${obj['pair']['priceAsset']}?depth=10`
-                        let json = {}
+                        let url = `${config['matcher'][`W`]}/matcher/orderbook/${amountAsset}/${priceAsset}?depth=10`
                         let response = await axios.get(url,{
                             method: `GET`,
                             headers: {
@@ -669,14 +613,6 @@ export default (()=>{
             }
             fix(number){
                 return parseFloat(number.toFixed(3))
-            }
-            end(event){
-                console.log('RRRRRRRRRRRRRRR end RRRRRRRRRRRRRRRRR')
-                // queue(event['detail']['console'], '~end',event['detail']['color'],event['detail']['substrate'],event['detail']['relation']).then((data)=>{
-                //
-                //     colorlog(true, 'stat','stat',data, 'статистика')
-                //
-                // })
             }
             get self() {
                 return object
