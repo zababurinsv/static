@@ -78,7 +78,7 @@
   margin: 0;
 }
 
-:host{
+:host {
   width: 100%;
   margin: auto;
 }
@@ -88,7 +88,7 @@ section{
   div#graph{
     @include display(row, nowrap, space-between, center, stretch);
 
-    div.itemBid{
+    div.bid_item{
       @include display(column, nowrap,stretch, center, stretch);
       @include border();
       border-radius: 0.5vw;
@@ -129,7 +129,7 @@ section{
             @include border();
             width: 100%;
             height: 100%;
-            div.infoTimestamp{
+            div.timestamp_info{
               display: flex;
               flex-direction: row;
               text-overflow: ellipsis;
@@ -167,7 +167,7 @@ section{
             }
           }
         }
-        div.glass{
+        div.orderbook{
           flex-grow: 1;
           @include display(row, nowrap,space-between, center, stretch);
 

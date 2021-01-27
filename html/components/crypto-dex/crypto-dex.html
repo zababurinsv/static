@@ -1,38 +1,41 @@
 <template>
+<!--     w = first-->
+<!--     e = second-->
+<!--     u = third-->
 <section>
     <div class="count-main"></div>
     <div id = "graph">
-        <div id="itemWavesEuro" class="itemBid">
+        <div id="item_fs" class="bid_item">
             <label for="left"><input type="number" min="0" max="24000" id="left" value="10" /></label>
             <div class="content">
                 <div class="info">
                     <p id="preview-left" class="preview"></p>
                     <div class="wrapper">
-                        <div class="infoTimestamp">
+                        <div class="timestamp_info">
                             <p>Time:</p>
-                            <p id="wavesEuroTimestamp"></p>
+                            <p id="timestamp_fs"></p>
                         </div>
-                        <div class="infoTimestamp">
+                        <div class="timestamp_info">
                             <p>Delta:</p>
-                            <p id="wavesEuroDelta"></p>
+                            <p id="delta_fs"></p>
                         </div>
                         <div class="result">
-                            <div class="result-item fswe"></div>
-                            <div class="result-item fbwe"></div>
-                            <div class="result-item sbew"></div>
-                            <div class="result-item sbwe"></div>
+                            <div class="result-item fs_fs"></div>
+                            <div class="result-item fb_fs"></div>
+                            <div class="result-item sb_sf"></div>
+                            <div class="result-item sb_fs"></div>
                         </div>
                         <hr/>
-                        <button style="color: #7876f4" class="stat" id="fswe"></button>
-                        <button style="color: #398c3b" class="stat" id="fbwe"></button>
-                        <button style="color: #398c3b" class="stat" id="sbew"></button>
-                        <button style="color: #d84141" class="stat" id="sbwe"></button>
+                        <button style="color: #7876f4" class="stat" id="fs_fs"></button>
+                        <button style="color: #398c3b" class="stat" id="fb_fs"></button>
+                        <button style="color: #398c3b" class="stat" id="sb_sf"></button>
+                        <button style="color: #d84141" class="stat" id="sb_fs"></button>
                     </div>
                 </div>
-                <div id="wavesEuro" class="glass">
+                <div id="fs" class="orderbook">
                     <div>
                         <p>Bids</p>
-                        <div id="wavesEuroBid" class="bid">
+                        <div id="bid_fs" class="bid">
                             <div class = item></div>
                             <div class = item></div>
                             <div class = item></div>
@@ -47,7 +50,7 @@
                     </div>
                     <div>
                         <p>Asks</p>
-                        <div id="wavesEuroAsk" class="ask">
+                        <div id="ask_fs" class="ask">
                             <div class = item></div>
                             <div class = item></div>
                             <div class = item></div>
@@ -64,37 +67,37 @@
 
             </div>
         </div>
-        <div id="itemEuroUsd" class="itemBid">
+        <div id="item_st" class="bid_item">
             <label for="center"><input type="number" min="0" max="24000" id="center" value="10"  /></label>
             <div class="content">
                 <div class="info">
                     <p id="preview-center" class="preview"></p>
                     <div class="wrapper">
-                        <div class="infoTimestamp">
+                        <div class="timestamp_info">
                             <p>Time: </p>
-                            <p id="euroUsdTimestamp"></p>
+                            <p id="timestamp_st"></p>
                         </div>
-                        <div class="infoTimestamp">
+                        <div class="timestamp_info">
                             <p>Delta:</p>
-                            <p id="euroUsdDelta"></p>
+                            <p id="delta_st"></p>
                         </div>
                         <div class="result">
-                            <div class="result-item fbue"></div>
-                            <div class="result-item fbeu"></div>
-                            <div class="result-item sseu"></div>
-                            <div class="result-item ssue"></div>
+                            <div class="result-item fb_ts"></div>
+                            <div class="result-item fb_st"></div>
+                            <div class="result-item ss_st"></div>
+                            <div class="result-item ss_ts"></div>
                         </div>
                         <hr/>
-                        <button style="color: #d84141" class="stat" id="fbue"></button>
-                        <button style="color: #d84141" class="stat" id="fbeu"></button>
-                        <button style="color: #7876f4" class="stat" id="sseu"></button>
-                        <button style="color: #7876f4" class="stat" id="ssue"></button>
+                        <button style="color: #d84141" class="stat" id="fb_ts"></button>
+                        <button style="color: #d84141" class="stat" id="fb_st"></button>
+                        <button style="color: #7876f4" class="stat" id="ss_st"></button>
+                        <button style="color: #7876f4" class="stat" id="ss_ts"></button>
                     </div>
                 </div>
-                <div id="euroUsd" class="glass">
+                <div id="st" class="orderbook">
                     <div>
                         <p>Bids</p>
-                        <div id="euroUsdBid" class="bid">
+                        <div id="bid_st" class="bid">
                             <div class = item></div>
                             <div class = item></div>
                             <div class = item></div>
@@ -109,7 +112,7 @@
                     </div>
                     <div>
                         <p>Asks</p>
-                        <div id="euroUsdAsk" class="ask">
+                        <div id="ask_st" class="ask">
                             <div class = item></div>
                             <div class = item></div>
                             <div class = item></div>
@@ -125,37 +128,37 @@
                 </div>
             </div>
         </div>
-        <div id="itemWavesUsd" class="itemBid">
+        <div id="item_ft" class="bid_item">
             <label for="right"><input type="number" min="0" max="24000" id="right" value="10"  /></label>
             <div class="content">
                 <div class="info">
                     <p id="preview-right" class="preview"></p>
                     <div class="wrapper">
-                        <div class="infoTimestamp">
+                        <div class="timestamp_info">
                             <p>Time:</p>
-                            <p id="wavesUsdTimestamp"></p>
+                            <p id="timestamp_ft"></p>
                         </div>
-                        <div class="infoTimestamp">
+                        <div class="timestamp_info">
                             <p>Delta:</p>
-                            <p id="wavesUsdDelta"></p>
+                            <p id="delta_ft"></p>
                         </div>
                         <div class="result">
-                            <div class="result-item fbwu"></div>
-                            <div class="result-item fswu"></div>
-                            <div class="result-item sbwu"></div>
-                            <div class="result-item sbuw"></div>
+                            <div class="result-item fb_ft"></div>
+                            <div class="result-item fs_ft"></div>
+                            <div class="result-item sb_ft"></div>
+                            <div class="result-item sb_tf"></div>
                         </div>
                         <hr/>
-                        <button style="color: #398c3b" class="stat" id="fbwu"></button>
-                        <button style="color: #7876f4" class="stat" id="fswu"></button>
-                        <button style="color: #d84141" class="stat" id="sbwu"></button>
-                        <button style="color: #398c3b" class="stat" id="sbuw"></button>
+                        <button style="color: #398c3b" class="stat" id="fb_ft"></button>
+                        <button style="color: #7876f4" class="stat" id="fs_ft"></button>
+                        <button style="color: #d84141" class="stat" id="sb_ft"></button>
+                        <button style="color: #398c3b" class="stat" id="sb_tf"></button>
                     </div>
                 </div>
-                <div id="wavesUsd" class="glass">
+                <div id="ft" class="orderbook">
                     <div>
                         <p>Bids</p>
-                        <div id="wavesUsdBid" class="bid">
+                        <div id="bid_ft" class="bid">
                             <div class = item></div>
                             <div class = item></div>
                             <div class = item></div>
@@ -170,7 +173,7 @@
                     </div>
                     <div>
                         <p>Asks</p>
-                        <div id="wavesUsdAsk" class="ask">
+                        <div id="ask_ft" class="ask">
                             <div class = item></div>
                             <div class = item></div>
                             <div class = item></div>
