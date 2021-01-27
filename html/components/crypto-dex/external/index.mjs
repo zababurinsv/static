@@ -99,7 +99,6 @@ function pairs(type = undefined) {
 export default async (v,p,c,obj,r) => {
     events(v,p,c,obj,r)
     let dex = (await import('/static/html/components/component_modules/dex/index.mjs'))['default']
-    let relation = {}
     let assets = await pairs()
    /*
     let description = {
@@ -268,15 +267,31 @@ export default async (v,p,c,obj,r) => {
                 break
         }
     }
-
+    let relation = {
+        fee: {
+            first: [],
+            second: [],
+            third: [],
+        },
+        amount: {
+            first: [],
+            second: [],
+            third: [],
+        },
+        orderbook: {
+            first: [],
+            second: [],
+            third: [],
+        }
+    }
     obj['this'].shadowRoot.querySelector('#left').addEventListener('input',async (e)=>{
-        relation['first'] =  e.target.value / 100
+        relation.amount['first'][0] =  e.target.value
     },{passive:true})
     obj['this'].shadowRoot.querySelector('#center').addEventListener('input',async (e)=>{
-        relation['second'] =  e.target.value
+        relation.amount['second'][0] =  e.target.value
     },{passive:true})
     obj['this'].shadowRoot.querySelector('#right').addEventListener('input',async (e)=>{
-        relation['third'] =  e.target.value
+        relation.amount['third'][0] =  e.target.value
     },{passive:true})
     // let itemDetails = {}
     // for(let item of description['assetId']) {
@@ -327,13 +342,13 @@ export default async (v,p,c,obj,r) => {
     let input_id_right = obj['this'].shadowRoot.querySelector('#right').value
     function setAssetsAmount(state) {
         if(state) {
-            relation['first'] = parseFloat((input_id_left))
-            relation['second'] = parseFloat(input_id_center)
-            relation['third'] = parseFloat(input_id_right)
+            relation.amount['first'][0] = parseFloat((input_id_left))
+            relation.amount['second'][0] = parseFloat(input_id_center)
+            relation.amount['third'][0] = parseFloat(input_id_right)
         } else {
-            relation['first'] = sys.navigation.assets.first
-            relation['second'] = sys.navigation.assets.second
-            relation['third'] = sys.navigation.assets.third
+            relation.amount['first'][0] = sys.navigation.assets.first
+            relation.amount['second'][0] = sys.navigation.assets.second
+            relation.amount['third'][0] = sys.navigation.assets.third
         }
     }
     (sys.navigation.assets.status)
@@ -348,55 +363,63 @@ export default async (v,p,c,obj,r) => {
     // let amountAssetDecimals = {}
     let timerId = setTimeout(async  function tick() {
         sys['counts']['main'] ++
-        relation['eue'] = undefined
-        relation['ueu'] = undefined
-        relation['wew'] = undefined
-        relation['wuw'] = undefined
+        // relation['eue'] = undefined
+        // relation['ueu'] = undefined
+        // relation['wew'] = undefined
+        // relation['wuw'] = undefined
 
         // e = second
         // u = third
         // w = first
 
-        relation['sts'] = undefined
-        relation['tst'] = undefined
-        relation['fsf'] = undefined
-        relation['ftf'] = undefined
-        // console.assert(false, {
-        //     "assets": assets,
-        //     "amountAsset": assets.head.pairs.W['first/second'].amountAsset,
-        //     "priceAsset": assets.head.pairs.W['first/second'].priceAsset
-        // })
+        // relation['sts'] = undefined
+        // relation['tst'] = undefined
+        // relation['fsf'] = undefined
+        // relation['ftf'] = undefined
         let orderbook_fs = await dex.orderbook(assets.head.pairs.W['first/second'].amountAsset, assets.head.pairs.W['first/second'].priceAsset)
         let orderbook_ft = await dex.orderbook(assets.head.pairs.W['first/third'].amountAsset, assets.head.pairs.W['first/third'].priceAsset)
         let orderbook_st = await dex.orderbook(assets.head.pairs.W['second/third'].amountAsset, assets.head.pairs.W['second/third'].priceAsset)
-        console.assert(false, {
-            orderbook_fs:orderbook_fs,
-            orderbook_ft:orderbook_ft,
-            orderbook_st:orderbook_st
-        })
-        while (!wavesEuro.success) {
-            console.warn('запрос не сработал 1')
-            wavesEuro = await dex.wavesEuro({net:'W',pair:description['wavesEuro']}, obj)
+        while (!orderbook_fs.success) {
+            console.warn('запрос fs не сработал')
+            orderbook_fs = await dex.orderbook(assets.head.pairs.W['first/second'].amountAsset, assets.head.pairs.W['first/second'].priceAsset)
         }
-        while (!wavesUsd.success) {
-            console.warn('запрос не сработал 2')
-            wavesUsd = await  dex.wavesUsd({net:'W', pair:description['wavesUsd']}, obj)
+        while (!orderbook_ft.success) {
+            console.warn('запрос ft не сработал')
+            orderbook_ft = await  await dex.orderbook(assets.head.pairs.W['first/third'].amountAsset, assets.head.pairs.W['first/third'].priceAsset)
         }
-        while (!euroUsd.success) {
-            console.warn('запрос не сработал 3')
-            euroUsd = await  dex.eurUsd({net:'W',pair:description['euroUsd']}, obj)
+        while (!orderbook_st.success) {
+            console.warn('запрос st не сработал')
+            orderbook_st =  await dex.orderbook(assets.head.pairs.W['second/third'].amountAsset, assets.head.pairs.W['second/third'].priceAsset)
         }
-        wavesEuro = wavesEuro.message
-        wavesUsd = wavesUsd.message
-        euroUsd= euroUsd.message
+        orderbook_fs = orderbook_fs.message
+        orderbook_ft = orderbook_ft.message
+        orderbook_st = orderbook_st.message
+        relation.orderbook.first[0] =  orderbook_fs
+        relation.orderbook.second[0] = orderbook_ft
+        relation.orderbook.third[0] =  orderbook_st
 
-        // let priceAssetDecimalsEuro =  description['details'][`${wavesEuro['pair']['priceAsset']}`]
-        // let amountAssetDecimalsEuro = description['details'][`${wavesEuro['pair']['amountAsset']}`]
-        // let priceAssetDecimalsUsd =  description['details'][`${wavesUsd['pair']['priceAsset']}`]
-        // let amountAssetDecimalsUsd = description['details'][`${wavesUsd['pair']['amountAsset']}`]
-
-        relation['fee']['euro'] = ( 1/dex.denormalize(wavesEuro.asks[0]['price'],priceAssetDecimalsEuro,  amountAssetDecimalsEuro))*0.003
-        relation['fee']['usd'] = ( 1/dex.denormalize(wavesUsd.asks[0]['price'],priceAssetDecimalsUsd,  amountAssetDecimalsUsd))*0.003
+        // w = first
+        // e = second
+        // u = third
+        for(let type in relation['fee']) {
+            if(assets.W[type] !== 'WAVES') {
+                let amountAsset = relation.orderbook[type][0].pair.amountAsset
+                let priceAsset = relation.orderbook[type][0].pair.priceAsset
+                let amountDecimals = assets.head.assetId.W[`${amountAsset}`].decimals
+                let priceDecimals = assets.head.assetId.W[`${priceAsset}`].decimals
+                relation['fee'][type][0] = (1/dex.denormalize(relation.orderbook[type][0].asks[0]['price'],amountDecimals,priceDecimals))*0.003
+            } else {
+                relation['fee'][type][0] = 0.003
+            }
+        }
+        // relation['fee']['euro'] = ( 1/dex.denormalize(wavesEuro.asks[0]['price'],priceAssetDecimalsEuro,  amountAssetDecimalsEuro))*0.003
+        // relation['fee']['usd'] = ( 1/dex.denormalize(wavesUsd.asks[0]['price'],priceAssetDecimalsUsd,  amountAssetDecimalsUsd))*0.003
+// new item 1
+        obj = await dex.buy_fs(true, {
+            orderbook: relation.orderbook.first[0],
+            amount: relation.amount.first[0]
+        },'green',obj , 'fs');
+        console.assert(false, relation)
 //## item 1
         relation['description']['ueu'] = []
         relation['description']['ueu'].push(relation['u'])

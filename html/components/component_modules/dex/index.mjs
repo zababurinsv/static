@@ -11,14 +11,14 @@ object['fee'] = 0.003
 export default (()=>{
         let Class = class Dex {
             constructor() {
-                this.fix = this.fix.bind(this)
-                this.buy = this.buy.bind(this)
-                this.sell = this.sell.bind(this)
-                this.denormalize = this.denormalize.bind(this)
                 // e = second
                 // u = third
                 // w = first
                 this.orderbook = this.orderbook.bind(this)
+                this.denormalize = this.denormalize.bind(this)
+                this.buy = this.buy.bind(this)
+                this.sell = this.sell.bind(this)
+                this.fix = this.fix.bind(this)
             }
             orderbook(amountAsset, priceAsset) {
                 return new Promise( async (resolve, reject) => {
@@ -46,9 +46,24 @@ export default (()=>{
                     }
                 })
             }
-            denormalize(price, priceAssetDecimals, amountAssetDecimals){
+            denormalize(price, amountAssetDecimals, priceAssetDecimals, ){
                 let wvsPrice = 10 ** (priceAssetDecimals - amountAssetDecimals + 8)
                 return price/wvsPrice
+            }
+            buy_fs(v, p, c, obj, r) {
+                return new Promise( async (resolve, reject) => {
+                    let verify = true
+                    let count = 0
+                    while (verify) {
+                        if(count >= 10) {
+                            verify = false
+                        } else {
+                            console.log('count --->', count)
+                            count ++
+                        }
+                    }
+                    resolve(obj)
+                })
             }
             buy(pair,Amount, obj,name) {
                 return new Promise( async (resolve, reject) => {
