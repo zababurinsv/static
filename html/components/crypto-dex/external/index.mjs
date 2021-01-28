@@ -104,34 +104,6 @@ export default async (v,p,c,obj,r) => {
     events(v,p,c,obj,r)
     let dex = (await import('/static/html/components/component_modules/dex/index.mjs'))['default']
     let assets = await pairs()
-   /*
-    let description = {
-        wavesEuro:{
-            amountAsset: assets.W.eth,
-            priceAsset: assets.W.waves,
-            tickSize:undefined,
-        },
-        euroUsd:{
-            amountAsset: assets.W.eth,
-            priceAsset: assets.W.usdt,
-            tickSize:undefined
-        },
-        wavesUsd:{
-            amountAsset: assets.W.usdt,
-            priceAsset: assets.W.waves,
-            tickSize:undefined
-        },
-        details:{},
-        name:{},
-        fee:{},
-        assetId:[assets.W.eth,assets.W.usdt],
-        T: {
-            "usdt": 6,
-            "waves": 8,
-            "eth":8
-        }
-    }
-    */
     let sys = {
         _scriptDir: import.meta.url,
         validation: {
@@ -346,24 +318,10 @@ export default async (v,p,c,obj,r) => {
     obj['this'].shadowRoot.querySelector('#right').addEventListener('input',async (e)=>{
         relation.amount['third'][0] =  e.target.value
     },{passive:true})
-    // let itemDetails = {}
-    // for(let item of description['assetId']) {
-    //     itemDetails[`${item}`] = await task.set(true,'W','8',item,'/assets/details/{assetId}')
-    //     description['details'][`${item}`] = itemDetails[`${item}`]['decimals']
-    //     description['name'][`${item}`] = itemDetails[`${item}`]['name']
-    // }
-    // description['details'][`WAVES`] = 8
-    // description['name'][`WAVES`] = `WAVES`
-    // if(!sys.validation.output.prod) {
-    //     description.T.eth =   (await task.set(true,'T','8',assets.T.eth,'/assets/details/{assetId}')).decimals
-    //     description.T.usdt =  (await task.set(true,'T','8',assets.T.usdt,'/assets/details/{assetId}')).decimals
-    //     description.T.waves = 8
-    // }
     count(obj)
     //wavesEuro
     //euroUsd
     //wavesUsd
-
     for(let key in assets.head.pairs.W) {
         let priceAsset = {}
         let amountAsset = {}
@@ -403,24 +361,13 @@ export default async (v,p,c,obj,r) => {
             relation.amount['second'][0] = sys.navigation.assets.second
             relation.amount['third'][0] = sys.navigation.assets.third
         }
-    }
+    };
     (sys.navigation.assets.status)
       ? setAssetsAmount(true)
       : setAssetsAmount(false)
 
-    // relation['decimals'] = description['details']
-    // relation['fee'] = {}
-    // relation['description'] = []
-    // sys.relation = relation
-    // let priceAssetDecimals =  {}
-    // let amountAssetDecimals = {}
     let timerId = setTimeout(async  function tick() {
         sys['counts']['main'] ++
-        // relation['eue'] = undefined
-        // relation['ueu'] = undefined
-        // relation['wew'] = undefined
-        // relation['wuw'] = undefined
-
         // w = first
         // e = second
         // u = third
@@ -460,8 +407,6 @@ export default async (v,p,c,obj,r) => {
                 relation['fee'][type][0] = 0.003
             }
         }
-        // relation['fee']['euro'] = ( 1/dex.denormalize(wavesEuro.asks[0]['price'],priceAssetDecimalsEuro,  amountAssetDecimalsEuro))*0.003
-        // relation['fee']['usd'] = ( 1/dex.denormalize(wavesUsd.asks[0]['price'],priceAssetDecimalsUsd,  amountAssetDecimalsUsd))*0.003
 // new item 1
         assets.relation = relation
         assets = await dex.buy_fs(true, {
