@@ -268,63 +268,49 @@ export default async (v,p,c,obj,r) => {
         }
     }
     let orders = {
-        "sts": {
-            "buy(fs)": {
+        "sts": [{"buy(fs)": {
+                "amount_f": "",
+                "amount_s": "",
+                "price":  ""
+            }}, {"sell(ft)":{
                 "amount": "",
                 "price":  ""
-            },
-            "sell(ft)":{
+            }}, {"buy(st)":{
                 "amount": "",
                 "price":  ""
-            },
-            "buy(st)":{
+            }}],
+        "tst": [{"buy(ft)": {
                 "amount": "",
                 "price":  ""
-            }
-        },
-        "tst": {
-            "buy(ft)": {
+            }},{"sell(fs)":{
                 "amount": "",
                 "price":  ""
-            },
-            "sell(fs)":{
+            }},{"buy(ts)":{
                 "amount": "",
                 "price":  ""
-            },
-            "buy(ts)":{
+            }}],
+        "fsf": [{"buy(sf)": {
                 "amount": "",
                 "price":  ""
-            }
-        },
-        "fsf": {
-            "buy(sf)": {
+            }},{"sell(st)":{
+                "amount_s": "",
+                "amount_t": "",
+                "price":  ""
+            }},{"buy(ft)":{
                 "amount": "",
                 "price":  ""
-            },
-            "sell(st)":{
+            }}],
+        "ftf": [{"buy(tf)": {
                 "amount": "",
                 "price":  ""
-            },
-            "buy(ft)":{
+            }},{"sell(ts)":{
                 "amount": "",
                 "price":  ""
-            }
-        },
-        "ftf": {
-            "buy(tf)": {
+            }},{"buy(fs)":{
                 "amount": "",
                 "price":  ""
-            },
-            "sell(ts)":{
-                "amount": "",
-                "price":  ""
-            },
-            "buy(fs)":{
-                "amount": "",
-                "price":  ""
-            }
+            }}]
         }
-    }
     let relation = {
         fee: {
             first: [],
@@ -434,10 +420,6 @@ export default async (v,p,c,obj,r) => {
         // w = first
         // e = second
         // u = third
-        relation['orders']['sts'] = undefined
-        relation['orders']['tst'] = undefined
-        relation['orders']['fsf'] = undefined
-        relation['orders']['ftf'] = undefined
         let orderbook_fs = await dex.orderbook(assets.head.pairs.W['first/second'].amountAsset, assets.head.pairs.W['first/second'].priceAsset)
         let orderbook_ft = await dex.orderbook(assets.head.pairs.W['first/third'].amountAsset, assets.head.pairs.W['first/third'].priceAsset)
         let orderbook_st = await dex.orderbook(assets.head.pairs.W['second/third'].amountAsset, assets.head.pairs.W['second/third'].priceAsset)
@@ -478,8 +460,8 @@ export default async (v,p,c,obj,r) => {
         // relation['fee']['usd'] = ( 1/dex.denormalize(wavesUsd.asks[0]['price'],priceAssetDecimalsUsd,  amountAssetDecimalsUsd))*0.003
 // new item 1
         assets.relation = relation
-        relation = await dex.buy_fs(true, {
-            orders: relation.orders,
+        assets = await dex.buy_fs(true, {
+            self: relation,
             orderbook: relation.orderbook.first[0],
             amount: {
                 f:undefined,
@@ -493,7 +475,7 @@ export default async (v,p,c,obj,r) => {
             priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
             view: obj['this'].shadowRoot.querySelector('#fb_fs')
         },'green',assets , 'fs');
-        console.assert(false, relation)
+        console.assert(false, assets)
 //## item 1
         relation['description']['ueu'] = []
         relation['description']['ueu'].push(relation['u'])

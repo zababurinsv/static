@@ -73,16 +73,16 @@ export default (()=>{
                                 bidAmount = p.orderbook['bids'][count]['amount']/(10**assets.head.assetId.W[`${p.amountAsset}`].decimals)
                                 bidPrice = this.denormalize(p.orderbook['bids'][count]['price'],assets.head.assetId.W[`${p.amountAsset}`].decimals,assets.head.assetId.W[`${p.priceAsset}`].decimals)
                                 p.amount.f = ((p.amount.s/askPrice) - p.fee.f)
-                                console.assert(false, {
-                                    "relation": `${p.amount.f} / ${askPrice}`,
-                                    askAmount: askAmount,
-                                    askPrice: askPrice,
-                                    bidAmount: bidAmount,
-                                    bidPrice: bidPrice,
-                                    "p.amount.s": p.amount.s,
-                                    "p.amount.f": p.amount.f,
-                                    "verify": (askAmount - p.amount.f)
-                                })
+                                // console.assert(false, {
+                                //     "relation": `${p.amount.f} / ${askPrice}`,
+                                //     askAmount: askAmount,
+                                //     askPrice: askPrice,
+                                //     bidAmount: bidAmount,
+                                //     bidPrice: bidPrice,
+                                //     "p.amount.s": p.amount.s,
+                                //     "p.amount.f": p.amount.f,
+                                //     "verify": (askAmount - p.amount.f)
+                                // })
                                 if((askAmount - p.amount.f) < 0) {
                                     console.warn('невозможно купить f',{
                                         askAmount: askAmount,
@@ -95,7 +95,9 @@ export default (()=>{
                                     let s = assets.head.assets.W.second.substr(-5, 5)
                                     let f = assets.head.assets.W.first.substr(-5, 5)
                                     p.view.innerHTML = `${s}=>${f}[(${p.amount.s}*)${p.amount.f}]`
-                                    assets.relation
+                                    p.self.orders.W.sts[0]['buy(fs)']['amount_f'] = p.amount.f
+                                    p.self.orders.W.sts[0]['buy(fs)']['amount_s'] = p.amount.s
+                                    p.self.orders.W.sts[0]['buy(fs)']['price'] = askPrice
                                     verify = false
                                 }
                             }
