@@ -72,6 +72,13 @@ export default {
       "third": 0
     }
   },
+  "threshold": {
+    "S": { },
+    "T": { },
+    "W": {
+      "amount":0.01
+    }
+  },
   "pairs": {
     "S": {
       "first/second": {
@@ -87,7 +94,7 @@ export default {
         "priceAsset":  ""
       }
     },
-    "W": {
+    "T": {
       "first/second": {
         "amountAsset": "",
         "priceAsset":  ""
@@ -101,7 +108,7 @@ export default {
         "priceAsset":  ""
       }
     },
-    "T": {
+    "W": {
       "first/second": {
         "amountAsset": "",
         "priceAsset":  ""

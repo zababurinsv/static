@@ -267,6 +267,64 @@ export default async (v,p,c,obj,r) => {
                 break
         }
     }
+    let orders = {
+        "sts": {
+            "buy(fs)": {
+                "amount": "",
+                "price":  ""
+            },
+            "sell(ft)":{
+                "amount": "",
+                "price":  ""
+            },
+            "buy(st)":{
+                "amount": "",
+                "price":  ""
+            }
+        },
+        "tst": {
+            "buy(ft)": {
+                "amount": "",
+                "price":  ""
+            },
+            "sell(fs)":{
+                "amount": "",
+                "price":  ""
+            },
+            "buy(ts)":{
+                "amount": "",
+                "price":  ""
+            }
+        },
+        "fsf": {
+            "buy(sf)": {
+                "amount": "",
+                "price":  ""
+            },
+            "sell(st)":{
+                "amount": "",
+                "price":  ""
+            },
+            "buy(ft)":{
+                "amount": "",
+                "price":  ""
+            }
+        },
+        "ftf": {
+            "buy(tf)": {
+                "amount": "",
+                "price":  ""
+            },
+            "sell(ts)":{
+                "amount": "",
+                "price":  ""
+            },
+            "buy(fs)":{
+                "amount": "",
+                "price":  ""
+            }
+        }
+    }
     let relation = {
         fee: {
             first: [],
@@ -282,6 +340,11 @@ export default async (v,p,c,obj,r) => {
             first: [],
             second: [],
             third: [],
+        },
+        orders: {
+            "S": orders,
+            "T": orders,
+            "W": orders
         }
     }
     obj['this'].shadowRoot.querySelector('#left').addEventListener('input',async (e)=>{
@@ -368,14 +431,13 @@ export default async (v,p,c,obj,r) => {
         // relation['wew'] = undefined
         // relation['wuw'] = undefined
 
+        // w = first
         // e = second
         // u = third
-        // w = first
-
-        // relation['sts'] = undefined
-        // relation['tst'] = undefined
-        // relation['fsf'] = undefined
-        // relation['ftf'] = undefined
+        relation['orders']['sts'] = undefined
+        relation['orders']['tst'] = undefined
+        relation['orders']['fsf'] = undefined
+        relation['orders']['ftf'] = undefined
         let orderbook_fs = await dex.orderbook(assets.head.pairs.W['first/second'].amountAsset, assets.head.pairs.W['first/second'].priceAsset)
         let orderbook_ft = await dex.orderbook(assets.head.pairs.W['first/third'].amountAsset, assets.head.pairs.W['first/third'].priceAsset)
         let orderbook_st = await dex.orderbook(assets.head.pairs.W['second/third'].amountAsset, assets.head.pairs.W['second/third'].priceAsset)
@@ -415,10 +477,22 @@ export default async (v,p,c,obj,r) => {
         // relation['fee']['euro'] = ( 1/dex.denormalize(wavesEuro.asks[0]['price'],priceAssetDecimalsEuro,  amountAssetDecimalsEuro))*0.003
         // relation['fee']['usd'] = ( 1/dex.denormalize(wavesUsd.asks[0]['price'],priceAssetDecimalsUsd,  amountAssetDecimalsUsd))*0.003
 // new item 1
-        obj = await dex.buy_fs(true, {
+        assets.relation = relation
+        relation = await dex.buy_fs(true, {
+            orders: relation.orders,
             orderbook: relation.orderbook.first[0],
-            amount: relation.amount.first[0]
-        },'green',obj , 'fs');
+            amount: {
+                f:undefined,
+                s:relation.amount.first[0]
+            },
+            fee: {
+              f:relation.fee.first[0],
+              s:relation.fee.second[0]
+            },
+            amountAsset: assets.head.pairs.W['first/second']['amountAsset'],
+            priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
+            view: obj['this'].shadowRoot.querySelector('#fb_fs')
+        },'green',assets , 'fs');
         console.assert(false, relation)
 //## item 1
         relation['description']['ueu'] = []

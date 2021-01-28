@@ -50,19 +50,59 @@ export default (()=>{
                 let wvsPrice = 10 ** (priceAssetDecimals - amountAssetDecimals + 8)
                 return price/wvsPrice
             }
-            buy_fs(v, p, c, obj, r) {
+            buy_fs(v, p, c, assets, r) {
                 return new Promise( async (resolve, reject) => {
                     let verify = true
                     let count = 0
                     while (verify) {
+                        console.log('~~~~~~~~~~~@@@', count)
                         if(count >= 10) {
                             verify = false
+                            assets.head.orders.W['buy(fs)'] = undefined
                         } else {
-                            console.log('count --->', count)
+                            let bidAmount = {}
+                            let bidPrice = {}
+                            let askAmount = {}
+                            let askPrice = {}
+                            if(p.orderbook.asks[count] === undefined) {
+                                assets.head.orders.W['buy(fs)'] = undefined
+                                verify = false
+                            } else {
+                                askAmount = p.orderbook.asks[count]['amount'] / (10**assets.head.assetId.W[`${p.amountAsset}`].decimals)
+                                askPrice = this.denormalize(p.orderbook.asks[count]['price'],assets.head.assetId.W[`${p.amountAsset}`].decimals,assets.head.assetId.W[`${p.priceAsset}`].decimals)
+                                bidAmount = p.orderbook['bids'][count]['amount']/(10**assets.head.assetId.W[`${p.amountAsset}`].decimals)
+                                bidPrice = this.denormalize(p.orderbook['bids'][count]['price'],assets.head.assetId.W[`${p.amountAsset}`].decimals,assets.head.assetId.W[`${p.priceAsset}`].decimals)
+                                p.amount.f = ((p.amount.s/askPrice) - p.fee.f)
+                                console.assert(false, {
+                                    "relation": `${p.amount.f} / ${askPrice}`,
+                                    askAmount: askAmount,
+                                    askPrice: askPrice,
+                                    bidAmount: bidAmount,
+                                    bidPrice: bidPrice,
+                                    "p.amount.s": p.amount.s,
+                                    "p.amount.f": p.amount.f,
+                                    "verify": (askAmount - p.amount.f)
+                                })
+                                if((askAmount - p.amount.f) < 0) {
+                                    console.warn('невозможно купить f',{
+                                        askAmount: askAmount,
+                                        "amount.f":p.amount.f,
+                                        count: count
+                                    })
+                                    count++
+                                } else {
+                                    p.amount.f = this.fix(p.amount.f)
+                                    let s = assets.head.assets.W.second.substr(-5, 5)
+                                    let f = assets.head.assets.W.first.substr(-5, 5)
+                                    p.view.innerHTML = `${s}=>${f}[(${p.amount.s}*)${p.amount.f}]`
+                                    assets.relation
+                                    verify = false
+                                }
+                            }
                             count ++
                         }
                     }
-                    resolve(obj)
+                    resolve(assets)
                 })
             }
             buy(pair,Amount, obj,name) {
