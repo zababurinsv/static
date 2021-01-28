@@ -44,10 +44,14 @@ function pairs(type = undefined) {
                         let details = {}
                         if(assets[type][key] !== 'WAVES') {
                             details = await task.set(true,type,'8',assets[type][key],'/assets/details/{assetId}')
+                            let name = details.name.split(' ')
+                            if(name.length !== 1) {
+                                name = `${name[0].substr(0, 1)}-${name[name.length - (name.length -1)]}`
+                            }
                             assets.head.decimals[type][key] = details.decimals
-                            assets.head.assets[type][key] = details.name
+                            assets.head.assets[type][key] = name
                             assets.head.assetId[type][`${details.assetId}`] = {}
-                            assets.head.assetId[type][`${details.assetId}`]['name'] = details.name
+                            assets.head.assetId[type][`${details.assetId}`]['name'] = name
                             assets.head.assetId[type][`${details.assetId}`]['decimals'] = details.decimals
                             assets.head.assetId[type][`${details.assetId}`]['key'] = key
                         } else {

@@ -92,8 +92,8 @@ export default (()=>{
                                     count++
                                 } else {
                                     p.amount.f = this.fix(p.amount.f)
-                                    let s = assets.head.assets.W.second.substr(-5, 5)
-                                    let f = assets.head.assets.W.first.substr(-5, 5)
+                                    let s = assets.head.assets.W.second
+                                    let f = assets.head.assets.W.first
                                     p.view.innerHTML = `${s}=>${f}[(${p.amount.s}*)${p.amount.f}]`
                                     p.self.orders.W.sts[0]['buy(fs)']['amount_f'] = p.amount.f
                                     p.self.orders.W.sts[0]['buy(fs)']['amount_s'] = p.amount.s
