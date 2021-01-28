@@ -17,6 +17,7 @@ export default (()=>{
                 this.orderbook = this.orderbook.bind(this)
                 this.denormalize = this.denormalize.bind(this)
                 this.buy = this.buy.bind(this)
+                this.fb_fs = this.fb_fs.bind(this)
                 this.sell = this.sell.bind(this)
                 this.fix = this.fix.bind(this)
             }
@@ -50,7 +51,7 @@ export default (()=>{
                 let wvsPrice = 10 ** (priceAssetDecimals - amountAssetDecimals + 8)
                 return price/wvsPrice
             }
-            buy_fs(v, p, c, assets, r) {
+            fb_fs(v, p, c, assets, r) {
                 return new Promise( async (resolve, reject) => {
                     let verify = true
                     let count = 0

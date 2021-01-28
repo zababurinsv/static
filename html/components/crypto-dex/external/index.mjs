@@ -409,7 +409,7 @@ export default async (v,p,c,obj,r) => {
         }
 // new item 1
         assets.relation = relation
-        assets = await dex.buy_fs(true, {
+        assets = await dex.fb_fs(true, {
             self: relation,
             orderbook: relation.orderbook.first[0],
             amount: {
