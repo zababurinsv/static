@@ -223,48 +223,48 @@ export default async (v,p,c,obj,r) => {
     function empty(obj,type) {
         switch (type) {
             case 'ueu':
-                obj['this'].shadowRoot.querySelector('div.fbwu').style.background ='#7694f473'
-                obj['this'].shadowRoot.querySelector('div.fswe').style.background ='#7694f473'
-                obj['this'].shadowRoot.querySelector('div.fbue').style.background ='#7694f473'
-                obj['this'].shadowRoot.querySelector('#fbwu').innerHTML = ``
-                obj['this'].shadowRoot.querySelector('#fswe').innerHTML = ``
-                obj['this'].shadowRoot.querySelector('#fbue').innerHTML = ``
-                obj['this'].shadowRoot.querySelector('#fbwu').innerHTML = `${sys['warn']['s/b']}`
-                obj['this'].shadowRoot.querySelector('#fswe').innerHTML = `${sys['warn']['s/b']}`
-                obj['this'].shadowRoot.querySelector('#fbue').innerHTML = `${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('div.fb_ft').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('div.fs_fs').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('div.fb_ts').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('#fb_ft').innerHTML = ``
+                obj['this'].shadowRoot.querySelector('#fs_fs').innerHTML = ``
+                obj['this'].shadowRoot.querySelector('#fb_ts').innerHTML = ``
+                obj['this'].shadowRoot.querySelector('#fb_ft').innerHTML = `${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#fs_fs').innerHTML = `${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#fb_ts').innerHTML = `${sys['warn']['s/b']}`
                 break
             case 'eue':
-                obj['this'].shadowRoot.querySelector('div.fbwe').style.background ='#7694f473'
-                obj['this'].shadowRoot.querySelector('div.fswu').style.background ='#7694f473'
-                obj['this'].shadowRoot.querySelector('div.fbeu').style.background ='#7694f473'
-                obj['this'].shadowRoot.querySelector('#fswu').innerHTML = ``
-                obj['this'].shadowRoot.querySelector('#fbwe').innerHTML = ``
-                obj['this'].shadowRoot.querySelector('#fbeu').innerHTML = ``
-                obj['this'].shadowRoot.querySelector('#fswu').innerHTML = `${sys['warn']['s/b']}`
-                obj['this'].shadowRoot.querySelector('#fbwe').innerHTML = `${sys['warn']['s/b']}`
-                obj['this'].shadowRoot.querySelector('#fbeu').innerHTML = `${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('div.fb_fs').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('div.fs_ft').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('div.fb_st').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('#fs_ft').innerHTML = ``
+                obj['this'].shadowRoot.querySelector('#fb_fs').innerHTML = ``
+                obj['this'].shadowRoot.querySelector('#fb_st').innerHTML = ``
+                obj['this'].shadowRoot.querySelector('#fs_ft').innerHTML = `${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#fb_fs').innerHTML = `${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#fb_st').innerHTML = `${sys['warn']['s/b']}`
                 break
             case 'wuw':
-                obj['this'].shadowRoot.querySelector('div.sbew').style.background ='#7694f473'
-                obj['this'].shadowRoot.querySelector('div.sseu').style.background ='#7694f473'
-                obj['this'].shadowRoot.querySelector('div.sbwu').style.background ='#7694f473'
-                obj['this'].shadowRoot.querySelector('#sbew').innerHTML = ``
-                obj['this'].shadowRoot.querySelector('#sseu').innerHTML = ``
-                obj['this'].shadowRoot.querySelector('#sbwu').innerHTML = ``
-                obj['this'].shadowRoot.querySelector('#sbew').innerHTML = `${sys['warn']['s/b']}`
-                obj['this'].shadowRoot.querySelector('#sseu').innerHTML = `${sys['warn']['s/b']}`
-                obj['this'].shadowRoot.querySelector('#sbwu').innerHTML = `${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('div.sb_sf').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('div.ss_st').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('div.sb_ft').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('#sb_sf').innerHTML = ``
+                obj['this'].shadowRoot.querySelector('#ss_st').innerHTML = ``
+                obj['this'].shadowRoot.querySelector('#sb_ft').innerHTML = ``
+                obj['this'].shadowRoot.querySelector('#sb_sf').innerHTML = `${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#ss_st').innerHTML = `${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#sb_ft').innerHTML = `${sys['warn']['s/b']}`
                 break
             case 'wew':
-                obj['this'].shadowRoot.querySelector('div.sbuw').style.background ='#7694f473'
-                obj['this'].shadowRoot.querySelector('div.ssue').style.background ='#7694f473'
-                obj['this'].shadowRoot.querySelector('div.sbwe').style.background ='#7694f473'
-                obj['this'].shadowRoot.querySelector('#sbuw').innerHTML = ``
-                obj['this'].shadowRoot.querySelector('#ssue').innerHTML = ``
-                obj['this'].shadowRoot.querySelector('#sbwe').innerHTML = ``
-                obj['this'].shadowRoot.querySelector('#sbuw').innerHTML = `${sys['warn']['s/b']}`
-                obj['this'].shadowRoot.querySelector('#ssue').innerHTML = `${sys['warn']['s/b']}`
-                obj['this'].shadowRoot.querySelector('#sbwe').innerHTML = `${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('div.sb_tf').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('div.ss_ts').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('div.sb_fs').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('#sb_tf').innerHTML = ``
+                obj['this'].shadowRoot.querySelector('#ss_ts').innerHTML = ``
+                obj['this'].shadowRoot.querySelector('#sb_fs').innerHTML = ``
+                obj['this'].shadowRoot.querySelector('#sb_tf').innerHTML = `${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#ss_ts').innerHTML = `${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#sb_fs').innerHTML = `${sys['warn']['s/b']}`
                 break
             default:
                 console.assert(false, 'неизвестный тип', type, obj)
@@ -479,7 +479,6 @@ export default async (v,p,c,obj,r) => {
             priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
             view: obj['this'].shadowRoot.querySelector('#fb_fs')
         },'green',assets , 'fs');
-        console.assert(false, assets)
 //## item 1
         relation['description']['ueu'] = []
         relation['description']['ueu'].push(relation['u'])
@@ -487,7 +486,7 @@ export default async (v,p,c,obj,r) => {
         ((relation['buy(wavesUsd)'] >= sys['threshold']['amount']))
           ? (relation['description']['ueu'].push(relation['buy(wavesUsd)']),
             sys['validation']['disabled']['views'][0] = true,
-            obj['this'].shadowRoot.querySelector('#fbwu').innerHTML = `${description['name'][`${wavesUsd.pair.priceAsset}`]}=>${description['name'][`${wavesUsd.pair.amountAsset}`]}[(${relation['u']}*)${relation['buy(wavesUsd)']}]`)
+            obj['this'].shadowRoot.querySelector('#fb_ft').innerHTML = `${description['name'][`${wavesUsd.pair.priceAsset}`]}=>${description['name'][`${wavesUsd.pair.amountAsset}`]}[(${relation['u']}*)${relation['buy(wavesUsd)']}]`)
           : (delete relation['description']['ueu'],
             sys['validation']['disabled']['views'][0] = false,
             empty(obj, 'ueu'))
@@ -498,7 +497,7 @@ export default async (v,p,c,obj,r) => {
           ((relation['sell(wavesEuro)'] >= sys['threshold']['amount']))
             ? (relation['description']['ueu'].push(relation['sell(wavesEuro)']),
               sys['validation']['disabled']['views'][0] = true,
-              obj['this'].shadowRoot.querySelector('#fswe').innerHTML = `${description['name'][`${wavesEuro.pair.priceAsset}`]}=>${description['name'][`${wavesEuro.pair.amountAsset}`]}[(${relation['buy(wavesUsd)']}*)${relation['sell(wavesEuro)']}]`)
+              obj['this'].shadowRoot.querySelector('#fs_fs').innerHTML = `${description['name'][`${wavesEuro.pair.priceAsset}`]}=>${description['name'][`${wavesEuro.pair.amountAsset}`]}[(${relation['buy(wavesUsd)']}*)${relation['sell(wavesEuro)']}]`)
             : (delete relation['description']['ueu'],
               sys['validation']['disabled']['views'][0] = false,
               empty(obj, 'ueu'))
@@ -508,7 +507,7 @@ export default async (v,p,c,obj,r) => {
             ((relation['buy(usdEuro)'] >= sys['threshold']['amount']))
               ? (relation['description']['ueu'].push(relation['buy(usdEuro)']),
                 sys['validation']['disabled']['views'][0] = true,
-                obj['this'].shadowRoot.querySelector('#fbue').innerHTML = `${description['name'][`${euroUsd.pair.amountAsset}`]}=>${description['name'][`${euroUsd.pair.priceAsset}`]}[(${relation['sell(wavesEuro)']}*)${relation['buy(usdEuro)']}]`)
+                obj['this'].shadowRoot.querySelector('#fb_ts').innerHTML = `${description['name'][`${euroUsd.pair.amountAsset}`]}=>${description['name'][`${euroUsd.pair.priceAsset}`]}[(${relation['sell(wavesEuro)']}*)${relation['buy(usdEuro)']}]`)
               : (delete relation['description']['ueu'],
                 sys['validation']['disabled']['views'][0] = false,
                 empty(obj, 'ueu'))
@@ -542,7 +541,7 @@ export default async (v,p,c,obj,r) => {
         ((relation['buy(wavesEuro)'] >= sys['threshold']['amount']))
           ? (relation['description']['eue'].push(relation['buy(wavesEuro)']),
             sys['validation']['disabled']['views'][1] = true,
-            obj['this'].shadowRoot.querySelector('#fbwe').innerHTML = `${description['name'][`${wavesEuro.pair.amountAsset}`]}=>${description['name'][`${wavesEuro.pair.priceAsset}`]}[(${relation['e']}*)${relation['buy(wavesEuro)']}]`)
+            obj['this'].shadowRoot.querySelector('#fb_fs').innerHTML = `${description['name'][`${wavesEuro.pair.amountAsset}`]}=>${description['name'][`${wavesEuro.pair.priceAsset}`]}[(${relation['e']}*)${relation['buy(wavesEuro)']}]`)
           : (delete relation['description']['eue'],
             sys['validation']['disabled']['views'][1] = false,
             empty(obj,'eue'))
@@ -551,7 +550,7 @@ export default async (v,p,c,obj,r) => {
             ((relation['sell(wavesUsd)'] >= sys['threshold']['amount']))
               ? (relation['description']['eue'].push(relation['sell(wavesUsd)']),
                 sys['validation']['disabled']['views'][1] = true,
-                obj['this'].shadowRoot.querySelector('#fswu').innerHTML = `${description['name'][`${wavesUsd.pair.amountAsset}`]}=>${description['name'][`${wavesUsd.pair.priceAsset}`]}[(${relation['buy(wavesEuro)']}*)${relation['sell(wavesUsd)']}]`)
+                obj['this'].shadowRoot.querySelector('#fs_ft').innerHTML = `${description['name'][`${wavesUsd.pair.amountAsset}`]}=>${description['name'][`${wavesUsd.pair.priceAsset}`]}[(${relation['buy(wavesEuro)']}*)${relation['sell(wavesUsd)']}]`)
               : (delete relation['description']['eue'],
                 sys['validation']['disabled']['views'][1] = false,
                 empty(obj,'eue'))
@@ -561,7 +560,7 @@ export default async (v,p,c,obj,r) => {
             ((relation['buy(euroUsd)'] >= sys['threshold']['amount']))
               ? (relation['description']['eue'].push(relation['buy(euroUsd)']),
                 sys['validation']['disabled']['views'][1] = true,
-                obj['this'].shadowRoot.querySelector('#fbeu').innerHTML = `${description['name'][`${euroUsd.pair.priceAsset}`]}=>${description['name'][`${euroUsd.pair.amountAsset}`]}[(${relation['sell(wavesUsd)']}*)${relation['buy(euroUsd)']}]`)
+                obj['this'].shadowRoot.querySelector('#fb_st').innerHTML = `${description['name'][`${euroUsd.pair.priceAsset}`]}=>${description['name'][`${euroUsd.pair.amountAsset}`]}[(${relation['sell(wavesUsd)']}*)${relation['buy(euroUsd)']}]`)
               : (delete relation['description']['eue'],
                 sys['validation']['disabled']['views'][1] = false,
                 empty(obj, 'eue'))
@@ -593,14 +592,14 @@ export default async (v,p,c,obj,r) => {
             ((relation['buy(euroWaves)'] >= sys['threshold']['amount']))
             ? (relation['description']['wuw'].push(relation['buy(euroWaves)']),
               sys['validation']['disabled']['views'][2] = true,
-              obj['this'].shadowRoot.querySelector('#sbew').innerHTML = `${description['name'][`${wavesEuro.pair.priceAsset}`]}=>${description['name'][`${wavesEuro.pair.amountAsset}`]}[(${relation['w']}*)${relation['buy(euroWaves)']}]`)
+              obj['this'].shadowRoot.querySelector('#sb_sf').innerHTML = `${description['name'][`${wavesEuro.pair.priceAsset}`]}=>${description['name'][`${wavesEuro.pair.amountAsset}`]}[(${relation['w']}*)${relation['buy(euroWaves)']}]`)
             : (delete relation['description']['wuw'], sys['validation']['disabled']['views'][2] = false, empty(obj,'wuw'))
         if(relation['description']['wuw'] !== undefined) {
             relation = await dex.sell(euroUsd,relation['buy(euroWaves)'], relation, 'euroUsd');
             ((relation['sell(euroUsd)'] >= sys['threshold']['amount']))
               ? (relation['description']['wuw'].push(relation['sell(euroUsd)']),
                 sys['validation']['disabled']['views'][2] = true,
-                obj['this'].shadowRoot.querySelector('#sseu').innerHTML = `${description['name'][`${euroUsd.pair.amountAsset}`]}=>${description['name'][`${euroUsd.pair.priceAsset}`]}[(${relation['buy(euroWaves)']}*)${relation['sell(euroUsd)']}]`)
+                obj['this'].shadowRoot.querySelector('#ss_st').innerHTML = `${description['name'][`${euroUsd.pair.amountAsset}`]}=>${description['name'][`${euroUsd.pair.priceAsset}`]}[(${relation['buy(euroWaves)']}*)${relation['sell(euroUsd)']}]`)
               : (delete relation['description']['wuw'], sys['validation']['disabled']['views'][2] = false, empty(obj,'wuw'))
         }
         if(relation['description']['wuw'] !== undefined) {
@@ -608,7 +607,7 @@ export default async (v,p,c,obj,r) => {
             ((relation['buy(wavesUsd)'] >= sys['threshold']['amount']))
               ? (relation['description']['wuw'].push(relation['buy(wavesUsd)']),
                 sys['validation']['disabled']['views'][2] = true,
-                obj['this'].shadowRoot.querySelector('#sbwu').innerHTML = `${description['name'][`${wavesUsd.pair.priceAsset}`]}=>${description['name'][`${wavesUsd.pair.amountAsset}`]}[(${relation['sell(euroUsd)']}*)${relation['buy(wavesUsd)']}]`)
+                obj['this'].shadowRoot.querySelector('#sb_ft').innerHTML = `${description['name'][`${wavesUsd.pair.priceAsset}`]}=>${description['name'][`${wavesUsd.pair.amountAsset}`]}[(${relation['sell(euroUsd)']}*)${relation['buy(wavesUsd)']}]`)
               : (delete relation['description']['wuw'], sys['validation']['disabled']['views'][2] = false, empty(obj,'wuw'))
         }
         if(relation['description']['wuw'] !== undefined) {
@@ -638,7 +637,7 @@ export default async (v,p,c,obj,r) => {
         ((relation['buy(usdWaves)'] >= sys['threshold']['amount']))
           ? (relation['description']['wew'].push(relation['buy(usdWaves)']),
             sys['validation']['disabled']['views'][3] = true,
-            obj['this'].shadowRoot.querySelector('#sbuw').innerHTML = `${description['name'][`${wavesUsd.pair.amountAsset}`]}=>${description['name'][`${wavesUsd.pair.priceAsset}`]}[(${relation['w']}*)${relation['buy(usdWaves)']}]`)
+            obj['this'].shadowRoot.querySelector('#sb_tf').innerHTML = `${description['name'][`${wavesUsd.pair.amountAsset}`]}=>${description['name'][`${wavesUsd.pair.priceAsset}`]}[(${relation['w']}*)${relation['buy(usdWaves)']}]`)
           : (delete relation['description']['wew'],
             sys['validation']['disabled']['views'][3] = false,
             empty(obj, 'wew'));
@@ -648,7 +647,7 @@ export default async (v,p,c,obj,r) => {
             ((relation['sell(usdEuro)'] >= sys['threshold']['amount']))
               ? (relation['description']['wew'].push(relation['sell(usdEuro)']),
                 sys['validation']['disabled']['views'][3] = true,
-                obj['this'].shadowRoot.querySelector('#ssue').innerHTML = `${description['name'][`${euroUsd.pair.priceAsset}`]}=>${description['name'][`${euroUsd.pair.amountAsset}`]}[(${relation['buy(usdWaves)']}*)${relation['sell(usdEuro)']}]`)
+                obj['this'].shadowRoot.querySelector('#ss_ts').innerHTML = `${description['name'][`${euroUsd.pair.priceAsset}`]}=>${description['name'][`${euroUsd.pair.amountAsset}`]}[(${relation['buy(usdWaves)']}*)${relation['sell(usdEuro)']}]`)
               : (delete relation['description']['wew'],
                 sys['validation']['disabled']['views'][3] = false,
                 empty(obj, 'wew'));
@@ -658,7 +657,7 @@ export default async (v,p,c,obj,r) => {
             ((relation['buy(wavesEuro)'] >= sys['threshold']['amount']))
               ? (relation['description']['wew'].push(relation['buy(wavesEuro)']),
                 sys['validation']['disabled']['views'][3] = true,
-                obj['this'].shadowRoot.querySelector('#sbwe').innerHTML = `${description['name'][`${wavesEuro.pair.amountAsset}`]}=>${description['name'][`${wavesEuro.pair.priceAsset}`]}[(${relation['sell(usdEuro)']}*)${relation['buy(wavesEuro)']}]`)
+                obj['this'].shadowRoot.querySelector('#sb_fs').innerHTML = `${description['name'][`${wavesEuro.pair.amountAsset}`]}=>${description['name'][`${wavesEuro.pair.priceAsset}`]}[(${relation['sell(usdEuro)']}*)${relation['buy(wavesEuro)']}]`)
               : (delete relation['description']['wew'],
                 sys['validation']['disabled']['views'][3] = false,
                 empty(obj, 'wew'));
@@ -742,52 +741,52 @@ export default async (v,p,c,obj,r) => {
                 if(relation['description']['ueu'][0] - relation['description']['ueu'][3] < 0){
                     setTask(true, 'T', 'red', sys.relation.transactions.ueu, '/matcher/orderbook')
                     obj['this'].shadowRoot.querySelector('#total').insertAdjacentHTML('beforeend',`<p>${JSON.stringify(relation['description']['ueu'], null, 2)}</p>`)
-                    obj['this'].shadowRoot.querySelector('div.fbwu').style.background ='#f476b673'
-                    obj['this'].shadowRoot.querySelector('div.fswe').style.background ='#f476b673'
-                    obj['this'].shadowRoot.querySelector('div.fbue').style.background ='#f476b673'
+                    obj['this'].shadowRoot.querySelector('div.fb_ft').style.background ='#f476b673'
+                    obj['this'].shadowRoot.querySelector('div.fs_fs').style.background ='#f476b673'
+                    obj['this'].shadowRoot.querySelector('div.fb_ts').style.background ='#f476b673'
                 }else{
-                    obj['this'].shadowRoot.querySelector('div.fbwu').style.background ='#7694f473'
-                    obj['this'].shadowRoot.querySelector('div.fswe').style.background ='#7694f473'
-                    obj['this'].shadowRoot.querySelector('div.fbue').style.background ='#7694f473'
+                    obj['this'].shadowRoot.querySelector('div.fb_ft').style.background ='#7694f473'
+                    obj['this'].shadowRoot.querySelector('div.fs_fs').style.background ='#7694f473'
+                    obj['this'].shadowRoot.querySelector('div.fb_ts').style.background ='#7694f473'
                 }
             },
             "1": () => {
                 if(relation['description']['eue'][0] - relation['description']['eue'][3] < 0){
                     setTask(true, 'T', 'red', sys.relation.transactions.eue, '/matcher/orderbook')
                     obj['this'].shadowRoot.querySelector('#total').insertAdjacentHTML('beforeend',`<p>${JSON.stringify(relation['description']['eue'], null, 2)}</p>`)
-                    obj['this'].shadowRoot.querySelector('div.fbwe').style.background ='#f476b673'
-                    obj['this'].shadowRoot.querySelector('div.fswu').style.background ='#f476b673'
-                    obj['this'].shadowRoot.querySelector('div.fbeu').style.background ='#f476b673'
+                    obj['this'].shadowRoot.querySelector('div.fb_fs').style.background ='#f476b673'
+                    obj['this'].shadowRoot.querySelector('div.fs_ft').style.background ='#f476b673'
+                    obj['this'].shadowRoot.querySelector('div.fb_st').style.background ='#f476b673'
                 }else{
-                    obj['this'].shadowRoot.querySelector('div.fbwe').style.background ='#7694f473'
-                    obj['this'].shadowRoot.querySelector('div.fswu').style.background ='#7694f473'
-                    obj['this'].shadowRoot.querySelector('div.fbeu').style.background ='#7694f473'
+                    obj['this'].shadowRoot.querySelector('div.fb_fs').style.background ='#7694f473'
+                    obj['this'].shadowRoot.querySelector('div.fs_ft').style.background ='#7694f473'
+                    obj['this'].shadowRoot.querySelector('div.fb_st').style.background ='#7694f473'
                 }
             },
         "2": () => {
             if(relation['description']['wuw'][0] - relation['description']['wuw'][3] < 0){
                 setTask(true, 'T', 'red', sys.relation.transactions.wuw, '/matcher/orderbook')
                 obj['this'].shadowRoot.querySelector('#total').insertAdjacentHTML('beforeend',`<p>${JSON.stringify(relation['description']['wuw'], null, 2)}</p>`)
-                obj['this'].shadowRoot.querySelector('div.sbew').style.background ='#f476b673'
-                obj['this'].shadowRoot.querySelector('div.sseu').style.background ='#f476b673'
-                obj['this'].shadowRoot.querySelector('div.sbwu').style.background ='#f476b673'
+                obj['this'].shadowRoot.querySelector('div.sb_sf').style.background ='#f476b673'
+                obj['this'].shadowRoot.querySelector('div.ss_st').style.background ='#f476b673'
+                obj['this'].shadowRoot.querySelector('div.sb_ft').style.background ='#f476b673'
             }else{
-                obj['this'].shadowRoot.querySelector('div.sbew').style.background ='#7694f473'
-                obj['this'].shadowRoot.querySelector('div.sseu').style.background ='#7694f473'
-                obj['this'].shadowRoot.querySelector('div.sbwu').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('div.sb_sf').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('div.ss_st').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('div.sb_ft').style.background ='#7694f473'
             }
         },
         "3": () => {
             if(relation['description']['wew'][0] - relation['description']['wew'][3] < 0){
                 setTask(true, 'T', 'red', sys.relation.transactions.wew, '/matcher/orderbook')
                 obj['this'].shadowRoot.querySelector('#total').insertAdjacentHTML('beforeend',`<p>${JSON.stringify(relation['description']['wew'], null, 2)}</p>`)
-                obj['this'].shadowRoot.querySelector('div.sbuw').style.background ='#f476b673'
-                obj['this'].shadowRoot.querySelector('div.ssue').style.background ='#f476b673'
-                obj['this'].shadowRoot.querySelector('div.sbwe').style.background ='#f476b673'
+                obj['this'].shadowRoot.querySelector('div.sb_tf').style.background ='#f476b673'
+                obj['this'].shadowRoot.querySelector('div.ss_ts').style.background ='#f476b673'
+                obj['this'].shadowRoot.querySelector('div.sb_fs').style.background ='#f476b673'
             }else{
-                obj['this'].shadowRoot.querySelector('div.sbuw').style.background ='#7694f473'
-                obj['this'].shadowRoot.querySelector('div.ssue').style.background ='#7694f473'
-                obj['this'].shadowRoot.querySelector('div.sbwe').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('div.sb_tf').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('div.ss_ts').style.background ='#7694f473'
+                obj['this'].shadowRoot.querySelector('div.sb_fs').style.background ='#7694f473'
             }
         }
     };
