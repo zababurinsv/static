@@ -245,45 +245,79 @@ export default async (v,p,c,obj,r) => {
     }
     let orders = {
         "sts": [{"buy(fs)": {
-                "amount_f": "",
-                "amount_s": "",
+                "amount": {
+                    "f":"",
+                    "s":""
+                },
                 "price":  ""
             }}, {"sell(ft)":{
-                "amount": "",
+                "amount": {
+                    "f":"",
+                    "t":""
+                },
                 "price":  ""
             }}, {"buy(st)":{
-                "amount": "",
+                "amount": {
+                    "s":"",
+                    "t":""
+                },
                 "price":  ""
             }}],
         "tst": [{"buy(ft)": {
-                "amount": "",
+                "amount": {
+                    "f":"",
+                    "t":""
+                },
                 "price":  ""
             }},{"sell(fs)":{
-                "amount": "",
+                "amount": {
+                    "f":"",
+                    "s":""
+                },
                 "price":  ""
             }},{"buy(ts)":{
-                "amount": "",
+                "amount": {
+                    "t":"",
+                    "s":""
+                },
                 "price":  ""
             }}],
         "fsf": [{"buy(sf)": {
-                "amount": "",
+                "amount": {
+                    "s":"",
+                    "f":""
+                },
                 "price":  ""
             }},{"sell(st)":{
-                "amount_s": "",
-                "amount_t": "",
+                "amount": {
+                    "s":"",
+                    "t":""
+                },
                 "price":  ""
             }},{"buy(ft)":{
-                "amount": "",
+                "amount": {
+                    "f":"",
+                    "t":""
+                },
                 "price":  ""
             }}],
         "ftf": [{"buy(tf)": {
-                "amount": "",
+                "amount": {
+                    "t":"",
+                    "f":""
+                },
                 "price":  ""
             }},{"sell(ts)":{
-                "amount": "",
+                "amount": {
+                    "t":"",
+                    "s":""
+                },
                 "price":  ""
             }},{"buy(fs)":{
-                "amount": "",
+                "amount": {
+                    "f":"",
+                    "s":""
+                },
                 "price":  ""
             }}]
         }
@@ -407,7 +441,24 @@ export default async (v,p,c,obj,r) => {
                 relation['fee'][type][0] = 0.003
             }
         }
-// new item 1
+        //## item 1
+        assets = await dex.fb_ft(true, {
+            self: relation,
+            orderbook: relation.orderbook.first[0],
+            amount: {
+                f:undefined,
+                s:relation.amount.first[0]
+            },
+            fee: {
+                f:relation.fee.first[0],
+                s:relation.fee.third[0]
+            },
+            amountAsset: assets.head.pairs.W['first/third']['amountAsset'],
+            priceAsset: assets.head.pairs.W['first/third']['priceAsset'],
+            view: obj['this'].shadowRoot.querySelector('#fb_ft')
+        },'green',assets , 'ft');
+        console.assert(false, assets)
+// new item 2
         assets.relation = relation
         assets = await dex.fb_fs(true, {
             self: relation,
@@ -424,7 +475,8 @@ export default async (v,p,c,obj,r) => {
             priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
             view: obj['this'].shadowRoot.querySelector('#fb_fs')
         },'green',assets , 'fs');
-//## item 1
+
+
         relation['description']['ueu'] = []
         relation['description']['ueu'].push(relation['u'])
         relation = await dex.buy(wavesUsd, relation['u'], relation, 'wavesUsd');

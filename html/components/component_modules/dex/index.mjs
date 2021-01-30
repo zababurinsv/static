@@ -18,6 +18,7 @@ export default (()=>{
                 this.denormalize = this.denormalize.bind(this)
                 this.buy = this.buy.bind(this)
                 this.fb_fs = this.fb_fs.bind(this)
+                this.fb_ft = this.fb_ft.bind(this)
                 this.sell = this.sell.bind(this)
                 this.fix = this.fix.bind(this)
             }
@@ -50,6 +51,64 @@ export default (()=>{
             denormalize(price, amountAssetDecimals, priceAssetDecimals, ){
                 let wvsPrice = 10 ** (priceAssetDecimals - amountAssetDecimals + 8)
                 return price/wvsPrice
+            }
+            fb_ft(v, p, c, assets, r) {
+                return new Promise( async (resolve, reject) => {
+                    let verify = true
+                    let count = 0
+                    let currency = r.split('')
+                    while (verify) {
+                        if(count >= 10) {
+                            verify = false
+                            assets.head.orders.W[`buy(${r})`] = undefined
+                        } else {
+                            let bidAmount = {}
+                            let bidPrice = {}
+                            let askAmount = {}
+                            let askPrice = {}
+                            if(p.orderbook.asks[count] === undefined) {
+                                assets.head.orders.W[`buy(${r})`] = undefined
+                                verify = false
+                            } else {
+                                askAmount = p.orderbook.asks[count]['amount'] / (10**assets.head.assetId.W[`${p.amountAsset}`].decimals)
+                                askPrice = this.denormalize(p.orderbook.asks[count]['price'],assets.head.assetId.W[`${p.amountAsset}`].decimals,assets.head.assetId.W[`${p.priceAsset}`].decimals)
+                                bidAmount = p.orderbook['bids'][count]['amount']/(10**assets.head.assetId.W[`${p.amountAsset}`].decimals)
+                                bidPrice = this.denormalize(p.orderbook['bids'][count]['price'],assets.head.assetId.W[`${p.amountAsset}`].decimals,assets.head.assetId.W[`${p.priceAsset}`].decimals)
+                                p.amount[`${currency[0]}`] = ((p.amount[`${currency[1]}`]/askPrice) - p.fee[`${currency[0]}`])
+                                // console.assert(false, {
+                                //     "relation": `${p.amount.f} / ${askPrice}`,
+                                //     askAmount: askAmount,
+                                //     askPrice: askPrice,
+                                //     bidAmount: bidAmount,
+                                //     bidPrice: bidPrice,
+                                //     "p.amount.s": p.amount.s,
+                                //     "p.amount.f": p.amount.f,
+                                //     "verify": (askAmount - p.amount.f)
+                                // })
+                                if((askAmount - p.amount.f) < 0) {
+                                    console.warn('невозможно купить f',{
+                                        askAmount: askAmount,
+                                        "amount.f":p.amount.f,
+                                        count: count
+                                    })
+                                    count++
+                                } else {
+                                    p.amount.f = this.fix(p.amount.f)
+                                    let s = assets.head.assets.W.second
+                                    let f = assets.head.assets.W.first
+                                    p.view.innerHTML = `${s}=>${f}[(${p.amount[`${currency[1]}`]}*)${p.amount[`${currency[0]}`]}]`
+                                    console.assert(false, p.amount)
+                                    p.self.orders.W.sts[0][`buy(${r})`][`amount_${currency[0]}`] = p.amount[`${currency[0]}`]
+                                    p.self.orders.W.sts[0][`buy(${r})`][`amount_${currency[1]}`] = p.amount[`${currency[1]}`]
+                                    p.self.orders.W.sts[0][`buy(${r})`]['price'] = askPrice
+                                    verify = false
+                                }
+                            }
+                            count ++
+                        }
+                    }
+                    resolve(assets)
+                })
             }
             fb_fs(v, p, c, assets, r) {
                 return new Promise( async (resolve, reject) => {
