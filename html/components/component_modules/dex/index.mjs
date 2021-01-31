@@ -1,8 +1,7 @@
 import task from '/static/html/components/component_modules/heap/index.mjs'
 import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
-import Axios from '/static/html/components/component_modules/axios/axios.mjs'
 import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
-
+import Axios from '/static/html/components/component_modules/axios/axios.mjs'
 let axios = Axios['default']
 let object = {}
 object.staticProperty = {}

@@ -243,6 +243,7 @@ export default async (v,p,c,obj,r) => {
                 break
         }
     }
+    /*
     let orders = {
         "sts": [{"buy(fs)": {
                 "amount": {
@@ -321,6 +322,7 @@ export default async (v,p,c,obj,r) => {
                 "price":  ""
             }}]
         }
+     */
     let relation = {
         fee: {
             first: [],
@@ -441,7 +443,10 @@ export default async (v,p,c,obj,r) => {
                 relation['fee'][type][0] = 0.003
             }
         }
-        //## item 1
+// new item 1
+        let ft = Symbol("ft");
+
+        console.assert(false, ft)
         assets = await dex.fb_ft(true, {
             self: relation,
             orderbook: relation.orderbook.first[0],
