@@ -1,0 +1,5 @@
+{-# STDLIB_VERSION 4 #-}
+{-# CONTENT_TYPE EXPRESSION #-}
+{-# SCRIPT_TYPE ACCOUNT #-}
+
+sigVerify(tx.bodyBytes, tx.proofs[0], tx.senderPublicKey)

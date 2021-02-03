@@ -21,7 +21,7 @@ function wrappedCompile(code, estimatorVersion = 2) {
             return {
                 result: {
                     bytes,
-                    base64: crypto.base64Encode(bytes),
+                    base64: waves.crypto.base64Encode(bytes),
                     size: bytes.byteLength,
                     ast,
                     complexity,

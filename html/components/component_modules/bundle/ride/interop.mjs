@@ -60,4 +60,66 @@ sys.httpGet = async function (data) {
     return {...data, status, body}
 };
 
+
+
+
+
+window.base58Encode = function (bytes) {
+    return waves.crypto.base58Encode(new Uint8Array(bytes))
+};
+window.base58Decode = function (data) {
+    return waves.crypto.base58Decode(data).buffer
+};
+window.base64Encode = function (bytes) {
+    return waves.crypto.base64Encode(new Uint8Array(bytes))
+};
+window.base64Decode = function (data) {
+    return waves.crypto.base64Decode(data)
+};
+window.keccak256 = function (bytes) {
+    return Uint8Array.from(waves.crypto.keccak(new Uint8Array(bytes))).buffer
+};
+window.sha256 = function (bytes) {
+    return Buffer.from((waves.crypto.sha256(new Uint8Array(bytes))), 'hex');
+};
+window.blake2b256 = function (bytes) {
+    return waves.crypto.blake2b(new Uint8Array(bytes)).buffer
+};
+window.curve25519verify = function (msg, sig, key) {
+    return waves.crypto.verifySignature(new Uint8Array(key), new Uint8Array(msg), new Uint8Array(sig))
+};
+window.merkleVerify = function (rootHash, merkleProof, leafData) {
+    return waves.crypto.merkleVerify(new Uint8Array(rootHash), new Uint8Array(merkleProof), new Uint8Array(leafData))
+};
+window.rsaVerify = function (digest, msg, sig, key) {
+    let alg = digest.toString();
+    switch (digest.toString()) {
+        case   'SHA3224':
+            alg = "SHA3-224";
+            break;
+        case   'SHA3256':
+            alg = "SHA3-256";
+            break;
+        case   'SHA3384':
+            alg = "SHA3-384";
+            break;
+        case   'SHA3512':
+            alg = "SHA3-512";
+            break;
+        case   "NONE":
+            alg = undefined;
+            break;
+    }//fixme
+    return waves.crypto.rsaVerify(new Uint8Array(key), new Uint8Array(msg), new Uint8Array(sig), alg)
+};
+window.httpGet = async function (data) {
+    if (!data.url) return {...data, status: 404, body: 'url is undefined'};
+    let
+      resp = await axios.get(data.url, {validateStatus: () => true}),
+      status = resp.status,
+      body = await resp.data;
+    if (typeof body !== 'string') body = JSON.stringify(body);
+    return {...data, status, body}
+};
+
 export default sys

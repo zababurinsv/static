@@ -29,7 +29,8 @@ function count (obj) {
 function pairs(type = undefined) {
     return new Promise(async (resolve, reject) => {
         try {
-            let assets = Assets(type)
+            let assets =  await Assets(type)
+            console.assert(false,assets )
             let testnet = await task.set(true, 'T', 'green', '','/matcher/settings')
             let mainnet = await task.set(true, 'W', 'green', '','/matcher/settings')
             assets.head.matcher.W.matcherPublicKey = mainnet.message.matcherPublicKey
