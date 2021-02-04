@@ -6,6 +6,7 @@ import config from '/static/html/components/component_modules/account/com.waves-
 import Assets from '/static/html/components/crypto-dex/external/assets/index.mjs'
 import events from '/static/html/components/crypto-dex/external/events.mjs'
 const waves = new Waves()
+
 function count (obj) {
     let countDownDate = Date.now();
     let x = setInterval(function() {
@@ -29,8 +30,7 @@ function count (obj) {
 function pairs(type = undefined) {
     return new Promise(async (resolve, reject) => {
         try {
-            let assets =  await Assets(type)
-            console.assert(false,assets )
+            let assets =  (await Assets(type)).message
             let testnet = await task.set(true, 'T', 'green', '','/matcher/settings')
             let mainnet = await task.set(true, 'W', 'green', '','/matcher/settings')
             assets.head.matcher.W.matcherPublicKey = mainnet.message.matcherPublicKey
@@ -40,7 +40,7 @@ function pairs(type = undefined) {
             assets.head.matcher.S.matcherPublicKey = testnet.message.matcherPublicKey
             assets.head.matcher.S.priceAssets = testnet.message.priceAssets
             for(let type in assets) {
-                if(type !== 'head' && type !== 'aside' && type !== 'footer' && type !== 'header' && type !== 'S') {
+                if(type !== 'head' && type !== 'aside' && type !== 'footer' && type !== 'header' && type !== 'S' && type !== 'orders') {
                     for(let key in assets[type]) {
                         let details = {}
                         if(assets[type][key] !== 'WAVES') {
@@ -89,7 +89,12 @@ function pairs(type = undefined) {
                 }
             }
             assets.head.success = true
-            resolve(assets)
+            resolve({
+                status: 'ok',
+                success: true,
+                message: assets,
+                _scriptDir: import.meta.url
+            })
         }catch (e) {
             resolve({
                 status: 'not',
@@ -104,7 +109,7 @@ function pairs(type = undefined) {
 export default async (v,p,c,obj,r) => {
     events(v,p,c,obj,r)
     let dex = (await import('/static/html/components/component_modules/dex/index.mjs'))['default']
-    let assets = await pairs()
+    let assets = (await pairs()).message
     let sys = {
         _scriptDir: import.meta.url,
         validation: {
@@ -336,14 +341,14 @@ export default async (v,p,c,obj,r) => {
             third: [],
         },
         orderbook: {
-            first: [],
-            second: [],
-            third: [],
+            fs: [],
+            ft: [],
+            st: [],
         },
         orders: {
-            "S": orders,
-            "T": orders,
-            "W": orders
+            "S": assets.orders,
+            "T": assets.orders,
+            "W": assets.orders
         }
     }
     obj['this'].shadowRoot.querySelector('#left').addEventListener('input',async (e)=>{
@@ -426,49 +431,53 @@ export default async (v,p,c,obj,r) => {
         orderbook_fs = orderbook_fs.message
         orderbook_ft = orderbook_ft.message
         orderbook_st = orderbook_st.message
-        relation.orderbook.first[0] =  orderbook_fs
-        relation.orderbook.second[0] = orderbook_ft
-        relation.orderbook.third[0] =  orderbook_st
+        relation.orderbook.fs[0] =  orderbook_fs
+        relation.orderbook.ft[0] = orderbook_ft
+        relation.orderbook.st[0] =  orderbook_st
 
         // w = first
         // e = second
         // u = third
         for(let type in relation['fee']) {
             if(assets.W[type] !== 'WAVES') {
-                let amountAsset = relation.orderbook[type][0].pair.amountAsset
-                let priceAsset = relation.orderbook[type][0].pair.priceAsset
+                let order_key = (type === 'first')
+                  ?'fs'
+                  :(type === 'second')
+                    ?'st'
+                    :'ft'
+                let amountAsset = relation.orderbook[order_key][0].pair.amountAsset
+                let priceAsset = relation.orderbook[order_key][0].pair.priceAsset
                 let amountDecimals = assets.head.assetId.W[`${amountAsset}`].decimals
                 let priceDecimals = assets.head.assetId.W[`${priceAsset}`].decimals
-                relation['fee'][type][0] = (1/dex.denormalize(relation.orderbook[type][0].asks[0]['price'],amountDecimals,priceDecimals))*0.003
+                relation['fee'][type][0] = (1/dex.denormalize(relation.orderbook[order_key][0].asks[0]['price'],amountDecimals,priceDecimals))*0.003
             } else {
                 relation['fee'][type][0] = 0.003
             }
         }
 // new item 1
-        let ft = Symbol("ft");
-
-        console.assert(false, ft)
+//         let ft = Symbol("ft");
+//         console.assert(false, ft)
         assets = await dex.fb_ft(true, {
             self: relation,
-            orderbook: relation.orderbook.first[0],
+            orderbook: orderbook_ft,
             amount: {
                 f:undefined,
-                s:relation.amount.first[0]
+                t:relation.amount.third[0]
             },
             fee: {
                 f:relation.fee.first[0],
-                s:relation.fee.third[0]
+                t:relation.fee.third[0]
             },
             amountAsset: assets.head.pairs.W['first/third']['amountAsset'],
             priceAsset: assets.head.pairs.W['first/third']['priceAsset'],
             view: obj['this'].shadowRoot.querySelector('#fb_ft')
         },'green',assets , 'ft');
-        console.assert(false, assets)
+
 // new item 2
         assets.relation = relation
         assets = await dex.fb_fs(true, {
             self: relation,
-            orderbook: relation.orderbook.first[0],
+            orderbook: orderbook_fs,
             amount: {
                 f:undefined,
                 s:relation.amount.first[0]
@@ -481,8 +490,40 @@ export default async (v,p,c,obj,r) => {
             priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
             view: obj['this'].shadowRoot.querySelector('#fb_fs')
         },'green',assets , 'fs');
+// new item 3
+        assets = await dex.sb_sf(true, {
+            self: relation,
+            orderbook: orderbook_fs,
+            amount: {
+                s:undefined,
+                f:relation.amount.first[0]
+            },
+            fee: {
+                s:relation.fee.second[0],
+                f:relation.fee.first[0]
+            },
+            amountAsset: assets.head.pairs.W['first/second']['amountAsset'],
+            priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
+            view: obj['this'].shadowRoot.querySelector('#sb_sf')
+        },'green',assets , 'sf');
 
-
+// new item 4
+        assets = await dex.sb_tf(true, {
+            self: relation,
+            orderbook: orderbook_ft,
+            amount: {
+                t:undefined,
+                f:relation.amount.first[0]
+            },
+            fee: {
+                t:relation.fee.third[0],
+                f:relation.fee.first[0]
+            },
+            amountAsset: assets.head.pairs.W['first/third']['amountAsset'],
+            priceAsset: assets.head.pairs.W['first/third']['priceAsset'],
+            view: obj['this'].shadowRoot.querySelector('#sb_tf')
+        },'green',assets , 'tf');
+        console.assert(false,assets )
         relation['description']['ueu'] = []
         relation['description']['ueu'].push(relation['u'])
         relation = await dex.buy(wavesUsd, relation['u'], relation, 'wavesUsd');

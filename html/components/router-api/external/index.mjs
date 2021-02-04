@@ -1,9 +1,8 @@
-import Waves from '/static/html/components/component_modules/waves/index.mjs'
-import task from '/static/html/components/component_modules/heap/index.mjs'
 import matcher from '/static/html/components/router-api/external/matcher.mjs'
 import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
+import Waves from '/static/html/components/component_modules/waves/index.mjs'
+import task from '/static/html/components/component_modules/heap/index.mjs'
 let waves = new Waves
-
 export default (()=> {
   console.log('# node')
 

@@ -278,12 +278,12 @@ export default class Waves {
                     message: 'waves.mjs'
                 }))
             } catch (e) {
-                resolve(Object.assign(balance, {
+                resolve({
                     _scriptDir: import.meta.url,
                     status: false,
                     success: false,
                     message: e
-                }))
+                })
             }
         })
     }

@@ -86,6 +86,7 @@ export const api = {
         const version = waves.scalaJsCompiler.nodeVersion();
         return version && version.version
     },
+    buildSyntheticCall: waves.scalaJsCompiler.buildSyntheticCall,
     scriptInfo: waves.scalaJsCompiler.scriptInfo,
     getTypes: waves.scalaJsCompiler.getTypes,
     getVarsDoc: waves.scalaJsCompiler.getVarsDoc,
