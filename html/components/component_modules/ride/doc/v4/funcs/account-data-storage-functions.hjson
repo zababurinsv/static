@@ -1,7 +1,7 @@
 {
   funcs: [
     {
-      name: "assetBalance"
+      name: "sigVerify"
       params: [ "Address|Alias", "ByteVector" ]
       doc: "Gets account balance by token ID."
       paramsDoc: [ "[Address](/blockchain/address.md) or [alias](/blockchain/alias.md) of the account.", "Token ID." ]

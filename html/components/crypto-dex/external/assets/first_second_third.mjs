@@ -7,41 +7,6 @@ import Obj from '/static/html/components/crypto-dex/external/type/index.mjs'
 import lang from '/static/html/components/component_modules/ride/index.mjs'
 export default (v,p,c,s,r)=> {
   return new Promise(function (resolve, reject) {
-    axios.get(`${location.origin}/static/html/components/crypto-dex/external/ride/index.ride`)
-      .then(async (contract)=>{
-        // console.assert(false,await lang)
-        let obj = (await Obj).message
-       // console.assert(false, obj[obj.type])
-        let script1 = ride.parseAndCompile(contract.data , 2)
-        let script3 = ride.flattenCompilationResult(ride.compile(contract.data , 2))
-        let tx = {
-          tx:{}
-        }
-        let repl  = await ride.repl()
-        // console.assert(false, ride)
-        const res = await repl.evaluate('2+2');
-        const toBytes = await repl.evaluate(`toBytes('Мой дядя самых честных правил')`);
-        const toUtf8String = await repl.evaluate(`toUtf8String(base58'HpY4RRdQiYQw7j5c4PgvUrr1KUv6xg9Xbz7EsprgCo5nBqBdS1R5xSmKjd5De3TngsaYSzr8Rx')`);
-        // const flattenResult = ride.flattenCompilationResult(ride.compile(cont))
-        // console.assert(false,await flattenResult)
-        // console.log(false,await repl.totalInfo())
-        // console.assert(false,await toUtf8String)
-        // console.assert(false, toBytes)
-        // console.assert(false,await res)
-        //
-        // let decompile = ride.decompile(script, 2)
-        // console.assert(false,{
-        //   "flattenCompilationResult": script3,
-        //   "parseAndCompile": script1,
-        //   "compile": script2,
-        //   "ride": ride,
-        //   "getVarsDoc": ride.getVarsDoc(),
-        //   "getTypes": ride.getTypes(),
-        //   "getFunctionsDoc": ride.getFunctionsDoc(),
-        //   "scriptInfo": ride.scriptInfo(),
-        //   "contractLimits": ride.contractLimits,
-        //   "repl": repl
-        // })
         let test = {
           key:'',
           value:''
@@ -149,7 +114,6 @@ export default (v,p,c,s,r)=> {
           message: object,
           _scriptDir: import.meta.url
         })
-      })
       .catch(function (e) {
         resolve({
           status: 'ok',
