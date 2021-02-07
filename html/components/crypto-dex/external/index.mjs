@@ -266,9 +266,9 @@ export default async (v,p,c,obj,r) => {
             st: [],
         },
         orders: {
-            "S": Object.assign({}, assets.orders),
-            "T": Object.assign({}, assets.orders),
-            "W": Object.assign({}, assets.orders)
+            "S": JSON.parse(JSON.stringify(assets.orders)),
+            "T": JSON.parse(JSON.stringify(assets.orders)),
+            "W": JSON.parse(JSON.stringify(assets.orders))
         }
     }
     obj['this'].shadowRoot.querySelector('#left').addEventListener('input',async (e)=>{
@@ -332,13 +332,11 @@ export default async (v,p,c,obj,r) => {
         // w = first
         // e = second
         // u = third
-        relation.orders = {}
-        relation.orders = {
-            "S": Object.assign({}, assets.orders),
-            "T": Object.assign({}, assets.orders),
-            "W": Object.assign({}, assets.orders)
+        assets.orders = {
+            "S": JSON.parse(JSON.stringify(assets.orders)),
+            "T": JSON.parse(JSON.stringify(assets.orders)),
+            "W": JSON.parse(JSON.stringify(assets.orders))
         }
-        // console.assert(false, relation.orders)
         sys['counts']['main'] ++
         let orderbook_fs = await dex.orderbook(assets.head.pairs.W['first/second'].amountAsset, assets.head.pairs.W['first/second'].priceAsset)
         let orderbook_ft = await dex.orderbook(assets.head.pairs.W['first/third'].amountAsset, assets.head.pairs.W['first/third'].priceAsset)
@@ -394,12 +392,12 @@ export default async (v,p,c,obj,r) => {
             view: obj['this'].shadowRoot.querySelector('#fb_fs')
         },'green',assets , 'fs');
 
-        if(assets.orders.ffs[0] !== undefined) {
-            assets = await dex.fs_ft(false, {
+        if(relation.orders.W.ffs[0] !== undefined) {
+            assets = await dex.fs_ft(true, {
                 self: relation,
                 orderbook: orderbook_ft,
                 amount: {
-                    f: assets.orders.ffs[0]['buy(fs)']['amount']['_'],
+                    f: relation.orders.W.ffs[0]['buy(fs)']['amount']['_'],
                     t: undefined
                 },
                 fee: {
@@ -411,12 +409,12 @@ export default async (v,p,c,obj,r) => {
                 view: obj['this'].shadowRoot.querySelector('#fs_ft')
             },'green',assets , 'ft');
 
-            if(assets.orders.ffs[1] !== undefined) {
+            if(relation.orders.W.ffs[1] !== undefined) {
                 assets = await dex.fb_st(false, {
                     self: relation,
                     orderbook: orderbook_st,
                     amount: {
-                        t: assets.orders.ffs[1]['sell(ft)']['amount']['_'],
+                        t: relation.orders.W.ffs[1]['sell(ft)']['amount']['_'],
                         s: undefined,
                     },
                     fee: {
@@ -427,21 +425,22 @@ export default async (v,p,c,obj,r) => {
                     priceAsset: assets.head.pairs.W['second/third']['priceAsset'],
                     view: obj['this'].shadowRoot.querySelector('#fb_st')
                 },'green',assets , 'st');
-                if(assets.orders.ffs[2] === undefined) {
-                    assets.orders.ffs[0] = undefined
-                    assets.orders.ffs[1] = undefined
+                if(relation.orders.W.ffs[2] === undefined) {
+                    relation.orders.ffs[0] = undefined
+                    relation.orders.ffs[1] = undefined
                     empty(obj, 'ffs')
                 }
             } else {
-                assets.orders.ffs[0] = undefined
-                assets.orders.ffs[2] = undefined
+                relation.orders.ffs[0] = undefined
+                relation.orders.ffs[2] = undefined
                 empty(obj, 'ffs')
             }
         }  else {
-            assets.orders.ffs[1] = undefined
-            assets.orders.ffs[2] = undefined
+            relation.orders.ffs[1] = undefined
+            relation.orders.ffs[2] = undefined
             empty(obj, 'ffs')
         }
+        console.assert(false, assets)
 // new item 2
         assets = await dex.fb_ft(false, {
             self: relation,
@@ -525,8 +524,6 @@ export default async (v,p,c,obj,r) => {
             view: obj['this'].shadowRoot.querySelector('#sb_sf')
         },'green',assets , 'sf');
         if(assets.orders.ssf[0] !== undefined) {
-
-
             if(assets.orders.ssf[1] !== undefined) {
 
                 if(assets.orders.ssf[2] === undefined) {

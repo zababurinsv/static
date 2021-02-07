@@ -10,9 +10,6 @@ object['fee'] = 0.003
 export default (()=>{
         let Class = class Dex {
             constructor() {
-                // e = second
-                // u = third
-                // w = first
                 this.orderbook = this.orderbook.bind(this)
                 this.denormalize = this.denormalize.bind(this)
                 this.fix = this.fix.bind(this)
@@ -88,6 +85,7 @@ export default (()=>{
                                     let cur2 = Symbol(`p.amount.${currency[1]}`)
                                     console.assert(false, {
                                         [`relation_p.amount.${currency[0]}`]: `${currency[0]}: ${p.amount[`${currency[1]}`]} / ${askPrice}`,
+                                        func:"ffs__fb_st",
                                         askAmount: askAmount,
                                         askPrice: askPrice,
                                         bidAmount: bidAmount,
@@ -220,6 +218,7 @@ export default (()=>{
                                     let cur2 = Symbol(`p.amount.${currency[1]}`)
                                     console.assert(false, {
                                         [`relation_p.amount.${currency[0]}`]: `${currency[0]}: ${p.amount[`${currency[0]}`]} * ${bidPrice}`,
+                                        func:"ffs__fs_ft",
                                         askAmount: askAmount,
                                         askPrice: askPrice,
                                         bidAmount: bidAmount,
@@ -286,6 +285,7 @@ export default (()=>{
                                     let cur2 = Symbol(`p.amount.${currency[1]}`)
                                     console.assert(false, {
                                         [`relation_p.amount.${currency[0]}`]: `${currency[0]}: ${p.amount[`${currency[1]}`]} * ${bidPrice}`,
+                                        func:"fft__fb_ts",
                                         askAmount: askAmount,
                                         askPrice: askPrice,
                                         bidAmount: bidAmount,
@@ -351,6 +351,7 @@ export default (()=>{
                                     let cur2 = Symbol(`p.amount.${currency[1]}`)
                                     console.assert(false, {
                                         [`relation_p.amount.${currency[0]}`]: `${currency[0]}: ${p.amount[`${currency[0]}`]} * ${bidPrice}`,
+                                        func:"fft__fs_fs",
                                         askAmount: askAmount,
                                         askPrice: askPrice,
                                         bidAmount: bidAmount,
@@ -414,7 +415,7 @@ export default (()=>{
                                     let cur2 = Symbol(`p.amount.${currency[1]}`)
                                     console.assert(false, {
                                         [`relation_p.amount.${currency[0]}`]: `${p.amount[`${currency[1]}`]}*${bidPrice}`,
-                                        func:"sb_tf",
+                                        func:"ttf__sb_tf",
                                         askAmount: askAmount,
                                         askPrice: askPrice,
                                         bidAmount: bidAmount,
@@ -482,6 +483,7 @@ export default (()=>{
                                         askAmount: askAmount,
                                         askPrice: askPrice,
                                         bidAmount: bidAmount,
+                                        func:"ssf__sb_sf",
                                         bidPrice: bidPrice,
                                         [cur1]: p.amount[`${currency[0]}`],
                                         [cur2]: p.amount[`${currency[1]}`],
@@ -545,6 +547,7 @@ export default (()=>{
                                         askPrice: askPrice,
                                         bidAmount: bidAmount,
                                         bidPrice: bidPrice,
+                                        func:"fft__fb_ft",
                                         [cur1]: p.amount[`${currency[0]}`],
                                         [cur2]: p.amount[`${currency[1]}`],
                                         "verify": (bidAmount - p.amount[`${currency[1]}`])
@@ -581,7 +584,6 @@ export default (()=>{
                     let count = 0
                     let currency = ['f','s']
                     while (verify) {
-                        console.log('~~~~~~~~~~~@@@', count)
                         if(count >= 10) {
                             verify = false
                             assets.head.orders.W[`buy(${r})`] = undefined
@@ -602,15 +604,17 @@ export default (()=>{
                                if(v) {
                                    let cur1 = Symbol(`p.amount.${currency[0]}`)
                                    let cur2 = Symbol(`p.amount.${currency[1]}`)
+                                   let verify = Symbol(`p.amount.${currency[1]}`)
                                    console.assert(false, {
                                        [`relation_p.amount.${currency[0]}`]: `${p.amount[`${currency[1]}`]}/${askPrice}`,
                                        askAmount: askAmount,
                                        askPrice: askPrice,
                                        bidAmount: bidAmount,
                                        bidPrice: bidPrice,
+                                       func:"ffs__fb_fs",
                                        [cur1]: p.amount[`${currency[0]}`],
                                        [cur2]: p.amount[`${currency[1]}`],
-                                       "verify": (bidAmount - p.amount[`${currency[1]}`])
+                                       "verify": (askPrice - p.amount[`${currency[0]}`])
                                    })
                                }
                                 if((askAmount - p.amount[`${currency[0]}`]) < 0) {
@@ -668,6 +672,7 @@ export default (()=>{
                                         [`relation_p.amount.${currency[0]}`]: `${p.amount[`${currency[1]}`]}/${askPrice}`,
                                         askAmount: askAmount,
                                         askPrice: askPrice,
+                                        func:"ttf__sb_fs",
                                         bidAmount: bidAmount,
                                         bidPrice: bidPrice,
                                         [cur1]: p.amount[`${currency[0]}`],
