@@ -134,15 +134,12 @@ md +`
                     type: ride_f[`${name}`]
                   }
                 }
-
-                let complexity = 0
-                // console.assert(false,  funcs)
               }
             }
           }
         }
       }
-    console.assert(false, core)
+    // console.assert(false, core)
       // let script1 = core.parseAndCompile(self_contract.data , 2)
       // let script3 = core.flattenCompilationResult(core.compile(self_contract.data , 2))
       // const res = await core.evaluate('2+2');
@@ -166,7 +163,7 @@ md +`
         success: true,
         message: {
           md: md,
-          js: funcs
+          js: funcs.mjs
         },
         _scriptDir: import.meta.url
       })
