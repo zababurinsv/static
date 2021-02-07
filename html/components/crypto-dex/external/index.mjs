@@ -249,86 +249,6 @@ export default async (v,p,c,obj,r) => {
                 break
         }
     }
-    /*
-    let orders = {
-        "sts": [{"buy(fs)": {
-                "amount": {
-                    "f":"",
-                    "s":""
-                },
-                "price":  ""
-            }}, {"sell(ft)":{
-                "amount": {
-                    "f":"",
-                    "t":""
-                },
-                "price":  ""
-            }}, {"buy(st)":{
-                "amount": {
-                    "s":"",
-                    "t":""
-                },
-                "price":  ""
-            }}],
-        "tst": [{"buy(ft)": {
-                "amount": {
-                    "f":"",
-                    "t":""
-                },
-                "price":  ""
-            }},{"sell(fs)":{
-                "amount": {
-                    "f":"",
-                    "s":""
-                },
-                "price":  ""
-            }},{"buy(ts)":{
-                "amount": {
-                    "t":"",
-                    "s":""
-                },
-                "price":  ""
-            }}],
-        "fsf": [{"buy(sf)": {
-                "amount": {
-                    "s":"",
-                    "f":""
-                },
-                "price":  ""
-            }},{"sell(st)":{
-                "amount": {
-                    "s":"",
-                    "t":""
-                },
-                "price":  ""
-            }},{"buy(ft)":{
-                "amount": {
-                    "f":"",
-                    "t":""
-                },
-                "price":  ""
-            }}],
-        "ftf": [{"buy(tf)": {
-                "amount": {
-                    "t":"",
-                    "f":""
-                },
-                "price":  ""
-            }},{"sell(ts)":{
-                "amount": {
-                    "t":"",
-                    "s":""
-                },
-                "price":  ""
-            }},{"buy(fs)":{
-                "amount": {
-                    "f":"",
-                    "s":""
-                },
-                "price":  ""
-            }}]
-        }
-     */
     let relation = {
         fee: {
             first: [],
@@ -409,10 +329,10 @@ export default async (v,p,c,obj,r) => {
       : setAssetsAmount(false)
 
     let timerId = setTimeout(async  function tick() {
-        sys['counts']['main'] ++
         // w = first
         // e = second
         // u = third
+        sys['counts']['main'] ++
         let orderbook_fs = await dex.orderbook(assets.head.pairs.W['first/second'].amountAsset, assets.head.pairs.W['first/second'].priceAsset)
         let orderbook_ft = await dex.orderbook(assets.head.pairs.W['first/third'].amountAsset, assets.head.pairs.W['first/third'].priceAsset)
         let orderbook_st = await dex.orderbook(assets.head.pairs.W['second/third'].amountAsset, assets.head.pairs.W['second/third'].priceAsset)
@@ -454,8 +374,57 @@ export default async (v,p,c,obj,r) => {
                 relation['fee'][type][0] = 0.003
             }
         }
-        console.assert(false, assets)
+
 // new item 1
+        assets.relation = relation
+        assets = await dex.fb_fs(true, {
+            self: relation,
+            orderbook: orderbook_fs,
+            amount: {
+                f:undefined,
+                s:relation.amount.first[0]
+            },
+            fee: {
+                f:relation.fee.first[0],
+                s:relation.fee.second[0]
+            },
+            amountAsset: assets.head.pairs.W['first/second']['amountAsset'],
+            priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
+            view: obj['this'].shadowRoot.querySelector('#fb_fs')
+        },'green',assets , 'fs');
+        assets = await dex.fs_ft(true, {
+            self: relation,
+            orderbook: orderbook_ft,
+            amount: {
+                f: assets.orders.ffs[0]['buy(fs)']['amount']['_'],
+                t: undefined
+            },
+            fee: {
+                f:undefined,
+                t:relation.fee.third[0]
+            },
+            amountAsset: assets.head.pairs.W['first/third']['amountAsset'],
+            priceAsset: assets.head.pairs.W['first/third']['priceAsset'],
+            view: obj['this'].shadowRoot.querySelector('#fs_ft')
+        },'green',assets , 'ft');
+
+        assets = await dex.fb_st(true, {
+            self: relation,
+            orderbook: orderbook_st,
+            amount: {
+                t: assets.orders.ffs[1]['sell(ft)']['amount']['_'],
+                s: undefined,
+            },
+            fee: {
+                t: undefined,
+                s: relation.fee.second[0]
+            },
+            amountAsset: assets.head.pairs.W['second/third']['amountAsset'],
+            priceAsset: assets.head.pairs.W['second/third']['priceAsset'],
+            view: obj['this'].shadowRoot.querySelector('#fb_st')
+        },'green',assets , 'st');
+        console.assert(false, assets)
+// new item 2
         assets = await dex.fb_ft(true, {
             self: relation,
             orderbook: orderbook_ft,
@@ -471,7 +440,6 @@ export default async (v,p,c,obj,r) => {
             priceAsset: assets.head.pairs.W['first/third']['priceAsset'],
             view: obj['this'].shadowRoot.querySelector('#fb_ft')
         },'green',assets , 'ft');
-
         assets = await dex.fs_fs(true, {
             self: relation,
             orderbook: orderbook_fs,
@@ -487,7 +455,6 @@ export default async (v,p,c,obj,r) => {
             priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
             view: obj['this'].shadowRoot.querySelector('#fs_fs')
         },'green',assets , 'fs');
-
         assets = await dex.fb_ts(true, {
             self: relation,
             orderbook: orderbook_st,
@@ -503,57 +470,6 @@ export default async (v,p,c,obj,r) => {
             priceAsset: assets.head.pairs.W['second/third']['priceAsset'],
             view: obj['this'].shadowRoot.querySelector('#fb_ts')
         },'green',assets , 'ts');
-// new item 2
-        assets.relation = relation
-        assets = await dex.fb_fs(true, {
-            self: relation,
-            orderbook: orderbook_fs,
-            amount: {
-                f:undefined,
-                s:relation.amount.first[0]
-            },
-            fee: {
-              f:relation.fee.first[0],
-              s:relation.fee.second[0]
-            },
-            amountAsset: assets.head.pairs.W['first/second']['amountAsset'],
-            priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
-            view: obj['this'].shadowRoot.querySelector('#fb_fs')
-        },'green',assets , 'fs');
-
-        assets = await dex.fs_ft(true, {
-            self: relation,
-            orderbook: orderbook_ft,
-            amount: {
-                f: assets.orders.ffs[0]['buy(fs)']['amount']['f'],
-                t: undefined
-            },
-            fee: {
-                f:undefined,
-                t:relation.fee.third[0]
-            },
-            amountAsset: assets.head.pairs.W['first/third']['amountAsset'],
-            priceAsset: assets.head.pairs.W['first/third']['priceAsset'],
-            view: obj['this'].shadowRoot.querySelector('#fs_ft')
-        },'green',assets , 'ft');
-
-
-        assets = await dex.fb_st(true, {
-            self: relation,
-            orderbook: orderbook_st,
-            amount: {
-                t: assets.orders.ffs[1]['sell(ft)']['amount']['t'],
-                s: undefined,
-            },
-            fee: {
-                t: undefined,
-                s: relation.fee.second[0]
-            },
-            amountAsset: assets.head.pairs.W['second/third']['amountAsset'],
-            priceAsset: assets.head.pairs.W['second/third']['priceAsset'],
-            view: obj['this'].shadowRoot.querySelector('#fb_st')
-        },'green',assets , 'st');
-
 // new item 3
         assets = await dex.sb_sf(true, {
             self: relation,
