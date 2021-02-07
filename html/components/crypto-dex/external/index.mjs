@@ -454,6 +454,7 @@ export default async (v,p,c,obj,r) => {
                 relation['fee'][type][0] = 0.003
             }
         }
+        console.assert(false, assets)
 // new item 1
         assets = await dex.fb_ft(true, {
             self: relation,
@@ -552,7 +553,7 @@ export default async (v,p,c,obj,r) => {
             priceAsset: assets.head.pairs.W['second/third']['priceAsset'],
             view: obj['this'].shadowRoot.querySelector('#fb_st')
         },'green',assets , 'st');
-        console.assert(false, assets)
+
 // new item 3
         assets = await dex.sb_sf(true, {
             self: relation,

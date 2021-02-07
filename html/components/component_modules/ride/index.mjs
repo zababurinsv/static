@@ -17,14 +17,40 @@ p = p + `* ${item}
   return p
 }
 
+let Contract = {
+  verify: (v,p,c,s,r) => {
+    return new Promise( async (resolve, reject) =>{
+      try {
 
+        resolve({
+          status: 'ok',
+          success: true,
+          message: {
+            v:v,
+            p:p,
+            c:c,
+            s:s,
+            r:r
+          },
+          _scriptDir: import.meta.url
+        })
+      } catch (e) {
+        resolve({
+          status: 'ok',
+          success: false,
+          message: e,
+          _scriptDir: import.meta.url
+        })
+      }
+    })
+  }
+}
 export default (()=>  {
   return new Promise(function (resolve, reject) {
   axios.get('/static/html/components/component_modules/ride/doc/v4/funcs/extracting-data-functions.hjson')
     .then(async (data) => {
-
      let funcs = (await hjson.parse(data.data)).message.funcs
-     let md = `# extracting data functions`
+      let md = `# extracting data functions`
       for(let type of funcs) {
         md =
 md +`
@@ -34,51 +60,13 @@ md +`
 * paramsDoc
    ${await params(type.paramsDoc)}
 `}
+
       let repl  = await core.repl()
       let info = repl.totalInfo()
       let dataFunc = info.split('func')
       let ride_f = {}
       let eq = {}
       let self_contract = await axios.get(`${location.origin}/static/html/components/crypto-dex/external/ride/index.ride`)
-
-
-        console.log('ssssss', self_contract)
-        resolve({
-          status: 'ok',
-          success: true,
-          message: data,
-          _scriptDir: import.meta.url
-        })
-      })
-    })
-      let contract = {
-        verify: (v,p,c,s,r) => {
-          return new Promise( async (resolve, reject) =>{
-            try {
-
-              resolve({
-                status: 'ok',
-                success: true,
-                message: {
-                  v:v,
-                  p:p,
-                  c:c,
-                  s:s,
-                  r:r
-                },
-                _scriptDir: import.meta.url
-              })
-            } catch (e) {
-              resolve({
-                status: 'ok',
-                success: false,
-                message: e,
-                _scriptDir: import.meta.url
-              })
-            }
-          })
-        }
-      }
       for(let item of dataFunc) {
         if(item.indexOf('let') === -1 && item.indexOf('type') === -1) {
           let tmp = item.split('(')
@@ -89,36 +77,65 @@ md +`
             ride_f[`${name}`] = desc
 
             for(let key in testFunc) {
-             let name_t = key.trim()
+              let name_t = key.trim()
+              console.assert(false, item)
               if(name === name_t) {
-               // console.assert(false, testFunc[name])
-               eq[name] = {}
-               eq[name] = {
-                 complexity: (testFunc[name].length / 1038)*10,
-                 length: testFunc[name].length,
-                 ride: {
-                   run: contract.verify(v,p,c,s,r)
-                     .then((data)=>{
-                         return new Promise( async (resolve, reject) =>{
-
-                           console.log('ssssss', data)
-                           resolve({
-                             status: 'ok',
-                             success: true,
-                             message: data,
-                             _scriptDir: import.meta.url
-                           })
-                         })
-                     }).catch((e)=>{
-                        resolve({
-                          status: 'ok',
-                          success: false,
-                          message: e,
-                          _scriptDir: import.meta.url
-                        })
-                     })
+                // console.assert(false, testFunc[name])
+                eq[name] = {}
+                eq[name] = {
+                  complexity: {
+                    self: parseInt((testFunc[name].length / 1038)*10, 10),
+                    ride:''
                   },
-                   type: ride_f[`${name}`]
+                  length: testFunc[name].length,
+                  lang: {
+                    ride: {
+                      run: (v,p,c,s,r) => {
+                        return new Promise( async (resolve, reject) =>{
+                          try {
+                            let contract =  await Contract.verify(v,p,c,s,r)
+                            if(contract.success) {
+
+                              console.assert(false)
+                              resolve({
+                                status: 'ok',
+                                success: true,
+                                message: {
+                                  v:v,
+                                  p:p,
+                                  c:c,
+                                  s:s,
+                                  r:r
+                                },
+                                _scriptDir: import.meta.url
+                              })
+                            } else {
+                              resolve({
+                                status: 'not ok',
+                                success: false,
+                                message: {
+                                  v:v,
+                                  p:p,
+                                  c:c,
+                                  s:s,
+                                  r:r
+                                },
+                                _scriptDir: import.meta.url
+                              })
+                            }
+                          }catch (e) {
+                            resolve({
+                              status: 'ok',
+                              success: false,
+                              message: e,
+                              _scriptDir: import.meta.url
+                            })
+                          }
+                        })
+                      }
+                    }
+                  },
+                  type: ride_f[`${name}`]
                 }
               }
             }
@@ -127,59 +144,27 @@ md +`
       }
       let benchmark = {
         length: info.length,
-        info: eq
+        core: eq
       }
-      console.assert(false, benchmark)
-      testFunc.sigVerify.length
-      for(let item in testFunc ) {
-       console.log(item,': ',{
-         name: item,
-         r: testFunc.sigVerify.length/testFunc[item].length,
-         length: testFunc[item].length
-       })
-      }
-
-     //
-
-      // console.assert(false,func)
-      // console.assert(false, obj[obj.type])
-      // let script1 = core.parseAndCompile(contract.data , 2)
-      // let script3 = core.flattenCompilationResult(core.compile(contract.data , 2))
-      // let tx = {
-      //   tx:{}
-      // }
-
-
-
-        console.assert(false, repl.totalInfo())
-      // console.assert(false, ride)
-      // const res = await core.evaluate('2+2');
-      // const toBytes = await core.evaluate(`toBytes('Мой дядя самых честных правил')`);
-      // const toUtf8String = await core.evaluate(`toUtf8String(base58'HpY4RRdQiYQw7j5c4PgvUrr1KUv6xg9Xbz7EsprgCo5nBqBdS1R5xSmKjd5De3TngsaYSzr8Rx')`);
-      // const flattenResult = ride.flattenCompilationResult(ride.compile(cont))
-      // console.assert(false,await flattenResult)
-      // console.log(false,await repl.totalInfo())
-      // console.assert(false,await toUtf8String)
-      // console.assert(false, toBytes)
-      // console.assert(false,await res)
-      //
-      // let decompile = ride.decompile(script, 2)
-      // console.assert(false,{
-      //   "flattenCompilationResult": script3,
-      //   "parseAndCompile": script1,
-      //   "compile": script2,
-      //   "ride": ride,
-      //   "getVarsDoc": ride.getVarsDoc(),
-      //   "getTypes": ride.getTypes(),
-      //   "getFunctionsDoc": ride.getFunctionsDoc(),
-      //   "scriptInfo": ride.scriptInfo(),
-      //   "contractLimits": ride.contractLimits,
-      //   "repl": repl
-      // })
-
-      for(let type of funcs) {
-        console.assert(false,type )
-      }
+      console.assert(false,benchmark )
+      let script1 = core.parseAndCompile(self_contract.data , 2)
+      let script3 = core.flattenCompilationResult(core.compile(self_contract.data , 2))
+      const res = await core.evaluate('2+2');
+      const toBytes = await core.evaluate(`toBytes('Мой дядя самых честных правил')`);
+      const toUtf8String = await core.evaluate(`toUtf8String(base58'HpY4RRdQiYQw7j5c4PgvUrr1KUv6xg9Xbz7EsprgCo5nBqBdS1R5xSmKjd5De3TngsaYSzr8Rx')`);
+      const flattenResult = core.flattenCompilationResult(core.compile(self_contract.data))
+      console.assert(false,{
+        "flattenCompilationResult": script3,
+        "parseAndCompile": script1,
+        "compile": script2,
+        "ride": core,
+        "getVarsDoc": core.getVarsDoc(),
+        "getTypes": core.getTypes(),
+        "getFunctionsDoc": core.getFunctionsDoc(),
+        "scriptInfo": core.scriptInfo(),
+        "contractLimits": core.contractLimits,
+        "repl": repl
+      })
 
 
       resolve({
