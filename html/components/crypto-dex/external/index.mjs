@@ -266,9 +266,9 @@ export default async (v,p,c,obj,r) => {
             st: [],
         },
         orders: {
-            "S": assets.orders,
-            "T": assets.orders,
-            "W": assets.orders
+            "S": Object.assign({}, assets.orders),
+            "T": Object.assign({}, assets.orders),
+            "W": Object.assign({}, assets.orders)
         }
     }
     obj['this'].shadowRoot.querySelector('#left').addEventListener('input',async (e)=>{
@@ -332,6 +332,13 @@ export default async (v,p,c,obj,r) => {
         // w = first
         // e = second
         // u = third
+        relation.orders = {}
+        relation.orders = {
+            "S": Object.assign({}, assets.orders),
+            "T": Object.assign({}, assets.orders),
+            "W": Object.assign({}, assets.orders)
+        }
+        // console.assert(false, relation.orders)
         sys['counts']['main'] ++
         let orderbook_fs = await dex.orderbook(assets.head.pairs.W['first/second'].amountAsset, assets.head.pairs.W['first/second'].priceAsset)
         let orderbook_ft = await dex.orderbook(assets.head.pairs.W['first/third'].amountAsset, assets.head.pairs.W['first/third'].priceAsset)
@@ -370,9 +377,7 @@ export default async (v,p,c,obj,r) => {
                 relation['fee'][type][0] = 0.003
             }
         }
-
 // new item 1
-        assets.relation = relation
         assets = await dex.fb_fs(false, {
             self: relation,
             orderbook: orderbook_fs,
@@ -572,12 +577,12 @@ export default async (v,p,c,obj,r) => {
                 view: obj['this'].shadowRoot.querySelector('#ss_ts')
             },'green',assets , 'ts');
                 if(assets.orders.ttf[1] !== undefined) {
-                    assets = await dex.sb_fs(true, {
+                    assets = await dex.sb_fs(false, {
                         self: relation,
                         orderbook: orderbook_fs,
                         amount: {
-                            f:assets.orders.ttf[1]['sell(ts)']['amount']['_'],
-                            s: undefined
+                            f: undefined,
+                            s: assets.orders.ttf[1]['sell(ts)']['amount']['_']
                         },
                         fee: {
                             f:relation.fee.first[0],
@@ -587,7 +592,6 @@ export default async (v,p,c,obj,r) => {
                         priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
                         view: obj['this'].shadowRoot.querySelector('#sb_fs')
                     },'green',assets , 'fs');
-                    console.assert(false. assets)
                     if(assets.orders.ttf[2] === undefined) {
                         assets.orders.ttf[0] = undefined
                         assets.orders.ttf[1] = undefined
@@ -604,59 +608,59 @@ export default async (v,p,c,obj,r) => {
             empty(obj, 'ttf')
         }
 //## get order
-        let timestamp = config['timestamp']()
-        let signature = await task.set(true,'T','8',{
-            seed: config['accountsStore']['accountGroups']['T']['clients'][3]['seed'],
-            publicKey: config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
-            timestamp: timestamp.now
-        },'/assets/signature/{assetId}');
-        let orders = await  task.set(true, {
-            timestamp:timestamp.now,
-            signature:signature,
-            type:'T'
-        },'7',{
-            property:'получаем ордера',
-            publicKey:config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
-            relation:'T'
-        },'/matcher/orderbook/{publicKey}');
-        sys.orders = orders
-        if(orders.success) {
-            for(let i =0; i < orders.message.length; i++) {
-            }
-            console.log('active orders:', orders.message)
-        } else {
-            console.warn(orders.message)
-        }
-        sys.validation.set.order = true
-        sys.validation.delete.order = false
-        if(sys.validation.set.order) {
-            // let timestamp = config['timestamp']();
-            // let signature = await task.set(true,'T','8',{
-            //     seed: config['accountsStore']['accountGroups']['T']['clients'][3]['seed'],
-            //     publicKey: config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
-            //     timestamp:  timestamp.now
-            // },'/assets/signature/{assetId}');
-            console.assert(false, sys.relation.transactions)
-          let order = await setTask(true, 'T', 'red', sys.relation.transactions.wuw, '/matcher/orderbook');
-        }
+//         let timestamp = config['timestamp']()
+//         let signature = await task.set(true,'T','8',{
+//             seed: config['accountsStore']['accountGroups']['T']['clients'][3]['seed'],
+//             publicKey: config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
+//             timestamp: timestamp.now
+//         },'/assets/signature/{assetId}');
+//         let orders = await  task.set(true, {
+//             timestamp:timestamp.now,
+//             signature:signature,
+//             type:'T'
+//         },'7',{
+//             property:'получаем ордера',
+//             publicKey:config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
+//             relation:'T'
+//         },'/matcher/orderbook/{publicKey}');
+//         sys.orders = orders
+//         if(orders.success) {
+//             for(let i =0; i < orders.message.length; i++) {
+//             }
+//             console.log('active orders:', orders.message)
+//         } else {
+//             console.warn(orders.message)
+//         }
+//         sys.validation.set.order = true
+//         sys.validation.delete.order = false
+//         if(sys.validation.set.order) {
+//             let timestamp = config['timestamp']();
+//             let signature = await task.set(true,'T','8',{
+//                 seed: config['accountsStore']['accountGroups']['T']['clients'][3]['seed'],
+//                 publicKey: config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
+//                 timestamp:  timestamp.now
+//             },'/assets/signature/{assetId}');
+            // console.assert(false, sys.relation.transactions)
+          // let order = await setTask(true, 'T', 'red', sys.relation.transactions.wuw, '/matcher/orderbook');
+        // }
 
-        if(sys.validation.delete.order) {
-            if(!isEmpty(orders.message)) {
-                let timestamp = config['timestamp']()
-                let signature = await task.set(true,'T','8',{
-                    seed: config['accountsStore']['accountGroups']['T']['clients'][3]['seed'],
-                    publicKey: config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
-                    timestamp: timestamp.now
-                },'/assets/signature/{assetId}');
-                let object = JSON.stringify({
-                    sender: config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
-                    timestamp: timestamp.now,
-                    signature: signature,
-                    orderId: null
-                })
-               let cancelOrder = await setTask(true, 'T','7',object,'/matcher/orderbook/cancel')
-            }
-        }
+        // if(sys.validation.delete.order) {
+        //     if(!isEmpty(orders.message)) {
+        //         let timestamp = config['timestamp']()
+        //         let signature = await task.set(true,'T','8',{
+        //             seed: config['accountsStore']['accountGroups']['T']['clients'][3]['seed'],
+        //             publicKey: config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
+        //             timestamp: timestamp.now
+        //         },'/assets/signature/{assetId}');
+        //         let object = JSON.stringify({
+        //             sender: config['accountsStore']['accountGroups']['T']['clients'][3]['publicKey'],
+        //             timestamp: timestamp.now,
+        //             signature: signature,
+        //             orderId: null
+        //         })
+        //        let cancelOrder = await setTask(true, 'T','7',object,'/matcher/orderbook/cancel')
+        //     }
+        // }
     let views = {
             "0": () => {
                 if(relation['description']['ueu'][0] - relation['description']['ueu'][3] < 0){
@@ -711,18 +715,18 @@ export default async (v,p,c,obj,r) => {
             }
         }
     };
-    (sys['validation']['disabled']['views'][0])
-      ? (views[0]())
-      : '';
-    (sys['validation']['disabled']['views'][1])
-      ? (views[1]())
-      : '';
-    (sys['validation']['disabled']['views'][2])
-      ? (views[2]())
-      : '';
-    (sys['validation']['disabled']['views'][3])
-      ? (views[3]())
-      : '';
+    // (sys['validation']['disabled']['views'][0])
+    //   ? (views[0]())
+    //   : '';
+    // (sys['validation']['disabled']['views'][1])
+    //   ? (views[1]())
+    //   : '';
+    // (sys['validation']['disabled']['views'][2])
+    //   ? (views[2]())
+    //   : '';
+    // (sys['validation']['disabled']['views'][3])
+    //   ? (views[3]())
+    //   : '';
         // sys.info(false)
         let update = async (priceAssetDecimals, amountAssetDecimals, description, wavesEuro,wavesUsd, euroUsd, obj ) => {
             for(let i=0; i < 10;i++) {
@@ -766,7 +770,7 @@ export default async (v,p,c,obj,r) => {
             return true
         }
         // console.log('active order: ', sys.active)
-        update(priceAssetDecimals, amountAssetDecimals, description, wavesEuro,wavesUsd, euroUsd, obj )
+        // update(priceAssetDecimals, amountAssetDecimals, description, wavesEuro,wavesUsd, euroUsd, obj )
         timerId = setTimeout(tick, 3000);
     }, 3000);
 }

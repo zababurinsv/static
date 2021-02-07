@@ -17,7 +17,7 @@ export default (()=>{
                 this.denormalize = this.denormalize.bind(this)
                 this.fix = this.fix.bind(this)
                 this.fb_fs = this.fb_fs.bind(this)
-                this.sb_fs = this.fb_fs.bind(this)
+                this.sb_fs = this.sb_fs.bind(this)
                 this.fb_ft = this.fb_ft.bind(this)
                 this.sb_sf = this.sb_sf.bind(this)
                 this.sb_tf = this.sb_tf.bind(this)
@@ -644,7 +644,6 @@ export default (()=>{
                     let count = 0
                     let currency = ['f','s']
                     while (verify) {
-                        console.log('~~~~~~~~~~~@@@', count)
                         if(count >= 10) {
                             verify = false
                             p.self.orders.W.ttf[2] = undefined
@@ -690,7 +689,7 @@ export default (()=>{
                                     p.self.orders.W.ttf[2][`buy(${r})`]['amount'][`${currency[1]}`] = p.amount[`${currency[1]}`]
                                     p.self.orders.W.ttf[2][`buy(${r})`]['amount'][`_`] = this.fix(p.amount[`${currency[0]}`] - p.fee[`${currency[0]}`])
                                     p.self.orders.W.ttf[2][`buy(${r})`]['price'] = askPrice
-                                    let out = p.self.orders.W.ttf[0][`buy(${r})`]['amount'][`_`]
+                                    let out = p.self.orders.W.ttf[2][`buy(${r})`]['amount'][`_`]
                                     p.view.innerHTML = `${s}=>${f}[(${p.amount[`${currency[1]}`]}*)${out}]`
                                     verify = false
                                 }
