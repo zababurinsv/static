@@ -257,7 +257,11 @@ export default (()=>{
                     while (verify) {
                         if(count >= 10) {
                             verify = false
-                            assets.head.orders.W[`buy(${r})`] = undefined
+                            // console.assert(false,p)
+                            // p.self.orders.W.fft[1][`sell(${r})`][`amount`][`${currency[0]}`] = undefined
+                            // p.self.orders.W.fft[1][`sell(${r})`][`amount`][`${currency[1]}`] = undefined
+                            // p.self.orders.W.fft[1][`sell(${r})`][`amount`][`_`] = this.fix(p.amount[`${currency[1]}`])
+                            p.self.orders.W.fft[1] = undefined
                         } else {
                             let bidAmount = {}
                             let bidPrice = {}
@@ -276,8 +280,8 @@ export default (()=>{
 
                                 p.amount[`${currency[1]}`] = ((p.amount[`${currency[0]}`]*bidPrice))
 
-                                let cur1 = Symbol(`p.amount.${currency[0]}`)
-                                let cur2 = Symbol(`p.amount.${currency[1]}`)
+                                // let cur1 = Symbol(`p.amount.${currency[0]}`)
+                                // let cur2 = Symbol(`p.amount.${currency[1]}`)
                                 // console.assert(false, {
                                 //     [`relation_p.amount.${currency[0]}`]: `${currency[0]}: ${p.amount[`${currency[0]}`]} * ${bidPrice}`,
                                 //     askAmount: askAmount,
@@ -296,13 +300,12 @@ export default (()=>{
                                     })
                                     count++
                                 } else {
-                                    p.amount[`${currency[1]}`] = p.amount[`${currency[1]}`] - p.fee[`${currency[1]}`]
-                                    p.amount[`${currency[1]}`] = this.fix(p.amount[`${currency[1]}`])
+                                    let out = this.fix(p.amount[`${currency[1]}`] - p.fee[`${currency[1]}`])
                                     let s = assets.head.assets.W.second
                                     let f = assets.head.assets.W.first
-                                    p.view.innerHTML = `${f}=>${s}[(${p.amount[`${currency[0]}`]}*)${p.amount[`${currency[1]}`]}]`
+                                    p.view.innerHTML = `${f}=>${s}[(${p.amount[`${currency[0]}`]}*)${out}]`
                                     p.self.orders.W.fft[1][`sell(${r})`][`amount`][`${currency[0]}`] = p.amount[`${currency[0]}`]
-                                    p.self.orders.W.fft[1][`sell(${r})`][`amount`][`${currency[1]}`] = p.amount[`${currency[1]}`]
+                                    p.self.orders.W.fft[1][`sell(${r})`][`amount`][`${currency[1]}`] = this.fix(p.amount[`${currency[1]}`])
                                     p.self.orders.W.fft[1][`sell(${r})`]['price'] = bidPrice
                                     verify = false
                                 }
@@ -315,6 +318,7 @@ export default (()=>{
             }
             sb_tf(v, p, c, assets, r) {
                 return new Promise( async (resolve, reject) => {
+                    console.assert(false)
                     let verify = true
                     let count = 0
                     let currency = ['t','f']
@@ -342,16 +346,16 @@ export default (()=>{
 
                                 let cur1 = Symbol(`p.amount.${currency[0]}`)
                                 let cur2 = Symbol(`p.amount.${currency[1]}`)
-                                // console.assert(false, {
-                                //     [`relation_p.amount.${currency[0]}`]: `${p.amount[`${currency[1]}`]}*${bidPrice}`,
-                                //     askAmount: askAmount,
-                                //     askPrice: askPrice,
-                                //     bidAmount: bidAmount,
-                                //     bidPrice: bidPrice,
-                                //     [cur1]: p.amount[`${currency[0]}`],
-                                //     [cur2]: p.amount[`${currency[1]}`],
-                                //     "verify": (bidAmount - p.amount[`${currency[1]}`])
-                                // })
+                                console.assert(false, {
+                                    [`relation_p.amount.${currency[0]}`]: `${p.amount[`${currency[1]}`]}*${bidPrice}`,
+                                    askAmount: askAmount,
+                                    askPrice: askPrice,
+                                    bidAmount: bidAmount,
+                                    bidPrice: bidPrice,
+                                    [cur1]: p.amount[`${currency[0]}`],
+                                    [cur2]: p.amount[`${currency[1]}`],
+                                    "verify": (bidAmount - p.amount[`${currency[1]}`])
+                                })
                                 if((bidAmount - p.amount[`${currency[1]}`]) < 0) {
                                     console.warn(`невозможно купить ${currency[1]}`,{
                                         askAmount: askAmount,
@@ -360,14 +364,14 @@ export default (()=>{
                                     })
                                     count++
                                 } else {
-                                    p.amount[`${currency[0]}`] = p.amount[`${currency[0]}`] - p.fee[`${currency[0]}`]
-                                    p.amount[`${currency[0]}`] = this.fix(p.amount[`${currency[0]}`])
                                     let t = assets.head.assets.W.third
                                     let f = assets.head.assets.W.first
-                                    p.view.innerHTML = `${f}=>${t}[(${p.amount[`${currency[1]}`]}*)${p.amount[`${currency[0]}`]}]`
-                                    p.self.orders.W.ttf[0][`buy(${r})`][`amount`][`${currency[0]}`] = p.amount[`${currency[0]}`]
-                                    p.self.orders.W.ttf[0][`buy(${r})`][`amount`][`${currency[1]}`] = p.amount[`${currency[1]}`]
-                                    p.self.orders.W.ttf[0][`buy(${r})`]['price'] = bidPrice
+                                    p.self.orders.W.ffs[1][`sell(${r})`][`amount`][`${currency[0]}`] = p.amount[`${currency[0]}`]
+                                    p.self.orders.W.ffs[1][`sell(${r})`][`amount`][`${currency[1]}`] = this.fix(p.amount[`${currency[1]}`])
+                                    p.self.orders.W.ffs[1][`sell(${r})`][`amount`][`_`] = this.fix(p.amount[`${currency[1]}`] - p.fee[`${currency[1]}`])
+                                    let out = p.self.orders.W.ffs[1][`sell(${r})`][`amount`][`_`]
+                                    p.view.innerHTML = `${f}=>${t}[(${p.amount[`${currency[0]}`]}*)${out}]`
+                                    p.self.orders.W.ffs[1][`sell(${r})`]['price'] = bidPrice
                                     verify = false
                                 }
                             }
@@ -385,14 +389,14 @@ export default (()=>{
                     while (verify) {
                         if(count >= 10) {
                             verify = false
-                            assets.head.orders.W[`buy(${r})`] = undefined
+                            p.self.orders.W.ssf[0] = undefined
                         } else {
                             let bidAmount = {}
                             let bidPrice = {}
                             let askAmount = {}
                             let askPrice = {}
-                            if(p.orderbook.asks[count] === undefined) {
-                                assets.head.orders.W[`buy(${r})`] = undefined
+                            if(p.orderbook.bids[count] === undefined) {
+                                p.self.orders.W.ssf[0] = undefined
                                 verify = false
                             } else {
                                 if(p.orderbook.asks[count] !== undefined) {
@@ -417,20 +421,20 @@ export default (()=>{
                                 //     "verify": (bidAmount - p.amount[`${currency[1]}`])
                                 // })
                                 if((bidAmount - p.amount[`${currency[1]}`]) < 0) {
-                                    console.warn(`невозможно купить ${cur2}`,{
+                                    console.warn(`невозможно купить ${currency[0]}`,{
                                         askAmount: askAmount,
                                         "amount": p.amount[`${currency[0]}`],
                                         count: count
                                     })
                                     count++
                                 } else {
-                                    p.amount[`${currency[0]}`] = p.amount[`${currency[0]}`] - p.fee[`${currency[0]}`]
-                                    p.amount[`${currency[0]}`] = this.fix(p.amount[`${currency[0]}`])
+                                    let out = this.fix(p.amount[`${currency[0]}`] - p.fee[`${currency[0]}`])
                                     let s = assets.head.assets.W.second
                                     let f = assets.head.assets.W.first
-                                    p.view.innerHTML = `${f}=>${s}[(${p.amount[`${currency[1]}`]}*)${p.amount[`${currency[0]}`]}]`
+                                    p.view.innerHTML = `${f}=>${s}[(${p.amount[`${currency[1]}`]}*)${out}]`
                                     p.self.orders.W.ssf[0][`buy(${r})`][`amount`][`${currency[0]}`] = p.amount[`${currency[0]}`]
                                     p.self.orders.W.ssf[0][`buy(${r})`][`amount`][`${currency[1]}`] = p.amount[`${currency[1]}`]
+                                    p.self.orders.W.ssf[0][`buy(${r})`][`amount`][`_`] = out
                                     p.self.orders.W.ssf[0][`buy(${r})`]['price'] = bidPrice
                                     verify = false
                                 }
@@ -463,16 +467,18 @@ export default (()=>{
                                 askPrice = this.denormalize(p.orderbook.asks[count]['price'],assets.head.assetId.W[`${p.amountAsset}`].decimals,assets.head.assetId.W[`${p.priceAsset}`].decimals)
                                 bidAmount = p.orderbook['bids'][count]['amount']/(10**assets.head.assetId.W[`${p.amountAsset}`].decimals)
                                 bidPrice = this.denormalize(p.orderbook['bids'][count]['price'],assets.head.assetId.W[`${p.amountAsset}`].decimals,assets.head.assetId.W[`${p.priceAsset}`].decimals)
-                                p.amount[`${currency[0]}`] = ((p.amount[`${currency[1]}`]/askPrice) - p.fee[`${currency[0]}`])
+                                p.amount[`${currency[0]}`] = ((p.amount[`${currency[1]}`]/askPrice))
+                                // let cur1 = Symbol(`p.amount.${currency[0]}`)
+                                // let cur2 = Symbol(`p.amount.${currency[1]}`)
                                 // console.assert(false, {
-                                //     "relation": `${p.amount.f} / ${askPrice}`,
+                                //     [`relation_p.amount.${currency[0]}`]: `${p.amount[`${currency[1]}`]}*${bidPrice}`,
                                 //     askAmount: askAmount,
                                 //     askPrice: askPrice,
                                 //     bidAmount: bidAmount,
                                 //     bidPrice: bidPrice,
-                                //     "p.amount.s": p.amount.s,
-                                //     "p.amount.f": p.amount.f,
-                                //     "verify": (askAmount - p.amount.f)
+                                //     [cur1]: p.amount[`${currency[0]}`],
+                                //     [cur2]: p.amount[`${currency[1]}`],
+                                //     "verify": (bidAmount - p.amount[`${currency[1]}`])
                                 // })
                                 if((askAmount - p.amount[`${currency[0]}`]) < 0) {
                                     console.warn('невозможно купить f',{
@@ -482,13 +488,14 @@ export default (()=>{
                                     })
                                     count++
                                 } else {
-                                    p.amount[`${currency[0]}`] = this.fix(p.amount[`${currency[0]}`])
                                     let t = assets.head.assets.W.third
                                     let f = assets.head.assets.W.first
-                                    p.view.innerHTML = `${t}=>${f}[(${p.amount[`${currency[1]}`]}*)${p.amount[`${currency[0]}`]}]`
-                                    p.self.orders.W.fft[0][`buy(${r})`][`amount`][`${currency[0]}`] = p.amount[`${currency[0]}`]
-                                    p.self.orders.W.fft[0][`buy(${r})`][`amount`][`${currency[1]}`] = p.amount[`${currency[1]}`]
+                                    p.self.orders.W.fft[0][`buy(${r})`]['amount'][`${currency[0]}`] = this.fix(p.amount[`${currency[0]}`])
+                                    p.self.orders.W.fft[0][`buy(${r})`]['amount'][`${currency[1]}`] = p.amount[`${currency[1]}`]
+                                    p.self.orders.W.fft[0][`buy(${r})`]['amount'][`_`] = this.fix(p.amount[`${currency[0]}`] - p.fee[`${currency[0]}`])
                                     p.self.orders.W.fft[0][`buy(${r})`]['price'] = askPrice
+                                    let out = p.self.orders.W.fft[0][`buy(${r})`]['amount'][`_`]
+                                    p.view.innerHTML = `${t}=>${f}[(${p.amount[`${currency[1]}`]}*)${out}]`
                                     verify = false
                                 }
                             }

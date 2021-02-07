@@ -200,7 +200,7 @@ export default async (v,p,c,obj,r) => {
     }
     function empty(obj,type) {
         switch (type) {
-            case 'ueu':
+            case 'fft':
                 obj['this'].shadowRoot.querySelector('div.fb_ft').style.background ='#7694f473'
                 obj['this'].shadowRoot.querySelector('div.fs_fs').style.background ='#7694f473'
                 obj['this'].shadowRoot.querySelector('div.fb_ts').style.background ='#7694f473'
@@ -211,7 +211,7 @@ export default async (v,p,c,obj,r) => {
                 obj['this'].shadowRoot.querySelector('#fs_fs').innerHTML = `${sys['warn']['s/b']}`
                 obj['this'].shadowRoot.querySelector('#fb_ts').innerHTML = `${sys['warn']['s/b']}`
                 break
-            case 'eue':
+            case 'ffs':
                 obj['this'].shadowRoot.querySelector('div.fb_fs').style.background ='#7694f473'
                 obj['this'].shadowRoot.querySelector('div.fs_ft').style.background ='#7694f473'
                 obj['this'].shadowRoot.querySelector('div.fb_st').style.background ='#7694f473'
@@ -222,7 +222,7 @@ export default async (v,p,c,obj,r) => {
                 obj['this'].shadowRoot.querySelector('#fb_fs').innerHTML = `${sys['warn']['s/b']}`
                 obj['this'].shadowRoot.querySelector('#fb_st').innerHTML = `${sys['warn']['s/b']}`
                 break
-            case 'wuw':
+            case 'ssf':
                 obj['this'].shadowRoot.querySelector('div.sb_sf').style.background ='#7694f473'
                 obj['this'].shadowRoot.querySelector('div.ss_st').style.background ='#7694f473'
                 obj['this'].shadowRoot.querySelector('div.sb_ft').style.background ='#7694f473'
@@ -233,7 +233,7 @@ export default async (v,p,c,obj,r) => {
                 obj['this'].shadowRoot.querySelector('#ss_st').innerHTML = `${sys['warn']['s/b']}`
                 obj['this'].shadowRoot.querySelector('#sb_ft').innerHTML = `${sys['warn']['s/b']}`
                 break
-            case 'wew':
+            case 'ttf':
                 obj['this'].shadowRoot.querySelector('div.sb_tf').style.background ='#7694f473'
                 obj['this'].shadowRoot.querySelector('div.ss_ts').style.background ='#7694f473'
                 obj['this'].shadowRoot.querySelector('div.sb_fs').style.background ='#7694f473'
@@ -354,10 +354,6 @@ export default async (v,p,c,obj,r) => {
         relation.orderbook.fs[0] =  orderbook_fs
         relation.orderbook.ft[0] = orderbook_ft
         relation.orderbook.st[0] =  orderbook_st
-
-        // w = first
-        // e = second
-        // u = third
         for(let type in relation['fee']) {
             if(assets.W[type] !== 'WAVES') {
                 let order_key = (type === 'first')
@@ -392,38 +388,55 @@ export default async (v,p,c,obj,r) => {
             priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
             view: obj['this'].shadowRoot.querySelector('#fb_fs')
         },'green',assets , 'fs');
-        assets = await dex.fs_ft(true, {
-            self: relation,
-            orderbook: orderbook_ft,
-            amount: {
-                f: assets.orders.ffs[0]['buy(fs)']['amount']['_'],
-                t: undefined
-            },
-            fee: {
-                f:undefined,
-                t:relation.fee.third[0]
-            },
-            amountAsset: assets.head.pairs.W['first/third']['amountAsset'],
-            priceAsset: assets.head.pairs.W['first/third']['priceAsset'],
-            view: obj['this'].shadowRoot.querySelector('#fs_ft')
-        },'green',assets , 'ft');
 
-        assets = await dex.fb_st(true, {
-            self: relation,
-            orderbook: orderbook_st,
-            amount: {
-                t: assets.orders.ffs[1]['sell(ft)']['amount']['_'],
-                s: undefined,
-            },
-            fee: {
-                t: undefined,
-                s: relation.fee.second[0]
-            },
-            amountAsset: assets.head.pairs.W['second/third']['amountAsset'],
-            priceAsset: assets.head.pairs.W['second/third']['priceAsset'],
-            view: obj['this'].shadowRoot.querySelector('#fb_st')
-        },'green',assets , 'st');
-        console.assert(false, assets)
+        if(assets.orders.ffs[0] !== undefined) {
+            assets = await dex.fs_ft(true, {
+                self: relation,
+                orderbook: orderbook_ft,
+                amount: {
+                    f: assets.orders.ffs[0]['buy(fs)']['amount']['_'],
+                    t: undefined
+                },
+                fee: {
+                    f:undefined,
+                    t:relation.fee.third[0]
+                },
+                amountAsset: assets.head.pairs.W['first/third']['amountAsset'],
+                priceAsset: assets.head.pairs.W['first/third']['priceAsset'],
+                view: obj['this'].shadowRoot.querySelector('#fs_ft')
+            },'green',assets , 'ft');
+
+            if(assets.orders.ffs[1] !== undefined) {
+                assets = await dex.fb_st(true, {
+                    self: relation,
+                    orderbook: orderbook_st,
+                    amount: {
+                        t: assets.orders.ffs[1]['sell(ft)']['amount']['_'],
+                        s: undefined,
+                    },
+                    fee: {
+                        t: undefined,
+                        s: relation.fee.second[0]
+                    },
+                    amountAsset: assets.head.pairs.W['second/third']['amountAsset'],
+                    priceAsset: assets.head.pairs.W['second/third']['priceAsset'],
+                    view: obj['this'].shadowRoot.querySelector('#fb_st')
+                },'green',assets , 'st');
+                if(assets.orders.ffs[2] === undefined) {
+                    assets.orders.ffs[0] = undefined
+                    assets.orders.ffs[1] = undefined
+                    empty(obj, 'ffs')
+                }
+            } else {
+                assets.orders.ffs[0] = undefined
+                assets.orders.ffs[2] = undefined
+                empty(obj, 'ffs')
+            }
+        }  else {
+            assets.orders.ffs[1] = undefined
+            assets.orders.ffs[2] = undefined
+            empty(obj, 'ffs')
+        }
 // new item 2
         assets = await dex.fb_ft(true, {
             self: relation,
@@ -440,36 +453,56 @@ export default async (v,p,c,obj,r) => {
             priceAsset: assets.head.pairs.W['first/third']['priceAsset'],
             view: obj['this'].shadowRoot.querySelector('#fb_ft')
         },'green',assets , 'ft');
-        assets = await dex.fs_fs(true, {
-            self: relation,
-            orderbook: orderbook_fs,
-            amount: {
-                f: assets.orders.fft[0]['buy(ft)']['amount']['f'],
-                s: undefined
-            },
-            fee: {
-                f:undefined,
-                s:relation.fee.second[0]
-            },
-            amountAsset: assets.head.pairs.W['first/second']['amountAsset'],
-            priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
-            view: obj['this'].shadowRoot.querySelector('#fs_fs')
-        },'green',assets , 'fs');
-        assets = await dex.fb_ts(true, {
-            self: relation,
-            orderbook: orderbook_st,
-            amount: {
-                t: undefined,
-                s: assets.orders.fft[1]['sell(fs)']['amount']['s'],
-            },
-            fee: {
-                t:relation.fee.third[0],
-                s:undefined
-            },
-            amountAsset: assets.head.pairs.W['second/third']['amountAsset'],
-            priceAsset: assets.head.pairs.W['second/third']['priceAsset'],
-            view: obj['this'].shadowRoot.querySelector('#fb_ts')
-        },'green',assets , 'ts');
+
+        if(assets.orders.fft[0] !== undefined) {
+            assets = await dex.fs_fs(true, {
+                self: relation,
+                orderbook: orderbook_fs,
+                amount: {
+                    f: assets.orders.fft[0]['buy(ft)']['amount']['f'],
+                    s: undefined
+                },
+                fee: {
+                    f:undefined,
+                    s:relation.fee.second[0]
+                },
+                amountAsset: assets.head.pairs.W['first/second']['amountAsset'],
+                priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
+                view: obj['this'].shadowRoot.querySelector('#fs_fs')
+            },'green',assets , 'fs');
+
+            if(assets.orders.fft[1] !== undefined) {
+                assets = await dex.fb_ts(true, {
+                    self: relation,
+                    orderbook: orderbook_st,
+                    amount: {
+                        t: undefined,
+                        s: assets.orders.fft[1]['sell(fs)']['amount']['s'],
+                    },
+                    fee: {
+                        t:relation.fee.third[0],
+                        s:undefined
+                    },
+                    amountAsset: assets.head.pairs.W['second/third']['amountAsset'],
+                    priceAsset: assets.head.pairs.W['second/third']['priceAsset'],
+                    view: obj['this'].shadowRoot.querySelector('#fb_ts')
+                },'green',assets , 'ts');
+
+                if(assets.orders.fft[2] === undefined) {
+                    assets.orders.fft[0] = undefined
+                    assets.orders.fft[1] = undefined
+                    empty(obj, 'fft')
+                }
+            } else {
+                assets.orders.fft[0] = undefined
+                assets.orders.fft[2] = undefined
+                empty(obj, 'fft')
+            }
+        } else {
+            assets.orders.fft[1] = undefined
+            assets.orders.fft[2] = undefined
+            empty(obj, 'fft')
+        }
 // new item 3
         assets = await dex.sb_sf(true, {
             self: relation,
@@ -486,7 +519,26 @@ export default async (v,p,c,obj,r) => {
             priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
             view: obj['this'].shadowRoot.querySelector('#sb_sf')
         },'green',assets , 'sf');
+        if(assets.orders.ssf[0] !== undefined) {
 
+
+            if(assets.orders.ssf[1] !== undefined) {
+
+                if(assets.orders.ssf[2] === undefined) {
+                    assets.orders.ssf[0] = undefined
+                    assets.orders.ssf[1] = undefined
+                    empty(obj, 'ssf')
+                }
+            } else {
+                assets.orders.ssf[0] = undefined
+                assets.orders.ssf[2] = undefined
+                empty(obj, 'ssf')
+            }
+        } else {
+            assets.orders.ssf[1] = undefined
+            assets.orders.ssf[2] = undefined
+            empty(obj, 'ssf')
+        }
 // new item 4
         assets = await dex.sb_tf(true, {
             self: relation,
@@ -503,209 +555,23 @@ export default async (v,p,c,obj,r) => {
             priceAsset: assets.head.pairs.W['first/third']['priceAsset'],
             view: obj['this'].shadowRoot.querySelector('#sb_tf')
         },'green',assets , 'tf');
-        console.assert(false, assets)
-        relation['description']['ueu'] = []
-        relation['description']['ueu'].push(relation['u'])
-        relation = await dex.buy(wavesUsd, relation['u'], relation, 'wavesUsd');
-        ((relation['buy(wavesUsd)'] >= sys['threshold']['amount']))
-          ? (relation['description']['ueu'].push(relation['buy(wavesUsd)']),
-            sys['validation']['disabled']['views'][0] = true,
-            obj['this'].shadowRoot.querySelector('#fb_ft').innerHTML = `${description['name'][`${wavesUsd.pair.priceAsset}`]}=>${description['name'][`${wavesUsd.pair.amountAsset}`]}[(${relation['u']}*)${relation['buy(wavesUsd)']}]`)
-          : (delete relation['description']['ueu'],
-            sys['validation']['disabled']['views'][0] = false,
-            empty(obj, 'ueu'))
-        if(relation['description']['ueu'] !== undefined) {
-            console.assert(false)
-          relation = await dex.sell(wavesEuro, relation['buy(wavesUsd)'], relation, 'wavesEuro');
-            console.assert(false, `${description['name'][`${wavesEuro.pair.priceAsset}`]}=>${description['name'][`${wavesEuro.pair.amountAsset}`]}[(${relation['buy(wavesUsd)']}*)${relation['sell(wavesEuro)']}]` )
-          ((relation['sell(wavesEuro)'] >= sys['threshold']['amount']))
-            ? (relation['description']['ueu'].push(relation['sell(wavesEuro)']),
-              sys['validation']['disabled']['views'][0] = true,
-              obj['this'].shadowRoot.querySelector('#fs_fs').innerHTML = `${description['name'][`${wavesEuro.pair.priceAsset}`]}=>${description['name'][`${wavesEuro.pair.amountAsset}`]}[(${relation['buy(wavesUsd)']}*)${relation['sell(wavesEuro)']}]`)
-            : (delete relation['description']['ueu'],
-              sys['validation']['disabled']['views'][0] = false,
-              empty(obj, 'ueu'))
-        }
-        if(relation['description']['ueu'] !== undefined) {
-            relation = await dex.buy(euroUsd, relation['sell(wavesEuro)'], relation, 'usdEuro');
-            ((relation['buy(usdEuro)'] >= sys['threshold']['amount']))
-              ? (relation['description']['ueu'].push(relation['buy(usdEuro)']),
-                sys['validation']['disabled']['views'][0] = true,
-                obj['this'].shadowRoot.querySelector('#fb_ts').innerHTML = `${description['name'][`${euroUsd.pair.amountAsset}`]}=>${description['name'][`${euroUsd.pair.priceAsset}`]}[(${relation['sell(wavesEuro)']}*)${relation['buy(usdEuro)']}]`)
-              : (delete relation['description']['ueu'],
-                sys['validation']['disabled']['views'][0] = false,
-                empty(obj, 'ueu'))
-        }
-        relation['transactions'] = []
-        if(relation['description']['ueu'] !== undefined) {
-            let timestamp =  Date.now();
-            relation['transactions']['ueu'] = {
-                head: {
-                    "name": 'ueu',
-                    'success': [false, false, false],
-                    "matcherPublicKey": sys.matcher.key.T,
-                    'date': {
-                        'timestamp': timestamp,
-                        'GMT': new Date(timestamp).toString()
+        if(assets.orders.ttf[0] !== undefined) {
+                if(assets.orders.ttf[1] !== undefined) {
+                    if(assets.orders.ttf[2] === undefined) {
+                        assets.orders.ttf[0] = undefined
+                        assets.orders.ttf[1] = undefined
+                        empty(obj, 'ttf')
                     }
-                },
-                description: relation['ueu'],
-                decimals: (!sys.validation.output.prod)?description.T:'надо подставить значения',
-                assets: assets
-            }
+                } else {
+                    assets.orders.ttf[0] = undefined
+                    assets.orders.ttf[2] = undefined
+                    empty(obj, 'ttf')
+                }
+            } else {
+            assets.orders.ttf[1] = undefined
+            assets.orders.ttf[2] = undefined
+            empty(obj, 'ttf')
         }
-        relation['buy(wavesUsd)'] = {}
-        relation['sell(wavesEuro)'] ={}
-        relation['buy(usdEuro)'] = {}
-
-//## item 2
-        relation['description']['eue'] = []
-        relation['description']['eue'].push(relation['e'])
-        relation = await dex.buy(wavesEuro, relation['e'], relation, 'wavesEuro');
-        ((relation['buy(wavesEuro)'] >= sys['threshold']['amount']))
-          ? (relation['description']['eue'].push(relation['buy(wavesEuro)']),
-            sys['validation']['disabled']['views'][1] = true,
-            obj['this'].shadowRoot.querySelector('#fb_fs').innerHTML = `${description['name'][`${wavesEuro.pair.amountAsset}`]}=>${description['name'][`${wavesEuro.pair.priceAsset}`]}[(${relation['e']}*)${relation['buy(wavesEuro)']}]`)
-          : (delete relation['description']['eue'],
-            sys['validation']['disabled']['views'][1] = false,
-            empty(obj,'eue'))
-        if(relation['description']['eue'] !== undefined) {
-            relation = await dex.sell(wavesUsd,relation['buy(wavesEuro)'], relation, 'wavesUsd');
-            ((relation['sell(wavesUsd)'] >= sys['threshold']['amount']))
-              ? (relation['description']['eue'].push(relation['sell(wavesUsd)']),
-                sys['validation']['disabled']['views'][1] = true,
-                obj['this'].shadowRoot.querySelector('#fs_ft').innerHTML = `${description['name'][`${wavesUsd.pair.amountAsset}`]}=>${description['name'][`${wavesUsd.pair.priceAsset}`]}[(${relation['buy(wavesEuro)']}*)${relation['sell(wavesUsd)']}]`)
-              : (delete relation['description']['eue'],
-                sys['validation']['disabled']['views'][1] = false,
-                empty(obj,'eue'))
-        }
-        if(relation['description']['eue'] !== undefined) {
-            relation = await dex.buy(euroUsd,relation['sell(wavesUsd)'], relation, 'euroUsd');
-            ((relation['buy(euroUsd)'] >= sys['threshold']['amount']))
-              ? (relation['description']['eue'].push(relation['buy(euroUsd)']),
-                sys['validation']['disabled']['views'][1] = true,
-                obj['this'].shadowRoot.querySelector('#fb_st').innerHTML = `${description['name'][`${euroUsd.pair.priceAsset}`]}=>${description['name'][`${euroUsd.pair.amountAsset}`]}[(${relation['sell(wavesUsd)']}*)${relation['buy(euroUsd)']}]`)
-              : (delete relation['description']['eue'],
-                sys['validation']['disabled']['views'][1] = false,
-                empty(obj, 'eue'))
-        }
-        if(relation['description']['eue'] !== undefined) {
-            let timestamp =  Date.now();
-            relation['transactions']['eue'] = {
-                head: {
-                    'name': 'eue',
-                    "matcherPublicKey": sys.matcher.key.T,
-                    'success': [false, false, false],
-                    'date': {
-                        'timestamp': timestamp,
-                        'GMT': new Date(timestamp).toString()
-                    }
-                },
-                description: relation['eue'],
-                decimals: (!sys.validation.output.prod)?description.T:'надо подставить значения',
-                assets: assets
-            }
-        }
-        relation['buy(wavesEuro)']  = {}
-        relation['sell(wavesUsd)']  = {}
-        relation['buy(euroUsd)']    = {}
-//## item 3
-        relation['description']['wuw'] = []
-        relation['description']['wuw'].push(relation['w'])
-        relation = await dex.buy(wavesEuro, relation['w'], relation, 'euroWaves');
-            ((relation['buy(euroWaves)'] >= sys['threshold']['amount']))
-            ? (relation['description']['wuw'].push(relation['buy(euroWaves)']),
-              sys['validation']['disabled']['views'][2] = true,
-              obj['this'].shadowRoot.querySelector('#sb_sf').innerHTML = `${description['name'][`${wavesEuro.pair.priceAsset}`]}=>${description['name'][`${wavesEuro.pair.amountAsset}`]}[(${relation['w']}*)${relation['buy(euroWaves)']}]`)
-            : (delete relation['description']['wuw'], sys['validation']['disabled']['views'][2] = false, empty(obj,'wuw'))
-        if(relation['description']['wuw'] !== undefined) {
-            relation = await dex.sell(euroUsd,relation['buy(euroWaves)'], relation, 'euroUsd');
-            ((relation['sell(euroUsd)'] >= sys['threshold']['amount']))
-              ? (relation['description']['wuw'].push(relation['sell(euroUsd)']),
-                sys['validation']['disabled']['views'][2] = true,
-                obj['this'].shadowRoot.querySelector('#ss_st').innerHTML = `${description['name'][`${euroUsd.pair.amountAsset}`]}=>${description['name'][`${euroUsd.pair.priceAsset}`]}[(${relation['buy(euroWaves)']}*)${relation['sell(euroUsd)']}]`)
-              : (delete relation['description']['wuw'], sys['validation']['disabled']['views'][2] = false, empty(obj,'wuw'))
-        }
-        if(relation['description']['wuw'] !== undefined) {
-            relation = await dex.buy(wavesUsd,relation['sell(euroUsd)'], relation, 'wavesUsd');
-            ((relation['buy(wavesUsd)'] >= sys['threshold']['amount']))
-              ? (relation['description']['wuw'].push(relation['buy(wavesUsd)']),
-                sys['validation']['disabled']['views'][2] = true,
-                obj['this'].shadowRoot.querySelector('#sb_ft').innerHTML = `${description['name'][`${wavesUsd.pair.priceAsset}`]}=>${description['name'][`${wavesUsd.pair.amountAsset}`]}[(${relation['sell(euroUsd)']}*)${relation['buy(wavesUsd)']}]`)
-              : (delete relation['description']['wuw'], sys['validation']['disabled']['views'][2] = false, empty(obj,'wuw'))
-        }
-        if(relation['description']['wuw'] !== undefined) {
-           let timestamp =  Date.now();
-            relation['transactions']['wuw'] = {
-                head: {
-                    'name': 'wuw',
-                    "matcherPublicKey": sys.matcher.key.T,
-                    'success': [false, false, false],
-                    'date': {
-                        'timestamp': timestamp,
-                        'GMT': new Date(timestamp).toString()
-                    }
-                },
-                description: relation['wuw'],
-                decimals: (!sys.validation.output.prod)?description.T:'надо подставить значения',
-                assets: assets
-            }
-        }
-        relation['buy(euroWaves)'] = {}
-        relation['sell(euroUsd)'] ={}
-        relation['buy(wavesUsd)'] = {}
-//## item 4
-        relation['description']['wew'] = []
-        relation['description']['wew'].push(relation['w'])
-        relation = await dex.buy(wavesUsd, relation['w'], relation, 'usdWaves');
-        ((relation['buy(usdWaves)'] >= sys['threshold']['amount']))
-          ? (relation['description']['wew'].push(relation['buy(usdWaves)']),
-            sys['validation']['disabled']['views'][3] = true,
-            obj['this'].shadowRoot.querySelector('#sb_tf').innerHTML = `${description['name'][`${wavesUsd.pair.amountAsset}`]}=>${description['name'][`${wavesUsd.pair.priceAsset}`]}[(${relation['w']}*)${relation['buy(usdWaves)']}]`)
-          : (delete relation['description']['wew'],
-            sys['validation']['disabled']['views'][3] = false,
-            empty(obj, 'wew'));
-
-        if(relation['description']['wew'] !== undefined) {
-            relation = await dex.sell(euroUsd,relation['buy(usdWaves)'], relation, 'usdEuro');
-            ((relation['sell(usdEuro)'] >= sys['threshold']['amount']))
-              ? (relation['description']['wew'].push(relation['sell(usdEuro)']),
-                sys['validation']['disabled']['views'][3] = true,
-                obj['this'].shadowRoot.querySelector('#ss_ts').innerHTML = `${description['name'][`${euroUsd.pair.priceAsset}`]}=>${description['name'][`${euroUsd.pair.amountAsset}`]}[(${relation['buy(usdWaves)']}*)${relation['sell(usdEuro)']}]`)
-              : (delete relation['description']['wew'],
-                sys['validation']['disabled']['views'][3] = false,
-                empty(obj, 'wew'));
-        }
-        if(relation['description']['wew'] !== undefined) {
-            relation = await dex.buy(wavesEuro,relation['sell(usdEuro)'], relation, 'wavesEuro');
-            ((relation['buy(wavesEuro)'] >= sys['threshold']['amount']))
-              ? (relation['description']['wew'].push(relation['buy(wavesEuro)']),
-                sys['validation']['disabled']['views'][3] = true,
-                obj['this'].shadowRoot.querySelector('#sb_fs').innerHTML = `${description['name'][`${wavesEuro.pair.amountAsset}`]}=>${description['name'][`${wavesEuro.pair.priceAsset}`]}[(${relation['sell(usdEuro)']}*)${relation['buy(wavesEuro)']}]`)
-              : (delete relation['description']['wew'],
-                sys['validation']['disabled']['views'][3] = false,
-                empty(obj, 'wew'));
-        }
-        if(relation['description']['wew'] !== undefined) {
-            let timestamp =  Date.now();
-            relation['transactions']['wew'] = {
-                head: {
-                    "name": 'wew',
-                    "matcherPublicKey": sys.matcher.key.T,
-                    "success": [false, false, false],
-                    "date": {
-                        "timestamp": timestamp,
-                        "GMT": new Date(timestamp).toString()
-                    }
-                },
-                description: relation['wew'],
-                decimals: (!sys.validation.output.prod)?description.T:'надо подставить значения',
-                assets: assets
-            }
-        }
-        relation['buy(usdWaves)']   = {}
-        relation['sell(usdEuro)']   = {}
-        relation['buy(wavesEuro)']  = {}
 //## get order
         let timestamp = config['timestamp']()
         let signature = await task.set(true,'T','8',{
