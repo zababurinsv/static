@@ -750,6 +750,7 @@ div#external{
           let url = ''
           if(obj.this.dataset.url){
               url =  obj.this.dataset.url
+              console.assert(false, url)
               if(url.indexOf('${location.origin}') !== -1) {
                 if(location.origin.indexOf('localhost') !== -1) {
                   url = url.replace('${location.origin}', '')
@@ -759,7 +760,11 @@ div#external{
               }
               url = url.toString()
           }else{
-            url = obj.this.dataset.innerHTML
+            if(obj.this.dataset.json) {
+              url = `${location.origin}${obj.this.dataset.json}`
+            } else {
+              console.assert(false, 'не знаю что пока делать')
+            }
           }
 
           let style = document.createElement('style')
@@ -767,12 +772,11 @@ div#external{
           obj.this.appendChild(style)
           let json = {}
           if(location.origin === 'http://localhost:9876') {
-            json = await fetch(`${location.origin}/android/index.localhost.json`)
+            json = await fetch(`${location.origin}/android/index.json`)
           } else {
-            json = await fetch(`${location.origin}/android/index.web.json`)
+            json = await fetch(`${location.origin}/android/index.json`)
           }
          json = await json.json()
-
           if(url) {
             json['$jason'] = {
               'head': {
