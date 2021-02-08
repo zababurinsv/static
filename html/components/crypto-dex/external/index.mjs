@@ -48,6 +48,8 @@ function pairs(type = undefined) {
                             let name = details.name.split(' ')
                             if(name.length !== 1) {
                                 name = `${name[0].substr(0, 1)}-${name[name.length - (name.length -1)]}`
+                            } else {
+                                name = name[0]
                             }
                             assets.head.decimals[type][key] = details.decimals
                             assets.head.assets[type][key] = name
@@ -332,7 +334,7 @@ export default async (v,p,c,obj,r) => {
         // w = first
         // e = second
         // u = third
-        assets.orders = {
+        relation.orders = {
             "S": JSON.parse(JSON.stringify(assets.orders)),
             "T": JSON.parse(JSON.stringify(assets.orders)),
             "W": JSON.parse(JSON.stringify(assets.orders))
@@ -392,8 +394,8 @@ export default async (v,p,c,obj,r) => {
             view: obj['this'].shadowRoot.querySelector('#fb_fs')
         },'green',assets , 'fs');
 
-        if(relation.orders.W.ffs[0] !== undefined) {
-            assets = await dex.fs_ft(true, {
+        if(relation.orders.W.ffs !== undefined) {
+            assets = await dex.fs_ft(false, {
                 self: relation,
                 orderbook: orderbook_ft,
                 amount: {
@@ -409,7 +411,7 @@ export default async (v,p,c,obj,r) => {
                 view: obj['this'].shadowRoot.querySelector('#fs_ft')
             },'green',assets , 'ft');
 
-            if(relation.orders.W.ffs[1] !== undefined) {
+            if(relation.orders.W.ffs !== undefined) {
                 assets = await dex.fb_st(false, {
                     self: relation,
                     orderbook: orderbook_st,
@@ -425,22 +427,16 @@ export default async (v,p,c,obj,r) => {
                     priceAsset: assets.head.pairs.W['second/third']['priceAsset'],
                     view: obj['this'].shadowRoot.querySelector('#fb_st')
                 },'green',assets , 'st');
-                if(relation.orders.W.ffs[2] === undefined) {
-                    relation.orders.ffs[0] = undefined
-                    relation.orders.ffs[1] = undefined
+                if(relation.orders.W.ffs === undefined) {
                     empty(obj, 'ffs')
                 }
             } else {
-                relation.orders.ffs[0] = undefined
-                relation.orders.ffs[2] = undefined
                 empty(obj, 'ffs')
             }
         }  else {
-            relation.orders.ffs[1] = undefined
-            relation.orders.ffs[2] = undefined
             empty(obj, 'ffs')
         }
-        console.assert(false, assets)
+        // console.assert(false, assets)
 // new item 2
         assets = await dex.fb_ft(false, {
             self: relation,
@@ -457,13 +453,12 @@ export default async (v,p,c,obj,r) => {
             priceAsset: assets.head.pairs.W['first/third']['priceAsset'],
             view: obj['this'].shadowRoot.querySelector('#fb_ft')
         },'green',assets , 'ft');
-
-        if(assets.orders.fft[0] !== undefined) {
+        if(relation.orders.W.fft !== undefined) {
             assets = await dex.fs_fs(false, {
                 self: relation,
                 orderbook: orderbook_fs,
                 amount: {
-                    f: assets.orders.fft[0]['buy(ft)']['amount']['f'],
+                    f: relation.orders.W.fft[0]['buy(ft)']['amount']['_'],
                     s: undefined
                 },
                 fee: {
@@ -475,13 +470,13 @@ export default async (v,p,c,obj,r) => {
                 view: obj['this'].shadowRoot.querySelector('#fs_fs')
             },'green',assets , 'fs');
 
-            if(assets.orders.fft[1] !== undefined) {
+            if(relation.orders.W.fft !== undefined) {
                 assets = await dex.fb_ts(false, {
                     self: relation,
                     orderbook: orderbook_st,
                     amount: {
                         t: undefined,
-                        s: assets.orders.fft[1]['sell(fs)']['amount']['s'],
+                        s: relation.orders.W.fft[1]['sell(fs)']['amount']['s'],
                     },
                     fee: {
                         t:relation.fee.third[0],
@@ -492,19 +487,15 @@ export default async (v,p,c,obj,r) => {
                     view: obj['this'].shadowRoot.querySelector('#fb_ts')
                 },'green',assets , 'ts');
 
-                if(assets.orders.fft[2] === undefined) {
-                    assets.orders.fft[0] = undefined
-                    assets.orders.fft[1] = undefined
+                if(relation.orders.fft === undefined) {
                     empty(obj, 'fft')
                 }
             } else {
-                assets.orders.fft[0] = undefined
-                assets.orders.fft[2] = undefined
                 empty(obj, 'fft')
             }
         } else {
-            assets.orders.fft[1] = undefined
-            assets.orders.fft[2] = undefined
+            relation.orders.fft[1] = undefined
+            relation.orders.fft[2] = undefined
             empty(obj, 'fft')
         }
 // new item 3
@@ -523,22 +514,17 @@ export default async (v,p,c,obj,r) => {
             priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
             view: obj['this'].shadowRoot.querySelector('#sb_sf')
         },'green',assets , 'sf');
-        if(assets.orders.ssf[0] !== undefined) {
-            if(assets.orders.ssf[1] !== undefined) {
 
-                if(assets.orders.ssf[2] === undefined) {
-                    assets.orders.ssf[0] = undefined
-                    assets.orders.ssf[1] = undefined
+        if(relation.orders.W.ssf !== undefined) {
+            if(relation.orders.ssf !== undefined) {
+
+                if(relation.orders.W.ssf === undefined) {
                     empty(obj, 'ssf')
                 }
             } else {
-                assets.orders.ssf[0] = undefined
-                assets.orders.ssf[2] = undefined
                 empty(obj, 'ssf')
             }
         } else {
-            assets.orders.ssf[1] = undefined
-            assets.orders.ssf[2] = undefined
             empty(obj, 'ssf')
         }
 // new item 4
@@ -557,12 +543,12 @@ export default async (v,p,c,obj,r) => {
             priceAsset: assets.head.pairs.W['first/third']['priceAsset'],
             view: obj['this'].shadowRoot.querySelector('#sb_tf')
         },'green',assets , 'tf');
-        if(assets.orders.ttf[0] !== undefined) {
+        if(relation.orders.W.ttf !== undefined) {
             assets = await dex.ss_ts(false, {
                 self: relation,
                 orderbook: orderbook_st,
                 amount: {
-                    t:assets.orders.ttf[0]['buy(tf)']['amount']['_'],
+                    t: relation.orders.W.ttf[0]['buy(tf)']['amount']['_'],
                     s: undefined
                 },
                 fee: {
@@ -573,13 +559,13 @@ export default async (v,p,c,obj,r) => {
                 priceAsset: assets.head.pairs.W['second/third']['priceAsset'],
                 view: obj['this'].shadowRoot.querySelector('#ss_ts')
             },'green',assets , 'ts');
-                if(assets.orders.ttf[1] !== undefined) {
+                if(relation.orders.ttf !== undefined) {
                     assets = await dex.sb_fs(false, {
                         self: relation,
                         orderbook: orderbook_fs,
                         amount: {
                             f: undefined,
-                            s: assets.orders.ttf[1]['sell(ts)']['amount']['_']
+                            s: relation.orders.W.ttf[1]['sell(ts)']['amount']['_']
                         },
                         fee: {
                             f:relation.fee.first[0],
@@ -589,19 +575,13 @@ export default async (v,p,c,obj,r) => {
                         priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
                         view: obj['this'].shadowRoot.querySelector('#sb_fs')
                     },'green',assets , 'fs');
-                    if(assets.orders.ttf[2] === undefined) {
-                        assets.orders.ttf[0] = undefined
-                        assets.orders.ttf[1] = undefined
+                    if(relation.orders.ttf === undefined) {
                         empty(obj, 'ttf')
                     }
                 } else {
-                    assets.orders.ttf[0] = undefined
-                    assets.orders.ttf[2] = undefined
                     empty(obj, 'ttf')
                 }
             } else {
-            assets.orders.ttf[1] = undefined
-            assets.orders.ttf[2] = undefined
             empty(obj, 'ttf')
         }
 //## get order
@@ -725,49 +705,54 @@ export default async (v,p,c,obj,r) => {
     //   ? (views[3]())
     //   : '';
         // sys.info(false)
-        let update = async (priceAssetDecimals, amountAssetDecimals, description, wavesEuro,wavesUsd, euroUsd, obj ) => {
+        let update = async (v,p,c,s,r) => {
             for(let i=0; i < 10;i++) {
-                if(wavesEuro['asks'][i] !== undefined) {
-                    priceAssetDecimals =  description['details'][`${wavesEuro['pair']['priceAsset']}`]
-                    amountAssetDecimals = description['details'][`${wavesEuro['pair']['amountAsset']}`]
-                    obj['this'].shadowRoot.querySelector('#wavesEuroAsk').children[i].innerText = `${ waves.denormalize(wavesEuro['asks'][i]['price'],priceAssetDecimals, amountAssetDecimals ) }`
+                // console.assert(false, s.relation.orderbook.fs[0])
+                let priceAsset = s.relation.orderbook.fs[0]['pair'].priceAsset
+                let amountAsset = s.relation.orderbook.fs[0]['pair'].amountAsset
+                let amountDecimals = assets.head.assetId.W[`${amountAsset}`].decimals
+                let priceDecimals = assets.head.assetId.W[`${priceAsset}`].decimals
+                if(s.relation.orderbook.fs[0]['asks'][i] !== undefined) {
+                    obj['this'].shadowRoot.querySelector('#ask_fs').children[i].innerText = `${ dex.denormalize(s.relation.orderbook.fs[0]['asks'][i].price,amountDecimals,priceDecimals) }`
                 }
-                if(wavesEuro['bids'][i] !== undefined) {
-                    priceAssetDecimals =  description['details'][`${wavesEuro['pair']['priceAsset']}`]
-                    amountAssetDecimals = description['details'][`${wavesEuro['pair']['amountAsset']}`]
-                    obj['this'].shadowRoot.querySelector('#wavesEuroBid').children[i].innerText = `${ waves.denormalize(wavesEuro['bids'][i]['price'],priceAssetDecimals, amountAssetDecimals ) }`
+                if(s.relation.orderbook.fs[0]['bids'][i] !== undefined) {
+                    obj['this'].shadowRoot.querySelector('#bid_fs').children[i].innerText =`${ dex.denormalize(s.relation.orderbook.fs[0]['bids'][i].price,amountDecimals,priceDecimals) }`
                 }
-                if(wavesUsd['asks'][i] !== undefined) {
-                    priceAssetDecimals =  description['details'][`${wavesUsd['pair']['priceAsset']}`]
-                    amountAssetDecimals = description['details'][`${wavesUsd['pair']['amountAsset']}`]
-                    obj['this'].shadowRoot.querySelector('#wavesUsdAsk').children[i].innerText = `${ waves.denormalize(wavesUsd['asks'][i]['price'],priceAssetDecimals,amountAssetDecimals ) }`
+                priceAsset = s.relation.orderbook.ft[0]['pair'].priceAsset
+                amountAsset = s.relation.orderbook.ft[0]['pair'].amountAsset
+                amountDecimals = assets.head.assetId.W[`${amountAsset}`].decimals
+                priceDecimals = assets.head.assetId.W[`${priceAsset}`].decimals
+                if(s.relation.orderbook.ft[0]['asks'][i] !== undefined) {
+                    obj['this'].shadowRoot.querySelector('#ask_ft').children[i].innerText =`${ dex.denormalize(s.relation.orderbook.ft[0]['asks'][i].price,amountDecimals,priceDecimals) }`
                 }
-                if(wavesUsd['bids'][i] !== undefined) {
-                    priceAssetDecimals =  description['details'][`${wavesUsd['pair']['priceAsset']}`]
-                    amountAssetDecimals = description['details'][`${wavesUsd['pair']['amountAsset']}`]
-                    obj['this'].shadowRoot.querySelector('#wavesUsdBid').children[i].innerText =  `${ waves.denormalize(wavesUsd['bids'][i]['price'],priceAssetDecimals,amountAssetDecimals ) }`
+                if(s.relation.orderbook.ft[0]['bids'][i] !== undefined) {
+                    obj['this'].shadowRoot.querySelector('#bid_ft').children[i].innerText = `${ dex.denormalize(s.relation.orderbook.ft[0]['bids'][i].price,amountDecimals,priceDecimals) }`
                 }
-                if(euroUsd['asks'][i] !== undefined) {
-                    priceAssetDecimals =  description['details'][`${euroUsd['pair']['priceAsset']}`]
-                    amountAssetDecimals = description['details'][`${euroUsd['pair']['amountAsset']}`]
-                    obj['this'].shadowRoot.querySelector('#euroUsdAsk').children[i].innerText =  `${ waves.denormalize(euroUsd['asks'][i]['price'],priceAssetDecimals, amountAssetDecimals) }`
+
+                priceAsset = s.relation.orderbook.st[0]['pair'].priceAsset
+                amountAsset = s.relation.orderbook.st[0]['pair'].amountAsset
+                amountDecimals = assets.head.assetId.W[`${amountAsset}`].decimals
+                priceDecimals = assets.head.assetId.W[`${priceAsset}`].decimals
+                if(s.relation.orderbook.st[0]['asks'][i] !== undefined) {
+                    obj['this'].shadowRoot.querySelector('#ask_st').children[i].innerText =`${ dex.denormalize(s.relation.orderbook.st[0]['asks'][i].price,amountDecimals,priceDecimals) }`
                 }
-                if(euroUsd['bids'][i] !== undefined) {
-                    priceAssetDecimals =  description['details'][`${euroUsd['pair']['priceAsset']}`]
-                    amountAssetDecimals = description['details'][`${euroUsd['pair']['amountAsset']}`]
-                    obj['this'].shadowRoot.querySelector('#euroUsdBid').children[i].innerText = `${ waves.denormalize(euroUsd['bids'][i]['price'],priceAssetDecimals, amountAssetDecimals ) }`
+                if(s.relation.orderbook.st[0]['bids'][i] !== undefined) {
+                    obj['this'].shadowRoot.querySelector('#bid_st').children[i].innerText = `${ dex.denormalize(s.relation.orderbook.st[0]['bids'][i].price,amountDecimals,priceDecimals) }`
                 }
-                obj['this'].shadowRoot.querySelector('#wavesEuroTimestamp').innerText = wavesEuro['timestamp']
-                obj['this'].shadowRoot.querySelector('#wavesEuroDelta').innerText = Date.now() - wavesEuro['timestamp']
-                obj['this'].shadowRoot.querySelector('#wavesUsdTimestamp').innerText = wavesUsd['timestamp']
-                obj['this'].shadowRoot.querySelector('#wavesUsdDelta').innerText = Date.now() - wavesUsd['timestamp']
-                obj['this'].shadowRoot.querySelector('#euroUsdTimestamp').innerText = euroUsd['timestamp']
-                obj['this'].shadowRoot.querySelector('#euroUsdDelta').innerText = Date.now() - euroUsd['timestamp']
+                obj['this'].shadowRoot.querySelector('#timestamp_fs').innerText = s.relation.orderbook.fs[0].timestamp
+                obj['this'].shadowRoot.querySelector('#delta_fs').innerText = Date.now() - s.relation.orderbook.fs[0].timestamp
+                obj['this'].shadowRoot.querySelector('#timestamp_ft').innerText = s.relation.orderbook.ft[0].timestamp
+                obj['this'].shadowRoot.querySelector('#delta_ft').innerText = Date.now() - s.relation.orderbook.ft[0].timestamp
+                obj['this'].shadowRoot.querySelector('#timestamp_st').innerText = s.relation.orderbook.st[0].timestamp
+                obj['this'].shadowRoot.querySelector('#delta_st').innerText = Date.now() - s.relation.orderbook.st[0].timestamp
             }
             return true
         }
         // console.log('active order: ', sys.active)
-        // update(priceAssetDecimals, amountAssetDecimals, description, wavesEuro,wavesUsd, euroUsd, obj )
+        update(true, obj,'red',{
+            assets:assets,
+            relation: relation
+        }, 'update')
         timerId = setTimeout(tick, 3000);
     }, 3000);
 }

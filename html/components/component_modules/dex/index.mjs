@@ -62,14 +62,14 @@ export default (()=>{
                     while (verify) {
                         if(count >= 10) {
                             verify = false
-                            assets.head.orders.W[`buy(${r})`] = undefined
+                            p.self.orders.W.ffs = undefined
                         } else {
                             let bidAmount = {}
                             let bidPrice = {}
                             let askAmount = {}
                             let askPrice = {}
                             if(p.orderbook.asks[count] === undefined) {
-                                assets.head.orders.W[`buy(${r})`] = undefined
+                                p.self.orders.W.ffs = undefined
                                 verify = false
                             } else {
                                 if(p.orderbook.bids[count] !== undefined) {
@@ -128,14 +128,14 @@ export default (()=>{
                     while (verify) {
                         if(count >= 10) {
                             verify = false
-                            p.self.orders.W.ttf[1] = undefined
+                            p.self.orders.W.ttf  = undefined
                         } else {
                             let bidAmount = {}
                             let bidPrice = {}
                             let askAmount = {}
                             let askPrice = {}
                             if(p.orderbook.asks[count] === undefined) {
-                                p.self.orders.W.ttf[1]= undefined
+                                p.self.orders.W.ttf = undefined
                                 verify = false
                             } else {
                                 if(p.orderbook.bids[count] !== undefined) {
@@ -195,14 +195,14 @@ export default (()=>{
                     while (verify) {
                         if(count >= 10) {
                             verify = false
-                            assets.head.orders.W[`buy(${r})`] = undefined
+                            p.self.orders.W.ffs = undefined
                         } else {
                             let bidAmount = {}
                             let bidPrice = {}
                             let askAmount = {}
                             let askPrice = {}
                             if(p.orderbook.asks[count] === undefined) {
-                                assets.head.orders.W[`buy(${r})`] = undefined
+                                p.self.orders.W.ffs = undefined
                                 verify = false
                             } else {
                                 if(p.orderbook.asks[count] !== undefined) {
@@ -261,14 +261,14 @@ export default (()=>{
                     while (verify) {
                         if(count >= 10) {
                             verify = false
-                            assets.head.orders.W[`buy(${r})`] = undefined
+                            p.self.orders.W.fft = undefined
                         } else {
                             let bidAmount = {}
                             let bidPrice = {}
                             let askAmount = {}
                             let askPrice = {}
                             if(p.orderbook.asks[count] === undefined) {
-                                assets.head.orders.W[`buy(${r})`] = undefined
+                                p.self.orders.W.fft= undefined
                                 verify = false
                             } else {
                                 if(p.orderbook.asks[count] !== undefined) {
@@ -328,14 +328,14 @@ export default (()=>{
                     while (verify) {
                         if(count >= 10) {
                             verify = false
-                            p.self.orders.W.fft[1] = undefined
+                            p.self.orders.W.fft = undefined
                         } else {
                             let bidAmount = {}
                             let bidPrice = {}
                             let askAmount = {}
                             let askPrice = {}
                             if(p.orderbook.asks[count] === undefined) {
-                                assets.head.orders.W[`buy(${r})`] = undefined
+                                p.self.orders.W.fft = undefined
                                 verify = false
                             } else {
                                 if(p.orderbook.asks[count] !== undefined) {
@@ -393,14 +393,14 @@ export default (()=>{
                     while (verify) {
                         if(count >= 10) {
                             verify = false
-                            p.self.orders.W.ttf[0] = undefined
+                            p.self.orders.W.ttf = undefined
                         } else {
                             let bidAmount = {}
                             let bidPrice = {}
                             let askAmount = {}
                             let askPrice = {}
                             if(p.orderbook.asks[count] === undefined) {
-                                p.self.orders.W.ttf[0] = undefined
+                                p.self.orders.W.ttf = undefined
                                 verify = false
                             } else {
                                 if(p.orderbook.asks[count] !== undefined) {
@@ -458,14 +458,14 @@ export default (()=>{
                     while (verify) {
                         if(count >= 10) {
                             verify = false
-                            p.self.orders.W.ssf[0] = undefined
+                            p.self.orders.W.ssf = undefined
                         } else {
                             let bidAmount = {}
                             let bidPrice = {}
                             let askAmount = {}
                             let askPrice = {}
                             if(p.orderbook.bids[count] === undefined) {
-                                p.self.orders.W.ssf[0] = undefined
+                                p.self.orders.W.ssf = undefined
                                 verify = false
                             } else {
                                 if(p.orderbook.asks[count] !== undefined) {
@@ -523,14 +523,14 @@ export default (()=>{
                     while (verify) {
                         if(count >= 10) {
                             verify = false
-                            assets.head.orders.W[`buy(${r})`] = undefined
+                            p.self.orders.W.fft = undefined
                         } else {
                             let bidAmount = {}
                             let bidPrice = {}
                             let askAmount = {}
                             let askPrice = {}
                             if(p.orderbook.asks[count] === undefined) {
-                                assets.head.orders.W[`buy(${r})`] = undefined
+                                p.self.orders.W.fft = undefined
                                 verify = false
                             } else {
                                 askAmount = p.orderbook.asks[count]['amount'] / (10**assets.head.assetId.W[`${p.amountAsset}`].decimals)
@@ -586,14 +586,14 @@ export default (()=>{
                     while (verify) {
                         if(count >= 10) {
                             verify = false
-                            assets.head.orders.W[`buy(${r})`] = undefined
+                            p.self.orders.W.ffs = undefined
                         } else {
                             let bidAmount = {}
                             let bidPrice = {}
                             let askAmount = {}
                             let askPrice = {}
                             if(p.orderbook.asks[count] === undefined) {
-                                assets.head.orders.W[`buy(${r})`] = undefined
+                                p.self.orders.W.ffs = undefined
                                 verify = false
                             } else {
                                 askAmount = p.orderbook.asks[count]['amount'] / (10**assets.head.assetId.W[`${p.amountAsset}`].decimals)
@@ -650,14 +650,14 @@ export default (()=>{
                     while (verify) {
                         if(count >= 10) {
                             verify = false
-                            p.self.orders.W.ttf[2] = undefined
+                            p.self.orders.W.ttf = undefined
                         } else {
                             let bidAmount = {}
                             let bidPrice = {}
                             let askAmount = {}
                             let askPrice = {}
                             if(p.orderbook.asks[count] === undefined) {
-                                p.self.orders.W.ttf[2] = undefined
+                                p.self.orders.W.ttf = undefined
                                 verify = false
                             } else {
                                 askAmount = p.orderbook.asks[count]['amount'] / (10**assets.head.assetId.W[`${p.amountAsset}`].decimals)
