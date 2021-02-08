@@ -748,7 +748,7 @@ export default async (v,p,c,obj,r) => {
             }
             return true
         }
-        // console.log('active order: ', sys.active)
+       // console.assert(false, assets)
         update(true, obj,'red',{
             assets:assets,
             relation: relation
