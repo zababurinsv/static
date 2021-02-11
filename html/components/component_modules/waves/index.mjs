@@ -64,6 +64,7 @@ export default class Waves {
     }
     settings(view = true,property='T',color = 'black', substrate={ },relation='matcher'  ) {
         return new Promise(async (resolve, reject) => {
+            console.assert(false, `${config['matcher'][`${property}`][0]}/matcher/settings`)
             await axios({
                 method: 'get',
                 url: `${config['matcher'][`${property}`][0]}/matcher/settings`,

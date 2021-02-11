@@ -147,10 +147,10 @@ export default async (v,p,c,obj,r) => {
         },
         navigation: {
             "assets": {
-                "success": false,
-                "first": 10,
-                "second": 10,
-                "third": 10
+                "success": true,
+                "first": 5,
+                "second": 5,
+                "third": 5
             }
         },
         info: (v = true, item = undefined) => {
@@ -330,6 +330,8 @@ export default async (v,p,c,obj,r) => {
       ? setAssetsAmount(true)
       : setAssetsAmount(false)
 
+
+    console.assert(false, assets)
     let timerId = setTimeout(async  function tick() {
         // w = first
         // e = second
@@ -438,7 +440,7 @@ export default async (v,p,c,obj,r) => {
         }
         // console.assert(false, assets)
 // new item 2
-        assets = await dex.fb_ft(false, {
+        assets = await dex.fb_ft(true, {
             self: relation,
             orderbook: orderbook_ft,
             amount: {
@@ -454,7 +456,7 @@ export default async (v,p,c,obj,r) => {
             view: obj['this'].shadowRoot.querySelector('#fb_ft')
         },'green',assets , 'ft');
         if(relation.orders.W.fft !== undefined) {
-            assets = await dex.fs_fs(false, {
+            assets = await dex.fs_fs(true, {
                 self: relation,
                 orderbook: orderbook_fs,
                 amount: {
@@ -471,7 +473,7 @@ export default async (v,p,c,obj,r) => {
             },'green',assets , 'fs');
 
             if(relation.orders.W.fft !== undefined) {
-                assets = await dex.fb_ts(false, {
+                assets = await dex.fb_ts(true, {
                     self: relation,
                     orderbook: orderbook_st,
                     amount: {

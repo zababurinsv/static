@@ -292,7 +292,7 @@ export default (()=>{
                                         bidPrice: bidPrice,
                                         [cur1]: p.amount[`${currency[0]}`],
                                         [cur2]: p.amount[`${currency[1]}`],
-                                        "verify": (bidAmount - p.amount[`${currency[0]}`])
+                                        "verify": `bidAmount: ${bidAmount} - p.amount.${currency[0]}: ${p.amount[`${currency[0]}`]}` + '=' + (bidAmount - p.amount[`${currency[0]}`])
                                     })
                                 }
                                 if((bidAmount - p.amount[`${currency[0]}`]) < 0) {
@@ -547,10 +547,10 @@ export default (()=>{
                                         askPrice: askPrice,
                                         bidAmount: bidAmount,
                                         bidPrice: bidPrice,
-                                        func:"fft__fb_ft",
+                                        func:"ft__fb_ft",
                                         [cur1]: p.amount[`${currency[0]}`],
                                         [cur2]: p.amount[`${currency[1]}`],
-                                        "verify": (bidAmount - p.amount[`${currency[1]}`])
+                                        "verify": `bidAmount: ${bidAmount} - p.amount.${currency[1]}: ` + p.amount[`${currency[1]}`] + '=' + (bidAmount - p.amount[`${currency[1]}`])
                                     })
                                 }
                                 if((askAmount - p.amount[`${currency[0]}`]) < 0) {
@@ -614,7 +614,7 @@ export default (()=>{
                                        func:"ffs__fb_fs",
                                        [cur1]: p.amount[`${currency[0]}`],
                                        [cur2]: p.amount[`${currency[1]}`],
-                                       "verify": (askPrice - p.amount[`${currency[0]}`])
+                                       "verify": `askPrice: ${askPrice} - p.amount.${currency[0]}: ${p.amount[`${currency[0]}`]}` + '=' + (askPrice - p.amount[`${currency[0]}`])
                                    })
                                }
                                 if((askAmount - p.amount[`${currency[0]}`]) < 0) {
