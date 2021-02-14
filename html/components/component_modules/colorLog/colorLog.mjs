@@ -3,8 +3,8 @@ import colors from '/static/html/components/component_modules/colors/colors.mjs'
 import emoji from '/static/html/components/component_modules/emoji/emoji.mjs'
 
 let performance = Performance()
-export default async (show, message='time', color ='black', ...args) =>{
-    if(show === true){
+export default async (show, message='time', color ='black', ...args) => {
+    if(show === true) {
         color = await colors(color)
         if(typeof args[args.length-1] === 'string'){
             let end = false

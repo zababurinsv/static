@@ -5,6 +5,8 @@ import task from '/static/html/components/component_modules/heap/index.mjs'
 import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
 import Assets from '/static/html/components/crypto-dex/external/assets/index.mjs'
 import events from '/static/html/components/crypto-dex/external/events.mjs'
+import logs from '/static/html/components/component_modules/colorLog/colorLog.mjs'
+
 const waves = new Waves()
 
 function count (obj) {
@@ -331,7 +333,7 @@ export default async (v,p,c,obj,r) => {
       : setAssetsAmount(false)
 
 
-    console.assert(false, assets)
+    logs(true,'начало цикла','1',assets,'dex')
     let timerId = setTimeout(async  function tick() {
         // w = first
         // e = second
@@ -380,7 +382,7 @@ export default async (v,p,c,obj,r) => {
             }
         }
 // new item 1
-        assets = await dex.fb_fs(false, {
+        assets = await dex.fb_fs(true, {
             self: relation,
             orderbook: orderbook_fs,
             amount: {
@@ -440,7 +442,7 @@ export default async (v,p,c,obj,r) => {
         }
         // console.assert(false, assets)
 // new item 2
-        assets = await dex.fb_ft(true, {
+        assets = await dex.fb_ft(false, {
             self: relation,
             orderbook: orderbook_ft,
             amount: {
@@ -456,7 +458,7 @@ export default async (v,p,c,obj,r) => {
             view: obj['this'].shadowRoot.querySelector('#fb_ft')
         },'green',assets , 'ft');
         if(relation.orders.W.fft !== undefined) {
-            assets = await dex.fs_fs(true, {
+            assets = await dex.fs_fs(false, {
                 self: relation,
                 orderbook: orderbook_fs,
                 amount: {
@@ -473,7 +475,7 @@ export default async (v,p,c,obj,r) => {
             },'green',assets , 'fs');
 
             if(relation.orders.W.fft !== undefined) {
-                assets = await dex.fb_ts(true, {
+                assets = await dex.fb_ts(false, {
                     self: relation,
                     orderbook: orderbook_st,
                     amount: {
@@ -750,7 +752,10 @@ export default async (v,p,c,obj,r) => {
             }
             return true
         }
-       // console.assert(false, assets)
+        logs(true,'end', '1',{
+            assets:assets,
+            relation: relation
+        },'dex')
         update(true, obj,'red',{
             assets:assets,
             relation: relation
