@@ -124,6 +124,12 @@ export default async (v,p,c,obj,r) => {
                     "1": true,
                     "2": true,
                     "3": true,
+                },
+                "trade": {
+                    "0": true,
+                    "1": true,
+                    "2": true,
+                    "3": true,
                 }
             },
             "input":{
@@ -172,7 +178,8 @@ export default async (v,p,c,obj,r) => {
             }
         },
         warn: {
-            "s/b": 'нет доступных пар'
+            "s/b": 'нет доступных пар',
+            "disable": 'пара отключенна'
         },
         matcher: {
             key: {
@@ -202,7 +209,7 @@ export default async (v,p,c,obj,r) => {
               }))
         })
     }
-    function empty(obj,type) {
+    function empty(obj,type, disable = false) {
         switch (type) {
             case 'fft':
                 obj['this'].shadowRoot.querySelector('div.fb_ft').style.background ='#7694f473'
@@ -211,9 +218,9 @@ export default async (v,p,c,obj,r) => {
                 obj['this'].shadowRoot.querySelector('#fb_ft').innerHTML = ``
                 obj['this'].shadowRoot.querySelector('#fs_fs').innerHTML = ``
                 obj['this'].shadowRoot.querySelector('#fb_ts').innerHTML = ``
-                obj['this'].shadowRoot.querySelector('#fb_ft').innerHTML = `${sys['warn']['s/b']}`
-                obj['this'].shadowRoot.querySelector('#fs_fs').innerHTML = `${sys['warn']['s/b']}`
-                obj['this'].shadowRoot.querySelector('#fb_ts').innerHTML = `${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#fb_ft').innerHTML = (disable)?`${sys['warn']['disable']}` :`${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#fs_fs').innerHTML = (disable)?`${sys['warn']['disable']}` :`${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#fb_ts').innerHTML = (disable)?`${sys['warn']['disable']}` :`${sys['warn']['s/b']}`
                 break
             case 'ffs':
                 obj['this'].shadowRoot.querySelector('div.fb_fs').style.background ='#7694f473'
@@ -222,9 +229,9 @@ export default async (v,p,c,obj,r) => {
                 obj['this'].shadowRoot.querySelector('#fs_ft').innerHTML = ``
                 obj['this'].shadowRoot.querySelector('#fb_fs').innerHTML = ``
                 obj['this'].shadowRoot.querySelector('#fb_st').innerHTML = ``
-                obj['this'].shadowRoot.querySelector('#fs_ft').innerHTML = `${sys['warn']['s/b']}`
-                obj['this'].shadowRoot.querySelector('#fb_fs').innerHTML = `${sys['warn']['s/b']}`
-                obj['this'].shadowRoot.querySelector('#fb_st').innerHTML = `${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#fs_ft').innerHTML = (disable)?`${sys['warn']['disable']}` :`${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#fb_fs').innerHTML = (disable)?`${sys['warn']['disable']}` :`${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#fb_st').innerHTML = (disable)?`${sys['warn']['disable']}` :`${sys['warn']['s/b']}`
                 break
             case 'ssf':
                 obj['this'].shadowRoot.querySelector('div.sb_sf').style.background ='#7694f473'
@@ -233,9 +240,9 @@ export default async (v,p,c,obj,r) => {
                 obj['this'].shadowRoot.querySelector('#sb_sf').innerHTML = ``
                 obj['this'].shadowRoot.querySelector('#ss_st').innerHTML = ``
                 obj['this'].shadowRoot.querySelector('#sb_ft').innerHTML = ``
-                obj['this'].shadowRoot.querySelector('#sb_sf').innerHTML = `${sys['warn']['s/b']}`
-                obj['this'].shadowRoot.querySelector('#ss_st').innerHTML = `${sys['warn']['s/b']}`
-                obj['this'].shadowRoot.querySelector('#sb_ft').innerHTML = `${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#sb_sf').innerHTML = (disable)?`${sys['warn']['disable']}` :`${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#ss_st').innerHTML = (disable)?`${sys['warn']['disable']}` :`${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#sb_ft').innerHTML = (disable)?`${sys['warn']['disable']}` :`${sys['warn']['s/b']}`
                 break
             case 'ttf':
                 obj['this'].shadowRoot.querySelector('div.sb_tf').style.background ='#7694f473'
@@ -244,9 +251,9 @@ export default async (v,p,c,obj,r) => {
                 obj['this'].shadowRoot.querySelector('#sb_tf').innerHTML = ``
                 obj['this'].shadowRoot.querySelector('#ss_ts').innerHTML = ``
                 obj['this'].shadowRoot.querySelector('#sb_fs').innerHTML = ``
-                obj['this'].shadowRoot.querySelector('#sb_tf').innerHTML = `${sys['warn']['s/b']}`
-                obj['this'].shadowRoot.querySelector('#ss_ts').innerHTML = `${sys['warn']['s/b']}`
-                obj['this'].shadowRoot.querySelector('#sb_fs').innerHTML = `${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#sb_tf').innerHTML = (disable)?`${sys['warn']['disable']}` :`${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#ss_ts').innerHTML = (disable)?`${sys['warn']['disable']}` :`${sys['warn']['s/b']}`
+                obj['this'].shadowRoot.querySelector('#sb_fs').innerHTML = (disable)?`${sys['warn']['disable']}` :`${sys['warn']['s/b']}`
                 break
             default:
                 console.assert(false, 'неизвестный тип', type, obj)
@@ -380,68 +387,88 @@ export default async (v,p,c,obj,r) => {
             } else {
                 relation['fee'][type][0] = 0.003
             }
-        }
+        };
+        sys.validation.disabled.trade[0] = false;
+        sys.validation.disabled.trade[1] = true;
+        sys.validation.disabled.trade[2] = true;
+        sys.validation.disabled.trade[3] = false;
+        (!sys.validation.disabled.trade[0])
+        ? (relation.orders.W.fft = undefined)
+        : '';
+        (!sys.validation.disabled.trade[1])
+        ? (relation.orders.W.ffs = undefined)
+        : '';
+        (!sys.validation.disabled.trade[2])
+        ? (relation.orders.W.ssf = undefined)
+        : '';
+        (!sys.validation.disabled.trade[3])
+        ? (relation.orders.W.ttf = undefined)
+        : '';   
 // new item 1
-        assets = await dex.fb_fs(true, {
-            self: relation,
-            orderbook: orderbook_fs,
-            amount: {
-                f:undefined,
-                s:relation.amount.first[0]
-            },
-            fee: {
-                f:relation.fee.first[0],
-                s:relation.fee.second[0]
-            },
-            amountAsset: assets.head.pairs.W['first/second']['amountAsset'],
-            priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
-            view: obj['this'].shadowRoot.querySelector('#fb_fs')
-        },'green',assets , 'fs');
-
         if(relation.orders.W.ffs !== undefined) {
-            assets = await dex.fs_ft(false, {
+            assets = await dex.fb_fs(true, {
                 self: relation,
-                orderbook: orderbook_ft,
+                orderbook: orderbook_fs,
                 amount: {
-                    f: relation.orders.W.ffs[0]['buy(fs)']['amount']['_'],
-                    t: undefined
+                    f:undefined,
+                    s:relation.amount.first[0]
                 },
                 fee: {
-                    f:undefined,
-                    t:relation.fee.third[0]
+                    f:relation.fee.first[0],
+                    s:relation.fee.second[0]
                 },
-                amountAsset: assets.head.pairs.W['first/third']['amountAsset'],
-                priceAsset: assets.head.pairs.W['first/third']['priceAsset'],
-                view: obj['this'].shadowRoot.querySelector('#fs_ft')
-            },'green',assets , 'ft');
-
+                amountAsset: assets.head.pairs.W['first/second']['amountAsset'],
+                priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
+                view: obj['this'].shadowRoot.querySelector('#fb_fs')
+            },'green',assets , 'fs');
             if(relation.orders.W.ffs !== undefined) {
-                assets = await dex.fb_st(false, {
+                assets = await dex.fs_ft(false, {
                     self: relation,
-                    orderbook: orderbook_st,
+                    orderbook: orderbook_ft,
                     amount: {
-                        t: relation.orders.W.ffs[1]['sell(ft)']['amount']['_'],
-                        s: undefined,
+                        f: relation.orders.W.ffs[0]['buy(fs)']['amount']['_'],
+                        t: undefined
                     },
                     fee: {
-                        t: undefined,
-                        s: relation.fee.second[0]
+                        f:undefined,
+                        t:relation.fee.third[0]
                     },
-                    amountAsset: assets.head.pairs.W['second/third']['amountAsset'],
-                    priceAsset: assets.head.pairs.W['second/third']['priceAsset'],
-                    view: obj['this'].shadowRoot.querySelector('#fb_st')
-                },'green',assets , 'st');
-                if(relation.orders.W.ffs === undefined) {
+                    amountAsset: assets.head.pairs.W['first/third']['amountAsset'],
+                    priceAsset: assets.head.pairs.W['first/third']['priceAsset'],
+                    view: obj['this'].shadowRoot.querySelector('#fs_ft')
+                },'green',assets , 'ft');
+
+                if(relation.orders.W.ffs !== undefined) {
+                    assets = await dex.fb_st(false, {
+                        self: relation,
+                        orderbook: orderbook_st,
+                        amount: {
+                            t: relation.orders.W.ffs[1]['sell(ft)']['amount']['_'],
+                            s: undefined,
+                        },
+                        fee: {
+                            t: undefined,
+                            s: relation.fee.second[0]
+                        },
+                        amountAsset: assets.head.pairs.W['second/third']['amountAsset'],
+                        priceAsset: assets.head.pairs.W['second/third']['priceAsset'],
+                        view: obj['this'].shadowRoot.querySelector('#fb_st')
+                    },'green',assets , 'st');
+                    if(relation.orders.W.ffs === undefined) {
+                        empty(obj, 'ffs')
+                    }
+                } else {
                     empty(obj, 'ffs')
                 }
-            } else {
+            }  else {
                 empty(obj, 'ffs')
             }
-        }  else {
-            empty(obj, 'ffs')
+        } else {
+            console.log('fffffffffffffffff')
+            empty(obj, 'ffs', true)
         }
-        // console.assert(false, assets)
 // new item 2
+        if(relation.orders.W.fft !== undefined) { 
         assets = await dex.fb_ft(false, {
             self: relation,
             orderbook: orderbook_ft,
@@ -457,53 +484,56 @@ export default async (v,p,c,obj,r) => {
             priceAsset: assets.head.pairs.W['first/third']['priceAsset'],
             view: obj['this'].shadowRoot.querySelector('#fb_ft')
         },'green',assets , 'ft');
-        if(relation.orders.W.fft !== undefined) {
-            assets = await dex.fs_fs(false, {
-                self: relation,
-                orderbook: orderbook_fs,
-                amount: {
-                    f: relation.orders.W.fft[0]['buy(ft)']['amount']['_'],
-                    s: undefined
-                },
-                fee: {
-                    f:undefined,
-                    s:relation.fee.second[0]
-                },
-                amountAsset: assets.head.pairs.W['first/second']['amountAsset'],
-                priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
-                view: obj['this'].shadowRoot.querySelector('#fs_fs')
-            },'green',assets , 'fs');
-
             if(relation.orders.W.fft !== undefined) {
-                assets = await dex.fb_ts(false, {
+                assets = await dex.fs_fs(false, {
                     self: relation,
-                    orderbook: orderbook_st,
+                    orderbook: orderbook_fs,
                     amount: {
-                        t: undefined,
-                        s: relation.orders.W.fft[1]['sell(fs)']['amount']['s'],
+                        f: relation.orders.W.fft[0]['buy(ft)']['amount']['_'],
+                        s: undefined
                     },
                     fee: {
-                        t:relation.fee.third[0],
-                        s:undefined
+                        f:undefined,
+                        s:relation.fee.second[0]
                     },
-                    amountAsset: assets.head.pairs.W['second/third']['amountAsset'],
-                    priceAsset: assets.head.pairs.W['second/third']['priceAsset'],
-                    view: obj['this'].shadowRoot.querySelector('#fb_ts')
-                },'green',assets , 'ts');
+                    amountAsset: assets.head.pairs.W['first/second']['amountAsset'],
+                    priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
+                    view: obj['this'].shadowRoot.querySelector('#fs_fs')
+                },'green',assets , 'fs');
 
-                if(relation.orders.fft === undefined) {
+                if(relation.orders.W.fft !== undefined) {
+                    assets = await dex.fb_ts(false, {
+                        self: relation,
+                        orderbook: orderbook_st,
+                        amount: {
+                            t: undefined,
+                            s: relation.orders.W.fft[1]['sell(fs)']['amount']['s'],
+                        },
+                        fee: {
+                            t:relation.fee.third[0],
+                            s:undefined
+                        },
+                        amountAsset: assets.head.pairs.W['second/third']['amountAsset'],
+                        priceAsset: assets.head.pairs.W['second/third']['priceAsset'],
+                        view: obj['this'].shadowRoot.querySelector('#fb_ts')
+                    },'green',assets , 'ts');
+
+                    if(relation.orders.fft === undefined) {
+                        empty(obj, 'fft')
+                    }
+                } else {
                     empty(obj, 'fft')
                 }
             } else {
                 empty(obj, 'fft')
             }
+            
         } else {
-            relation.orders.fft[1] = undefined
-            relation.orders.fft[2] = undefined
-            empty(obj, 'fft')
+            empty(obj, 'fft', true)
         }
 // new item 3
-        assets = await dex.sb_sf(false, {
+        if(relation.orders.W.ssf !== undefined) { 
+                assets = await dex.sb_sf(false, {
             self: relation,
             orderbook: orderbook_fs,
             amount: {
@@ -519,20 +549,24 @@ export default async (v,p,c,obj,r) => {
             view: obj['this'].shadowRoot.querySelector('#sb_sf')
         },'green',assets , 'sf');
 
-        if(relation.orders.W.ssf !== undefined) {
-            if(relation.orders.ssf !== undefined) {
+            if(relation.orders.W.ssf !== undefined) {
+                if(relation.orders.ssf !== undefined) {
 
-                if(relation.orders.W.ssf === undefined) {
+                    if(relation.orders.W.ssf === undefined) {
+                        empty(obj, 'ssf')
+                    }
+                } else {
                     empty(obj, 'ssf')
                 }
             } else {
                 empty(obj, 'ssf')
             }
         } else {
-            empty(obj, 'ssf')
+            empty(obj, 'ssf', true)
         }
 // new item 4
-        assets = await dex.sb_tf(false, {
+        if(relation.orders.W.ttf !== undefined) { 
+            assets = await dex.sb_tf(false, {
             self: relation,
             orderbook: orderbook_ft,
             amount: {
@@ -547,46 +581,49 @@ export default async (v,p,c,obj,r) => {
             priceAsset: assets.head.pairs.W['first/third']['priceAsset'],
             view: obj['this'].shadowRoot.querySelector('#sb_tf')
         },'green',assets , 'tf');
-        if(relation.orders.W.ttf !== undefined) {
-            assets = await dex.ss_ts(false, {
-                self: relation,
-                orderbook: orderbook_st,
-                amount: {
-                    t: relation.orders.W.ttf[0]['buy(tf)']['amount']['_'],
-                    s: undefined
-                },
-                fee: {
-                    t:relation.fee.third[0],
-                    s:relation.fee.second[0]
-                },
-                amountAsset: assets.head.pairs.W['second/third']['amountAsset'],
-                priceAsset: assets.head.pairs.W['second/third']['priceAsset'],
-                view: obj['this'].shadowRoot.querySelector('#ss_ts')
-            },'green',assets , 'ts');
-                if(relation.orders.ttf !== undefined) {
-                    assets = await dex.sb_fs(false, {
-                        self: relation,
-                        orderbook: orderbook_fs,
-                        amount: {
-                            f: undefined,
-                            s: relation.orders.W.ttf[1]['sell(ts)']['amount']['_']
-                        },
-                        fee: {
-                            f:relation.fee.first[0],
-                            s:relation.fee.second[0]
-                        },
-                        amountAsset: assets.head.pairs.W['first/second']['amountAsset'],
-                        priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
-                        view: obj['this'].shadowRoot.querySelector('#sb_fs')
-                    },'green',assets , 'fs');
-                    if(relation.orders.ttf === undefined) {
+            if(relation.orders.W.ttf !== undefined) {
+                assets = await dex.ss_ts(false, {
+                    self: relation,
+                    orderbook: orderbook_st,
+                    amount: {
+                        t: relation.orders.W.ttf[0]['buy(tf)']['amount']['_'],
+                        s: undefined
+                    },
+                    fee: {
+                        t:relation.fee.third[0],
+                        s:relation.fee.second[0]
+                    },
+                    amountAsset: assets.head.pairs.W['second/third']['amountAsset'],
+                    priceAsset: assets.head.pairs.W['second/third']['priceAsset'],
+                    view: obj['this'].shadowRoot.querySelector('#ss_ts')
+                },'green',assets , 'ts');
+                    if(relation.orders.ttf !== undefined) {
+                        assets = await dex.sb_fs(false, {
+                            self: relation,
+                            orderbook: orderbook_fs,
+                            amount: {
+                                f: undefined,
+                                s: relation.orders.W.ttf[1]['sell(ts)']['amount']['_']
+                            },
+                            fee: {
+                                f:relation.fee.first[0],
+                                s:relation.fee.second[0]
+                            },
+                            amountAsset: assets.head.pairs.W['first/second']['amountAsset'],
+                            priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
+                            view: obj['this'].shadowRoot.querySelector('#sb_fs')
+                        },'green',assets , 'fs');
+                        if(relation.orders.ttf === undefined) {
+                            empty(obj, 'ttf')
+                        }
+                    } else {
                         empty(obj, 'ttf')
                     }
                 } else {
-                    empty(obj, 'ttf')
-                }
-            } else {
-            empty(obj, 'ttf')
+                empty(obj, 'ttf')
+            }
+        } else {
+            empty(obj, 'ttf', true)
         }
 //## get order
 //         let timestamp = config['timestamp']()
