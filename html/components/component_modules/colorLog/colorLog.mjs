@@ -32,11 +32,9 @@ export default async (show, message='time', color ='black', ...args) => {
             if(message === 'stat'){
                 console.log('%c' + args[args.length-1],'color:' + color,'[(', performance.allMark,'*)',message,']')
             }else if(message === 'assert'){
-                console.assert(false,'%c%O' + args[args.length-1],'color:' + color,performance['now'](end, args[args.length-1], message),'[(', ...args.slice(0, args.length-1),'*)',message,']', emoji('thinking'))
+                console.assert(false,'%c%O' + args[args.length-1],'color:' + color,performance['now'](end, args[args.length-1], message),'[(', ...args.slice(0, args.length-1),'*)',message,']', emoji('hearts')[0][3])
             }else{
-                // console.log(emoji('all'))
-                let moon = (end) ?'new_moon': 'full_moon'
-                console.log('%c%O' + args[args.length-1],'color:' + color,performance['now'](end, args[args.length-1], message),'[(', ...args.slice(0, args.length-1),'*)',message,']',  emoji(moon))
+                console.log('%c%O' + args[args.length-1],'color:' + color,performance['now'](end, args[args.length-1], message),'[(', ...args.slice(0, args.length-1),'*)',message,']',  (end) ?emoji('hearts')[0][4]: emoji('hearts')[0][2])
             }
         }else{
             console.log('%c' + message, 'color:' + color,'--->', ...args)

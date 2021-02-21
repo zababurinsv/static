@@ -1439,12 +1439,19 @@ export let moon = [
     ['🌕','🌔','🌓','🌒'],
     ['🌑','🌘','🌗','🌖'],
 ]
-
+export let hearts = [
+    ['💜','💛','💚','💙','🖤','💔'],
+    ['❤','♥','❣','😻','👩‍❤️‍👩','👨‍❤️‍👨'],
+    ['💗','💖','💕','💑','💓','💞','💟'],
+]
 export default (name)=>{
    let all = false
     switch (name) {
         case 'all':
             all = true
+            break
+        case'hearts':
+            return hearts
             break
         case 'moon':
             return moon

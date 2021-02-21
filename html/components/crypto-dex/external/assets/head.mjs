@@ -1,22 +1,29 @@
 export default {
   "version": 1,
+  "info": {
+    "assets": {
+      "f": "first",
+      "s": "second",
+      "t": "third"
+    }
+  },
   "success": false,
   "_scriptDir": import.meta.url,
   "assets": {
     "S": {
-      "first":  "WAVES",
-      "second": "EURN",
-      "third":  "USDN"
+      "f": "WAVES",
+      "s": "EURN",
+      "t": "USDN"
     },
     "W": {
-      "first":  "WAVES",
-      "second": "EURN",
-      "third":  "USDN"
+      "f": "WAVES",
+      "s": "EURN",
+      "t": "USDN"
     },
     "T": {
-      "first":  "WAVES",
-      "second": "EURN",
-      "third":  "USDN"
+      "f": "WAVES",
+      "s": "EURN",
+      "t": "USDN"
     }
   },
   "assetId": {
@@ -40,36 +47,36 @@ export default {
   },
   "assetPair": {
     "S": {
-      "first": 100000000,
-      "second":100000000,
-      "third": 100000000
+      "f": 100000000,
+      "s": 100000000,
+      "t": 100000000
     },
     "W": {
-      "first": 100000000,
-      "second":100000000,
-      "third": 100000000
+      "f": 100000000,
+      "s": 100000000,
+      "t": 100000000
     },
     "T": {
-      "first": 100000000,
-      "second":100000000,
-      "third": 100000000
+      "f": 100000000,
+      "s": 100000000,
+      "t": 100000000
     }
   },
   "decimals": {
     "S": {
-      "first": 0,
-      "second":0,
-      "third": 0
+      "f": 0,
+      "s": 0,
+      "t": 0
     },
     "W": {
-      "first": 0,
-      "second":0,
-      "third": 0
+      "f": 0,
+      "s": 0,
+      "t": 0
     },
     "T": {
-      "first": 0,
-      "second":0,
-      "third": 0
+      "f": 0,
+      "s": 0,
+      "t": 0
     }
   },
   "threshold": {
@@ -81,43 +88,43 @@ export default {
   },
   "pairs": {
     "S": {
-      "first/second": {
+      "f/s": {
         "amountAsset": "",
         "priceAsset":  ""
       },
-      "second/third": {
+      "f/t": {
         "amountAsset": "",
         "priceAsset":  ""
       },
-      "first/third": {
+      "s/t": {
         "amountAsset": "",
         "priceAsset":  ""
       }
     },
     "T": {
-      "first/second": {
+      "f/s": {
         "amountAsset": "",
         "priceAsset":  ""
       },
-      "second/third": {
+      "f/t": {
         "amountAsset": "",
         "priceAsset":  ""
       },
-      "first/third": {
+      "s/t": {
         "amountAsset": "",
         "priceAsset":  ""
       }
     },
     "W": {
-      "first/second": {
+      "f/s": {
         "amountAsset": "",
         "priceAsset":  ""
       },
-      "second/third": {
+      "f/t": {
         "amountAsset": "",
         "priceAsset":  ""
       },
-      "first/third": {
+      "s/t": {
         "amountAsset": "",
         "priceAsset":  ""
       }

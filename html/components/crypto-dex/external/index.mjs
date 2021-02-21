@@ -156,9 +156,9 @@ export default async (v,p,c,obj,r) => {
         navigation: {
             "assets": {
                 "success": true,
-                "first": 5,
-                "second": 5,
-                "third": 5
+                "f": 5,
+                "s": 5,
+                "t": 5
             }
         },
         info: (v = true, item = undefined) => {
@@ -262,14 +262,14 @@ export default async (v,p,c,obj,r) => {
     }
     let relation = {
         fee: {
-            first: [],
-            second: [],
-            third: [],
+            f: [],
+            s: [],
+            t: [],
         },
         amount: {
-            first: [],
-            second: [],
-            third: [],
+            f: [],
+            s: [],
+            t: [],
         },
         orderbook: {
             fs: [],
@@ -283,13 +283,13 @@ export default async (v,p,c,obj,r) => {
         }
     }
     obj['this'].shadowRoot.querySelector('#left').addEventListener('input',async (e)=>{
-        relation.amount['first'][0] =  e.target.value
+        relation.amount['f'][0] =  e.target.value
     },{passive:true})
     obj['this'].shadowRoot.querySelector('#center').addEventListener('input',async (e)=>{
-        relation.amount['second'][0] =  e.target.value
+        relation.amount['s'][0] =  e.target.value
     },{passive:true})
     obj['this'].shadowRoot.querySelector('#right').addEventListener('input',async (e)=>{
-        relation.amount['third'][0] =  e.target.value
+        relation.amount['t'][0] =  e.target.value
     },{passive:true})
     count(obj)
     //wavesEuro
@@ -299,22 +299,22 @@ export default async (v,p,c,obj,r) => {
         let priceAsset = {}
         let amountAsset = {}
         switch (key) {
-            case 'first/second':
+            case 'f/s':
                 priceAsset = assets.head.assetId.W[`${assets.head.pairs.W[key].priceAsset}`].name
                 amountAsset = assets.head.assetId.W[`${assets.head.pairs.W[key].amountAsset}`].name
-                obj['this'].shadowRoot.querySelector('[for="left"]').insertAdjacentHTML('beforeend', `${assets.head.assetId.W[`${assets.W.first}`].name}`)
+                obj['this'].shadowRoot.querySelector('[for="left"]').insertAdjacentHTML('beforeend', `${assets.head.assetId.W[`${assets.W.f}`].name}`)
                 obj['this'].shadowRoot.querySelector('#preview-left').innerText =`${amountAsset}/${priceAsset}`
                 break
-            case 'second/third':
+            case 's/t':
                 priceAsset = assets.head.assetId.W[`${assets.head.pairs.W[key].priceAsset}`].name
                 amountAsset = assets.head.assetId.W[`${assets.head.pairs.W[key].amountAsset}`].name
-                obj['this'].shadowRoot.querySelector('[for="center"]').insertAdjacentHTML('beforeend', `${assets.head.assetId.W[`${assets.W.second}`].name}`)
+                obj['this'].shadowRoot.querySelector('[for="center"]').insertAdjacentHTML('beforeend', `${assets.head.assetId.W[`${assets.W.s}`].name}`)
                 obj['this'].shadowRoot.querySelector('#preview-center').innerText =`${amountAsset}/${priceAsset}`
                 break
-            case 'first/third':
+            case 'f/t':
                 priceAsset = assets.head.assetId.W[`${assets.head.pairs.W[key].priceAsset}`].name
                 amountAsset = assets.head.assetId.W[`${assets.head.pairs.W[key].amountAsset}`].name
-                obj['this'].shadowRoot.querySelector('[for="right"]').insertAdjacentHTML('beforeend', `${assets.head.assetId.W[`${assets.W.third}`].name}`)
+                obj['this'].shadowRoot.querySelector('[for="right"]').insertAdjacentHTML('beforeend', `${assets.head.assetId.W[`${assets.W.t}`].name}`)
                 obj['this'].shadowRoot.querySelector('#preview-right').innerText =`${amountAsset}/${priceAsset}`
                 break
             default:
@@ -326,22 +326,20 @@ export default async (v,p,c,obj,r) => {
     let input_id_right = obj['this'].shadowRoot.querySelector('#right').value
     function setAssetsAmount(state) {
         if(state) {
-            relation.amount['first'][0] = parseFloat((input_id_left))
-            relation.amount['second'][0] = parseFloat(input_id_center)
-            relation.amount['third'][0] = parseFloat(input_id_right)
+            relation.amount['f'][0] = parseFloat((input_id_left))
+            relation.amount['s'][0] = parseFloat(input_id_center)
+            relation.amount['t'][0] = parseFloat(input_id_right)
         } else {
-            relation.amount['first'][0] = sys.navigation.assets.first
-            relation.amount['second'][0] = sys.navigation.assets.second
-            relation.amount['third'][0] = sys.navigation.assets.third
+            relation.amount['f'][0] = sys.navigation.assets.f
+            relation.amount['s'][0] = sys.navigation.assets.s
+            relation.amount['t'][0] = sys.navigation.assets.t
         }
     };
     (sys.navigation.assets.status)
       ? setAssetsAmount(true)
       : setAssetsAmount(false)
-
-
-    logs(true,'начало цикла','1',assets,'dex')
     let timerId = setTimeout(async  function tick() {
+        logs(true,'начало цикла','1',assets,'dex')
         // w = first
         // e = second
         // u = third
@@ -351,20 +349,20 @@ export default async (v,p,c,obj,r) => {
             "W": JSON.parse(JSON.stringify(assets.orders))
         }
         sys['counts']['main'] ++
-        let orderbook_fs = await dex.orderbook(assets.head.pairs.W['first/second'].amountAsset, assets.head.pairs.W['first/second'].priceAsset)
-        let orderbook_ft = await dex.orderbook(assets.head.pairs.W['first/third'].amountAsset, assets.head.pairs.W['first/third'].priceAsset)
-        let orderbook_st = await dex.orderbook(assets.head.pairs.W['second/third'].amountAsset, assets.head.pairs.W['second/third'].priceAsset)
+        let orderbook_fs = await dex.orderbook(assets.head.pairs.W['f/s'].amountAsset, assets.head.pairs.W['f/s'].priceAsset)
+        let orderbook_ft = await dex.orderbook(assets.head.pairs.W['f/t'].amountAsset, assets.head.pairs.W['f/t'].priceAsset)
+        let orderbook_st = await dex.orderbook(assets.head.pairs.W['s/t'].amountAsset, assets.head.pairs.W['s/t'].priceAsset)
         while (!orderbook_fs.success) {
             console.warn('запрос fs не сработал')
-            orderbook_fs = await dex.orderbook(assets.head.pairs.W['first/second'].amountAsset, assets.head.pairs.W['first/second'].priceAsset)
+            orderbook_fs = await dex.orderbook(assets.head.pairs.W['f/s'].amountAsset, assets.head.pairs.W['f/s'].priceAsset)
         }
         while (!orderbook_ft.success) {
             console.warn('запрос ft не сработал')
-            orderbook_ft = await  await dex.orderbook(assets.head.pairs.W['first/third'].amountAsset, assets.head.pairs.W['first/third'].priceAsset)
+            orderbook_ft = await  await dex.orderbook(assets.head.pairs.W['f/t'].amountAsset, assets.head.pairs.W['f/t'].priceAsset)
         }
         while (!orderbook_st.success) {
             console.warn('запрос st не сработал')
-            orderbook_st =  await dex.orderbook(assets.head.pairs.W['second/third'].amountAsset, assets.head.pairs.W['second/third'].priceAsset)
+            orderbook_st =  await dex.orderbook(assets.head.pairs.W['s/t'].amountAsset, assets.head.pairs.W['s/t'].priceAsset)
         }
         orderbook_fs = orderbook_fs.message
         orderbook_ft = orderbook_ft.message
@@ -374,9 +372,9 @@ export default async (v,p,c,obj,r) => {
         relation.orderbook.st[0] =  orderbook_st
         for(let type in relation['fee']) {
             if(assets.W[type] !== 'WAVES') {
-                let order_key = (type === 'first')
+                let order_key = (type === 'f')
                   ?'fs'
-                  :(type === 'second')
+                  :(type === 's')
                     ?'st'
                     :'ft'
                 let amountAsset = relation.orderbook[order_key][0].pair.amountAsset
@@ -389,8 +387,8 @@ export default async (v,p,c,obj,r) => {
             }
         };
         sys.validation.disabled.trade[0] = false;
-        sys.validation.disabled.trade[1] = true;
-        sys.validation.disabled.trade[2] = true;
+        sys.validation.disabled.trade[1] = false;
+        sys.validation.disabled.trade[2] = false;
         sys.validation.disabled.trade[3] = false;
         (!sys.validation.disabled.trade[0])
         ? (relation.orders.W.fft = undefined)
@@ -411,14 +409,14 @@ export default async (v,p,c,obj,r) => {
                 orderbook: orderbook_fs,
                 amount: {
                     f:undefined,
-                    s:relation.amount.first[0]
+                    s:relation.amount.f[0]
                 },
                 fee: {
-                    f:relation.fee.first[0],
-                    s:relation.fee.second[0]
+                    f:relation.fee.f[0],
+                    s:relation.fee.s[0]
                 },
-                amountAsset: assets.head.pairs.W['first/second']['amountAsset'],
-                priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
+                amountAsset: assets.head.pairs.W['f/s']['amountAsset'],
+                priceAsset: assets.head.pairs.W['f/s']['priceAsset'],
                 view: obj['this'].shadowRoot.querySelector('#fb_fs')
             },'green',assets , 'fs');
             if(relation.orders.W.ffs !== undefined) {
@@ -431,10 +429,10 @@ export default async (v,p,c,obj,r) => {
                     },
                     fee: {
                         f:undefined,
-                        t:relation.fee.third[0]
+                        t:relation.fee.t[0]
                     },
-                    amountAsset: assets.head.pairs.W['first/third']['amountAsset'],
-                    priceAsset: assets.head.pairs.W['first/third']['priceAsset'],
+                    amountAsset: assets.head.pairs.W['f/t']['amountAsset'],
+                    priceAsset: assets.head.pairs.W['f/t']['priceAsset'],
                     view: obj['this'].shadowRoot.querySelector('#fs_ft')
                 },'green',assets , 'ft');
 
@@ -448,10 +446,10 @@ export default async (v,p,c,obj,r) => {
                         },
                         fee: {
                             t: undefined,
-                            s: relation.fee.second[0]
+                            s: relation.fee.s[0]
                         },
-                        amountAsset: assets.head.pairs.W['second/third']['amountAsset'],
-                        priceAsset: assets.head.pairs.W['second/third']['priceAsset'],
+                        amountAsset: assets.head.pairs.W['s/t']['amountAsset'],
+                        priceAsset: assets.head.pairs.W['s/t']['priceAsset'],
                         view: obj['this'].shadowRoot.querySelector('#fb_st')
                     },'green',assets , 'st');
                     if(relation.orders.W.ffs === undefined) {
@@ -464,7 +462,6 @@ export default async (v,p,c,obj,r) => {
                 empty(obj, 'ffs')
             }
         } else {
-            console.log('fffffffffffffffff')
             empty(obj, 'ffs', true)
         }
 // new item 2
@@ -474,14 +471,14 @@ export default async (v,p,c,obj,r) => {
             orderbook: orderbook_ft,
             amount: {
                 f:undefined,
-                t:relation.amount.third[0]
+                t:relation.amount.t[0]
             },
             fee: {
-                f:relation.fee.first[0],
-                t:relation.fee.third[0]
+                f:relation.fee.f[0],
+                t:relation.fee.t[0]
             },
-            amountAsset: assets.head.pairs.W['first/third']['amountAsset'],
-            priceAsset: assets.head.pairs.W['first/third']['priceAsset'],
+            amountAsset: assets.head.pairs.W['f/t']['amountAsset'],
+            priceAsset: assets.head.pairs.W['f/t']['priceAsset'],
             view: obj['this'].shadowRoot.querySelector('#fb_ft')
         },'green',assets , 'ft');
             if(relation.orders.W.fft !== undefined) {
@@ -494,10 +491,10 @@ export default async (v,p,c,obj,r) => {
                     },
                     fee: {
                         f:undefined,
-                        s:relation.fee.second[0]
+                        s:relation.fee.s[0]
                     },
-                    amountAsset: assets.head.pairs.W['first/second']['amountAsset'],
-                    priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
+                    amountAsset: assets.head.pairs.W['f/s']['amountAsset'],
+                    priceAsset: assets.head.pairs.W['f/s']['priceAsset'],
                     view: obj['this'].shadowRoot.querySelector('#fs_fs')
                 },'green',assets , 'fs');
 
@@ -510,11 +507,11 @@ export default async (v,p,c,obj,r) => {
                             s: relation.orders.W.fft[1]['sell(fs)']['amount']['s'],
                         },
                         fee: {
-                            t:relation.fee.third[0],
+                            t:relation.fee.t[0],
                             s:undefined
                         },
-                        amountAsset: assets.head.pairs.W['second/third']['amountAsset'],
-                        priceAsset: assets.head.pairs.W['second/third']['priceAsset'],
+                        amountAsset: assets.head.pairs.W['s/t']['amountAsset'],
+                        priceAsset: assets.head.pairs.W['s/t']['priceAsset'],
                         view: obj['this'].shadowRoot.querySelector('#fb_ts')
                     },'green',assets , 'ts');
 
@@ -538,14 +535,14 @@ export default async (v,p,c,obj,r) => {
             orderbook: orderbook_fs,
             amount: {
                 s:undefined,
-                f:relation.amount.first[0]
+                f:relation.amount.f[0]
             },
             fee: {
-                s:relation.fee.second[0],
-                f:relation.fee.first[0]
+                s:relation.fee.s[0],
+                f:relation.fee.f[0]
             },
-            amountAsset: assets.head.pairs.W['first/second']['amountAsset'],
-            priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
+            amountAsset: assets.head.pairs.W['f/s']['amountAsset'],
+            priceAsset: assets.head.pairs.W['f/s']['priceAsset'],
             view: obj['this'].shadowRoot.querySelector('#sb_sf')
         },'green',assets , 'sf');
 
@@ -571,14 +568,14 @@ export default async (v,p,c,obj,r) => {
             orderbook: orderbook_ft,
             amount: {
                 t:undefined,
-                f:relation.amount.first[0]
+                f:relation.amount.f[0]
             },
             fee: {
-                t:relation.fee.third[0],
-                f:relation.fee.first[0]
+                t:relation.fee.t[0],
+                f:relation.fee.f[0]
             },
-            amountAsset: assets.head.pairs.W['first/third']['amountAsset'],
-            priceAsset: assets.head.pairs.W['first/third']['priceAsset'],
+            amountAsset: assets.head.pairs.W['f/t']['amountAsset'],
+            priceAsset: assets.head.pairs.W['f/t']['priceAsset'],
             view: obj['this'].shadowRoot.querySelector('#sb_tf')
         },'green',assets , 'tf');
             if(relation.orders.W.ttf !== undefined) {
@@ -590,11 +587,11 @@ export default async (v,p,c,obj,r) => {
                         s: undefined
                     },
                     fee: {
-                        t:relation.fee.third[0],
-                        s:relation.fee.second[0]
+                        t:relation.fee.t[0],
+                        s:relation.fee.s[0]
                     },
-                    amountAsset: assets.head.pairs.W['second/third']['amountAsset'],
-                    priceAsset: assets.head.pairs.W['second/third']['priceAsset'],
+                    amountAsset: assets.head.pairs.W['s/t']['amountAsset'],
+                    priceAsset: assets.head.pairs.W['s/t']['priceAsset'],
                     view: obj['this'].shadowRoot.querySelector('#ss_ts')
                 },'green',assets , 'ts');
                     if(relation.orders.ttf !== undefined) {
@@ -606,11 +603,11 @@ export default async (v,p,c,obj,r) => {
                                 s: relation.orders.W.ttf[1]['sell(ts)']['amount']['_']
                             },
                             fee: {
-                                f:relation.fee.first[0],
-                                s:relation.fee.second[0]
+                                f:relation.fee.f[0],
+                                s:relation.fee.s[0]
                             },
-                            amountAsset: assets.head.pairs.W['first/second']['amountAsset'],
-                            priceAsset: assets.head.pairs.W['first/second']['priceAsset'],
+                            amountAsset: assets.head.pairs.W['f/s']['amountAsset'],
+                            priceAsset: assets.head.pairs.W['f/s']['priceAsset'],
                             view: obj['this'].shadowRoot.querySelector('#sb_fs')
                         },'green',assets , 'fs');
                         if(relation.orders.ttf === undefined) {
