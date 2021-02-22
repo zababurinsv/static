@@ -9,6 +9,11 @@ let object = {}
 object.staticProperty = {}
 object.staticProperty.class = undefined
 object['fee'] = 0.003
+
+/**
+ * Redirects console output to an <ul> element
+ * @namespace DEX
+ */
 export default (()=> {
         let Class = class Dex {
             constructor() {
