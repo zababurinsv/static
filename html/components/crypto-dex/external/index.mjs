@@ -6,7 +6,7 @@ import config from '/static/html/components/component_modules/account/com.waves-
 import Assets from '/static/html/components/crypto-dex/external/assets/index.mjs'
 import events from '/static/html/components/crypto-dex/external/events.mjs'
 import logs from '/static/html/components/component_modules/colorLog/colorLog.mjs'
-
+import ltd from '/static/html/components/component_modules/ltd/ltd.mjs'
 const waves = new Waves()
 
 function count (obj) {
@@ -112,6 +112,8 @@ function pairs(type = undefined) {
 
 export default async (v,p,c,obj,r) => {
     events(v,p,c,obj,r)
+
+    console.assert(false,  (await ltd()).core)
     let dex = (await import('/static/html/components/component_modules/dex/index.mjs'))['default']
     let assets = (await pairs()).message
     let sys = {

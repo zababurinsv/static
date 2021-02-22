@@ -158,12 +158,17 @@ md +`
       //   "contractLimits": core.contractLimits,
       //   "repl": repl
       // })
+
+      console.log(core.getFunctionsDoc())
+      console.assert(false, core.getTypes())
+      let functions = funcs.doc
       resolve({
         status: 'ok',
         success: true,
         message: {
           md: md,
-          js: funcs.mjs
+          js: funcs.mjs,
+          data: functions
         },
         _scriptDir: import.meta.url
       })

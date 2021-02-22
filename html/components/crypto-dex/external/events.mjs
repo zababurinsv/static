@@ -1,5 +1,4 @@
 export default (v,p,c,obj,r) => {
-
   document.addEventListener('iframe',async (event)=>{
     if(event.detail === 'http://localhost:4999'){
       iframe.post(event.detail, {
