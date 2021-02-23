@@ -159,22 +159,20 @@ md +`
       //   "repl": repl
       // })
 
-      console.log(core.getFunctionsDoc())
-      console.assert(false, core.getTypes())
-      let functions = funcs.doc
       resolve({
         status: 'ok',
         success: true,
         message: {
           md: md,
           js: funcs.mjs,
-          data: functions
+          doc: funcs.doc,
+          types: core.getTypes(),
+          FunctionsDoc: core.getFunctionsDoc()
         },
         _scriptDir: import.meta.url
       })
     })
     .catch(function (e) {
-      console.assert(false, e)
       resolve({
         status:false,
         success:false,
