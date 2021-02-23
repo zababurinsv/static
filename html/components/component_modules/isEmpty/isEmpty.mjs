@@ -57,8 +57,7 @@ function isEmpty(val) {
 }
 
 /**
- * Export `isEmpty`.
- *
+ * @export `isEmpty`.
  * @type {Function}
  */
 
