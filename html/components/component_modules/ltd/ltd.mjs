@@ -12,6 +12,8 @@ export default async () =>{
      */
     toBytes: (s) => {
 
+      console.assert(false, core)
+
     },
     core:await core
   }
