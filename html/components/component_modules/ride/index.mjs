@@ -8,6 +8,10 @@ import go from '/static/html/components/component_modules/ride/func/go/index.mjs
 let axios = Axios['default']
 let waves = new Waves
 
+/**
+ * Язык raid
+ * @namespace RAID
+ */
 let params = (items) => {
  let p =``
   for(let item of items) {
@@ -45,7 +49,15 @@ let Contract = {
     })
   }
 }
-export default (()=>  {
+export default {
+  "author": "Zababurin Sergey",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/zababurinsv/template/issues",
+    "mail": "s.zababurin.v@gmail.com"
+  }
+}
+export let Core = (()=>  {
   return new Promise(function (resolve, reject) {
   axios.get('/static/html/components/component_modules/ride/doc/v4/funcs/index.hjson')
     .then(async (data) => {
@@ -166,8 +178,51 @@ md +`
           md: md,
           js: funcs.mjs,
           doc: funcs.doc,
-          types: core.getTypes(),
-          FunctionsDoc: core.getFunctionsDoc()
+          types: await core.getTypes(),
+          FunctionsDoc: await core.getFunctionsDoc(),
+          ltd: {
+            "t": {
+              name: "t",
+              type: undefined
+            },
+            "t'": {
+              name: "t'",
+              type: undefined
+            },
+            "T'": {
+              name: "T''",
+              type: undefined
+            },
+            "a": {
+              name: "a",
+              type: undefined
+            },
+            "A": {
+              name: "A'",
+              type: undefined
+            },
+            "Lt'": {
+              name: "Lt",
+              type: undefined
+            },
+            "Lt''": {
+              name: "Lt'",
+              type: undefined
+            },
+            "La'": {
+              name: "La",
+              type: undefined
+            },
+            "null": {
+              name: "null",
+              type: undefined
+            },
+            "undefined": {
+              name: "undefined",
+              type: undefined
+            },
+            "key": [`null`,`undefined`,'t', `t'`, `T`, 'a', 'A', 'Lt', `Lt'`, 'La']
+          }
         },
         _scriptDir: import.meta.url
       })
