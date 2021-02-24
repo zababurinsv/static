@@ -18,9 +18,24 @@
  * @property {String} r - relation
  */
 
+/**
+ * @memberof Utils
+ * @function createDocs
+ * @param {Object} data
+ * @return String
+ */
+function createDocs (data) {
+
+}
 export default async () => {
-  let type = (await (await import('/static/html/components/component_modules/ride/index.mjs')).Core).message.ltd
-  console.assert(false, type.key[0])
+  let core = await import('/static/html/components/component_modules/ride/index.mjs')
+  core = core.Core
+  let type = core.message.ltd
+  console.assert(false, core)
+  createDocs({
+    FunctionsDoc: core.message.FunctionsDoc,
+    doc: core.message.doc
+  })
   let ltd = {
    /**
    * @memberof RAID
@@ -33,8 +48,8 @@ export default async () => {
    /**
    * @memberof LTD
    * @function synthesis
-   * @param {System} a object
-   * @param {System} b object
+   * @param {T} a object
+   * @param {T} b object
    * */
    synthesis: (a, b) => {
      return new Promise(function (resolve) {

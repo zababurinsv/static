@@ -1,3 +1,6 @@
+/**
+ * @namespace Utils
+ */
 export default (obj, func, ...args) => {
   return new Promise(function (resolve, reject) {
     let out = (obj) => {

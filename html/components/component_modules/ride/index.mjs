@@ -1,7 +1,5 @@
 import hjson from '/static/html/components/component_modules/bundle/hjson/hjson.index.mjs'
-import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
 import Waves from '/static/html/components/component_modules/waves/index.mjs'
-import task from '/static/html/components/component_modules/heap/index.mjs'
 import Axios from '/static/html/components/component_modules/axios/axios.mjs'
 import core from '/static/html/components/component_modules/bundle/ride/index.mjs'
 import go from '/static/html/components/component_modules/ride/func/go/index.mjs'
@@ -12,6 +10,10 @@ let waves = new Waves
  * Язык raid
  * @namespace RAID
  */
+
+/**
+ * @memberof Utils
+ */
 let params = (items) => {
  let p =``
   for(let item of items) {
@@ -20,10 +22,12 @@ p = p + `* ${item}
   }
   return p
 }
-
+/**
+ * @memberof Utils
+ */
 let Contract = {
   verify: (v,p,c,s,r) => {
-    return new Promise( async (resolve, reject) =>{
+    return new Promise( async (resolve) =>{
       try {
 
         resolve({
@@ -49,16 +53,23 @@ let Contract = {
     })
   }
 }
-export default {
-  "author": "Zababurin Sergey",
-  "license": "GPL-3.0-or-later",
-  "bugs": {
-    "url": "https://github.com/zababurinsv/template/issues",
-    "mail": "s.zababurin.v@gmail.com"
-  }
-}
+
+/**
+ * Hook to capture key down events.
+ *
+ * @module RAID
+ * @function Core
+ *
+ * @example
+ * // Calls the `hide` function when the ESC key is pressed down
+ * useKeyDown(27, hide)
+ *
+ * @param {number} keyCode to capture
+ * @param {Function} onKey function to call when the key is pressed down
+ * @exports module:RAID
+ */
 export let Core = (()=>  {
-  return new Promise(function (resolve, reject) {
+  return new Promise(function (resolve) {
   axios.get('/static/html/components/component_modules/ride/doc/v4/funcs/index.hjson')
     .then(async (data) => {
       let self_contract = await axios.get(`${location.origin}/static/html/components/crypto-dex/external/ride/index.ride`)
@@ -241,3 +252,12 @@ md +`
     });
 })
 })()
+
+export default {
+  "author": "Zababurin Sergey",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/zababurinsv/template/issues",
+    "mail": "s.zababurin.v@gmail.com"
+  }
+}
