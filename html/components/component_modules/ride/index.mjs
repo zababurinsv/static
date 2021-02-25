@@ -220,7 +220,7 @@ md +`
               name: "Lt'",
               type: undefined
             },
-            "La'": {
+            "La": {
               name: "La",
               type: undefined
             },
@@ -232,7 +232,7 @@ md +`
               name: "undefined",
               type: undefined
             },
-            "key": [`null`,`undefined`,'t', `t'`, `T`, 'a', 'A', 'Lt', `Lt'`, 'La']
+            "key": [`null`,`undefined`,'t', `t'`, `T`, 'a', 'A', 'Lt', `Lt'`,`La`]
           }
         },
         _scriptDir: import.meta.url
