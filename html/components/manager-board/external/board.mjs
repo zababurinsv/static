@@ -1,22 +1,28 @@
 let config = async (v,p,c,obj,r) => {
-    if(obj.preset.status) {
-        try {
-            let board = await fetch(`/static/html/components/manager-board/template/${obj.preset.name}/${obj.preset.name}.json`)
-            board = await board.json()
-            return board
-        } catch (e) {
-            console.error('произошла ошибка при получении json объекта монополии', e)
-            return e
-        }
+    if(obj.preset === undefined) {
+        let board = await fetch(`/static/html/components/manager-board/template/index/index.json`)
+        board = await board.json()
+        return board
     } else {
+        if(obj.preset.status) {
+            try {
+                let board = await fetch(`/static/html/components/manager-board/template/${obj.preset.name}/${obj.preset.name}.json`)
+                board = await board.json()
+                return board
+            } catch (e) {
+                console.error('произошла ошибка при получении json объекта монополии', e)
+                return e
+            }
+        } else {
             console.warn('не установлен пресет для компонента manager-board (устанавливается <manger-board preset="index"></manger-board>')
-        try {
-            let board = await fetch(`/static/html/components/manager-board/template/${obj.preset.name}/${obj.preset.name}.json`)
-            board = await board.json()
-            return board
-        } catch (e) {
-            console.error('произошла ошибка при получении json объекта монополии', e)
-            return e
+            try {
+                let board = await fetch(`/static/html/components/manager-board/template/${obj.preset.name}/${obj.preset.name}.json`)
+                board = await board.json()
+                return board
+            } catch (e) {
+                console.error('произошла ошибка при получении json объекта монополии', e)
+                return e
+            }
         }
     }
 }

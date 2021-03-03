@@ -1,4 +1,5 @@
 import modules from '/static/html/components/manager-board/external/index.mjs'
+
 customElements.define('manager-board',
     class extends HTMLElement {
         static get observedAttributes () {
