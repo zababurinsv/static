@@ -63,7 +63,7 @@ function td(v,p,c,obj,r) {
 
 function img(v,p,c,obj,r){
     p.td.insertAdjacentHTML('beforeend',
-    `<img class="${p.coord.y}:${p.coord.x} manager-board__item_td_img  ${p.class}_${p.coord.y}:${p.coord.x}" data-item="${p.coord.y}:${p.coord.x}" src="/static/html/components/manager-board/images/${p.class}.png">`)
+    `<img class="${p.coord.y}:${p.coord.x} manager-board__item_td_img  ${p.class}_${p.coord.y}:${p.coord.x}" data-item="${p.coord.y}:${p.coord.x}" src="/images/monopoly/board/default/images/${p.class}.png">`)
 }
 
 function output(v,p,c,obj,r) {
