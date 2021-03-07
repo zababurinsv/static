@@ -94,8 +94,6 @@ export default async (v,p,c,obj,r) => {
 
 
 
-        // console.log('dddddddddddddddddd')
-        // console.log('##################', event.path[0].files[0])
         // var reader1 = new FileReader();
         // reader1.onload = function(ev) {
         //     let audioCtx = new (AudioContext || webkitAudioContext)();

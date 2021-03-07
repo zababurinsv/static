@@ -824,7 +824,6 @@ function updateLocalTimeStamp (obj) {
             obj['update'] = null
             resolve(obj)
           })
-        // console.log('11111111111111dddddddddddd111111111111', update)
       })
   })
 }

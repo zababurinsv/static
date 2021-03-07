@@ -107,8 +107,6 @@
         // console.assert(false, event.target.parentNode.querySelector('#fift-createWallet').value)
         formData.append("name", event.target.parentNode.querySelector('#fift-createWallet').value)
 
-        // console.log('ddddddddddddddddddddddd')
-
         fetch(`http://localhost:7777/createWallet`, {
             method: 'POST',
             body:formData

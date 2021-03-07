@@ -1,8 +1,6 @@
 import colorLog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
 import {pixelToVW} from '/static/html/components/component_modules/convert/convert.mjs'
-import Storage from '/static/html/components/component_modules/storage/index.mjs'
 import Zip from '/static/html/components/component_modules/bundle/zip/zip.index.mjs'
-let storage = Storage()
 let buttonTogle = true
 // window.FS.syncfs( true, ()=>{
 //     window.FS.writeFile( "/data/layout.json", JSON.stringify(obj.PSD.layout));
@@ -253,7 +251,7 @@ return `
     <meta property="og:type" content="contract"/>
     <meta property="og:title" content="design"/>
     <meta property="og:description" content="design"/>
-    <meta property="og:url" content="https://zababurinsv.github.io/ide-design/"/>
+    <meta property="og:url" content="https://zababurinsv.github.io/design/"/>
     <meta property="og:image" content="https://i.imgur.com/pSrPUkJ.jpg"/>
     <meta property="og:image:width" content="537"/>
     <meta property="og:image:height" content="240"/>

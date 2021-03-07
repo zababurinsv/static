@@ -750,7 +750,6 @@ div#external{
           let url = ''
           if(obj.this.dataset.url){
               url =  obj.this.dataset.url
-              console.assert(false, url)
               if(url.indexOf('${location.origin}') !== -1) {
                 if(location.origin.indexOf('localhost') !== -1) {
                   url = url.replace('${location.origin}', '')
