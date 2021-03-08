@@ -1,6 +1,6 @@
 import google from '/static/html/components/component_modules/google/google.mjs'
 import github from '/static/html/components/component_modules/github/github.mjs'
-customElements.define('web3-authorization-google',
+customElements.define('web3-google',
     class extends HTMLElement {
       static get observedAttributes () {
         return ['feed']
