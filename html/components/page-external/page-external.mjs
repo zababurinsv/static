@@ -30,7 +30,7 @@ div#external{
 </style>`;
        
         if(this.dataset.height){
-          this.style.height =`${this.dataset.height}vw`;
+          this.style.height =`${this.dataset.height}vh`;
         }else{
           this.style.height ="auto";
         }

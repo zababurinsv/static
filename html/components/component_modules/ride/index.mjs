@@ -1,8 +1,8 @@
 import hjson from '/static/html/components/component_modules/bundle/hjson/hjson.index.mjs'
 import Waves from '/static/html/components/component_modules/waves/index.mjs'
-import Axios from '/static/html/components/component_modules/axios/axios.mjs'
 import core from '/static/html/components/component_modules/bundle/ride/index.mjs'
 import go from '/static/html/components/component_modules/ride/func/go/index.mjs'
+import Axios from '/static/html/components/component_modules/axios/axios.mjs'
 let axios = Axios['default']
 let waves = new Waves
 
