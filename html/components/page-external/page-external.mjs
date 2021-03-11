@@ -19,8 +19,8 @@ customElements.define('page-external',
 :host(.hidden){
 display: none;
 }
-:host{
-
+:host(img) {
+  width: 100%;
 }
 div#external{
     border-radius: 0.5vw;
