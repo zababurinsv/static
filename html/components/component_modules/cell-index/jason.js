@@ -1031,7 +1031,7 @@ var WebContainer = {
   height: "100%",
   width: "100%",
   border:"none",
-  sandbox:"allow-modals allow-same-origin allow-scripts allow-popups allow-forms allow-pointer-lock allow-top-navigation",
+  sandbox:"allow-downloads allow-modals allow-same-origin allow-scripts allow-popups allow-forms allow-pointer-lock allow-top-navigation",
   _update: function(background) {
     if (background.style) {
       this.style = background.style;
