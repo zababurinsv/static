@@ -75,7 +75,7 @@ export default async (v,p,c,obj,r) => {
             "resolve": async (item) => {
                 let pull = {}
                 try {
-                    pull = await fetch(`https://zababurinsv.github.io/markdown/${item? item: 'index'}.md`)
+                    pull = await fetch(`https://zababurinsv.github.io/docs/${item? item: 'index'}.md`)
                         .catch((e)=>{
                             console.warn({ "error":e })
                         })

@@ -25,7 +25,7 @@ export default async (v,p,c,obj,r) => {
             "resolve": async (item) => {
                 let pull = {}
                 try {
-                    pull = await fetch(`https://zababurinsv.github.io/markdown/${item? item: 'index'}.md`)
+                    pull = await fetch(`https://zababurinsv.github.io/docs/${item? item: 'index'}.md`)
                         .catch((e)=>{
                             console.warn({ "error":e })
                         })
@@ -98,5 +98,4 @@ export default async (v,p,c,obj,r) => {
         let template = await (await import(`/static/html/components/${obj.this.tagName.toLowerCase()}/template/${obj.preset.name}/${obj.preset.name}.mjs`))['default'](v,p,c,obj,r)
         // console.log(`(external-index.mjs*)${template}`,template)
     }
-    // console.log('system', system)
 }

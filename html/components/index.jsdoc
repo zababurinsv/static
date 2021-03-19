@@ -1,0 +1,5 @@
+/**
+* Core module.
+* @module ${location.origin}/io/markdown/docs/import.html
+* @see module:my/shirt
+*/

@@ -58,12 +58,7 @@ let Contract = {
  * Hook to capture key down events.
  *
  * @module RAID
- * @function Core
- *
- * @example
- * // Calls the `hide` function when the ESC key is pressed down
- * useKeyDown(27, hide)
- *
+
  * @param {number} keyCode to capture
  * @param {Function} onKey function to call when the key is pressed down
  * @exports module:RAID
