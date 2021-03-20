@@ -1,9 +1,5 @@
 import auth from '/static/html/components/component_modules/stackexchange/auth.mjs'
 
-/**
- * https://stackapps.com/apps/oauth
- * @type {{}}
- */
 let object = {}
 object['SE'] = auth
 export default async (obj)=>{

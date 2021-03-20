@@ -1,26 +1,6 @@
-
-/**
- * Has own property.
- *
- * @type {Function}
- */
-
 var has = Object.prototype.hasOwnProperty
 
-/**
- * To string.
- *
- * @type {Function}
- */
-
 var toString = Object.prototype.toString
-
-/**
- * Test whether a value is "empty".
- *
- * @param {Mixed} val
- * @return {Boolean}
- */
 
 function isEmpty(val) {
     // Null and Undefined...
@@ -69,11 +49,5 @@ function isEmpty(val) {
     // Anything else...
     return false
 }
-
-/**
- * Export `isEmpty`.
- *
- * @type {Function}
- */
 
 export default isEmpty
