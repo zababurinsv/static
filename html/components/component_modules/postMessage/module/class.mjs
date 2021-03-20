@@ -116,7 +116,7 @@ let Class = class Post {
                         event.source.postMessage({view:view,property:property,color:color,substrate:substrate,relation:relation },event.origin)
                     }
                 }else{
-                    // console.log(`${emoji('rage')} blockchain-waves Not Allowed`, '--->' ,event,':host === origin', host,'===', event.origin)
+                    // console.log(`${emoji('rage')} waves Not Allowed`, '--->' ,event,':host === origin', host,'===', event.origin)
                 }
             });
             window.open(`${host}${path}`,`${relation}`,`height=${scrollWidth/3},width=${scrollWidth/1.5},scrollbars=no,toolbar=no,menubar=no,status=no,resizable=no,scrollbars=no,location=no,top=${scrollWidth/2-((scrollWidth/1.5)/2)},left=${scrollWidth/2-((scrollWidth/1.8)/2)}`);
