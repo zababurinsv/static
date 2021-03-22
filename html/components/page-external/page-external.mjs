@@ -808,7 +808,7 @@ div#external{
         } else {
           // console.log('ffgfgf')
           // let host = this.dataset.url.replace('/import','')
-          // let ifr = obj['this'].querySelector('iframe')
+          let frame = obj['this'].querySelector('iframe')
           // iframe.set(host, ifr, obj['this'])
           // ifr.onload = function () {
             // setTimeout(function() {
