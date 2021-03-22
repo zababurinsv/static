@@ -11,7 +11,7 @@ config['local']['1.0'] = 'http://localhost:3002'
 config['now']['0.6'] = 'https://soundlane-b2b652bpi.now.sh'
 
 config['mongo'] = {}
-config['mongo']['web'] = 'https://server-mongo.zababurinsv.vercel.app'
+config['mongo']['web'] = 'https://web3-auction.now.sh/'
 // config['mongo']['web'] = 'http://localhost:3003'
 // config['mongo']['web'] = 'http://localhost:3001'
 
