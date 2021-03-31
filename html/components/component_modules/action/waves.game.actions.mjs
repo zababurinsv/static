@@ -17,12 +17,14 @@ export default (async ()=> {
             let message = await waves.createNFT(object.views, object.property,object.color,object.substrate, object.relation)
             object.callback({
                 status: message.status,
+                success:true,
                 message: message.message,
                 _scriptDir: import.meta.url
             })
         } else {
             object.callback({
                 status:true,
+                success: true,
                 message: 'pause',
                 _scriptDir: import.meta.url
             })

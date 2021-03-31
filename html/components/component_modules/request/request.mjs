@@ -14,12 +14,12 @@ export default async (obj, func, ...args)=>{
             }
             switch (func) {
                 case 'change':
-                    (async (obj, props,state, server) => {
+                   await (async (obj, props,state, server) => {
                         try {
                             // console.log(`app [(${func}[(${obj['input']})${obj[props]}])request]`)
                             switch (obj[props]) {
                                 case 'router':
-                                    (async (obj, props,data) => {
+                                  await  (async (obj, props,data) => {
                                         try {
                                             let store =  await staticProperty({
                                                 input:'action',
@@ -144,7 +144,7 @@ export default async (obj, func, ...args)=>{
                                     break
                                 case 'default':
 
-                                    (async (obj, props,data) => {
+                                  await  (async (obj, props,data) => {
                                         try {
 
                                             fetch(`${server}${obj[props]}`)
@@ -191,12 +191,12 @@ export default async (obj, func, ...args)=>{
                     })(obj, args[0], args[1], args[2], args[3])
                     break
                 case 'post':
-                    (async (obj, props,data) => {
+                   await (async (obj, props,data) => {
                         try {
                             // console.log(`app(${func}[(${obj['input']})${obj[props]}]property)`)
                             switch (obj[props]) {
                                 case 'form':
-                                    (async (obj, props,data) => {
+                                  await  (async (obj, props,data) => {
                                         try {
                                           let store = await  matcher['webdav']({
                                                 input:'request',
