@@ -22,23 +22,19 @@ let sys = {
     "localhost": {
       withCredentials: true,
       headers: {'Access-Control-Allow-Origin': '*'},
-      ping:    15,
-      retry:   10
     },
     "web": {
       withCredentials: true,
       headers: {'Access-Control-Allow-Origin': '*'},
-      ping:    15,
-      retry:   10
     }
   }
 }
+
 export default (()=>{
   return new Promise((resolve,reject)=> {
     let eventSource = new EventSource(sys.proxy.eventSource[`${state}`],sys.eventSource[`${state}`]);
     eventSource.onmessage = function(event) {
-      console.log( JSON.parse(event.data));
-
+      console.log(JSON.parse(event.data));
     };
 
     resolve({
