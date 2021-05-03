@@ -34,10 +34,14 @@ customElements.define('waves-provider',
                     let styleS = document.createElement('style')
                     let styleL = document.createElement('style')
                     let name = {}
-                    if (!obj['slot']) {
-                        name = obj['parent']
+                    if(obj['preset']) {
+                        name = obj['preset']
                     } else {
-                        name = obj['slot']
+                        if (!obj['slot']) {
+                            name = obj['parent']
+                        } else {
+                            name = obj['slot']
+                        }
                     }
                     if (!name) {
                         console.assert(false, 'не установленны ни слот ни парент')
@@ -54,40 +58,45 @@ customElements.define('waves-provider',
                             }
                         }
                     }
-                    for (let state = 0; state < obj['state'].length; state++) {
-                        obj[`path-style-${obj['state'][state]}`] = `@import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}.css'; @import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}-custom.css';`
-                        switch (obj['state'][state]) {
-                            case 'shadow':
-                                if (obj['verify']['preset'] === true) {
-                                    obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${name}.css';`
-                                }
-                                styleS.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
-                                break
-                            case 'light':
-                                if (obj['verify']['preset'] === true) {
-                                    obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${name}.css';`
-                                }
-                                styleL.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
-                                break
-                            default:
-                                // //console.log(`новый тип`, obj['state'][state])
-                                break
-                        }
-                        if (obj['state'][state] === 'swap') {
-                            if (obj['shadowRoot'] === true) {
-                                obj['this']['shadowRoot'].appendChild(styleL)
-                                obj['this'].appendChild(styleS)
-                                resolve(obj)
-                            } else {
-                                obj['this'].appendChild(styleS)
+                    if(obj['this'].dataset.css === "false") {
+                        obj['this']['shadowRoot'].appendChild(styleS)
+                        obj['this'].appendChild(styleL)
+                    } else {
+                        for (let state = 0; state < obj['state'].length; state++) {
+                            obj[`path-style-${obj['state'][state]}`] = `@import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}.css'; @import '/static/html/components/${obj['component']}/${obj['state'][state]}/${obj['component']}-custom.css';`
+                            switch (obj['state'][state]) {
+                                case 'shadow':
+                                    if (obj['verify']['preset'] === true) {
+                                        obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${obj['preset']['dir']}/${obj['preset']['name']}.css';`
+                                    }
+                                    styleS.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
+                                    break
+                                case 'light':
+                                    if (obj['verify']['preset'] === true) {
+                                        obj[`path-style-${obj['state'][state]}-preset`] = `@import '/static/html/components/${obj['component']}/template/${obj['preset']['dir']}/${obj['preset']['name']}.css';`
+                                    }
+                                    styleL.innerText = obj[`path-style-${obj['state'][state]}`] + obj[`path-style-${obj['state'][state]}-preset`]
+                                    break
+                                default:
+                                    // //console.log(`новый тип`, obj['state'][state])
+                                    break
                             }
-                        } else {
-                            if (obj['shadowRoot'] === true) {
-                                obj['this']['shadowRoot'].appendChild(styleS)
-                                obj['this'].appendChild(styleL)
-                                resolve(obj)
+                            if (obj['state'][state] === 'swap') {
+                                if (obj['shadowRoot'] === true) {
+                                    obj['this']['shadowRoot'].appendChild(styleL)
+                                    obj['this'].appendChild(styleS)
+                                    resolve(obj)
+                                } else {
+                                    obj['this'].appendChild(styleS)
+                                }
                             } else {
-                                obj['this'].appendChild(styleL)
+                                if (obj['shadowRoot'] === true) {
+                                    obj['this']['shadowRoot'].appendChild(styleS)
+                                    obj['this'].appendChild(styleL)
+                                    resolve(obj)
+                                } else {
+                                    obj['this'].appendChild(styleL)
+                                }
                             }
                         }
                     }
@@ -487,14 +496,59 @@ customElements.define('waves-provider',
                     } else {
                         switch(obj['this'].getAttribute('preset')){
                             case 'default':
-                                obj['path-template'] = `/static/html/components/${obj['component']}/template/${obj['component']}.html`
-                                obj['preset'] = `${obj['this'].getAttribute('preset')}`
+                                obj['path-template'] = `/static/html/components/${obj['component']}/template/default/index.html`
+                                obj['preset'] = {
+                                    dir:'default',
+                                    name:'index',
+                                    dirName:`${obj['this'].getAttribute('preset')}`,
+                                    status:true
+                                }
                                 obj['verify']['preset'] = true
                                 break
                             default:
-                                obj['path-template'] = `/static/html/components/${obj['component']}/template/${obj['this'].getAttribute('preset')}.html`
-                                obj['preset'] = `${obj['this'].getAttribute('preset')}`
-                                obj['verify']['preset'] = true
+                                let substrate = (obj['this'].getAttribute('preset')).split('-')
+
+                                let dir = {}
+                                let name = {}
+                                if( substrate.length >= 3) {
+                                    dir = `${substrate[0]}-${substrate[1]}`
+                                    name = substrate.filter((word, index, arr)=>{
+                                        if(index > 1) {
+                                            return word
+                                        }
+                                    });
+                                    // console.assert(false,name, dir )
+                                    name = name.join('-')
+                                    obj['path-template'] = `/static/html/components/${obj['component']}/template/${dir}/${name}.html`
+                                    obj['verify']['preset'] = true
+                                    obj['preset'] = {
+                                        dir:dir,
+                                        name:name,
+                                        status:true
+                                    }
+                                }else if(substrate.length === 2){
+                                    dir = `${substrate[0]}-${substrate[1]}`
+                                    name =`index`
+                                    obj['path-template'] = `/static/html/components/${obj['component']}/template/${dir}/${name}.html`
+                                    obj['verify']['preset'] = true
+                                    obj['preset'] = {
+                                        dir:dir,
+                                        name:name,
+                                        status:true
+                                    }
+                                } else if(substrate.length === 1) {
+                                    dir = `${substrate[0]}`
+                                    name =`index`
+                                    obj['path-template'] = `/static/html/components/${obj['component']}/template/${dir}/${name}.html`
+                                    obj['verify']['preset'] = true
+                                    obj['preset'] = {
+                                        dir:dir,
+                                        name:name,
+                                        status:true
+                                    }
+                                }else {
+                                    console.assert(false, 'не загружается пресет')
+                                }
                                 break
                         }
                     }
@@ -603,7 +657,7 @@ customElements.define('waves-provider',
 
             function external (obj) {
                 return new Promise(function (resolve, reject) {
-                    obj['path-external'] = `/static/html/components/${obj['component']}/external/${obj['component']}-external.html`
+                    obj['path-external'] = `/static/html/components/${obj['component']}/external/${obj['component']}-external.xml`
                     fetch(obj['path-external'])
                         .then(function (response) {
                             if (response.ok === false) {
@@ -672,15 +726,15 @@ customElements.define('waves-provider',
                     }
                 })
             }
-        objectProperty(this)
-            .then((obj) => {
-                template(obj)
-                    .then((obj) => {
-                        style(obj)
-                            .then((obj) => {
-                                modules(true,0,'red',obj,'waves-provider')
-                            })
-                    })
-            })
+            objectProperty(this)
+                .then((obj) => {
+                    template(obj)
+                        .then((obj) => {
+                            style(obj)
+                                .then((obj) => {
+                                    modules(true,0,'red',obj,import.meta.url)
+                                })
+                        })
+                })
         }
     })

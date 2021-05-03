@@ -38,6 +38,7 @@ export default class Account {
             let verify = false
             let signer = false
             if(chainId === 'W'){
+                signer = new waves['signer']();
                 verify = true
             }else if(chainId === 'T') {
                 signer = new waves['signer']({
@@ -110,18 +111,18 @@ export default class Account {
     }
     saveAs(blob, fileName) {
         return new Promise( async (resolve, reject) => {
-    
+
             let url = window.URL.createObjectURL(blob);
             let anchorElem = document.createElement("a");
             anchorElem.style = "display: none";
             anchorElem.href = url;
             anchorElem.download = fileName;
-    
+
             document.body.appendChild(anchorElem);
             anchorElem.click();
-    
+
             document.body.removeChild(anchorElem);
-    
+
             setTimeout(function() {
                 window.URL.revokeObjectURL(url);
                 resolve(true)

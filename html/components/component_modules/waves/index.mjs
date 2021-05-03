@@ -6,7 +6,7 @@ import Axios from '/static/html/components/component_modules/axios/axios.mjs'
 let axios = Axios['default']
 
 let system = {
-    net: 'T',
+    net: 'W',
     wvs: 10 ** 8
 }
 export default class Waves {
@@ -150,7 +150,7 @@ export default class Waves {
                 status: 'ok',
                 success: true,
                 message:await balance.json()
-            })   
+            })
             }catch(e) {
                 resolve({
                     _scriptDir: import.meta.url,
@@ -327,9 +327,9 @@ export default class Waves {
     }
     end(event){
         queue(event['detail']['console'], '~end',event['detail']['color'],event['detail']['substrate'],event['detail']['relation']).then((data)=>{
-            
+
             colorlog(true, 'stat','stat',data, 'статистика')
-            
+
         })
     }
     get self() {

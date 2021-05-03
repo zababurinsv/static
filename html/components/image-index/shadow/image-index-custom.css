@@ -1,1 +1,1 @@
-.root{display:flex;flex-flow:row nowrap;justify-content:space-between;align-items:stretch;align-self:stretch}.root-item{width:20vw}
+.root{display:-webkit-flex;display:flex;-webkit-flex-flow:row nowrap;flex-flow:row nowrap;-webkit-justify-content:space-between;justify-content:space-between;-webkit-align-items:stretch;align-items:stretch;-webkit-align-self:stretch;align-self:stretch}.root-item{width:20vw}

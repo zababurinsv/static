@@ -100,9 +100,10 @@ export default async (v,p,c,obj,r) => {
             }
         } else {
             try {
-                let wallet = await account.open(file)
+                let wallet = await account.open(file, pass.value)
                 obj['this'].shadowRoot.querySelector('#form-password').value = ''
                 let balance = await waves['balance'](wallet['address'], wallet['type'])
+                console.assert(false, balance)
                 let template = await walletTemplate(true, '', '3', {
                     type: wallet['type'],
                     date: wallet['date']['GMT'],
@@ -112,6 +113,7 @@ export default async (v,p,c,obj,r) => {
                     seed: 'не подключен',
                     balance: balance['message']['balance'],
                 }, 'template-wallet')
+                console.assert(false)
                 obj['this'].shadowRoot.querySelector('#wallet').innerHTML = ''
                 obj['this'].shadowRoot.querySelector('#wallet').classList.add("active")
                 obj['this'].shadowRoot.querySelector('#wallet').insertAdjacentHTML('beforeend', template)

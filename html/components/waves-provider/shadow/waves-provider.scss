@@ -131,7 +131,7 @@ fieldset#waves-login{
       div.account-create,div.account-name,div.account-type{
         width: 100%;
         @include display(column, nowrap, flex-start, center, stretch);
-        label[for="account-create"],label[for="account-name"],label[for="account-type"]{
+        label[for="account-create"],label[for="account-create-public"], label[for="account-create-stage"], label[for="account-name"],label[for="account-type"]{
           width: 100%;
           font-family: Roboto, serif;
           @include fonts(8);
@@ -140,7 +140,7 @@ fieldset#waves-login{
           color: rgb(255, 255, 255);
           margin-bottom: 1vw;
         }
-        input#account-create,input#account-name,select#account-type{
+        input#account-create, .input-account, input#account-name,select#account-type{
 
           border: none;
           min-height: 4vw;
@@ -162,6 +162,15 @@ fieldset#waves-login{
         }
         input#account-name{
           cursor: text;
+        }
+        .input-account::-webkit-file-upload-button {
+          cursor: pointer;
+          border-radius: 0.5vw;
+          border: none;
+          @include border();
+          font-family: Roboto, serif;
+          @include fonts(8);
+          background-color: #ac7ee8;
         }
         input#account-create::-webkit-file-upload-button {
           cursor: pointer;
