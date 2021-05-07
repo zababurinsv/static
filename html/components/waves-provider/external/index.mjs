@@ -4,9 +4,23 @@ import Account from '/static/html/components/component_modules/account/index.mjs
 import walletTemplate from '/static/html/components/waves-provider/template/wallet.mjs'
 import Waves from '/static/html/components/component_modules/waves/index.mjs'
 import task from '/static/html/components/component_modules/heap/index.mjs'
-
-let sys = {}
 export default async (v,p,c,obj,r) => {
+
+    let sys = {
+        wallet:{
+            data:{
+                private: undefined,
+                public:  undefined,
+                stage: undefined,
+            },
+            html: {
+                public: obj['this'].shadowRoot.querySelector('#account-create-public'),
+                private: obj['this'].shadowRoot.querySelector('#account-create'),
+                stage: obj['this'].shadowRoot.querySelector('#account-create-stage'),
+            }
+        }
+    }
+    // console.assert(false, sys)
     let account = new Account()
     let waves = new Waves()
     let objectWallet = {}
@@ -100,10 +114,12 @@ export default async (v,p,c,obj,r) => {
             }
         } else {
             try {
-                let wallet = await account.open(file, pass.value)
+                sys.wallet.data.public = await account.open(sys.wallet.html.public.files[0])
+                sys.wallet.data.stage = await account.open(sys.wallet.html.stage.files[0])
+                sys.wallet.data.private = await account.open(file, pass.value)
                 obj['this'].shadowRoot.querySelector('#form-password').value = ''
+                let wallet = Object.assign(sys.wallet.data.public, sys.wallet.data.private, sys.wallet.data.stage);
                 let balance = await waves['balance'](wallet['address'], wallet['type'])
-                console.assert(false, balance)
                 let template = await walletTemplate(true, '', '3', {
                     type: wallet['type'],
                     date: wallet['date']['GMT'],
@@ -113,7 +129,6 @@ export default async (v,p,c,obj,r) => {
                     seed: 'не подключен',
                     balance: balance['message']['balance'],
                 }, 'template-wallet')
-                console.assert(false)
                 obj['this'].shadowRoot.querySelector('#wallet').innerHTML = ''
                 obj['this'].shadowRoot.querySelector('#wallet').classList.add("active")
                 obj['this'].shadowRoot.querySelector('#wallet').insertAdjacentHTML('beforeend', template)
