@@ -4,6 +4,7 @@ import Account from '/static/html/components/component_modules/account/index.mjs
 import walletTemplate from '/static/html/components/waves-provider/template/wallet.mjs'
 import Waves from '/static/html/components/component_modules/waves/index.mjs'
 import task from '/static/html/components/component_modules/heap/index.mjs'
+import utils from '/static/html/components/component_modules/bundle/waves/waves.index.mjs'
 export default async (v,p,c,obj,r) => {
 
     let sys = {
@@ -120,13 +121,18 @@ export default async (v,p,c,obj,r) => {
                 obj['this'].shadowRoot.querySelector('#form-password').value = ''
                 let wallet = Object.assign(sys.wallet.data.public, sys.wallet.data.private, sys.wallet.data.stage);
                 let balance = await waves['balance'](wallet['address'], wallet['type'])
+                console.log(utils)
+                window.utils = utils
+                // console.log(utils.base58Decode(wallet.seed))
+                // console.log(utils.base58Encode(wallet.seed))
+                console.assert(false, wallet)
                 let template = await walletTemplate(true, '', '3', {
                     type: wallet['type'],
                     date: wallet['date']['GMT'],
                     address: wallet['address'],
                     publicKey: wallet['key'],
                     privateKey: 'не подключен',
-                    seed: 'не подключен',
+                    seed: wallet.seed,
                     balance: balance['message']['balance'],
                 }, 'template-wallet')
                 obj['this'].shadowRoot.querySelector('#wallet').innerHTML = ''
