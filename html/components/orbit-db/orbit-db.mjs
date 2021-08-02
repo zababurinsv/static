@@ -731,7 +731,7 @@ customElements.define('orbit-db',
                         .then((obj) => {
                             style(obj)
                                 .then((obj) => {
-                                    modules(true,0,'red',obj,'waves-game-card')
+                                    modules(true,0,'red',obj,'orbit-db')
                                 })
                         })
                 })

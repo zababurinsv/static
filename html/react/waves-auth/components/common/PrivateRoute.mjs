@@ -1,1 +1,39 @@
-export default obj=>new Promise(function(resolve,reject){bundle.default(obj,null,async function(error,config){let template=config.babel.transform("\n            let React =   config['React']\n            let PropTypes = config['PropTypes']\n            let connect = config['connect']\n            let Route = config['Route']\n            let Redirect = config['Redirect']\n        const PrivateRoute = ({ component: Component, auth, rest }) => (\n              <Route\n                {...rest}\n                render={props =>\n                  auth.isAuthenticated === true ? (\n                    <Component {...props} />\n                  ) : (\n                    <Redirect to=\"/login\" />\n                  )\n                }\n              />\n            );\n            \n            PrivateRoute.propTypes = {\n              auth: PropTypes.object.isRequired\n            };\n            \n            const mapStateToProps = state => ({\n              auth: state.auth\n            });\n\n                     resolve(connect(mapStateToProps)(PrivateRoute))\n            ",config.babel.availablePresets.react);eval(template.code)})});
+export default  (obj) => {
+    return new Promise(function (resolve, reject) {
+        bundle['default'](obj,null, async function (error, config) {
+
+            let template = config['babel']['transform'](`
+            let React =   config['React']
+            let PropTypes = config['PropTypes']
+            let connect = config['connect']
+            let Route = config['Route']
+            let Redirect = config['Redirect']
+        const PrivateRoute = ({ component: Component, auth, rest }) => (
+              <Route
+                {...rest}
+                render={props =>
+                  auth.isAuthenticated === true ? (
+                    <Component {...props} />
+                  ) : (
+                    <Redirect to="/login" />
+                  )
+                }
+              />
+            );
+            
+            PrivateRoute.propTypes = {
+              auth: PropTypes.object.isRequired
+            };
+            
+            const mapStateToProps = state => ({
+              auth: state.auth
+            });
+
+                     resolve(connect(mapStateToProps)(PrivateRoute))
+            `,config['babel']['availablePresets']['react'])
+
+            eval(template.code)
+        })})}
+
+
+

@@ -1,1 +1,111 @@
-import componentTextFieldGroup from"../common/TextFieldGroup.mjs";export default obj=>new Promise(async function(resolve,reject){bundle.default(obj,null,async function(error,config){let TextFieldGroup=await componentTextFieldGroup("TextFieldGroup"),template=config.babel.transform("        \n      let React =   config['React']\n      let connect =   config['connect']\n      let PropTypes = config['PropTypes']\n      let Component = config['Component']\n      let loginUser = config['actions']['authActions']['loginUser']\n       let store = config['store']\n           \n        class Login extends Component {\n          constructor() {\n            super();\n            this.onSubmit = this.onSubmit.bind(this);\n            this.onChange = this.onChange.bind(this);\n            this.state = {\n              email: '',\n              password: '',\n              errors: {}\n            };\n          }\n        \n          componentDidMount() {\n            if (this.props.auth.isAuthenticated) {\n              this.props.history.push('/dashboard');\n            }\n          }\n        \n          componentWillReceiveProps(nextProps) {\n            if (nextProps.auth.isAuthenticated) {\n              this.props.history.push('/dashboard');\n            }\n        \n            if (nextProps.errors) {\n              this.setState({ errors: nextProps.errors });\n            }\n          }\n          onSubmit(e){\n            e.preventDefault();\n            console.log('!!!!!!!!!!!!!!!!!!!!!!!eee!!!!!', this)\n            const userData = {\n              email: this.state.email,\n              password: this.state.password\n            };\n        \n            this.props.loginUser(userData);\n          }\n        \n          onChange(e){\n          console.log('!!!!!!!!!!!!!!!!!!!!!!!eee!!!!!', this)\n            this.setState({ [e.target.name]: e.target.value });\n          }\n          render() {\n            const { errors } = this.state\n        \n            return (\n              <div className=\"login\">\n                <div className=\"container\">\n                  <div className=\"row\">\n                    <div className=\"col-md-8 m-auto\">\n                      <h1 className=\"display-4 text-center\">Log In</h1>\n                      <p className=\"lead text-center\">\n                        Sign in to your account\n                      </p>\n                      <form onSubmit={this.onSubmit}>\n                        <TextFieldGroup\n                          placeholder=\"Email Address\"\n                          name=\"email\"\n                          type=\"email\"\n                          value={this.state.email}\n                          onChange={this.onChange}\n                          error={errors.email}\n                        />\n        \n                        <TextFieldGroup\n                          placeholder=\"Password\"\n                          name=\"password\"\n                          type=\"password\"\n                          value={this.state.password}\n                          onChange={this.onChange}\n                          error={errors.password}\n                        />\n                        <input type=\"submit\" className=\"btn btn-info btn-block mt-4\" />\n                      </form>\n                    </div>\n                  </div>\n                </div>\n              </div>\n            );\n          }\n        }\n\n      Login.propTypes = {\n        loginUser: PropTypes.func.isRequired,\n        auth: PropTypes.object.isRequired,\n        errors: PropTypes.object.isRequired\n      };\n\n       let mapStateToProps = (state) => ({\n \n        auth: state.auth,\n        errors: state.errors\n      });\n      resolve(connect(mapStateToProps, { loginUser })(Login))\n            ",config.babel.availablePresets.react);eval(template.code)})});
+import componentTextFieldGroup from '../common/TextFieldGroup.mjs';
+
+export default  (obj) => {
+  return new Promise(async function (resolve, reject) {
+    bundle['default'](obj,null, async function (error, config) {
+      let TextFieldGroup = await componentTextFieldGroup('TextFieldGroup')
+      let template = config['babel']['transform'](`        
+      let React =   config['React']
+      let connect =   config['connect']
+      let PropTypes = config['PropTypes']
+      let Component = config['Component']
+      let loginUser = config['actions']['authActions']['loginUser']
+       let store = config['store']
+           
+        class Login extends Component {
+          constructor() {
+            super();
+            this.onSubmit = this.onSubmit.bind(this);
+            this.onChange = this.onChange.bind(this);
+            this.state = {
+              email: '',
+              password: '',
+              errors: {}
+            };
+          }
+        
+          componentDidMount() {
+            if (this.props.auth.isAuthenticated) {
+              this.props.history.push('/dashboard');
+            }
+          }
+        
+          componentWillReceiveProps(nextProps) {
+            if (nextProps.auth.isAuthenticated) {
+              this.props.history.push('/dashboard');
+            }
+        
+            if (nextProps.errors) {
+              this.setState({ errors: nextProps.errors });
+            }
+          }
+          onSubmit(e){
+            e.preventDefault();
+            console.log('!!!!!!!!!!!!!!!!!!!!!!!eee!!!!!', this)
+            const userData = {
+              email: this.state.email,
+              password: this.state.password
+            };
+        
+            this.props.loginUser(userData);
+          }
+        
+          onChange(e){
+          console.log('!!!!!!!!!!!!!!!!!!!!!!!eee!!!!!', this)
+            this.setState({ [e.target.name]: e.target.value });
+          }
+          render() {
+            const { errors } = this.state
+        
+            return (
+              <div className="login">
+                <div className="container">
+                  <div className="row">
+                    <div className="col-md-8 m-auto">
+                      <h1 className="display-4 text-center">Log In</h1>
+                      <p className="lead text-center">
+                        Sign in to your account
+                      </p>
+                      <form onSubmit={this.onSubmit}>
+                        <TextFieldGroup
+                          placeholder="Email Address"
+                          name="email"
+                          type="email"
+                          value={this.state.email}
+                          onChange={this.onChange}
+                          error={errors.email}
+                        />
+        
+                        <TextFieldGroup
+                          placeholder="Password"
+                          name="password"
+                          type="password"
+                          value={this.state.password}
+                          onChange={this.onChange}
+                          error={errors.password}
+                        />
+                        <input type="submit" className="btn btn-info btn-block mt-4" />
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+        }
+
+      Login.propTypes = {
+        loginUser: PropTypes.func.isRequired,
+        auth: PropTypes.object.isRequired,
+        errors: PropTypes.object.isRequired
+      };
+
+       let mapStateToProps = (state) => ({
+ 
+        auth: state.auth,
+        errors: state.errors
+      });
+      resolve(connect(mapStateToProps, { loginUser })(Login))
+            `,config['babel']['availablePresets']['react'])
+      eval(template.code)
+    })})}

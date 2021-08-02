@@ -1,1 +1,31 @@
-import componentPostItem from"./PostItem.mjs";export default obj=>new Promise(async function(resolve,reject){bundle.default(obj,null,async function(error,config){let PostItem=await componentPostItem("PostItem"),template=config.babel.transform("        \n      let React =   config['React']\n      let Component = config['Component']\n      let connect =   config['connect']\n      let PropTypes = config['PropTypes']   \n      let addPost = config['actions']['postActions']['addPost']\n\n      class PostFeed extends Component {\n        render() {\n          const { posts } = this.props;\n      \n          return posts.map(post => <PostItem key={post._id} post={post} />);\n        }\n      }\n      \n      PostFeed.propTypes = {\n        posts: PropTypes.array.isRequired\n      };     \n          \n    \n      resolve(PostFeed)\n      \n            ",config.babel.availablePresets.react);eval(template.code)})});
+import componentPostItem from './PostItem.mjs';
+
+export default  (obj) => {
+  return new Promise(async function (resolve, reject) {
+    bundle['default'](obj,null, async function (error, config) {
+      let PostItem = await componentPostItem('PostItem')
+      let template = config['babel']['transform'](`        
+      let React =   config['React']
+      let Component = config['Component']
+      let connect =   config['connect']
+      let PropTypes = config['PropTypes']   
+      let addPost = config['actions']['postActions']['addPost']
+
+      class PostFeed extends Component {
+        render() {
+          const { posts } = this.props;
+      
+          return posts.map(post => <PostItem key={post._id} post={post} />);
+        }
+      }
+      
+      PostFeed.propTypes = {
+        posts: PropTypes.array.isRequired
+      };     
+          
+    
+      resolve(PostFeed)
+      
+            `,config['babel']['availablePresets']['react'])
+      eval(template.code)
+    })})}

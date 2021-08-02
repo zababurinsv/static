@@ -1,1 +1,60 @@
-export default obj=>new Promise(function(resolve,reject){bundle.default(obj,null,async function(error,config){let template=config.babel.transform("\n            let React =   config['React']\n            let PropTypes = config['PropTypes']\n            let classnames = config['classnames']\n            const InputGroup = ({\n              name,\n              placeholder,\n              value,\n              error,\n              icon,\n              type,\n              onChange\n            }) => {\n              return (\n                <div className=\"input-group mb-3\">\n                  <div className=\"input-group-prepend\">\n                    <span className=\"input-group-text\">\n                      <i className={icon} />\n                    </span>\n                  </div>\n                  <input\n                    className={classnames('form-control form-control-lg', {\n                      'is-invalid': error\n                    })}\n                    placeholder={placeholder}\n                    name={name}\n                    value={value}\n                    onChange={onChange}\n                  />\n                  {error && <div className=\"invalid-feedback\">{error}</div>}\n                </div>\n              );\n            };\n            \n            InputGroup.propTypes = {\n              name: PropTypes.string.isRequired,\n              placeholder: PropTypes.string,\n              value: PropTypes.string.isRequired,\n              icon: PropTypes.string,\n              error: PropTypes.string,\n              type: PropTypes.string.isRequired,\n              onChange: PropTypes.func.isRequired\n            };\n            \n            InputGroup.defaultProps = {\n              type: 'text'\n            };\n\n                     resolve(InputGroup)\n            ",config.babel.availablePresets.react);eval(template.code)})});
+export default  (obj) => {
+  return new Promise(function (resolve, reject) {
+    bundle['default'](obj,null, async function (error, config) {
+
+      let template = config['babel']['transform'](`
+            let React =   config['React']
+            let PropTypes = config['PropTypes']
+            let classnames = config['classnames']
+            const InputGroup = ({
+              name,
+              placeholder,
+              value,
+              error,
+              icon,
+              type,
+              onChange
+            }) => {
+              return (
+                <div className="input-group mb-3">
+                  <div className="input-group-prepend">
+                    <span className="input-group-text">
+                      <i className={icon} />
+                    </span>
+                  </div>
+                  <input
+                    className={classnames('form-control form-control-lg', {
+                      'is-invalid': error
+                    })}
+                    placeholder={placeholder}
+                    name={name}
+                    value={value}
+                    onChange={onChange}
+                  />
+                  {error && <div className="invalid-feedback">{error}</div>}
+                </div>
+              );
+            };
+            
+            InputGroup.propTypes = {
+              name: PropTypes.string.isRequired,
+              placeholder: PropTypes.string,
+              value: PropTypes.string.isRequired,
+              icon: PropTypes.string,
+              error: PropTypes.string,
+              type: PropTypes.string.isRequired,
+              onChange: PropTypes.func.isRequired
+            };
+            
+            InputGroup.defaultProps = {
+              type: 'text'
+            };
+
+                     resolve(InputGroup)
+            `,config['babel']['availablePresets']['react'])
+
+      eval(template.code)
+    })})}
+
+
+

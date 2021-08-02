@@ -1,1 +1,47 @@
-export default obj=>new Promise(function(resolve,reject){bundle.default(obj,null,async function(error,config){let template=config.babel.transform("\n            let React =   config['React']\n            let PropTypes = config['PropTypes']\n            let classnames = config['classnames']\n             const TextAreaFieldGroup = ({\n                name,\n                placeholder,\n                value,\n                error,\n                info,\n                onChange\n              }) => {\n                return (\n                  <div className=\"form-group\">\n                    <textarea\n                      className={classnames('form-control form-control-lg', {\n                        'is-invalid': error\n                      })}\n                      placeholder={placeholder}\n                      name={name}\n                      value={value}\n                      onChange={onChange}\n                    />\n                    {info && <small className=\"form-text text-muted\">{info}</small>}\n                    {error && <div className=\"invalid-feedback\">{error}</div>}\n                  </div>\n                );\n              };\n\n              TextAreaFieldGroup.propTypes = {\n                name: PropTypes.string.isRequired,\n                placeholder: PropTypes.string,\n                value: PropTypes.string.isRequired,\n                info: PropTypes.string,\n                error: PropTypes.string,\n                onChange: PropTypes.func.isRequired\n              };\n                     resolve(TextAreaFieldGroup)\n            ",config.babel.availablePresets.react);eval(template.code)})});
+export default  (obj) => {
+  return new Promise(function (resolve, reject) {
+    bundle['default'](obj,null, async function (error, config) {
+      let template = config['babel']['transform'](`
+            let React =   config['React']
+            let PropTypes = config['PropTypes']
+            let classnames = config['classnames']
+             const TextAreaFieldGroup = ({
+                name,
+                placeholder,
+                value,
+                error,
+                info,
+                onChange
+              }) => {
+                return (
+                  <div className="form-group">
+                    <textarea
+                      className={classnames('form-control form-control-lg', {
+                        'is-invalid': error
+                      })}
+                      placeholder={placeholder}
+                      name={name}
+                      value={value}
+                      onChange={onChange}
+                    />
+                    {info && <small className="form-text text-muted">{info}</small>}
+                    {error && <div className="invalid-feedback">{error}</div>}
+                  </div>
+                );
+              };
+
+              TextAreaFieldGroup.propTypes = {
+                name: PropTypes.string.isRequired,
+                placeholder: PropTypes.string,
+                value: PropTypes.string.isRequired,
+                info: PropTypes.string,
+                error: PropTypes.string,
+                onChange: PropTypes.func.isRequired
+              };
+                     resolve(TextAreaFieldGroup)
+            `,config['babel']['availablePresets']['react'])
+
+      eval(template.code)
+    })})}
+
+

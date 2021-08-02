@@ -1,1 +1,1 @@
-export{default as arrayToCamelCase,objectToCamelCase}from"./arrayToCamelCase";
+export { default as arrayToCamelCase, objectToCamelCase } from './arrayToCamelCase';

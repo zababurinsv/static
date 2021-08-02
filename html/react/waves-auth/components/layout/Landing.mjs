@@ -1,1 +1,54 @@
-export default obj=>new Promise(function(resolve,reject){bundle.default(obj,null,async function(error,config){let template=config.babel.transform('  \n  \n            let connect = config[\'connect\']\n            let PropTypes = config[\'PropTypes\']      \n            let React = config[\'React\'] \n            let Link = config[\'Link\'] \n       class Landing extends config[\'React\'].Component {\n        componentDidMount() {\n          if (this.props.auth.isAuthenticated) {\n            this.props.history.push(\'/dashboard\');\n          }\n        }\n        render() {\n          return (\n              <div className="landing">\n                <div className="dark-overlay landing-inner text-light">\n                  <div className="container">\n                    <div className="row">\n                      <div className="col-md-12 text-center">\n                        <h1 className="display-3 mb-4">Connector</h1>\n                        <p className="lead">\n                          {\' \'}\n                          Create a profile/portfolio, share posts and get help\n                          from other\n                        </p>\n                        <hr />\n                        <Link to="/register" className="btn btn-lg btn-info mr-2">\n                          Sign Up\n                        </Link>\n                        <Link to="/login" className="btn btn-lg btn-light">\n                          Login\n                        </Link>\n                      </div>\n                    </div>\n                  </div>\n                </div>\n              </div>\n              \n          );\n        }\n      }\n          Landing.propTypes = { auth: PropTypes.object.isRequired };\n          const mapStateToProps = state => ({ auth: state.auth });\n          resolve(connect(mapStateToProps)(Landing))\n     \n     \n            ',config.babel.availablePresets.react);eval(template.code)})});
+export default  (obj) => {
+  return new Promise(function (resolve, reject) {
+    bundle['default'](obj,null, async function (error, config) {
+
+      let template = config['babel']['transform'](`  
+  
+            let connect = config['connect']
+            let PropTypes = config['PropTypes']      
+            let React = config['React'] 
+            let Link = config['Link'] 
+       class Landing extends config['React'].Component {
+        componentDidMount() {
+          if (this.props.auth.isAuthenticated) {
+            this.props.history.push('/dashboard');
+          }
+        }
+        render() {
+          return (
+              <div className="landing">
+                <div className="dark-overlay landing-inner text-light">
+                  <div className="container">
+                    <div className="row">
+                      <div className="col-md-12 text-center">
+                        <h1 className="display-3 mb-4">Connector</h1>
+                        <p className="lead">
+                          {' '}
+                          Create a profile/portfolio, share posts and get help
+                          from other
+                        </p>
+                        <hr />
+                        <Link to="/register" className="btn btn-lg btn-info mr-2">
+                          Sign Up
+                        </Link>
+                        <Link to="/login" className="btn btn-lg btn-light">
+                          Login
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+          );
+        }
+      }
+          Landing.propTypes = { auth: PropTypes.object.isRequired };
+          const mapStateToProps = state => ({ auth: state.auth });
+          resolve(connect(mapStateToProps)(Landing))
+     
+     
+            `,config['babel']['availablePresets']['react'])
+      eval(template.code)
+
+    })})}

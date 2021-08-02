@@ -1,1 +1,65 @@
-export default obj=>new Promise(function(resolve,reject){bundle.default(obj,null,async function(error,config){let profile={},template=config.babel.transform(`  \n      let React = config['React']\n      let PropTypes = config['PropTypes']\n      let Link = config['Link']\n      let isEmpty = config['isEmpty']\n      let Component = config['Component']\n      class ProfileItem extends Component {\n        render() {\n          const { profile } = this.props;\n      \n          return (\n            <div className="card card-body bg-light mb-3">\n              <div className="row">\n                <div className="col-2">\n                  <img src={profile.user.avatar} alt="" className="rounded-circle" />\n                </div>\n                <div className="col-lg-6 col-md-4 col-8">\n                  <h3>{profile.user.name}</h3>\n                  <p>\n                    {profile.status}{' '}\n                    {isEmpty(profile.company) ? null : (\n                      <span>at {profile.company}</span>\n                    )}\n                  </p>\n                  <p>\n                    {isEmpty(profile.location) ? null : (\n                      <span>{profile.location}</span>\n                    )}\n                  </p>\n                  <Link to={\`/profile/${profile.handle}\`} className="btn btn-info">\n                    View Profile\n                  </Link>\n                </div>\n                <div className="col-md-4 d-none d-md-block">\n                  <h4>Skill Set</h4>\n                  <ul className="list-group">\n                    {profile.skills.slice(0, 4).map((skill, index) => (\n                      <li key={index} className="list-group-item">\n                        <i className="fa fa-check pr-1" />\n                        {skill}\n                      </li>\n                    ))}\n                  </ul>\n                </div>\n              </div>\n            </div>\n          );\n        }\n      }\n      \n      ProfileItem.propTypes = {\n        profile: PropTypes.object.isRequired\n      };\n      \n      resolve(ProfileItem)\n      \n      `,config.babel.availablePresets.react);eval(template.code)})});
+export default  (obj) => {
+  return new Promise(function (resolve, reject) {
+    bundle['default'](obj,null, async function (error, config) {
+      let profile ={}
+
+      let template = config['babel']['transform'](`  
+      let React = config['React']
+      let PropTypes = config['PropTypes']
+      let Link = config['Link']
+      let isEmpty = config['isEmpty']
+      let Component = config['Component']
+      class ProfileItem extends Component {
+        render() {
+          const { profile } = this.props;
+      
+          return (
+            <div className="card card-body bg-light mb-3">
+              <div className="row">
+                <div className="col-2">
+                  <img src={profile.user.avatar} alt="" className="rounded-circle" />
+                </div>
+                <div className="col-lg-6 col-md-4 col-8">
+                  <h3>{profile.user.name}</h3>
+                  <p>
+                    {profile.status}{' '}
+                    {isEmpty(profile.company) ? null : (
+                      <span>at {profile.company}</span>
+                    )}
+                  </p>
+                  <p>
+                    {isEmpty(profile.location) ? null : (
+                      <span>{profile.location}</span>
+                    )}
+                  </p>
+                  <Link to={\`/profile/${profile.handle}\`} className="btn btn-info">
+                    View Profile
+                  </Link>
+                </div>
+                <div className="col-md-4 d-none d-md-block">
+                  <h4>Skill Set</h4>
+                  <ul className="list-group">
+                    {profile.skills.slice(0, 4).map((skill, index) => (
+                      <li key={index} className="list-group-item">
+                        <i className="fa fa-check pr-1" />
+                        {skill}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          );
+        }
+      }
+      
+      ProfileItem.propTypes = {
+        profile: PropTypes.object.isRequired
+      };
+      
+      resolve(ProfileItem)
+      
+      `,config['babel']['availablePresets']['react'])
+      eval(template.code)
+    })})}
+

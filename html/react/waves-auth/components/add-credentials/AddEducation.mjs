@@ -1,1 +1,176 @@
-import componentTextFieldGroup from"../common/TextFieldGroup.mjs";import componentTextAreaFieldGroup from"../common/TextAreaFieldGroup.mjs";export default obj=>new Promise(async function(resolve,reject){bundle.default(obj,null,async function(error,config){let TextFieldGroup=await componentTextFieldGroup("TextFieldGroup"),TextAreaFieldGroup=await componentTextAreaFieldGroup("TextAreaFieldGroup"),template=config.babel.transform('        \n      let React =   config[\'React\']\n      let connect =   config[\'connect\']\n      let PropTypes = config[\'PropTypes\']\n      let Component = config[\'Component\']\n      let Link =   config[\'Link\']\n      let withRouter = config[\'withRouter\']\n      let addEducation = config[\'actions\'][\'profileActions\'][\'addEducation\']\n           \n      class AddEducation extends Component {\n        constructor(props) {\n          super(props);\n          this.state = {\n            school: \'\',\n            degree: \'\',\n            fieldofstudy: \'\',\n            from: \'\',\n            to: \'\',\n            current: false,\n            description: \'\',\n            errors: {},\n            disabled: false\n          };\n      \n          this.onChange = this.onChange.bind(this);\n          this.onSubmit = this.onSubmit.bind(this);\n          this.onCheck = this.onCheck.bind(this);\n        }\n      \n        componentWillReceiveProps(nextProps) {\n          if (nextProps.errors) {\n            this.setState({ errors: nextProps.errors });\n          }\n        }\n      \n        onSubmit(e) {\n          e.preventDefault();\n      \n          const eduData = {\n            school: this.state.school,\n            degree: this.state.degree,\n            fieldofstudy: this.state.fieldofstudy,\n            from: this.state.from,\n            to: this.state.to,\n            current: this.state.current,\n            description: this.state.description\n          };\n      \n          this.props.addEducation(eduData, this.props.history);\n        }\n      \n        onChange(e) {\n          this.setState({ [e.target.name]: e.target.value });\n        }\n      \n        onCheck(e) {\n          this.setState({\n            disabled: !this.state.disabled,\n            current: !this.state.current\n          });\n        }\n      \n        render() {\n          const { errors } = this.state;\n      \n          return (\n            <div className="add-education">\n              <div className="container">\n                <div className="row">\n                  <div className="col-md-8 m-auto">\n                    <Link to="/dashboard" className="btn btn-light">\n                      Go Back\n                    </Link>\n                    <h1 className="display-4 text-center">Add Education</h1>\n                    <p className="lead text-center">\n                      Add any school, bootcamp, etc that you have attended\n                    </p>\n                    <small className="d-block pb-3">* = required fields</small>\n                    <form onSubmit={this.onSubmit}>\n                      <TextFieldGroup\n                        placeholder="* School"\n                        name="school"\n                        value={this.state.school}\n                        onChange={this.onChange}\n                        error={errors.school}\n                      />\n                      <TextFieldGroup\n                        placeholder="* Degree or Certification"\n                        name="degree"\n                        value={this.state.degree}\n                        onChange={this.onChange}\n                        error={errors.degree}\n                      />\n                      <TextFieldGroup\n                        placeholder="* Field of Study"\n                        name="fieldofstudy"\n                        value={this.state.fieldofstudy}\n                        onChange={this.onChange}\n                        error={errors.fieldofstudy}\n                      />\n                      <h6>From Date</h6>\n                      <TextFieldGroup\n                        name="from"\n                        type="date"\n                        value={this.state.from}\n                        onChange={this.onChange}\n                        error={errors.from}\n                      />\n                      <h6>To Date</h6>\n                      <TextFieldGroup\n                        name="to"\n                        type="date"\n                        value={this.state.to}\n                        onChange={this.onChange}\n                        error={errors.to}\n                        disabled={this.state.disabled ? \'disabled\' : \'\'}\n                      />\n                      <div className="form-check mb-4">\n                        <input\n                          type="checkbox"\n                          className="form-check-input"\n                          name="current"\n                          value={this.state.current}\n                          checked={this.state.current}\n                          onChange={this.onCheck}\n                          id="current"\n                        />\n                        <label htmlFor="current" className="form-check-label">\n                          Current Job\n                        </label>\n                      </div>\n                      <TextAreaFieldGroup\n                        placeholder="Program Description"\n                        name="description"\n                        value={this.state.description}\n                        onChange={this.onChange}\n                        error={errors.description}\n                        info="Tell us about the program that you were in"\n                      />\n                      <input\n                        type="submit"\n                        value="Submit"\n                        className="btn btn-info btn-block mt-4"\n                      />\n                    </form>\n                  </div>\n                </div>\n              </div>\n            </div>\n          );\n        }\n      }\n      \n      AddEducation.propTypes = {\n        addEducation: PropTypes.func.isRequired,\n        profile: PropTypes.object.isRequired,\n        errors: PropTypes.object.isRequired\n      };\n      \n      const mapStateToProps = state => ({\n        profile: state.profile,\n        errors: state.errors\n      });\n\n      resolve( connect(mapStateToProps, { addEducation })(withRouter(AddEducation)))\n            ',config.babel.availablePresets.react);eval(template.code)})});
+import componentTextFieldGroup from '../common/TextFieldGroup.mjs';
+import componentTextAreaFieldGroup from '../common/TextAreaFieldGroup.mjs';
+
+export default  (obj) => {
+  return new Promise(async function (resolve, reject) {
+    bundle['default'](obj,null, async function (error, config) {
+      let TextFieldGroup = await componentTextFieldGroup('TextFieldGroup')
+      let TextAreaFieldGroup = await componentTextAreaFieldGroup('TextAreaFieldGroup')
+      let template = config['babel']['transform'](`        
+      let React =   config['React']
+      let connect =   config['connect']
+      let PropTypes = config['PropTypes']
+      let Component = config['Component']
+      let Link =   config['Link']
+      let withRouter = config['withRouter']
+      let addEducation = config['actions']['profileActions']['addEducation']
+           
+      class AddEducation extends Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            school: '',
+            degree: '',
+            fieldofstudy: '',
+            from: '',
+            to: '',
+            current: false,
+            description: '',
+            errors: {},
+            disabled: false
+          };
+      
+          this.onChange = this.onChange.bind(this);
+          this.onSubmit = this.onSubmit.bind(this);
+          this.onCheck = this.onCheck.bind(this);
+        }
+      
+        componentWillReceiveProps(nextProps) {
+          if (nextProps.errors) {
+            this.setState({ errors: nextProps.errors });
+          }
+        }
+      
+        onSubmit(e) {
+          e.preventDefault();
+      
+          const eduData = {
+            school: this.state.school,
+            degree: this.state.degree,
+            fieldofstudy: this.state.fieldofstudy,
+            from: this.state.from,
+            to: this.state.to,
+            current: this.state.current,
+            description: this.state.description
+          };
+      
+          this.props.addEducation(eduData, this.props.history);
+        }
+      
+        onChange(e) {
+          this.setState({ [e.target.name]: e.target.value });
+        }
+      
+        onCheck(e) {
+          this.setState({
+            disabled: !this.state.disabled,
+            current: !this.state.current
+          });
+        }
+      
+        render() {
+          const { errors } = this.state;
+      
+          return (
+            <div className="add-education">
+              <div className="container">
+                <div className="row">
+                  <div className="col-md-8 m-auto">
+                    <Link to="/dashboard" className="btn btn-light">
+                      Go Back
+                    </Link>
+                    <h1 className="display-4 text-center">Add Education</h1>
+                    <p className="lead text-center">
+                      Add any school, bootcamp, etc that you have attended
+                    </p>
+                    <small className="d-block pb-3">* = required fields</small>
+                    <form onSubmit={this.onSubmit}>
+                      <TextFieldGroup
+                        placeholder="* School"
+                        name="school"
+                        value={this.state.school}
+                        onChange={this.onChange}
+                        error={errors.school}
+                      />
+                      <TextFieldGroup
+                        placeholder="* Degree or Certification"
+                        name="degree"
+                        value={this.state.degree}
+                        onChange={this.onChange}
+                        error={errors.degree}
+                      />
+                      <TextFieldGroup
+                        placeholder="* Field of Study"
+                        name="fieldofstudy"
+                        value={this.state.fieldofstudy}
+                        onChange={this.onChange}
+                        error={errors.fieldofstudy}
+                      />
+                      <h6>From Date</h6>
+                      <TextFieldGroup
+                        name="from"
+                        type="date"
+                        value={this.state.from}
+                        onChange={this.onChange}
+                        error={errors.from}
+                      />
+                      <h6>To Date</h6>
+                      <TextFieldGroup
+                        name="to"
+                        type="date"
+                        value={this.state.to}
+                        onChange={this.onChange}
+                        error={errors.to}
+                        disabled={this.state.disabled ? 'disabled' : ''}
+                      />
+                      <div className="form-check mb-4">
+                        <input
+                          type="checkbox"
+                          className="form-check-input"
+                          name="current"
+                          value={this.state.current}
+                          checked={this.state.current}
+                          onChange={this.onCheck}
+                          id="current"
+                        />
+                        <label htmlFor="current" className="form-check-label">
+                          Current Job
+                        </label>
+                      </div>
+                      <TextAreaFieldGroup
+                        placeholder="Program Description"
+                        name="description"
+                        value={this.state.description}
+                        onChange={this.onChange}
+                        error={errors.description}
+                        info="Tell us about the program that you were in"
+                      />
+                      <input
+                        type="submit"
+                        value="Submit"
+                        className="btn btn-info btn-block mt-4"
+                      />
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        }
+      }
+      
+      AddEducation.propTypes = {
+        addEducation: PropTypes.func.isRequired,
+        profile: PropTypes.object.isRequired,
+        errors: PropTypes.object.isRequired
+      };
+      
+      const mapStateToProps = state => ({
+        profile: state.profile,
+        errors: state.errors
+      });
+
+      resolve( connect(mapStateToProps, { addEducation })(withRouter(AddEducation)))
+            `,config['babel']['availablePresets']['react'])
+      eval(template.code)
+    })})}

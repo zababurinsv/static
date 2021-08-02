@@ -1,1 +1,17 @@
-import{pipe}from"../service/index";const toCamelCaseString=e=>e.replace(/_(.)/g,(e,t)=>t.toUpperCase()),setValueToKey=(e,t)=>o=>({...t,[o]:e});export const objectToCamelCase=e=>Object.keys(e).reduce((t,o)=>pipe(o,toCamelCaseString,setValueToKey(e[o],t)),{});export default e=>e.map(e=>objectToCamelCase(e));
+import { pipe } from '../service/index';
+
+const toCamelCaseString = key => key.replace(/_(.)/g, (_, group) => group.toUpperCase());
+const setValueToKey = (value, obj) => key => ({ ...obj, [key]: value });
+
+export const objectToCamelCase = obj =>
+    Object.keys(obj).reduce(
+        (accum, key) =>
+            pipe(
+                key,
+                toCamelCaseString,
+                setValueToKey(obj[key], accum),
+            ),
+        {},
+    );
+
+export default data => data.map(x => objectToCamelCase(x));

@@ -1,1 +1,106 @@
-import componentTextFieldGroup from"../common/TextFieldGroup.mjs";import componentExperience from"./Experience.mjs";import componentEducation from"./Education.mjs";import componentProfileActions from"./ProfileActions.mjs";import componentSpinner from"../common/Spinner.mjs";export default obj=>new Promise(async function(resolve,reject){bundle.default(obj,null,async function(error,config){let TextFieldGroup=await componentTextFieldGroup("TextFieldGroup"),Experience=await componentExperience("Experience"),Education=await componentEducation("Education"),ProfileActions=await componentProfileActions("ProfileActions"),Spinner=await componentSpinner("ProfileActions"),profile={},template=config.babel.transform(`      \n      let profile = null  \n      let React =   config['React']\n      let connect =   config['connect']\n      let PropTypes = config['PropTypes']\n      let Component = config['Component']\n      let Link = config['Link']\n      let getCurrentProfile = config['actions']['profileActions']['getCurrentProfile']\n      let deleteAccount = config['actions']['profileActions']['deleteAccount']\n        class Dashboard extends Component {\n          componentDidMount() {\n            this.props.getCurrentProfile();\n          }\n        \n          onDeleteClick(e) {\n            this.props.deleteAccount();\n          }\n        \n          render() {\n            const { user } = this.props.auth;\n            const { profile, loading } = this.props.profile;\n            let dashboardContent;\n            if (profile === null || loading) {\n              dashboardContent = <Spinner />;\n            } else {\n              // Check if logged in user has profile data\n              if (Object.keys(profile).length > 0) {\n                dashboardContent = (\n                  <div>\n                    <p className="lead text-muted">\n                      Welcome <Link to={\`/profile/${profile.handle}\`}>{user.name}</Link>\n                    </p>\n                    <ProfileActions />\n                    <Experience experience={profile.experience} />\n                    <Education education={profile.education} />\n                    <div style={{ marginBottom: '60px' }} />\n                    <button\n                      onClick={this.onDeleteClick.bind(this)}\n                      className="btn btn-danger"\n                    >\n                      Delete My Account\n                    </button>\n                  </div>\n                );\n              } else {\n                // User is logged in but has no profile\n                dashboardContent = (\n                  <div>\n                    <p className="lead text-muted">Welcome {user.name}</p>\n                    <p>You have not yet setup a profile, please add some info</p>\n                    <Link to="/create-profile" className="btn btn-lg btn-info">\n                      Create Profile\n                    </Link>\n                  </div>\n                );\n              }\n            }\n        \n            return (\n              <div className="dashboard">\n                <div className="container">\n                  <div className="row">\n                    <div className="col-md-12">\n                      <h1 className="display-4">Dashboard</h1>\n                      {dashboardContent}\n                    </div>\n                  </div>\n                </div>\n              </div>\n            );\n          }\n        }\n   \n        Dashboard.propTypes = {\n          getCurrentProfile: PropTypes.func.isRequired,\n          deleteAccount: PropTypes.func.isRequired,\n          auth: PropTypes.object.isRequired,\n          profile: PropTypes.object.isRequired\n        };\n        \n        const mapStateToProps = state => ({\n          profile: state.profile,\n          auth: state.auth\n        });\n   \n        resolve( connect(mapStateToProps, { getCurrentProfile, deleteAccount })(Dashboard))\n            `,config.babel.availablePresets.react);eval(template.code)})});
+import componentTextFieldGroup from '../common/TextFieldGroup.mjs';
+import componentExperience from './Experience.mjs';
+import componentEducation from './Education.mjs';
+import componentProfileActions from './ProfileActions.mjs';
+import componentSpinner from '../common/Spinner.mjs';
+
+export default  (obj) => {
+    return new Promise(async function (resolve, reject) {
+
+
+        bundle['default'](obj,null, async function (error, config) {
+            let TextFieldGroup = await componentTextFieldGroup('TextFieldGroup')
+            let Experience = await componentExperience('Experience')
+            let Education = await componentEducation('Education')
+            let ProfileActions = await componentProfileActions('ProfileActions')
+            let Spinner = await componentSpinner('ProfileActions')
+                let profile = {}
+            let template = config['babel']['transform'](`      
+      let profile = null  
+      let React =   config['React']
+      let connect =   config['connect']
+      let PropTypes = config['PropTypes']
+      let Component = config['Component']
+      let Link = config['Link']
+      let getCurrentProfile = config['actions']['profileActions']['getCurrentProfile']
+      let deleteAccount = config['actions']['profileActions']['deleteAccount']
+        class Dashboard extends Component {
+          componentDidMount() {
+            this.props.getCurrentProfile();
+          }
+        
+          onDeleteClick(e) {
+            this.props.deleteAccount();
+          }
+        
+          render() {
+            const { user } = this.props.auth;
+            const { profile, loading } = this.props.profile;
+            let dashboardContent;
+            if (profile === null || loading) {
+              dashboardContent = <Spinner />;
+            } else {
+              // Check if logged in user has profile data
+              if (Object.keys(profile).length > 0) {
+                dashboardContent = (
+                  <div>
+                    <p className="lead text-muted">
+                      Welcome <Link to={\`/profile/${profile.handle}\`}>{user.name}</Link>
+                    </p>
+                    <ProfileActions />
+                    <Experience experience={profile.experience} />
+                    <Education education={profile.education} />
+                    <div style={{ marginBottom: '60px' }} />
+                    <button
+                      onClick={this.onDeleteClick.bind(this)}
+                      className="btn btn-danger"
+                    >
+                      Delete My Account
+                    </button>
+                  </div>
+                );
+              } else {
+                // User is logged in but has no profile
+                dashboardContent = (
+                  <div>
+                    <p className="lead text-muted">Welcome {user.name}</p>
+                    <p>You have not yet setup a profile, please add some info</p>
+                    <Link to="/create-profile" className="btn btn-lg btn-info">
+                      Create Profile
+                    </Link>
+                  </div>
+                );
+              }
+            }
+        
+            return (
+              <div className="dashboard">
+                <div className="container">
+                  <div className="row">
+                    <div className="col-md-12">
+                      <h1 className="display-4">Dashboard</h1>
+                      {dashboardContent}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+        }
+   
+        Dashboard.propTypes = {
+          getCurrentProfile: PropTypes.func.isRequired,
+          deleteAccount: PropTypes.func.isRequired,
+          auth: PropTypes.object.isRequired,
+          profile: PropTypes.object.isRequired
+        };
+        
+        const mapStateToProps = state => ({
+          profile: state.profile,
+          auth: state.auth
+        });
+   
+        resolve( connect(mapStateToProps, { getCurrentProfile, deleteAccount })(Dashboard))
+            `,config['babel']['availablePresets']['react'])
+            eval(template.code)
+        })})}
