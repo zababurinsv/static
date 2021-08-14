@@ -126,8 +126,8 @@ export default (()=> {
                                     })
                                     count++
                                 } else {
-                                    let s = assets.head.assets.W.second
-                                    let f = assets.head.assets.W.first
+                                    let s = assets.head.assets.W.s
+                                    let f = assets.head.assets.W.f
                                     p.self.orders.W.ffs[0][`buy(${r})`]['amount'][`${currency[0]}`] = this.fix(p.amount[`${currency[0]}`])
                                     p.self.orders.W.ffs[0][`buy(${r})`]['amount'][`${currency[1]}`] = p.amount[`${currency[1]}`]
                                     p.self.orders.W.ffs[0][`buy(${r})`]['amount'][`_`] = this.fix(p.amount[`${currency[0]}`] - p.fee[`${currency[0]}`])
@@ -193,8 +193,8 @@ export default (()=> {
                                     })
                                     count++
                                 } else {
-                                    let t = assets.head.assets.W.third
-                                    let f = assets.head.assets.W.first
+                                    let t = assets.head.assets.W.t
+                                    let f = assets.head.assets.W.f
                                     p.self.orders.W.ffs[1][`sell(${r})`][`amount`][`${currency[0]}`] = p.amount[`${currency[0]}`]
                                     p.self.orders.W.ffs[1][`sell(${r})`][`amount`][`${currency[1]}`] = this.fix(p.amount[`${currency[1]}`])
                                     p.self.orders.W.ffs[1][`sell(${r})`][`amount`][`_`] = this.fix(p.amount[`${currency[1]}`] - p.fee[`${currency[1]}`])
@@ -260,8 +260,8 @@ export default (()=> {
                                     })
                                     count++
                                 } else {
-                                    let s = assets.head.assets.W.second
-                                    let t = assets.head.assets.W.third
+                                    let s = assets.head.assets.W.s
+                                    let t = assets.head.assets.W.t
                                     p.self.orders.W.ffs[2][`buy(${r})`][`amount`][`${currency[0]}`] = this.fix(p.amount[`${currency[0]}`])
                                     p.self.orders.W.ffs[2][`buy(${r})`][`amount`][`${currency[1]}`] = p.amount[`${currency[1]}`]
                                     p.self.orders.W.ffs[2][`buy(${r})`][`amount`]['_'] = this.fix(p.amount[`${currency[0]}`] - p.fee[`${currency[0]}`])
@@ -306,6 +306,7 @@ export default (()=> {
                                     let cur2 = Symbol(`p.amount.${currency[1]}`)
                                     console.assert(false, {
                                         [`relation_p.amount.${currency[0]}`]: `${p.amount[`${currency[1]}`]}*${bidPrice}`,
+                                        "assets.head.assets.W": assets.head.assets.W,
                                         askAmount: askAmount,
                                         askPrice: askPrice,
                                         bidAmount: bidAmount,
@@ -313,7 +314,7 @@ export default (()=> {
                                         func:"ft__fb_ft",
                                         [cur1]: p.amount[`${currency[0]}`],
                                         [cur2]: p.amount[`${currency[1]}`],
-                                        "verify": `bidAmount: ${bidAmount} - p.amount.${currency[1]}: ` + p.amount[`${currency[1]}`] + '=' + (bidAmount - p.amount[`${currency[1]}`])
+                                        "verify": `bidAmount: ${bidAmount} - p.amount.${currency[1]}: ` + p.amount[`${currency[1]}`] + ' = ' + (bidAmount - p.amount[`${currency[1]}`])
                                     })
                                 }
                                 if((askAmount - p.amount[`${currency[0]}`]) < 0) {
@@ -324,8 +325,8 @@ export default (()=> {
                                     })
                                     count++
                                 } else {
-                                    let t = assets.head.assets.W.third
-                                    let f = assets.head.assets.W.first
+                                    let t = assets.head.assets.W.t
+                                    let f = assets.head.assets.W.f
                                     p.self.orders.W.fft[0][`buy(${r})`]['amount'][`${currency[0]}`] = this.fix(p.amount[`${currency[0]}`])
                                     p.self.orders.W.fft[0][`buy(${r})`]['amount'][`${currency[1]}`] = p.amount[`${currency[1]}`]
                                     p.self.orders.W.fft[0][`buy(${r})`]['amount'][`_`] = this.fix(p.amount[`${currency[0]}`] - p.fee[`${currency[0]}`])
@@ -392,8 +393,8 @@ export default (()=> {
                                     count++
                                 } else {
                                     let out = this.fix(p.amount[`${currency[1]}`] - p.fee[`${currency[1]}`])
-                                    let s = assets.head.assets.W.second
-                                    let f = assets.head.assets.W.first
+                                    let s = assets.head.assets.W.s
+                                    let f = assets.head.assets.W.f
                                     p.view.innerHTML = `${f}=>${s}[(${p.amount[`${currency[0]}`]}*)${out}]`
                                     p.self.orders.W.fft[1][`sell(${r})`][`amount`][`${currency[0]}`] = p.amount[`${currency[0]}`]
                                     p.self.orders.W.fft[1][`sell(${r})`][`amount`][`${currency[1]}`] = this.fix(p.amount[`${currency[1]}`])
@@ -460,8 +461,8 @@ export default (()=> {
                                 } else {
                                     p.amount[`${currency[0]}`] = p.amount[`${currency[0]}`] - p.fee[`${currency[0]}`]
                                     p.amount[`${currency[0]}`] = this.fix(p.amount[`${currency[0]}`])
-                                    let s = assets.head.assets.W.second
-                                    let t = assets.head.assets.W.third
+                                    let s = assets.head.assets.W.s
+                                    let t = assets.head.assets.W.t
                                     p.view.innerHTML = `${s}=>${t}[(${p.amount[`${currency[1]}`]}*)${p.amount[`${currency[0]}`]}]`
                                     p.self.orders.W.fft[2][`buy(${r})`][`amount`][`${currency[0]}`] = p.amount[`${currency[0]}`]
                                     p.self.orders.W.fft[2][`buy(${r})`][`amount`][`${currency[1]}`] = p.amount[`${currency[1]}`]
@@ -525,8 +526,8 @@ export default (()=> {
                                     count++
                                 } else {
                                     let out = this.fix(p.amount[`${currency[0]}`] - p.fee[`${currency[0]}`])
-                                    let s = assets.head.assets.W.second
-                                    let f = assets.head.assets.W.first
+                                    let s = assets.head.assets.W.s
+                                    let f = assets.head.assets.W.f
                                     p.view.innerHTML = `${f}=>${s}[(${p.amount[`${currency[1]}`]}*)${out}]`
                                     p.self.orders.W.ssf[0][`buy(${r})`][`amount`][`${currency[0]}`] = p.amount[`${currency[0]}`]
                                     p.self.orders.W.ssf[0][`buy(${r})`][`amount`][`${currency[1]}`] = p.amount[`${currency[1]}`]
@@ -590,8 +591,8 @@ export default (()=> {
                                     })
                                     count++
                                 } else {
-                                    let t = assets.head.assets.W.third
-                                    let f = assets.head.assets.W.first
+                                    let t = assets.head.assets.W.t
+                                    let f = assets.head.assets.W.f
                                     p.self.orders.W.ttf[0][`buy(${r})`][`amount`][`${currency[0]}`] = p.amount[`${currency[0]}`]
                                     p.self.orders.W.ttf[0][`buy(${r})`][`amount`][`${currency[1]}`] = this.fix(p.amount[`${currency[1]}`])
                                     p.self.orders.W.ttf[0][`buy(${r})`][`amount`][`_`] = this.fix(p.amount[`${currency[0]}`] - p.fee[`${currency[0]}`])
@@ -671,8 +672,8 @@ export default (()=> {
                                     })
                                     count++
                                 } else {
-                                    let t = assets.head.assets.W.third
-                                    let s = assets.head.assets.W.second
+                                    let t = assets.head.assets.W.t
+                                    let s = assets.head.assets.W.s
                                     p.self.orders.W.ttf[1][`sell(${r})`][`amount`][`${currency[0]}`] = p.amount[`${currency[0]}`]
                                     p.self.orders.W.ttf[1][`sell(${r})`][`amount`][`${currency[1]}`] = this.fix(p.amount[`${currency[1]}`])
                                     p.self.orders.W.ttf[1][`sell(${r})`][`amount`][`_`] = this.fix(p.amount[`${currency[1]}`] - p.fee[`${currency[1]}`])
@@ -735,8 +736,8 @@ export default (()=> {
                                     })
                                     count++
                                 } else {
-                                    let s = assets.head.assets.W.second
-                                    let f = assets.head.assets.W.first
+                                    let s = assets.head.assets.W.s
+                                    let f = assets.head.assets.W.f
                                     p.self.orders.W.ttf[2][`buy(${r})`]['amount'][`${currency[0]}`] = this.fix(p.amount[`${currency[0]}`])
                                     p.self.orders.W.ttf[2][`buy(${r})`]['amount'][`${currency[1]}`] = p.amount[`${currency[1]}`]
                                     p.self.orders.W.ttf[2][`buy(${r})`]['amount'][`_`] = this.fix(p.amount[`${currency[0]}`] - p.fee[`${currency[0]}`])
