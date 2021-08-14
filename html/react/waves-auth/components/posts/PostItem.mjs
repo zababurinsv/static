@@ -1,1 +1,120 @@
-export default obj=>new Promise(async function(resolve,reject){bundle.default(obj,null,async function(error,config){let post={},template=config.babel.transform(`        \n      let React =   config['React']\n      let Component = config['Component']\n      let connect =   config['connect']\n      let PropTypes = config['PropTypes']\n      let classnames = config['classnames']\n      let Link = config['Link']    \n      let deletePost = config['actions']['postActions']['deletePost']\n      let addLike = config['actions']['postActions']['addLike']\n      let removeLike = config['actions']['postActions']['removeLike']\n           \n        class PostItem extends Component {\n          onDeleteClick(id) {\n            this.props.deletePost(id);\n          }\n        \n          onLikeClick(id) {\n            this.props.addLike(id);\n          }\n        \n          onUnlikeClick(id) {\n            this.props.removeLike(id);\n          }\n        \n          findUserLike(likes) {\n            const { auth } = this.props;\n            if (likes.filter(like => like.user === auth.user.id).length > 0) {\n              return true;\n            } else {\n              return false;\n            }\n          }\n        \n          render() {\n            const { post, auth, showActions } = this.props;\n        \n            return (\n              <div className="card card-body mb-3">\n                <div className="row">\n                  <div className="col-md-2">\n                    <a href="profile.html">\n                      <img\n                        className="rounded-circle d-none d-md-block"\n                        src={post.avatar}\n                        alt=""\n                      />\n                    </a>\n                    <br />\n                    <p className="text-center">{post.name}</p>\n                  </div>\n                  <div className="col-md-10">\n                    <p className="lead">{post.text}</p>\n                    {showActions ? (\n                      <span>\n                        <button\n                          onClick={this.onLikeClick.bind(this, post._id)}\n                          type="button"\n                          className="btn btn-light mr-1"\n                        >\n                          <i\n                            className={classnames('fas fa-thumbs-up', {\n                              'text-info': this.findUserLike(post.likes)\n                            })}\n                          />\n                          <span className="badge badge-light">{post.likes.length}</span>\n                        </button>\n                        <button\n                          onClick={this.onUnlikeClick.bind(this, post._id)}\n                          type="button"\n                          className="btn btn-light mr-1"\n                        >\n                          <i className="text-secondary fas fa-thumbs-down" />\n                        </button>\n                        <Link to={\`/post/${post._id}\`} className="btn btn-info mr-1">\n                          Comments\n                        </Link>\n                        {post.user === auth.user.id ? (\n                          <button\n                            onClick={this.onDeleteClick.bind(this, post._id)}\n                            type="button"\n                            className="btn btn-danger mr-1"\n                          >\n                            <i className="fas fa-times" />\n                          </button>\n                        ) : null}\n                      </span>\n                    ) : null}\n                  </div>\n                </div>\n              </div>\n            );\n          }\n        }\n        \n        PostItem.defaultProps = {\n          showActions: true\n        };\n        \n        PostItem.propTypes = {\n          deletePost: PropTypes.func.isRequired,\n          addLike: PropTypes.func.isRequired,\n          removeLike: PropTypes.func.isRequired,\n          post: PropTypes.object.isRequired,\n          auth: PropTypes.object.isRequired\n        };\n        \n        const mapStateToProps = state => ({\n          auth: state.auth\n        });\n\n    \n      resolve(connect(mapStateToProps, { deletePost, addLike, removeLike })(PostItem))\n      \n            `,config.babel.availablePresets.react);eval(template.code)})});
+export default  (obj) => {
+  return new Promise(async function (resolve, reject) {
+    bundle['default'](obj,null, async function (error, config) {
+     let post = {}
+      let template = config['babel']['transform'](`        
+      let React =   config['React']
+      let Component = config['Component']
+      let connect =   config['connect']
+      let PropTypes = config['PropTypes']
+      let classnames = config['classnames']
+      let Link = config['Link']    
+      let deletePost = config['actions']['postActions']['deletePost']
+      let addLike = config['actions']['postActions']['addLike']
+      let removeLike = config['actions']['postActions']['removeLike']
+           
+        class PostItem extends Component {
+          onDeleteClick(id) {
+            this.props.deletePost(id);
+          }
+        
+          onLikeClick(id) {
+            this.props.addLike(id);
+          }
+        
+          onUnlikeClick(id) {
+            this.props.removeLike(id);
+          }
+        
+          findUserLike(likes) {
+            const { auth } = this.props;
+            if (likes.filter(like => like.user === auth.user.id).length > 0) {
+              return true;
+            } else {
+              return false;
+            }
+          }
+        
+          render() {
+            const { post, auth, showActions } = this.props;
+        
+            return (
+              <div className="card card-body mb-3">
+                <div className="row">
+                  <div className="col-md-2">
+                    <a href="profile.html">
+                      <img
+                        className="rounded-circle d-none d-md-block"
+                        src={post.avatar}
+                        alt=""
+                      />
+                    </a>
+                    <br />
+                    <p className="text-center">{post.name}</p>
+                  </div>
+                  <div className="col-md-10">
+                    <p className="lead">{post.text}</p>
+                    {showActions ? (
+                      <span>
+                        <button
+                          onClick={this.onLikeClick.bind(this, post._id)}
+                          type="button"
+                          className="btn btn-light mr-1"
+                        >
+                          <i
+                            className={classnames('fas fa-thumbs-up', {
+                              'text-info': this.findUserLike(post.likes)
+                            })}
+                          />
+                          <span className="badge badge-light">{post.likes.length}</span>
+                        </button>
+                        <button
+                          onClick={this.onUnlikeClick.bind(this, post._id)}
+                          type="button"
+                          className="btn btn-light mr-1"
+                        >
+                          <i className="text-secondary fas fa-thumbs-down" />
+                        </button>
+                        <Link to={\`/post/${post._id}\`} className="btn btn-info mr-1">
+                          Comments
+                        </Link>
+                        {post.user === auth.user.id ? (
+                          <button
+                            onClick={this.onDeleteClick.bind(this, post._id)}
+                            type="button"
+                            className="btn btn-danger mr-1"
+                          >
+                            <i className="fas fa-times" />
+                          </button>
+                        ) : null}
+                      </span>
+                    ) : null}
+                  </div>
+                </div>
+              </div>
+            );
+          }
+        }
+        
+        PostItem.defaultProps = {
+          showActions: true
+        };
+        
+        PostItem.propTypes = {
+          deletePost: PropTypes.func.isRequired,
+          addLike: PropTypes.func.isRequired,
+          removeLike: PropTypes.func.isRequired,
+          post: PropTypes.object.isRequired,
+          auth: PropTypes.object.isRequired
+        };
+        
+        const mapStateToProps = state => ({
+          auth: state.auth
+        });
+
+    
+      resolve(connect(mapStateToProps, { deletePost, addLike, removeLike })(PostItem))
+      
+            `,config['babel']['availablePresets']['react'])
+      eval(template.code)
+    })})}

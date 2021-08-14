@@ -1,1 +1,48 @@
-export default obj=>new Promise(function(resolve,reject){bundle.default(obj,null,async function(error,config){let template=config.babel.transform("\n            let React =   config['React']\n            let PropTypes = config['PropTypes']\n            let classnames = config['classnames']\n            const SelectListGroup = ({ name, value, error, info, onChange, options }) => {\n              const selectOptions = options.map(option => (\n                <option key={option.label} value={option.value}>\n                  {option.label}\n                </option>\n              ));\n              return (\n                <div className=\"form-group\">\n                  <select\n                    className={classnames('form-control form-control-lg', {\n                      'is-invalid': error\n                    })}\n                    name={name}\n                    value={value}\n                    onChange={onChange}\n                  >\n                    {selectOptions}\n                  </select>\n                  {info && <small className=\"form-text text-muted\">{info}</small>}\n                  {error && <div className=\"invalid-feedback\">{error}</div>}\n                </div>\n              );\n            };\n            \n            SelectListGroup.propTypes = {\n              name: PropTypes.string.isRequired,\n              value: PropTypes.string.isRequired,\n              info: PropTypes.string,\n              error: PropTypes.string,\n              onChange: PropTypes.func.isRequired,\n              options: PropTypes.array.isRequired\n            };\n\n                     resolve(SelectListGroup)\n            ",config.babel.availablePresets.react);eval(template.code)})});
+export default  (obj) => {
+    return new Promise(function (resolve, reject) {
+        bundle['default'](obj,null, async function (error, config) {
+
+        let template = config['babel']['transform'](`
+            let React =   config['React']
+            let PropTypes = config['PropTypes']
+            let classnames = config['classnames']
+            const SelectListGroup = ({ name, value, error, info, onChange, options }) => {
+              const selectOptions = options.map(option => (
+                <option key={option.label} value={option.value}>
+                  {option.label}
+                </option>
+              ));
+              return (
+                <div className="form-group">
+                  <select
+                    className={classnames('form-control form-control-lg', {
+                      'is-invalid': error
+                    })}
+                    name={name}
+                    value={value}
+                    onChange={onChange}
+                  >
+                    {selectOptions}
+                  </select>
+                  {info && <small className="form-text text-muted">{info}</small>}
+                  {error && <div className="invalid-feedback">{error}</div>}
+                </div>
+              );
+            };
+            
+            SelectListGroup.propTypes = {
+              name: PropTypes.string.isRequired,
+              value: PropTypes.string.isRequired,
+              info: PropTypes.string,
+              error: PropTypes.string,
+              onChange: PropTypes.func.isRequired,
+              options: PropTypes.array.isRequired
+            };
+
+                     resolve(SelectListGroup)
+            `,config['babel']['availablePresets']['react'])
+
+            eval(template.code)
+        })})}
+
+

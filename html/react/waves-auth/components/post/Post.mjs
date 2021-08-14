@@ -1,1 +1,75 @@
-import componentCommentForm from"./CommentForm.mjs";import componentCommentFeed from"./CommentFeed.mjs";import componenPostItem from"../posts/PostItem.mjs";import componentSpinner from"../common/Spinner.mjs";export default obj=>new Promise(async function(resolve,reject){bundle.default(obj,null,async function(error,config){let CommentForm=await componentCommentForm("CommentForm"),CommentFeed=await componentCommentFeed("CommentFeed"),PostItem=await componenPostItem("PostItem"),Spinner=await componentSpinner("Spinner"),template=config.babel.transform("        \n      let React =   config['React']\n      let Component = config['Component']\n      let connect =   config['connect']\n      let PropTypes = config['PropTypes']\n      let Link = config['Link']\n      \n      let getPost = config['actions']['postActions']['getPost']\n    \n                  \n      class Post extends Component {\n        componentDidMount() {\n          this.props.getPost(this.props.match.params.id);\n        }\n      \n        render() {\n          const { post, loading } = this.props.post;\n          let postContent;\n      \n          if (post === null || loading || Object.keys(post).length === 0) {\n            postContent = <Spinner />;\n          } else {\n            postContent = (\n              <div>\n                <PostItem post={post} showActions={false} />\n                <CommentForm postId={post._id} />\n                <CommentFeed postId={post._id} comments={post.comments} />\n              </div>\n            );\n          }\n      \n          return (\n            <div className=\"post\">\n              <div className=\"container\">\n                <div className=\"row\">\n                  <div className=\"col-md-12\">\n                    <Link to=\"/feed\" className=\"btn btn-light mb-3\">\n                      Back To Feed\n                    </Link>\n                    {postContent}\n                  </div>\n                </div>\n              </div>\n            </div>\n          );\n        }\n      }\n      \n      Post.propTypes = {\n        getPost: PropTypes.func.isRequired,\n        post: PropTypes.object.isRequired\n      };\n      \n      const mapStateToProps = state => ({\n        post: state.post\n      });\n\n    \n      resolve(connect(mapStateToProps, { getPost })(Post))\n      \n            ",config.babel.availablePresets.react);eval(template.code)})});
+import componentCommentForm from './CommentForm.mjs';
+import componentCommentFeed from './CommentFeed.mjs';
+import componenPostItem from '../posts/PostItem.mjs';
+import componentSpinner from '../common/Spinner.mjs';
+
+export default  (obj) => {
+  return new Promise(async function (resolve, reject) {
+    bundle['default'](obj,null, async function (error, config) {
+      let CommentForm = await componentCommentForm('CommentForm')
+      let CommentFeed = await componentCommentFeed('CommentFeed')
+      let PostItem = await componenPostItem('PostItem')
+      let Spinner = await componentSpinner('Spinner')
+      let template = config['babel']['transform'](`        
+      let React =   config['React']
+      let Component = config['Component']
+      let connect =   config['connect']
+      let PropTypes = config['PropTypes']
+      let Link = config['Link']
+      
+      let getPost = config['actions']['postActions']['getPost']
+    
+                  
+      class Post extends Component {
+        componentDidMount() {
+          this.props.getPost(this.props.match.params.id);
+        }
+      
+        render() {
+          const { post, loading } = this.props.post;
+          let postContent;
+      
+          if (post === null || loading || Object.keys(post).length === 0) {
+            postContent = <Spinner />;
+          } else {
+            postContent = (
+              <div>
+                <PostItem post={post} showActions={false} />
+                <CommentForm postId={post._id} />
+                <CommentFeed postId={post._id} comments={post.comments} />
+              </div>
+            );
+          }
+      
+          return (
+            <div className="post">
+              <div className="container">
+                <div className="row">
+                  <div className="col-md-12">
+                    <Link to="/feed" className="btn btn-light mb-3">
+                      Back To Feed
+                    </Link>
+                    {postContent}
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        }
+      }
+      
+      Post.propTypes = {
+        getPost: PropTypes.func.isRequired,
+        post: PropTypes.object.isRequired
+      };
+      
+      const mapStateToProps = state => ({
+        post: state.post
+      });
+
+    
+      resolve(connect(mapStateToProps, { getPost })(Post))
+      
+            `,config['babel']['availablePresets']['react'])
+      eval(template.code)
+    })})}

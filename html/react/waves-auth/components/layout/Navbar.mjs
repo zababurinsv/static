@@ -1,1 +1,118 @@
-export default obj=>new Promise(function(resolve,reject){bundle.default(obj,null,async function(error,config){let template=config.babel.transform('       \n            let React = config[\'React\'] \n            let connect =  config[\'reactRedux\'][\'connect\']\n            let logoutUser =  config[\'actions\'][\'authActions\'][\'logoutUser\']\n            let clearCurrentProfile =  config[\'actions\'][\'profileActions\'][\'clearCurrentProfile\']\n            let PropTypes = config[\'PropTypes\']\n            let Component = config[\'Component\']\n            let Link = config[\'Link\']\n                \n            class Navbar extends Component {\n              onLogoutClick(e) {\n                e.preventDefault();\n                this.props.clearCurrentProfile();\n                this.props.logoutUser();\n              }\n            \n              render() {\n                const { isAuthenticated, user } = this.props.auth;\n            \n                const authLinks = (\n                  <ul className="navbar-nav ml-auto">\n                    <li className="nav-item">\n                      <Link className="nav-link" to="/feed">\n                        Post Feed\n                      </Link>\n                    </li>\n                    <li className="nav-item">\n                      <Link className="nav-link" to="/dashboard">\n                        Dashboard\n                      </Link>\n                    </li>\n                    <li className="nav-item">\n                      <a\n                        href=""\n                        onClick={this.onLogoutClick.bind(this)}\n                        className="nav-link"\n                      >\n                        <img\n                          className="rounded-circle"\n                          src={user.avatar}\n                          alt={user.name}\n                          style={{ width: \'25px\', marginRight: \'5px\' }}\n                          title="You must have a Gravatar connected to your email to display an image"\n                        />{\' \'}\n                        Logout\n                      </a>\n                    </li>\n                  </ul>\n                );\n            \n                const guestLinks = (\n                  <ul className="navbar-nav ml-auto">\n                    <li className="nav-item">\n                      <Link className="nav-link" to="/register">\n                        Sign Up\n                      </Link>\n                    </li>\n                    <li className="nav-item">\n                      <Link className="nav-link" to="/login">\n                        Login\n                      </Link>\n                    </li>\n                  </ul>\n                );\n            \n                return (\n                  <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">\n                    <div className="container">\n                      <Link className="navbar-brand" to="/">\n                        Страница Авторизации\n                      </Link>\n                      <button\n                        className="navbar-toggler"\n                        type="button"\n                        data-toggle="collapse"\n                        data-target="#mobile-nav">\n                        <span className="navbar-toggler-icon" />\n                      </button>\n            \n                      <div className="collapse navbar-collapse" id="mobile-nav">\n                        <ul className="navbar-nav mr-auto">\n                          <li className="nav-item">\n                            <Link className="nav-link" to="/profiles">\n                              {\' \'}\n                              Developers\n                            </Link>\n                          </li>\n                        </ul>\n                        {isAuthenticated ? authLinks : guestLinks}\n                      </div>\n                    </div>\n                  </nav>\n                );\n              }\n            }\n            \n            Navbar.propTypes = {\n              logoutUser: PropTypes.func.isRequired,\n              auth: PropTypes.object.isRequired\n            };\n            \n            const mapStateToProps = state => ({\n              auth: state.auth\n            });\n\n            resolve(connect(mapStateToProps, {logoutUser, clearCurrentProfile })(Navbar))    \n \n            ',config.babel.availablePresets.react);eval(template.code)})});
+export default  (obj) => {
+    return new Promise(function (resolve, reject) {
+        bundle['default'](obj,null, async function (error, config) {
+
+            let template = config['babel']['transform'](`       
+            let React = config['React'] 
+            let connect =  config['reactRedux']['connect']
+            let logoutUser =  config['actions']['authActions']['logoutUser']
+            let clearCurrentProfile =  config['actions']['profileActions']['clearCurrentProfile']
+            let PropTypes = config['PropTypes']
+            let Component = config['Component']
+            let Link = config['Link']
+                
+            class Navbar extends Component {
+              onLogoutClick(e) {
+                e.preventDefault();
+                this.props.clearCurrentProfile();
+                this.props.logoutUser();
+              }
+            
+              render() {
+                const { isAuthenticated, user } = this.props.auth;
+            
+                const authLinks = (
+                  <ul className="navbar-nav ml-auto">
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/feed">
+                        Post Feed
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/dashboard">
+                        Dashboard
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <a
+                        href=""
+                        onClick={this.onLogoutClick.bind(this)}
+                        className="nav-link"
+                      >
+                        <img
+                          className="rounded-circle"
+                          src={user.avatar}
+                          alt={user.name}
+                          style={{ width: '25px', marginRight: '5px' }}
+                          title="You must have a Gravatar connected to your email to display an image"
+                        />{' '}
+                        Logout
+                      </a>
+                    </li>
+                  </ul>
+                );
+            
+                const guestLinks = (
+                  <ul className="navbar-nav ml-auto">
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/register">
+                        Sign Up
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/login">
+                        Login
+                      </Link>
+                    </li>
+                  </ul>
+                );
+            
+                return (
+                  <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
+                    <div className="container">
+                      <Link className="navbar-brand" to="/">
+                        Страница Авторизации
+                      </Link>
+                      <button
+                        className="navbar-toggler"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#mobile-nav">
+                        <span className="navbar-toggler-icon" />
+                      </button>
+            
+                      <div className="collapse navbar-collapse" id="mobile-nav">
+                        <ul className="navbar-nav mr-auto">
+                          <li className="nav-item">
+                            <Link className="nav-link" to="/profiles">
+                              {' '}
+                              Developers
+                            </Link>
+                          </li>
+                        </ul>
+                        {isAuthenticated ? authLinks : guestLinks}
+                      </div>
+                    </div>
+                  </nav>
+                );
+              }
+            }
+            
+            Navbar.propTypes = {
+              logoutUser: PropTypes.func.isRequired,
+              auth: PropTypes.object.isRequired
+            };
+            
+            const mapStateToProps = state => ({
+              auth: state.auth
+            });
+
+            resolve(connect(mapStateToProps, {logoutUser, clearCurrentProfile })(Navbar))    
+ 
+            `,config['babel']['availablePresets']['react'])
+            eval(template.code)
+
+        })
+    })
+}
+

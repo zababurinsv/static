@@ -1,1 +1,109 @@
-export default obj=>new Promise(async function(resolve,reject){bundle.default(obj,null,async function(error,config){let template=config.babel.transform('        \n      let React =   config[\'React\']\n      let Component = config[\'Component\']\n      let isEmpty = config[\'isEmpty\']\n\n            \n      class ProfileHeader extends Component {\n        render() {\n          const { profile } = this.props;\n      \n          return (\n            <div className="row">\n              <div className="col-md-12">\n                <div className="card card-body bg-info text-white mb-3">\n                  <div className="row">\n                    <div className="col-4 col-md-3 m-auto">\n                      <img\n                        className="rounded-circle"\n                        src={profile.user.avatar}\n                        alt=""\n                      />\n                    </div>\n                  </div>\n                  <div className="text-center">\n                    <h1 className="display-4 text-center">{profile.user.name}</h1>\n                    <p className="lead text-center">\n                      {profile.status}{\' \'}\n                      {isEmpty(profile.company) ? null : (\n                        <span>at {profile.company}</span>\n                      )}\n                    </p>\n                    {isEmpty(profile.location) ? null : <p>{profile.location}</p>}\n                    <p>\n                      {isEmpty(profile.website) ? null : (\n                        <a\n                          className="text-white p-2"\n                          href={profile.website}\n                          target="_blank"\n                        >\n                          <i className="fas fa-globe fa-2x" />\n                        </a>\n                      )}\n      \n                      {isEmpty(profile.social && profile.social.twitter) ? null : (\n                        <a\n                          className="text-white p-2"\n                          href={profile.social.twitter}\n                          target="_blank"\n                        >\n                          <i className="fab fa-twitter fa-2x" />\n                        </a>\n                      )}\n      \n                      {isEmpty(profile.social && profile.social.facebook) ? null : (\n                        <a\n                          className="text-white p-2"\n                          href={profile.social.facebook}\n                          target="_blank"\n                        >\n                          <i className="fab fa-facebook fa-2x" />\n                        </a>\n                      )}\n      \n                      {isEmpty(profile.social && profile.social.linkedin) ? null : (\n                        <a\n                          className="text-white p-2"\n                          href={profile.social.linkedin}\n                          target="_blank"\n                        >\n                          <i className="fab fa-linkedin fa-2x" />\n                        </a>\n                      )}\n      \n                      {isEmpty(profile.social && profile.social.youtube) ? null : (\n                        <a\n                          className="text-white p-2"\n                          href={profile.social.youtube}\n                          target="_blank"\n                        >\n                          <i className="fab fa-youtube fa-2x" />\n                        </a>\n                      )}\n      \n                      {isEmpty(profile.social && profile.social.instagram) ? null : (\n                        <a\n                          className="text-white p-2"\n                          href={profile.social.instagram}\n                          target="_blank"\n                        >\n                          <i className="fab fa-instagram fa-2x" />\n                        </a>\n                      )}\n                    </p>\n                  </div>\n                </div>\n              </div>\n            </div>\n          );\n        }\n      }\n    \n      resolve(ProfileHeader)\n      \n            ',config.babel.availablePresets.react);eval(template.code)})});
+export default  (obj) => {
+  return new Promise(async function (resolve, reject) {
+    bundle['default'](obj,null, async function (error, config) {
+      let template = config['babel']['transform'](`        
+      let React =   config['React']
+      let Component = config['Component']
+      let isEmpty = config['isEmpty']
+
+            
+      class ProfileHeader extends Component {
+        render() {
+          const { profile } = this.props;
+      
+          return (
+            <div className="row">
+              <div className="col-md-12">
+                <div className="card card-body bg-info text-white mb-3">
+                  <div className="row">
+                    <div className="col-4 col-md-3 m-auto">
+                      <img
+                        className="rounded-circle"
+                        src={profile.user.avatar}
+                        alt=""
+                      />
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <h1 className="display-4 text-center">{profile.user.name}</h1>
+                    <p className="lead text-center">
+                      {profile.status}{' '}
+                      {isEmpty(profile.company) ? null : (
+                        <span>at {profile.company}</span>
+                      )}
+                    </p>
+                    {isEmpty(profile.location) ? null : <p>{profile.location}</p>}
+                    <p>
+                      {isEmpty(profile.website) ? null : (
+                        <a
+                          className="text-white p-2"
+                          href={profile.website}
+                          target="_blank"
+                        >
+                          <i className="fas fa-globe fa-2x" />
+                        </a>
+                      )}
+      
+                      {isEmpty(profile.social && profile.social.twitter) ? null : (
+                        <a
+                          className="text-white p-2"
+                          href={profile.social.twitter}
+                          target="_blank"
+                        >
+                          <i className="fab fa-twitter fa-2x" />
+                        </a>
+                      )}
+      
+                      {isEmpty(profile.social && profile.social.facebook) ? null : (
+                        <a
+                          className="text-white p-2"
+                          href={profile.social.facebook}
+                          target="_blank"
+                        >
+                          <i className="fab fa-facebook fa-2x" />
+                        </a>
+                      )}
+      
+                      {isEmpty(profile.social && profile.social.linkedin) ? null : (
+                        <a
+                          className="text-white p-2"
+                          href={profile.social.linkedin}
+                          target="_blank"
+                        >
+                          <i className="fab fa-linkedin fa-2x" />
+                        </a>
+                      )}
+      
+                      {isEmpty(profile.social && profile.social.youtube) ? null : (
+                        <a
+                          className="text-white p-2"
+                          href={profile.social.youtube}
+                          target="_blank"
+                        >
+                          <i className="fab fa-youtube fa-2x" />
+                        </a>
+                      )}
+      
+                      {isEmpty(profile.social && profile.social.instagram) ? null : (
+                        <a
+                          className="text-white p-2"
+                          href={profile.social.instagram}
+                          target="_blank"
+                        >
+                          <i className="fab fa-instagram fa-2x" />
+                        </a>
+                      )}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        }
+      }
+    
+      resolve(ProfileHeader)
+      
+            `,config['babel']['availablePresets']['react'])
+      eval(template.code)
+    })})}

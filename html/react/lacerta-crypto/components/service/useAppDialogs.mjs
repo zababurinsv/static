@@ -1,1 +1,39 @@
-import{useState,useMemo}from"react";function useAppDialogs(){const[e,t]=useState(!1),[s,u]=useState(!1),[o,a]=useState(!1),[r,p]=useState(),[l,i,m,n,S,c]=useMemo(()=>[e=>{p(e),t(!0)},()=>t(!1),()=>u(!0),()=>u(!1),()=>a(!0),()=>a(!1)],[]);return{selectedCoupon:r,dialog:[e,l,i],result:[s,m,n],form:[o,S,c]}}export default useAppDialogs;
+import { useState, useMemo } from 'react';
+
+function useAppDialogs() {
+    const [dialogOpened, changeDialogState] = useState(false);
+    const [resultOpened, changeResultState] = useState(false);
+    const [formOpened, changeFormState] = useState(false);
+    const [selectedCoupon, selectCoupon] = useState();
+
+    const [
+        onDialogOpen,
+        onDialogClose,
+        onResultOpen,
+        onResultClose,
+        onFormOpened,
+        onFormClose,
+    ] = useMemo(
+        () => [
+            (coupon) => {
+                selectCoupon(coupon);
+                changeDialogState(true);
+            },
+            () => changeDialogState(false),
+            () => changeResultState(true),
+            () => changeResultState(false),
+            () => changeFormState(true),
+            () => changeFormState(false),
+        ],
+        [],
+    );
+
+    return {
+        selectedCoupon,
+        dialog: [dialogOpened, onDialogOpen, onDialogClose],
+        result: [resultOpened, onResultOpen, onResultClose],
+        form: [formOpened, onFormOpened, onFormClose],
+    };
+}
+
+export default useAppDialogs;

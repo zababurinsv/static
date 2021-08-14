@@ -1,1 +1,31 @@
-export default obj=>new Promise(async function(resolve,reject){bundle.default(obj,null,async function(error,config){let template=config.babel.transform('        \n\n        let React =   config[\'React\']\n        let Link =   config[\'Link\']\n              \n        const ProfileActions = () => {\n          return (\n            <div className="btn-group mb-4" role="group">\n              <Link to="/edit-profile" className="btn btn-light">\n                <i className="fas fa-user-circle text-info mr-1" /> Edit Profile\n              </Link>\n              <Link to="/add-experience" className="btn btn-light">\n                <i className="fab fa-black-tie text-info mr-1" />\n                Add Experience\n              </Link>\n              <Link to="/add-education" className="btn btn-light">\n                <i className="fas fa-graduation-cap text-info mr-1" />\n                Add Education\n              </Link>\n            </div>\n          );\n        };\n\n\n        resolve(ProfileActions)\n            ',config.babel.availablePresets.react);eval(template.code)})});
+export default  (obj) => {
+    return new Promise(async function (resolve, reject) {
+        bundle['default'](obj,null, async function (error, config) {
+        let template = config['babel']['transform'](`        
+
+        let React =   config['React']
+        let Link =   config['Link']
+              
+        const ProfileActions = () => {
+          return (
+            <div className="btn-group mb-4" role="group">
+              <Link to="/edit-profile" className="btn btn-light">
+                <i className="fas fa-user-circle text-info mr-1" /> Edit Profile
+              </Link>
+              <Link to="/add-experience" className="btn btn-light">
+                <i className="fab fa-black-tie text-info mr-1" />
+                Add Experience
+              </Link>
+              <Link to="/add-education" className="btn btn-light">
+                <i className="fas fa-graduation-cap text-info mr-1" />
+                Add Education
+              </Link>
+            </div>
+          );
+        };
+
+
+        resolve(ProfileActions)
+            `,config['babel']['availablePresets']['react'])
+            eval(template.code)
+        })})}

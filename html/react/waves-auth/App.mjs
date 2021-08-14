@@ -1,1 +1,78 @@
-export default obj=>new Promise(async function(resolve,reject){bundle.default(obj,null,async function(error,config){let template=config.babel.transform(' \n    let setAuthToken = config[\'setAuthToken\']\n    let React = config[\'React\']\n    let Component = config[\'Component\']\n    let Router =   config[\'Router\']   \n    let Route =   config[\'Route\']\n    let Switch =   config[\'Switch\']\n    let jwt_decode =   config[\'jwt_decode\']\n    let setCurrentUser = config[\'actions\'][\'authActions\'][\'setCurrentUser\']\n    let clearCurrentProfile = config[\'actions\'][\'profileActions\'][\'clearCurrentProfile\']\n    class App extends Component {\n        render() {\n          return (\n        <Provider store={store}>\n        <Router>\n            <div className="App">\n            <Navbar />\n            <Route exact path="/" component={Landing} />\n            <div className="container">\n                <Route exact path="/profiles" component={Profiles} />\n                <Route exact path="/profile/:handle" component={Profile} />\n                <Route exact path="/register" component={Register} />\n                <Route exact path="/login" component={Login} />\n              <Switch>\n                <PrivateRoute exact path="/dashboard" component={Dashboard} />\n              </Switch>\n              <Switch>\n                <PrivateRoute\n                  exact\n                  path="/create-profile"\n                  component={CreateProfile}/>\n              </Switch>\n              <Switch>\n                <PrivateRoute\n                  exact\n                  path="/edit-profile"\n                  component={EditProfile}/>\n              </Switch>\n              <Switch>\n                <PrivateRoute\n                  exact\n                  path="/add-experience"\n                  component={AddExperience}/>\n              </Switch>\n              <Switch>\n                <PrivateRoute\n                  exact\n                  path="/add-education"\n                  component={AddEducation}/>\n              </Switch>\n              <Switch>\n                <PrivateRoute exact path="/feed" component={Posts} />\n              </Switch>\n              <Switch>\n                <PrivateRoute exact path="/post/:id" component={Post} />\n              </Switch>\n              <Route exact path="/not-found" component={NotFound} />\n             </div>\n            <Footer />\n          </div>\n        </Router>\n      </Provider>\n          );\n        }\n      }\n       resolve(App)\n            ',config.babel.availablePresets.react);eval(template.code)})});
+export default  (obj) => {
+  return new Promise(async function (resolve, reject) {
+    bundle['default'](obj,null, async function (error, config) {
+    let template = config['babel']['transform'](` 
+    let setAuthToken = config['setAuthToken']
+    let React = config['React']
+    let Component = config['Component']
+    let Router =   config['Router']   
+    let Route =   config['Route']
+    let Switch =   config['Switch']
+    let jwt_decode =   config['jwt_decode']
+    let setCurrentUser = config['actions']['authActions']['setCurrentUser']
+    let clearCurrentProfile = config['actions']['profileActions']['clearCurrentProfile']
+    class App extends Component {
+        render() {
+          return (
+        <Provider store={store}>
+        <Router>
+            <div className="App">
+            <Navbar />
+            <Route exact path="/" component={Landing} />
+            <div className="container">
+                <Route exact path="/profiles" component={Profiles} />
+                <Route exact path="/profile/:handle" component={Profile} />
+                <Route exact path="/register" component={Register} />
+                <Route exact path="/login" component={Login} />
+              <Switch>
+                <PrivateRoute exact path="/dashboard" component={Dashboard} />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/create-profile"
+                  component={CreateProfile}/>
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/edit-profile"
+                  component={EditProfile}/>
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/add-experience"
+                  component={AddExperience}/>
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/add-education"
+                  component={AddEducation}/>
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path="/feed" component={Posts} />
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path="/post/:id" component={Post} />
+              </Switch>
+              <Route exact path="/not-found" component={NotFound} />
+             </div>
+            <Footer />
+          </div>
+        </Router>
+      </Provider>
+          );
+        }
+      }
+       resolve(App)
+            `,config['babel']['availablePresets']['react'])
+      eval(template.code)
+
+
+
+
+    })})}
+
+

@@ -1,1 +1,58 @@
-export default obj=>new Promise(function(resolve,reject){bundle.default(obj,null,async function(error,config){let template=config.babel.transform("\n           let PropTypes = config['PropTypes']\n           let classnames = config['classnames']\n            let React =   config['React']\n            const TextFieldGroup = ({\n              name,\n              placeholder,\n              value,\n              label,\n              error,\n              info,\n              type,\n              onChange,\n              disabled\n            }) => {\n              return (\n                <div className=\"form-group\">\n                  <input\n                    type={type}\n                    className={classnames('form-control form-control-lg', {\n                      'is-invalid': error\n                    })}\n                    placeholder={placeholder}\n                    name={name}\n                    value={value}\n                    onChange={onChange}\n                    disabled={disabled}\n                  />\n                  {info && <small className=\"form-text text-muted\">{info}</small>}\n                  {error && <div className=\"invalid-feedback\">{error}</div>}\n                </div>\n              );\n            };\n            \n            TextFieldGroup.propTypes = {\n              name: PropTypes.string.isRequired,\n              placeholder: PropTypes.string,\n              value: PropTypes.string.isRequired,\n              info: PropTypes.string,\n              error: PropTypes.string,\n              type: PropTypes.string.isRequired,\n              onChange: PropTypes.func.isRequired,\n              disabled: PropTypes.string\n            };\n            \n            TextFieldGroup.defaultProps = {\n              type: 'text'\n            };\n                     resolve(TextFieldGroup)\n            ",config.babel.availablePresets.react);eval(template.code)})});
+export default  (obj) => {
+  return new Promise(function (resolve, reject) {
+    bundle['default'](obj,null, async function (error, config) {
+      let template = config['babel']['transform'](`
+           let PropTypes = config['PropTypes']
+           let classnames = config['classnames']
+            let React =   config['React']
+            const TextFieldGroup = ({
+              name,
+              placeholder,
+              value,
+              label,
+              error,
+              info,
+              type,
+              onChange,
+              disabled
+            }) => {
+              return (
+                <div className="form-group">
+                  <input
+                    type={type}
+                    className={classnames('form-control form-control-lg', {
+                      'is-invalid': error
+                    })}
+                    placeholder={placeholder}
+                    name={name}
+                    value={value}
+                    onChange={onChange}
+                    disabled={disabled}
+                  />
+                  {info && <small className="form-text text-muted">{info}</small>}
+                  {error && <div className="invalid-feedback">{error}</div>}
+                </div>
+              );
+            };
+            
+            TextFieldGroup.propTypes = {
+              name: PropTypes.string.isRequired,
+              placeholder: PropTypes.string,
+              value: PropTypes.string.isRequired,
+              info: PropTypes.string,
+              error: PropTypes.string,
+              type: PropTypes.string.isRequired,
+              onChange: PropTypes.func.isRequired,
+              disabled: PropTypes.string
+            };
+            
+            TextFieldGroup.defaultProps = {
+              type: 'text'
+            };
+                     resolve(TextFieldGroup)
+            `,config['babel']['availablePresets']['react'])
+
+              eval(template.code)
+    })})}
+
+

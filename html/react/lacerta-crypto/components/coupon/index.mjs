@@ -1,1 +1,3 @@
-import Coupon from"./Coupon";export default Coupon;
+import Coupon from './Coupon';
+
+export default Coupon;

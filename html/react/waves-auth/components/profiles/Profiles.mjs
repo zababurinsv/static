@@ -1,1 +1,69 @@
-import componentProfileItem from"./ProfileItem.mjs";import componentSpinner from"../common/Spinner.mjs";export default obj=>new Promise(function(resolve,reject){bundle.default(obj,null,async function(error,config){let ProfileItem=await componentProfileItem("ProfileItem"),Spinner=await componentSpinner("Spinner"),template=config.babel.transform("   \n      let React =   config['React']\n      let connect =   config['connect']\n      let PropTypes = config['PropTypes']\n      let Component = config['Component']\n      let getProfiles = config['actions']['profileActions']['getProfiles']\n        \n      class Profiles extends Component {\n        componentDidMount() {\n          this.props.getProfiles();\n        }\n\n        render() {\n          const { profiles, loading } = this.props.profile;\n          let profileItems;\n\n          if (profiles === null || loading) {\n            profileItems = <Spinner />;\n          } else {\n            if (profiles.length > 0) {\n              profileItems = profiles.map(profile => (\n                  <ProfileItem key={profile._id} profile={profile} />\n              ));\n            } else {\n              profileItems = <h4>No profiles found...</h4>;\n            }\n          }\n          return (\n              <div className=\"profiles\">\n                <div className=\"container\">\n                  <div className=\"row\">\n                    <div className=\"col-md-12\">\n                      <h1 className=\"display-4 text-center\">Developer Profiles</h1>\n                      <p className=\"lead text-center\">\n                        Browse and connect with developers\n                      </p>\n                      {profileItems}\n                    </div>\n                  </div>\n                </div>\n              </div>\n          );\n        }\n      }\n\n      Profiles.propTypes = {\n        getProfiles: PropTypes.func.isRequired,\n        profile: PropTypes.object.isRequired\n      };\n\n      const mapStateToProps = state => ({\n        profile: state.profile\n      });\n      resolve(connect(mapStateToProps, { getProfiles })(Profiles))\n        \n            ",config.babel.availablePresets.react);eval(template.code)})});
+import componentProfileItem from './ProfileItem.mjs';
+import componentSpinner from '../common/Spinner.mjs';
+
+export default  (obj) => {
+  return new Promise(function (resolve, reject) {
+    bundle['default'](obj,null, async function (error, config) {
+      let ProfileItem = await componentProfileItem('ProfileItem')
+      let Spinner = await componentSpinner('Spinner')
+      let template = config['babel']['transform'](`   
+      let React =   config['React']
+      let connect =   config['connect']
+      let PropTypes = config['PropTypes']
+      let Component = config['Component']
+      let getProfiles = config['actions']['profileActions']['getProfiles']
+        
+      class Profiles extends Component {
+        componentDidMount() {
+          this.props.getProfiles();
+        }
+
+        render() {
+          const { profiles, loading } = this.props.profile;
+          let profileItems;
+
+          if (profiles === null || loading) {
+            profileItems = <Spinner />;
+          } else {
+            if (profiles.length > 0) {
+              profileItems = profiles.map(profile => (
+                  <ProfileItem key={profile._id} profile={profile} />
+              ));
+            } else {
+              profileItems = <h4>No profiles found...</h4>;
+            }
+          }
+          return (
+              <div className="profiles">
+                <div className="container">
+                  <div className="row">
+                    <div className="col-md-12">
+                      <h1 className="display-4 text-center">Developer Profiles</h1>
+                      <p className="lead text-center">
+                        Browse and connect with developers
+                      </p>
+                      {profileItems}
+                    </div>
+                  </div>
+                </div>
+              </div>
+          );
+        }
+      }
+
+      Profiles.propTypes = {
+        getProfiles: PropTypes.func.isRequired,
+        profile: PropTypes.object.isRequired
+      };
+
+      const mapStateToProps = state => ({
+        profile: state.profile
+      });
+      resolve(connect(mapStateToProps, { getProfiles })(Profiles))
+        
+            `,config['babel']['availablePresets']['react'])
+
+      eval(template.code)
+
+
+    })})}

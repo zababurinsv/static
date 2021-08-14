@@ -1,1 +1,1 @@
-export{default as pipe,pipeF}from"./pipe";
+export { default as pipe, pipeF } from './pipe';

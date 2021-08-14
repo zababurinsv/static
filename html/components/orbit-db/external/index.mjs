@@ -5,12 +5,12 @@ export default async (v,p,c,obj,r) => {
     const target = {
         notProxied: "original value",
         proxied: "original value"
-      };
+    };
     const handler = {
-    get: function(target, prop, receiver) {
-        if (prop === "proxied") {
-            return "replaced value";
-        }
+        get: function(target, prop, receiver) {
+            if (prop === "proxied") {
+                return "replaced value";
+            }
             return Reflect.get(...arguments);
         }
     };
@@ -40,7 +40,7 @@ export default async (v,p,c,obj,r) => {
                     return false
                 }
 
-            } 
+            }
         },
         location: location,
         value: {},
