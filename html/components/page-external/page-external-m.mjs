@@ -1,5 +1,4 @@
-import loader from '/static/html/components/component_modules/loader/loader.mjs'
-import iframe from '/static/html/components/component_modules/iframe/iframe.mjs'
+import Jason from './jason.mjs'
 if (!Object.keys) {
   Object.keys = function (o) {
     if (o !== Object(o)) { throw new TypeError('Object.keys called on a non-object') }
@@ -653,20 +652,20 @@ div#external{
               }
 
               // For testing
-              if (typeof exports !== 'undefined') {
-                let x = {
-                  Phenotype: Phenotype,
-                  Genotype: Genotype,
-                  Nucleus: Nucleus,
-                  Gene: Gene,
-                  Membrane: Membrane,
-                  God: God,
-                  plan: God.plan.bind(God),
-                  create: God.create.bind(God)
-                }
-                if (typeof module !== 'undefined' && module.exports) { exports = module.exports = x }
-                exports = x
-              } else {
+              // if (typeof exports !== 'undefined') {
+              //   let x = {
+              //     Phenotype: Phenotype,
+              //     Genotype: Genotype,
+              //     Nucleus: Nucleus,
+              //     Gene: Gene,
+              //     Membrane: Membrane,
+              //     God: God,
+              //     plan: God.plan.bind(God),
+              //     create: God.create.bind(God)
+              //   }
+              //   if (typeof module !== 'undefined' && module.exports) { exports = module.exports = x }
+              //   exports = x
+              // } else {
                 // console.assert(true, $root)
                 $root['input'] = $root['this']
                 $root['tick'] = {}
@@ -704,7 +703,7 @@ div#external{
                 // obj['cell']['God'].create(obj)
                 // })
                 // }
-              }
+              // }
             })
           }
           obj['function']['type'] = function (obj) {
@@ -745,79 +744,95 @@ div#external{
           this.NodeList = this.childNodes
           this.NodeList.prototype = Array.prototype
           this.HTMLElement = window.HTMLElement
-          let Jason = await loader('/static/html/components/component_modules/cell-index/jason.mjs','Jason')
-          let ST = await loader('/static/html/components/component_modules/cell-index/st.mjs','ST')
-          let url = ''
-          if(obj.this.dataset.url){
+          // let scriptJ = document.createElement('script')
+          // scriptJ.src = './jason.mjs'
+          // scriptJ.type = 'module'
+          // document.body.appendChild(scriptJ)
+          // scriptJ.onload = () => {
+            // let scriptS = document.createElement('script')
+            // scriptS.src = './st.mjs'
+            // document.body.appendChild(scriptS)
+            // scriptS.onload = async () => {
+              console.log('!!!!!!!!!!!!!!!!!!!!!!!!')
+
+              // let Jason = await loader('/static/html/components/component_modules/cell-index/jason.mjs','Jason')
+              // let ST = await loader('/static/html/components/component_modules/cell-index/st.mjs','ST')
+              let url = ''
               url =  obj.this.dataset.url
-              if(url.indexOf('${location.origin}') !== -1) {
-                if(location.origin.indexOf('localhost') !== -1) {
-                  url = url.replace('${location.origin}', '')
-                } else {
-                  url = url.replace('${location.origin}', `${location.origin}`)
+              // if(obj.this.dataset.url){
+              //   url =  obj.this.dataset.url
+              //   if(url.indexOf('${location.origin}') !== -1) {
+              //     if(location.origin.indexOf('localhost') !== -1) {
+              //       url = url.replace('${location.origin}', '')
+              //     } else {
+              //       url = url.replace('${location.origin}', `${location.origin}`)
+              //     }
+              //   }
+              //   url = url.toString()
+              // }else{
+              //   if(obj.this.dataset.json) {
+              //     url = `${location.origin}${obj.this.dataset.json}`
+              //   } else {
+              //     console.assert(false, 'не знаю что пока делать')
+              //   }
+              // }
+
+              let style = document.createElement('style')
+              style.innerText = '@import "./jason.css"'
+              obj.this.appendChild(style)
+              let json = {}
+              // if(location.origin === 'http://localhost:9876') {
+              //   json = await fetch(`${location.origin}/android/index.json`)
+              // } else {
+              //   json = await fetch(`${location.origin}/android/index.json`)
+              // }
+              // json = await json.json()
+              if(url) {
+                json['$jason'] = {
+                  'head': {
+                    'title': 'Basic'
+                  },
+                  'body': {
+                    'background': {
+                      'type': 'html',
+                      'url':`${url}`
+                    }
+                  }
                 }
               }
-              url = url.toString()
-          }else{
-            if(obj.this.dataset.json) {
-              url = `${location.origin}${obj.this.dataset.json}`
-            } else {
-              console.assert(false, 'не знаю что пока делать')
-            }
-          }
 
-          let style = document.createElement('style')
-          style.innerText = '@import "/static/html/components/component_modules/cell-index/jason.css"'
-          obj.this.appendChild(style)
-          let json = {}
-          if(location.origin === 'http://localhost:9876') {
-            json = await fetch(`${location.origin}/android/index.json`)
-          } else {
-            json = await fetch(`${location.origin}/android/index.json`)
-          }
-         json = await json.json()
-          if(url) {
-            json['$jason'] = {
-              'head': {
-                'title': 'Basic'
-              },
-              'body': {
-                'background': {
-                  'type': 'html',
-                  'url':`${url}`
-                }
-              }
-            }
-          }
-
-         let app = Jason({
-          $cell: true,
-          style: {
-            width: '100%',
-            height: '100%',
-            margin: '0 auto'
-          }
-        },
-        {
-         '$jason': json['$jason']
-        })
-        this.app = app
-        obj['function']['create'](obj)
-        if(!this.dataset.url) {
-          // console.log('ffgfgfdddd3')
-        } else {
-          // console.log('ffgfgf')
-          // let host = this.dataset.url.replace('/import','')
-          let frame = obj['this'].querySelector('iframe')
-          // iframe.set(host, ifr, obj['this'])
-          // ifr.onload = function () {
-            // setTimeout(function() {
-              // document.dispatchEvent( new CustomEvent(`iframe`,{
+              let app = Jason({
+                  $cell: true,
+                  style: {
+                    width: '100%',
+                    height: '100%',
+                    margin: '0 auto'
+                  }
+                },
+                {
+                  '$jason': json['$jason']
+                })
+              console.log('~~~~~~~~~~~~', app)
+          console.assert(false)
+              this.app = app
+              obj['function']['create'](obj)
+              if(!this.dataset.url) {
+                // console.log('ffgfgfdddd3')
+              } else {
+                // console.log('ffgfgf')
+                // let host = this.dataset.url.replace('/import','')
+                let frame = obj['this'].querySelector('iframe')
+                // iframe.set(host, ifr, obj['this'])
+                // ifr.onload = function () {
+                // setTimeout(function() {
+                // document.dispatchEvent( new CustomEvent(`iframe`,{
                 // detail:host
-              // }))
-            // }, 0);
+                // }))
+                // }, 0);
+                // }
+              }
+            // }
           // }
-        }
         })(this)
       }
     })

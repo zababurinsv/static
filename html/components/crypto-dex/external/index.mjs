@@ -6,7 +6,7 @@ import config from '/static/html/components/component_modules/account/com.waves-
 import Assets from '/static/html/components/crypto-dex/external/assets/index.mjs'
 import events from '/static/html/components/crypto-dex/external/events.mjs'
 import logs from '/static/html/components/component_modules/colorLog/colorLog.mjs'
-import ltd from '/static/html/components/component_modules/ltd/ltd.mjs'
+// import ltd from '/static/html/components/component_modules/ltd/ltd.mjs'
 const waves = new Waves()
 
 function count (obj) {
@@ -113,7 +113,7 @@ function pairs(type = undefined) {
 export default async (v,p,c,obj,r) => {
     events(v,p,c,obj,r)
 
-    console.assert(false,  (await ltd()).core)
+    // console.assert(false,  (await ltd()).core)
     let dex = (await import('/static/html/components/component_modules/dex/index.mjs'))['default']
     let assets = (await pairs()).message
     let sys = {
@@ -403,7 +403,7 @@ export default async (v,p,c,obj,r) => {
         : '';
         (!sys.validation.disabled.trade[3])
         ? (relation.orders.W.ttf = undefined)
-        : '';   
+        : '';
 // new item 1
         if(relation.orders.W.ffs !== undefined) {
             assets = await dex.fb_fs(true, {
@@ -467,7 +467,7 @@ export default async (v,p,c,obj,r) => {
             empty(obj, 'ffs', true)
         }
 // new item 2
-        if(relation.orders.W.fft !== undefined) { 
+        if(relation.orders.W.fft !== undefined) {
         assets = await dex.fb_ft(false, {
             self: relation,
             orderbook: orderbook_ft,
@@ -526,12 +526,12 @@ export default async (v,p,c,obj,r) => {
             } else {
                 empty(obj, 'fft')
             }
-            
+
         } else {
             empty(obj, 'fft', true)
         }
 // new item 3
-        if(relation.orders.W.ssf !== undefined) { 
+        if(relation.orders.W.ssf !== undefined) {
                 assets = await dex.sb_sf(false, {
             self: relation,
             orderbook: orderbook_fs,
@@ -564,7 +564,7 @@ export default async (v,p,c,obj,r) => {
             empty(obj, 'ssf', true)
         }
 // new item 4
-        if(relation.orders.W.ttf !== undefined) { 
+        if(relation.orders.W.ttf !== undefined) {
             assets = await dex.sb_tf(false, {
             self: relation,
             orderbook: orderbook_ft,
