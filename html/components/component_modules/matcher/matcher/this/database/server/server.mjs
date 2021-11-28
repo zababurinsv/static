@@ -2,7 +2,7 @@ import conf from '/static/html/components/component_modules/matcher/matcher/this
 import loader from '/static/html/components/component_modules/loader/loader.mjs'
 function server(obj, path,node, method) {
     return new Promise(async (resolve, reject) => {
-        let axios = await loader('https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js','axios')
+        await loader('https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js','axios')
             function setData( data) {
                 return new Promise((resolve, reject) => {
                     let formData  = new FormData();

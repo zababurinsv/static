@@ -70,12 +70,12 @@ export default (url, name, obj)=>{
                 verifyScript =false
                 Script = item
             }
-            if(item.src.indexOf(`${verifyName}.js`) > 0){
+            if(item.src.indexOf(`${verifyName}`) > 0){
                 verifyScript =false
                 Script = item
             }
         }
-        if(verifyScript){
+        if(verifyScript) {
           if(isEmpty(obj)){
               if( isEmpty(window[name])){
                     let load = document.createElement('script');
