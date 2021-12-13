@@ -519,7 +519,6 @@ export default {
                                     await mInterface['get']({type:'buy'},payload)
                                 }
                             } else {
-                                //sssssssssssssssssssssssssssss
                                 payload['this'].querySelector(`#landed`).innerHTML ="<div>You landed on <a href='javascript:void(0);' id='previeCard' class='statscellcolor'>" + s.name + "."+"</a><input type='button' id='buyCards' value='Buy ($" + s.price + ")' title='Buy " + s.name + " for " + s.pricetext + ".'/></div>"
 
 
