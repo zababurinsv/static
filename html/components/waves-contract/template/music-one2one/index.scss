@@ -1,13 +1,13 @@
-@import "./docs/css/interface.scss";
-@import "./docs/css/fonts.scss";
-@import "./docs/css/media.scss";
+//@import "./docs/css/interface.scss";
+//@import "./docs/css/fonts.scss";
+//@import "./docs/css/media.scss";
 
 :host{
   width: 100%;
   box-sizing: border-box;
 }
 .waves-contract {
-  @include display(column, nowrap, space-between, stretch, stretch);
+  //@include display(column, nowrap, space-between, stretch, stretch);
   width: 100%;
   padding: 0;
 

@@ -49,7 +49,7 @@ function request(obj, path,node, method) {
 
     switch (method) {
       case 'GET':
-        // console.log('~~~~~~~~~~GET~~~~~~~~~~~~~~~~~~',`${node}${path}`)
+        console.log('~~~~~~~~~~GET~~~~~~~~~~~~~~~~~~',`${node}${path}`)
         fetch(`${node}${path}`, {
           method: method,
         }).then(function (response) {
@@ -575,6 +575,7 @@ function updateClientId (obj) {
         })
   })
 }
+
 export default {
 
   delFile: (obj) => {

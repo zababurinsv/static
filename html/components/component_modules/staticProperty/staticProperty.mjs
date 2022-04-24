@@ -353,9 +353,8 @@ export default  (obj, func, ...args)=>{
                                     break
                                 case 'obj':
                                     // obj['target']
-                                    (async (obj, props,data) => {
+                                   await (async (obj, props,data) => {
                                         try {
-
                                             let verify = false
                                             let position = 0
                                             let count = 0
@@ -402,7 +401,7 @@ export default  (obj, func, ...args)=>{
                                     break
                                 case 'object':
                                     // obj['target']
-                                    (async (obj, props,data) => {
+                                   await (async (obj, props,data) => {
                                         try {
                                             let components = []
                                             for(let i =0; i < obj['object'].length; i++){

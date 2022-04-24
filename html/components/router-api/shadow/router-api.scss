@@ -1,12 +1,12 @@
-@import "./docs/css/fonts.scss";
-@import "./docs/css/media.scss";
-@import "./docs/css/interface.scss";
+//@import "./docs/css/fonts.scss";
+//@import "./docs/css/media.scss";
+//@import "./docs/css/interface.scss";
 
 @mixin label(){
-  @include display(column, nowrap, space-between, center, stretch);
+  //@include display(column, nowrap, space-between, center, stretch);
   input{
     font-family: Roboto, serif;
-    @include fonts(6);
+    //@include fonts(6);
     box-sizing: border-box;
     width: 100%;
     align-self: center;
@@ -32,9 +32,9 @@
     }
   }
   button{
-    @include border();
+    //@include border();
     font-family: Roboto, serif;
-    @include fonts(8);
+    //@include fonts(8);
     margin: 1vw 0;
     display: flex;
     flex-direction: column;
@@ -49,7 +49,7 @@
 }
 
 @mixin p(){
-  @include border();
+  //@include border();
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -58,7 +58,7 @@
   padding: 2vw;
   text-align: center;
   font-family: Roboto, serif;
-  @include fonts(8);
+  //@include fonts(8);
 }
 
 @mixin border() {
@@ -78,19 +78,19 @@
   flex-grow: 1;
 }
 section#router-api{
-  @include display(row, nowrap, space-evenly, center, stretch);
+  //@include display(row, nowrap, space-evenly, center, stretch);
   padding: 1vw;
   width: 100%;
   div.router-api{
-    @include display(column, nowrap, flex-start, center, stretch);
+    //@include display(column, nowrap, flex-start, center, stretch);
     box-sizing: border-box;
     padding: 1vw;
     width: 20vw;
     padding-right: 0;
     div.api{
-      @include display(column, nowrap, flex-start, center, stretch);
+      //@include display(column, nowrap, flex-start, center, stretch);
       background-color: #4c6499de;
-      @include border();
+      //@include border();
       align-self: center;
       box-sizing: border-box;
       padding: 1vw;
@@ -98,11 +98,11 @@ section#router-api{
       margin-bottom: 1vw;
       div.api-matcher{
         width: 100%;
-        @include display(column, nowrap, flex-start, center, stretch);
+        //@include display(column, nowrap, flex-start, center, stretch);
         label.api-matcher{
           width: 100%;
           font-family: Roboto, serif;
-          @include fonts(4);
+          //@include fonts(4);
           position: relative;
           text-align: left;
           color: rgb(255, 255, 255);
@@ -112,13 +112,13 @@ section#router-api{
         input.api-matcher{
           border: none;
           min-height: 4vw;
-          @include border();
+          //@include border();
           outline:none;
           padding: 1vw;
           margin-bottom: 0.5vw;
           width: 100%;
           font-family: Roboto, serif;
-          @include fonts(4);
+          //@include fonts(4);
           cursor: pointer;
           &:focus {
             border-color: grey;

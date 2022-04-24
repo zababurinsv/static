@@ -1,6 +1,6 @@
-@import "./docs/css/fonts.scss";
-@import "./docs/css/media.scss";
-@import "./docs/css/interface.scss";
+//@import "./docs/css/fonts.scss";
+//@import "./docs/css/media.scss";
+//@import "./docs/css/interface.scss";
 
 @mixin borderClean() {
   width: 100%;
@@ -23,7 +23,7 @@
   box-sizing: border-box;
   text-align: center;
   cursor: pointer;
-  @include fonts(8);
+  //@include fonts(8);
   font-family: Roboto,serif;
   background-color: transparent;
   position: relative;
@@ -37,31 +37,31 @@
 @mixin palyer() {
 
   label{
-  @include display(column, nowrap, space-evenly, center, stretch);
+  //@include display(column, nowrap, space-evenly, center, stretch);
     //width: 100%;
     //align-items: center;
-    @include fonts(8);
+    //@include fonts(8);
     font-family: Roboto,serif;
     margin: 0.25vw;
     p{
-      @include borderClean();
+      //@include borderClean();
       margin-top: 0;
     }
   }
   div.option{
-    @include display(row, nowrap, space-evenly, center, stretch);
+    //@include display(row, nowrap, space-evenly, center, stretch);
     input{
       flex-grow: 1;
-      @include fonts(8);
-      @include borderClean();
+      //@include fonts(8);
+      //@include borderClean();
       font-family: Roboto,serif;
       margin: 0.25vw;
       cursor: text;
     }
     select{
       flex-grow: 1;
-      @include fonts(8);
-      @include borderClean();
+      //@include fonts(8);
+      //@include borderClean();
       font-family: Roboto,serif;
       margin: 0.25vw;
 
@@ -78,15 +78,15 @@ section#manager-menu{
   padding: 1vw;
   margin: 0;
   div#setup{
-    @include display(column, nowrap, space-evenly, flex-start, stretch);
-    //@include border();
+    //@include display(column, nowrap, space-evenly, flex-start, stretch);
+    ////@include border();
     //padding: 5vw;
     div#configuration{
-      @include display(row, nowrap, space-evenly, center, stretch);
+      //@include display(row, nowrap, space-evenly, center, stretch);
       //padding: 1vw;
       div.setup{
-        @include display(column, nowrap, space-evenly, start, flex-start);
-        //@include border();
+        //@include display(column, nowrap, space-evenly, start, flex-start);
+        ////@include border();
         width: 47.5vw;
         //padding: 1vw;
         //width: 60vw;
@@ -96,8 +96,8 @@ section#manager-menu{
         border-radius: 0.5vw;
         //margin-bottom: 3vw;
         div#player1input{
-          @include display(row, nowrap, space-evenly, center, stretch);
-          @include palyer();
+          //@include display(row, nowrap, space-evenly, center, stretch);
+          //@include palyer();
           border-radius: 0.5vw;
           //width: 100%;
           box-shadow: inset 0vw 0vw 1vw 0px #7694f4;
@@ -128,7 +128,7 @@ section#manager-menu{
               input#player1name{
                 border: none;
                 border-radius: 0.25vw;
-                //@include fonts(3);
+                ////@include fonts(3);
                 //font-family: Roboto,serif;
               }
               select#player1color{
@@ -142,7 +142,7 @@ section#manager-menu{
           margin-top: 0;
         }
         select#playernumber{
-          @include border();
+          //@include border();
           width: 100%;
           margin-bottom: 3.7vw;
           border: none;
@@ -155,14 +155,14 @@ section#manager-menu{
           }
         }
         div.playGame{
-          @include display(column, nowrap, space-evenly, start, stretch);
-          //@include border();
+          //@include display(column, nowrap, space-evenly, start, stretch);
+          ////@include border();
 
           //padding: 5vw;
           cursor: default;
           //margin-bottom: 3vw;
           input.game{
-            @include border();
+            //@include border();
             border: none;
             border-radius: 0.5vw;
             margin-bottom: 1vw;
@@ -170,12 +170,12 @@ section#manager-menu{
             width: 100%;
           }
           label[for="connectGame"]{
-            @include fonts(8);
+            //@include fonts(8);
             font-family: Roboto,serif;
             margin-bottom: 1vw;
           }
           input#connectGame{
-            @include fonts(5);
+            //@include fonts(5);
             cursor: text;
             margin-bottom: 1vw;
           }
@@ -186,11 +186,11 @@ section#manager-menu{
         }
       }
       div.options{
-        @include display(column, nowrap, flex-start, center, stretch);
+        //@include display(column, nowrap, flex-start, center, stretch);
         box-sizing: border-box;
         padding: 0;
         margin-left: 0.5vw;
-        @include border();
+        //@include border();
         //width: 60vw;
         //padding: 5vw;
         cursor: default;
@@ -199,7 +199,7 @@ section#manager-menu{
         h2{
           margin-top: 1vw;
           margin-bottom: 1.7vw;
-          @include fonts(8);
+          //@include fonts(8);
           font-family: Roboto,serif;
         }
         div#items{
@@ -207,13 +207,13 @@ section#manager-menu{
           flex-direction: column;
           height: 100%;
           border-radius: 0.5vw;
-          justify-content: start;
+          justify-content:  flex-start;
           &:last-child{
             margin-bottom: 0;
           }
           div.player-input{
-            @include display(row, nowrap, space-evenly, center, stretch);
-            @include palyer();
+            //@include display(row, nowrap, space-evenly, center, stretch);
+            //@include palyer();
             border-radius: 0.5vw;
             width: 100%;
             box-shadow: inset 0vw 0vw 1vw 0px #7694f4;

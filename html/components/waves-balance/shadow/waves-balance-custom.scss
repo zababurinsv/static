@@ -1,9 +1,9 @@
-@import "./docs/css/interface.scss";
-@import "./docs/css/fonts.scss";
-@import "./docs/css/media.scss";
+//@import "./docs/css/fonts.scss";
+//@import "./docs/css/media.scss";
+//@import "./docs/css/interface.scss";
 
 @mixin h3(){
-  @include border();
+  //@include border();
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -11,7 +11,7 @@
   box-sizing: border-box;
   text-align: center;
   font-family: Roboto, serif;
-  @include fonts(4);
+  //@include fonts(4);
   text-align-last: left;
   margin: 0;
 }
@@ -81,7 +81,7 @@
 }
 
 @mixin p(){
-  @include border();
+  //@include border();
   margin: 1vw 0;
   display: flex;
   flex-direction: column;
@@ -108,14 +108,14 @@
 
 }
 @mixin figure(){
-  @include display(column, nowrap, space-between, center, stretch);
+  //@include display(column, nowrap, space-between, center, stretch);
   margin: 0;
   padding: 0;
   width: 100%;
   div.preview {
     font-family: Roboto,serif;
     margin-bottom: 0;
-    @include fonts(8);
+    //@include fonts(8);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -145,24 +145,24 @@
 
     }
     div.form-container {
-      @include display(column, nowrap, space-evenly, center, stretch);
+      //@include display(column, nowrap, space-evenly, center, stretch);
       margin-top: 3vw;
       padding: 1vw;
       box-sizing: border-box;
       width: 100%;
       div.field-container {
-        @include display(column, nowrap, space-evenly, center, stretch);
+        //@include display(column, nowrap, space-evenly, center, stretch);
         width: 100%;
         position: relative;
         box-sizing: border-box;
         div.item-name{
-          @include display(column, nowrap, space-evenly, center, stretch);
+          //@include display(column, nowrap, space-evenly, center, stretch);
           margin-bottom: 2vw;
           margin-top: 2vw;
           label[for="name"]{
             color: #232f62;
             font-family: Roboto,serif;
-            @include fonts(16);
+            //@include fonts(16);
             align-self: start;
             padding-bottom: 1vw;
           }
@@ -170,7 +170,7 @@
             box-sizing: border-box;
             color: #232f62;
             font-family: Roboto, serif;
-            @include fonts(16);
+            //@include fonts(16);
             padding: 0.5vw;
             border-radius: 0.5vw;
             width: 100%;
@@ -178,14 +178,14 @@
           }
         }
         div.cardnumber{
-          @include display(column, nowrap, space-evenly, center, stretch);
+          //@include display(column, nowrap, space-evenly, center, stretch);
           margin-bottom: 2vw;
           margin-top: 2vw;
           position: relative;
           label[for="cardnumber"]{
             color: #232f62;
             font-family: Roboto,serif;
-            @include fonts(16);
+            //@include fonts(16);
             align-self: start;
             box-sizing: border-box;
             padding-bottom: 1vw;
@@ -194,7 +194,7 @@
             box-sizing: border-box;
             color: #232f62;
             font-family: Roboto, serif;
-            @include fonts(16);
+            //@include fonts(16);
             padding: 0.5vw;
             border-radius: 0.5vw;
             width: 100%;
@@ -225,13 +225,13 @@
               text-align-last: left;
               font-family: Roboto,serif;
               margin-bottom: 1vw;
-              @include fonts(16);
+              //@include fonts(16);
             }
             input{
               box-sizing: border-box;
               color: #232f62;
               font-family: Roboto,serif;
-              @include fonts(16);
+              //@include fonts(16);
               padding: 0.5vw;
               border-radius: 0.5vw;
               border: 0.4vw solid #dcdcdc;
@@ -256,7 +256,7 @@
       }
       &:hover {
         color: #151515;
-        @include fonts(5);
+        //@include fonts(5);
         //border: 0.3vw solid #151515;
         //padding: 0.4vw;
         border-radius: 0.5vw;
@@ -294,13 +294,13 @@ section#waves{
     border: 0.2vw solid transparent;
     cursor: pointer;
     outline: none;
-    @include fonts(8);
+    //@include fonts(8);
     font-family: Roboto, serif;
     touch-action: manipulation;
     transition: color .1s ease-in,background-color .1s ease-in,border-color .1s ease-in,box-shadow .1s ease-in;
   }
   div#wrapper{
-    @include display(row, wrap, space-between, center, stretch);
+    //@include display(row, wrap, space-between, center, stretch);
     box-sizing: border-box;
     padding: 1vw;
     border: 0.1vw solid #ccc;
@@ -320,7 +320,7 @@ section#waves{
         padding: 1vw;
         flex-grow: 1;
         text-shadow: 0 0.1vw 0.1vw rgba(0, 0, 0, 0.2);
-        @include fonts(6);
+        //@include fonts(6);
       }
       input#keeperAddress,input#hasWaves {
         background-color: #eee;
@@ -335,7 +335,8 @@ section#waves{
     }
     margin-bottom: 1vw;
   }
-    @include display(row, nowrap, space-evenly, center, stretch);
+  fieldset{
+    //@include display(row, nowrap, space-evenly, center, stretch);
     box-sizing: border-box;
     padding: 1vw;
     border: 0.1vw solid #ccc;
@@ -357,7 +358,7 @@ section#waves{
         padding: 1vw;
         text-shadow: 0 0.1vw 0.1vw rgba(0, 0, 0, 0.2);
       }
-      button#withdrawBtn, button#depositBtn {
+      button#withdrawBtn, button#depositBtn{
         border: 0.1vw solid #ccc;
         box-shadow: inset 0 1px 3px #ddd;
         border-radius: 0.5vw;
@@ -379,4 +380,5 @@ section#waves{
         pointer-events: none;
       }
     }
+  }
 }

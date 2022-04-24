@@ -1,5 +1,5 @@
-@import "./docs/css/fonts.scss";
-@import "./docs/css/media.scss";
+//@import "./docs/css/fonts.scss";
+//@import "./docs/css/media.scss";
 section#main-manager{
 
   width: 100%;
@@ -35,28 +35,28 @@ section#main-manager{
               width: 97%;
               input#bid{
                 margin: 3vw;
-                @include fonts(7);
+                //@include fonts(7);
               }
               input#auctionBidItem{
                 cursor: pointer;
                 width: 11vw;
                 height: 4.2vw;
                 padding: 0;
-                @include fonts(1);
+                //@include fonts(1);
               }
               input#auctionPassItem{
                 cursor: pointer;
                 width: 11vw;
                 height: 4.2vw;
                 padding: 0;
-                @include fonts(1);
+                //@include fonts(1);
               }
               input#exitAuctionItem{
                 cursor: pointer;
                 width: 20vw;
                 height: 4.2vw;
                 padding: 0;
-                @include fonts(1);
+                //@include fonts(1);
               }
               input#popupyes{
 
@@ -64,7 +64,7 @@ section#main-manager{
                 padding: 0;
                 width: 16%;
                 height: 4vw;
-                @include fonts(1);
+                //@include fonts(1);
 
               }
 
@@ -73,7 +73,7 @@ section#main-manager{
                 padding: 0;
                 width: 16%;
                 height: 4vw;
-                @include fonts(1);
+                //@include fonts(1);
 
               }
             }
@@ -93,11 +93,11 @@ section#main-manager{
     align-self: center;
     display: flex;
     flex-direction: column;
-    @include fonts(5);
+    //@include fonts(5);
     select#playernumber{
       align-self: center;
       margin: 0;
-      @include fonts(4);
+      //@include fonts(4);
       //width:40vw;
       appearance:none;
       -webkit-appearance:none;
@@ -112,10 +112,10 @@ section#main-manager{
   }
   div#player1input{
     align-items: center;
-    @include fonts(5);
+    //@include fonts(5);
     justify-content: center;
     input[type='text']{
-      @include fonts(5);
+      //@include fonts(5);
       //width: 34vw;
       margin-right: 0.2vw;
     }
@@ -127,7 +127,7 @@ section#main-manager{
       -moz-appearance:none;
       -ms-appearance:none;
       border:0.2vw solid #000;
-      @include fonts(5);
+      //@include fonts(5);
       background-position:right 0;
       text-align: center;
       cursor: pointer;
@@ -142,7 +142,7 @@ section#main-manager{
       -moz-appearance:none;
       -ms-appearance:none;
       border:0.2vw solid #000;
-      @include fonts(5);
+      //@include fonts(5);
       background-position:right 0;
       text-align: center;
       cursor: pointer;
@@ -151,10 +151,10 @@ section#main-manager{
   }
   div#player2input{
     align-items: center;
-    @include fonts(5);
+    //@include fonts(5);
     justify-content: center;
     input[type='text']{
-      @include fonts(5);
+      //@include fonts(5);
       //width: 34vw;
       margin-right: 0.2vw;
     }
@@ -166,7 +166,7 @@ section#main-manager{
       -moz-appearance:none;
       -ms-appearance:none;
       border:0.2vw solid #000;
-      @include fonts(5);
+      //@include fonts(5);
       background-position:right 0;
       text-align: center;
       cursor: pointer;
@@ -180,7 +180,7 @@ section#main-manager{
       -moz-appearance:none;
       -ms-appearance:none;
       border:0.2vw solid #000;
-      @include fonts(5);
+      //@include fonts(5);
       background-position:right 0;
       text-align: center;
       cursor: pointer;
@@ -189,10 +189,10 @@ section#main-manager{
   }
   div#player3input{
     align-items: center;
-    @include fonts(5);
+    //@include fonts(5);
     justify-content: center;
     input[type='text']{
-      @include fonts(5);
+      //@include fonts(5);
       //width: 34vw;
       margin-right: 0.2vw;
     }
@@ -204,7 +204,7 @@ section#main-manager{
       -moz-appearance:none;
       -ms-appearance:none;
       border:0.2vw solid #000;
-      @include fonts(5);
+      //@include fonts(5);
       background-position:right 0;
       text-align: center;
       cursor: pointer;
@@ -218,7 +218,7 @@ section#main-manager{
       -moz-appearance:none;
       -ms-appearance:none;
       border:0.2vw solid #000;
-      @include fonts(5);
+      //@include fonts(5);
       background-position:right 0;
       text-align: center;
       cursor: pointer;
@@ -227,10 +227,10 @@ section#main-manager{
   }
   div#player4input{
     align-items: center;
-    @include fonts(5);
+    //@include fonts(5);
     justify-content: center;
     input[type='text']{
-      @include fonts(5);
+      //@include fonts(5);
       //width: 34vw;
       margin-right: 0.2vw;
     }
@@ -242,7 +242,7 @@ section#main-manager{
       -moz-appearance:none;
       -ms-appearance:none;
       border:0.2vw solid #000;
-      @include fonts(5);
+      //@include fonts(5);
       background-position:right 0;
       text-align: center;
       cursor: pointer;
@@ -256,7 +256,7 @@ section#main-manager{
       -moz-appearance:none;
       -ms-appearance:none;
       border:0.2vw solid #000;
-      @include fonts(5);
+      //@include fonts(5);
       background-position:right 0;
       text-align: center;
       cursor: pointer;
@@ -265,10 +265,10 @@ section#main-manager{
   }
   div#player5input{
     align-items: center;
-    @include fonts(5);
+    //@include fonts(5);
     justify-content: center;
     input[type='text']{
-      @include fonts(5);
+      //@include fonts(5);
       //width: 34vw;
       margin-right: 0.2vw;
     }
@@ -280,7 +280,7 @@ section#main-manager{
       -moz-appearance:none;
       -ms-appearance:none;
       border:0.2vw solid #000;
-      @include fonts(5);
+      //@include fonts(5);
       background-position:right 0;
       text-align: center;
       cursor: pointer;
@@ -294,7 +294,7 @@ section#main-manager{
       -moz-appearance:none;
       -ms-appearance:none;
       border:0.2vw solid #000;
-      @include fonts(5);
+      //@include fonts(5);
       background-position:right 0;
       text-align: center;
       cursor: pointer;
@@ -303,10 +303,10 @@ section#main-manager{
   }
   div#player6input{
     align-items: center;
-    @include fonts(5);
+    //@include fonts(5);
     justify-content: center;
     input[type='text']{
-      @include fonts(5);
+      //@include fonts(5);
       //width: 34vw;
       margin-right: 0.2vw;
     }
@@ -318,7 +318,7 @@ section#main-manager{
       -moz-appearance:none;
       -ms-appearance:none;
       border:0.2vw solid #000;
-      @include fonts(5);
+      //@include fonts(5);
       background-position:right 0;
       text-align: center;
       cursor: pointer;
@@ -332,7 +332,7 @@ section#main-manager{
       -moz-appearance:none;
       -ms-appearance:none;
       border:0.2vw solid #000;
-      @include fonts(5);
+      //@include fonts(5);
       background-position:right 0;
       text-align: center;
       cursor: pointer;
@@ -341,10 +341,10 @@ section#main-manager{
   }
   div#player7input{
     align-items: center;
-    @include fonts(5);
+    //@include fonts(5);
     justify-content: center;
     input[type='text']{
-      @include fonts(5);
+      //@include fonts(5);
       //width: 34vw;
       margin-right: 0.2vw;
     }
@@ -356,7 +356,7 @@ section#main-manager{
       -moz-appearance:none;
       -ms-appearance:none;
       border:0.2vw solid #000;
-      @include fonts(5);
+      //@include fonts(5);
       background-position:right 0;
       text-align: center;
       cursor: pointer;
@@ -370,7 +370,7 @@ section#main-manager{
       -moz-appearance:none;
       -ms-appearance:none;
       border:0.2vw solid #000;
-      @include fonts(5);
+      //@include fonts(5);
       background-position:right 0;
       text-align: center;
       cursor: pointer;
@@ -379,10 +379,10 @@ section#main-manager{
   }
   div#player8input{
     align-items: center;
-    @include fonts(5);
+    //@include fonts(5);
     justify-content: center;
     input[type='text']{
-      @include fonts(5);
+      //@include fonts(5);
       //width: 34vw;
       margin-right: 0.2vw;
     }
@@ -394,7 +394,7 @@ section#main-manager{
       -moz-appearance:none;
       -ms-appearance:none;
       border:0.2vw solid #000;
-      @include fonts(5);
+      //@include fonts(5);
       background-position:right 0;
       text-align: center;
       cursor: pointer;
@@ -408,7 +408,7 @@ section#main-manager{
       -moz-appearance:none;
       -ms-appearance:none;
       border:0.2vw solid #000;
-      @include fonts(5);
+      //@include fonts(5);
       background-position:right 0;
       text-align: center;
       cursor: pointer;
@@ -419,7 +419,7 @@ section#main-manager{
     width: 40%;
     align-self: center;
     input[type='button']{
-      @include fonts(1);
+      //@include fonts(1);
       cursor: pointer;
       width: 100%;
     }
@@ -449,7 +449,7 @@ section#main-manager{
     flex-direction: row;
     width: 100%;
     td {
-      @include fonts(1);
+      //@include fonts(1);
       font-family: arial, sans-serif;
       border: 0.098vw solid black;
       text-align: center;
@@ -498,7 +498,7 @@ section#main-manager{
           input#viewstats{
             display: flex;
             width: 43.5vw;
-            @include fonts(1);
+            //@include fonts(1);
             justify-content: center;
             cursor: pointer;
           }
@@ -521,7 +521,7 @@ section#main-manager{
           td.moneybarcell{
             border: 0.195vw solid lime;
             width: 5.8vw;
-            @include fonts(4);
+            //@include fonts(4);
           }
         }
       }
@@ -568,7 +568,7 @@ div#control {
               font-family: arial, sans-serif;
               color: white;
               font-weight: bold;
-              @include fonts(1);
+              //@include fonts(1);
               border: 0.098vw solid blue;
               border-radius: 0.488vw 0.488vw 0 0;
               height: 2.930vw;
@@ -589,7 +589,7 @@ div#control {
                     vertical-align: top;
                     a{
                       font-family: Consolas, "Courier New", monospace;
-                      @include fonts(6);
+                      //@include fonts(6);
                       align-items: center;
                     }
                   }
@@ -615,7 +615,7 @@ div#control {
             padding-left: 0.098vw;
             border: 0.098vw solid gray;
             font-family: Consolas, "Courier New", monospace;
-            @include fonts(1);
+            //@include fonts(1);
             background-color: #FFFFFF;
             overflow-y: scroll;
             box-sizing: border-box;
@@ -641,21 +641,21 @@ div#control {
               div#buildings {
                 margin: auto;
                 height: 2.051vw;
-                @include fonts(4);
+                //@include fonts(4);
                 font-weight: bold;
               }
               input#buyhousebutton{
-                @include fonts(8);
+                //@include fonts(8);
                 width: 40%;
                 cursor: pointer;
               }
               input#mortgagebutton{
-                @include fonts(8);
+                //@include fonts(8);
                 width: 40%;
                 cursor: pointer;
               }
               input#sellhousebutton{
-                @include fonts(8);
+                //@include fonts(8);
                 width: 40%;
                 cursor: pointer;
               }
@@ -664,13 +664,13 @@ div#control {
 
             div#owned{
               height: 12.5vw;
-              @include fonts(8);
+              //@include fonts(8);
               table{
                 tr.property-cell-row{
 
                   td.propertycellname{
 
-                    @include fonts(1);
+                    //@include fonts(1);
                   }
                 }
               }
@@ -701,14 +701,14 @@ div#control {
               box-sizing: border-box;
               font-size: .859vw;
 
-              @include fonts(6);
+              //@include fonts(6);
             }
             div.quickstats{
               display: flex;
               align-items: center;
               padding: 0;
               margin: 0;
-              @include fonts(6);
+              //@include fonts(6);
 
               div#die0{
                 margin: 0;
@@ -756,49 +756,49 @@ div#control {
         td.trade-cell{
           justify-content: center;
           align-items: center;
-          @include fonts(6);
+          //@include fonts(6);
           input#trade-leftp-money{
-            @include fonts(8);
+            //@include fonts(8);
               width: 90%;
           }
           input#trade-rightp-money{
-            @include fonts(8);
+            //@include fonts(8);
               width: 90%;
           }
           input#proposetradebutton{
-            @include fonts(1);
+            //@include fonts(1);
             margin-right: 9vw;
             cursor: pointer;
           }
           input#canceltradebutton{
-            @include fonts(1);
+            //@include fonts(1);
             margin-left: 9vw;
             cursor: pointer;
           }
           input#accepttradebutton{
-            @include fonts(1);
+            //@include fonts(1);
             cursor: pointer;
             margin-right: 10vw;
           }
           input#rejecttradebutton{
-            @include fonts(1);
+            //@include fonts(1);
             cursor: pointer;
             margin-left: 10vw;
           }
           div#trade-leftp-name{
             font-weight: bold;
-            @include fonts(1);
+            //@include fonts(1);
            option {
-             @include fonts(1);
+             //@include fonts(1);
              font-weight: normal;
            }
           }
           div#trade-rightp-name{
             font-weight: bold;
-            @include fonts(1);
+            //@include fonts(1);
             select{
               width: 19vw;
-              @include fonts(1);
+              //@include fonts(1);
               text-align-last: center;
               cursor: pointer;
             }
@@ -812,12 +812,12 @@ div#control {
 
 
 #trade-rightp-name {
-  @include fonts(1);
+  //@include fonts(1);
   font-weight: bold;
 }
 
 #trade-rightp-name option {
-  @include fonts(1);
+  //@include fonts(1);
   font-weight: normal;
 }
 
@@ -878,7 +878,7 @@ div#control {
   border: 0.098vw solid gray;
   border-top: none;
   width: 100%;
-  @include fonts(5);
+  //@include fonts(5);
   margin: 0;
   text-align: center;
   flex-direction: column;
@@ -890,12 +890,12 @@ div#control {
       padding: 0;
       height: auto;
       border: none;
-      @include fonts(5);
+      //@include fonts(5);
       flex-grow: 1;
     }
   }
   input#landedItemjail{
-    @include fonts(6);
+    //@include fonts(6);
   }
   input#buyCards{
     cursor: pointer;
@@ -903,7 +903,7 @@ div#control {
     height: 4vw;
     padding: 0.2vw;
     box-sizing: border-box;
-    @include fonts(6);
+    //@include fonts(6);
   }
 }
 
@@ -945,7 +945,7 @@ div#control {
     }
 
     td.propertycellname{
-      @include fonts(6);
+      //@include fonts(6);
       width: 100%;
       vertical-align: top;
     }
@@ -965,7 +965,7 @@ div#control {
 #deedname {
   margin-top: 0.977vw;
   font-weight: bold;
-  @include fonts(1);
+  //@include fonts(1);
   background-color: white;
 }
 
@@ -999,7 +999,7 @@ div#control {
 #popup {
   //width: 29.297vw;
   //min-width: 29.297vw;
-  @include fonts(1);
+  //@include fonts(1);
   font-family: Arial, sans-serif;
   padding: 0.977vw;
   text-align: center;
@@ -1034,11 +1034,11 @@ div#control {
   font-family: Roboto,serif;
   caret-color: #7694f4;
   cursor: pointer;
-  @include fonts(6);
+  //@include fonts(6);
 }
  #popupclose {
 	cursor: pointer;
-   @include fonts(1);
+   //@include fonts(1);
    width: 10vw;
    height: 5.6vw;
    padding: 0;
@@ -1084,7 +1084,7 @@ div#control {
 #stats {
  width: 100%;
   font-family: Arial, sans-serif;
-  @include fonts(1);
+  //@include fonts(1);
   padding: 0.977vw;
   text-align: center;
   word-wrap: break-word;
@@ -1190,12 +1190,12 @@ div#control {
 
   div#deed-mortgaged{
       font-family: Calibri, Arial;
-    @include fonts(1);
+    //@include fonts(1);
       text-align: center;
     flex-direction: column;
     div#deed-mortgaged-name{
 
-      @include fonts(4);
+      //@include fonts(4);
       font-weight: bold;
       text-transform: uppercase;
       margin: 30 20 1.953vw;
@@ -1229,7 +1229,7 @@ div#control {
   }
 }
 #deed-name {
-  @include fonts(1);
+  //@include fonts(1);
   font-weight: bold;
 
 }
@@ -1255,14 +1255,14 @@ div#control {
     justify-content: space-evenly;
     height: 100%;
     margin: 1.953vw;
-    @include fonts(5);
+    //@include fonts(5);
 
   }
 }
 
 #deed-special-name {
   text-align: center;
-  @include fonts(1);
+  //@include fonts(1);
   font-weight: bold;
   border-style: solid;
   border-width: 0.195vw 0;
@@ -1277,7 +1277,7 @@ div#control {
   width: 19.043vw;
   position: absolute;
   bottom: 1.953vw;
-  @include fonts(1);
+  //@include fonts(1);
 }
 
 #enlarge-wrap {
@@ -1396,7 +1396,7 @@ div#control {
   background-color: white;
   border: 0.195vw solid black;
   text-align: center;
-  @include fonts(1);
+  //@include fonts(1);
   font-family: arial, sans-serif;
   position: fixed;
   z-index: 15;
@@ -1412,7 +1412,7 @@ div#control {
 
 .enlarge-name {
   font-weight: bold;
-  @include fonts(1);
+  //@include fonts(1);
   background-color: white;
   height: 4.395vw;
 }
@@ -1481,7 +1481,7 @@ div#control {
 
 .statsplayername {
   font-weight: bold;
-  @include fonts(1);
+  //@include fonts(1);
 }
 
 .statscell {

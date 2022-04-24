@@ -8,6 +8,7 @@ import matcher from '/static/html/components/component_modules/matcher/matcher.m
 import isEmpty from '/static/html/components/component_modules/isEmpty/isEmpty.mjs'
 
 export default async (v,p,c,obj,r) => {
+
   function msConversion(millis) {
     let sec = Math.floor(millis / 1000);
     let hrs = Math.floor(sec / 3600);
@@ -80,7 +81,7 @@ export default async (v,p,c,obj,r) => {
 
 
 
-          if(lots['mongo'].length > 0){
+          if(lots['mongo'].length > 0) {
             let object = document.createElement('div')
             object.className = 'winner'
             for(let i = 0; i < lots['mongo'].length;i++){
@@ -147,7 +148,7 @@ export default async (v,p,c,obj,r) => {
         path:`/auction`,
         type:'auctions'
       },'get', 'type')
-
+      console.log('====== list ========', list)
       let items =obj['this'].shadowRoot.querySelectorAll('.item')
 
       for(let i =0; i < items.length;i++){
@@ -188,6 +189,7 @@ export default async (v,p,c,obj,r) => {
       timerId = setTimeout(tick, 1000); // (*)
     }, 1000);
   }
+
   let verify = false
   for(let i =0; i< obj['this'].slot.split('-').length; i++){
     if(obj['this'].slot.split('-')[i] === 'admin'){
@@ -196,7 +198,7 @@ export default async (v,p,c,obj,r) => {
   }
 
   let itemHtml = {}
-  if(verify){
+  if(verify) {
     await store({
       input:'varan-card-news',
       this:obj['this'],
@@ -211,15 +213,16 @@ export default async (v,p,c,obj,r) => {
       type:'itemsBid',
       name:'itemsBid'
     }, 'get', 'type')
+
     if(isEmpty(itemsBid['mongo'])){
       console.warn('нет объектов')
     }else{
       obj['this'].shadowRoot.querySelector('.section').innerHTML = ''
-      for(let m =0; m < itemsBid['mongo'].length; m++){
+      for(let m =0; m < itemsBid['mongo'].length; m++) {
 
         let outAdmin =  await templateItem({
           input:'varan-cards-news-admin',
-          data:itemsBid['mongo'][m]['item'],
+          data: itemsBid['mongo'][m]['item'],
           type:'cardAdmin'
         },'get', 'type')
         obj['this'].shadowRoot.querySelector('.section').insertAdjacentHTML('beforeend', outAdmin)
@@ -307,6 +310,7 @@ export default async (v,p,c,obj,r) => {
         })
       }
     }
+
     obj['this'].shadowRoot.querySelector('#image').onchange = function (event) {
       // console.assert(false, obj)
       let crop = new CustomEvent('sideBarCrop', {
@@ -319,7 +323,9 @@ export default async (v,p,c,obj,r) => {
       document.dispatchEvent(crop)
       event.target.value = '';
     }
-  }else{
+  } else {
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    console.log('DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD')
     await store({
       input:'varan-card-news',
       this:obj['this'],
@@ -328,6 +334,7 @@ export default async (v,p,c,obj,r) => {
       parent: obj['this'].getAttribute('parent'),
       type:'obj'
     }, 'set', 'type')
+
     let feeds = {}
     feeds = await action({
       input:'lacerta-card-news',
@@ -391,20 +398,19 @@ export default async (v,p,c,obj,r) => {
     //   }
     // });
 
-
-
     if(isEmpty(feeds)){
       console.warn('нет объектов')
-    }else{
+    } else {
 
       obj['this'].shadowRoot.querySelector('.section').innerHTML = ''
 
-      for(let m =0; m < feeds['mongo'].length; m++){
+      for(let m =0; m < feeds['mongo'].length; m++) {
         itemHtml =  await templateItem({
           input:'bid_card',
           data:feeds['mongo'][m]['item'],
           type:'card'
         },'get', 'type')
+
         obj['this'].shadowRoot.querySelector('.section').insertAdjacentHTML('beforeend', itemHtml)
         let nameAuction = Date.parse(feeds['mongo'][m]['item']['date_modified'])
 
@@ -418,8 +424,7 @@ export default async (v,p,c,obj,r) => {
 
         }else if(time['mongo']['time'] === -1 ){
           console.assert(false)
-
-        }else{
+        } else {
           console.assert(false, feeds)
           item.querySelector('.outPrice').innerText =  `Waves: ${time['mongo']['lotAmount']}`
           item.querySelector('.name').innerText = time['mongo']['winer']
@@ -757,7 +762,6 @@ export default async (v,p,c,obj,r) => {
 
       }
       polling()
-
     }
   }
 }

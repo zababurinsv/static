@@ -1,12 +1,12 @@
-@import "./docs/css/interface.scss";
-@import "./docs/css/fonts.scss";
-@import "./docs/css/media.scss";
+//@import "./docs/css/interface.scss";
+//@import "./docs/css/fonts.scss";
+//@import "./docs/css/media.scss";
 
 section{
     height: auto;
 footer{
     font-family: Roboto, serif;
-@include fonts(4);
+//@include fonts(4);
     position: fixed;
     bottom: 0;
     left: 0;

@@ -1,6 +1,6 @@
-@import "./docs/css/interface.scss";
-@import "./docs/css/fonts.scss";
-@import "./docs/css/media.scss";
+//@import "./docs/css/interface.scss";
+//@import "./docs/css/fonts.scss";
+//@import "./docs/css/media.scss";
 
 @mixin size(){
   width: calc(100vw / 11.2);
@@ -12,27 +12,27 @@ section#manager {
   padding: 5vw;
   background-color: beige;
   table#board{
-    @include display(column, nowrap, space-evenly, center, stretch);
+    //@include display(column, nowrap, space-evenly, center, stretch);
     width: 100%;
     border-collapse: collapse;
     tbody{
-      @include display(column, nowrap, space-evenly, center, stretch);
+      //@include display(column, nowrap, space-evenly, center, stretch);
       width: 100%;
 
       tr{
-        @include display(row, nowrap, space-between, center, stretch);
+        //@include display(row, nowrap, space-between, center, stretch);
         width: 100%;
         padding: 0;
         td {
-          @include size();
-          @include fonts(6);
+          //@include size();
+          //@include fonts(6);
           font-family: arial, sans-serif;
           border: 0.098vw solid black;
           text-align: center;
           padding: 0;
         }
         td.board-left, td.board-right, td.board-top, td.board-bottom{
-          @include size();
+          //@include size();
           padding: 0;
           div#chance,div#marvin_garden,div#kentuky_avenue,div#waterWorks,div#ventnor, div#indiana,div#luxury_tax,div#atlantic-avenue,div#james,div#charles,div#city-tax,div#boardwalk,div#park-place,div#short-line,div#comminuty-chest,div#tennessee-avenue,div#new-york,
           div#baltic_avenue, div#connecticut_avenue, div#electric_company, div#illinous_avenue,

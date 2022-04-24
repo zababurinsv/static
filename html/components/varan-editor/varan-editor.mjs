@@ -1,7 +1,9 @@
-import Editor from '/static/html/components/component_modules/editor/editor.mjs'
+// import Editor from '/static/html/components/component_modules/editor/editor.mjs'
+import editor from '/static/html/components/component_modules/editor/index.mjs'
 import Slider from '/static/html/components/component_modules/slider/slider.mjs'
 import store from '/static/html/components/component_modules/staticProperty/staticProperty.mjs'
 import matcher from '/static/html/components/component_modules/matcher/matcher.mjs'
+import queue from '/static/html/components/component_modules/store/index.mjs'
 customElements.define('varan-editor',
     class extends HTMLElement {
       static get observedAttributes () {
@@ -685,31 +687,28 @@ customElements.define('varan-editor',
                   })
             })
         async function modules (obj) {
-            // config['Style']['default'](obj['this'].querySelector('.varan-editor').style)
             if(!obj['this'].querySelector('varan-menu')){
               console.assert(false, 'в редакторе должно быть меню')
             }
-           let stat = await store({
-              input:'varan-editor',
+
+            await queue.set.component({
               this:obj['this'],
               obj: obj,
               slot: obj['this'].slot,
               menu:  obj['this'].querySelector('varan-menu'),
-              type:'obj'
-            }, 'set', 'type')
+              type:'obj',
+              component: "varan-editor"
+            })
 
-            // console.assert(false,obj['this'].slot )
-            let editor = await Editor({
-              input:'varan-editor',
-              export:'matcher, pagination, crop',
+            await editor({
+              type: 'editor',
+              input: 'varan-editor',
+              export: 'matcher, pagination, crop',
               this: obj['this'],
-              slot:obj['this'].slot,
-              type:'editor'
-            }, 'get', 'type')
-           let object =  await store({
-              input:'action',
-              type: 'all'
-            }, 'get', 'type')
+              slot: obj['this'].slot
+            })
+
+            let object = await queue.get.all()
 
             switch (obj['this'].slot) {
               case 'about':
@@ -730,28 +729,10 @@ customElements.define('varan-editor',
                       break
                   }
                 }
-
                 break
               default:
-
                 break
             }
-            // console.assert(false, object)
-            // console.assert(false,editor )
-            // console.assert(false, editor)
-            // let staticQuoue =  await store({
-            //   input:'varan-editor'
-            //
-            // }, 'get')
-
-            // staticQuoue[obj['slot']].quill.setText('helllo')
-
-            // .setText('helllo')
-
-            // console.assert(false, data)
-            // obj['this'].querySelector('.wall').innerHTML = ''
-            // obj['this'].querySelector('.wall').innerHTML = obj['get'][`${obj['slot']}`][Object.keys(obj['get'][`${obj['slot']}`])[0]]['content']
-
         }
       }
     })

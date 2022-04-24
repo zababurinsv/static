@@ -1,15 +1,15 @@
-@import "./docs/css/interface.scss";
-@import "./docs/css/fonts.scss";
-@import "./docs/css/media.scss";
+//@import "./docs/css/interface.scss";
+//@import "./docs/css/fonts.scss";
+//@import "./docs/css/media.scss";
 :host{
   width: 100%;
   box-sizing: border-box;
 }
 .wrapper {
-  @include display(row, nowrap, space-evenly, stretch, stretch);
+  //@include display(row, nowrap, space-evenly, stretch, stretch);
 }
 .blockchain-property {
-  @include display(row, wrap, space-evenly, stretch, stretch);
+  //@include display(row, wrap, space-evenly, stretch, stretch);
   flex-grow: 1;
   padding: 0 0.4vw 0.4vw;
 
@@ -22,7 +22,7 @@
       padding-left: 3.2vw;
 
       &-li {
-        @include fonts(7);
+        //@include fonts(7);
       }
     }
   }

@@ -1,6 +1,6 @@
-@import "./docs/css/interface.scss";
-@import "./docs/css/fonts.scss";
-@import "./docs/css/media.scss";
+//@import "./docs/css/interface.scss";
+//@import "./docs/css/fonts.scss";
+//@import "./docs/css/media.scss";
 
 pre {
     margin: 0;
@@ -79,27 +79,27 @@ h1 {
                 height: min-content;
                 &::-webkit-scrollbar { width: 0; }
                 h1 {
-                    @include fonts(6);
+                    //@include fonts(6);
                     cursor: pointer;
                 }
                 h2 {
-                    @include fonts(5);
+                    //@include fonts(5);
                     cursor: pointer;
                 }
                 h3 {
-                    @include fonts(4);
+                    //@include fonts(4);
                     cursor: pointer;
                 }
                 h4 {
-                    @include fonts(3);
+                    //@include fonts(3);
                     cursor: pointer;
                 }
                 h5 {
-                    @include fonts(2);
+                    //@include fonts(2);
                     cursor: pointer;
                 }
                 h6 {
-                    @include fonts(1);
+                    //@include fonts(1);
                     cursor: pointer;
                 }
 
@@ -130,7 +130,7 @@ h1 {
             }
 
             &_views {
-                @include fonts(4);
+                //@include fonts(4);
                 flex-grow: 1;
                 height: auto;
                 box-sizing: border-box;

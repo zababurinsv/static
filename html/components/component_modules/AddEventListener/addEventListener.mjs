@@ -1,6 +1,6 @@
 import update from '/static/html/components/component_modules/tableUpdate/update.mjs'
 
-export default (obj, self)=>{
+export default (obj, self) => {
     return new Promise(async (resolve, reject) => {
         let out = (obj)=>{
             resolve(obj)

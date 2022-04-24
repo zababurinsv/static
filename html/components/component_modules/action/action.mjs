@@ -348,7 +348,7 @@ export default  (obj, func, ...args)=>{
 
                                     break
                                 case 'itemsBid':
-                                    (async (obj, props,data) => {
+                                   await (async (obj, props,data) => {
                                         try {
                                             let itemsBid = await  matcher['mongo']({
                                                 input: 'action',
@@ -1048,11 +1048,10 @@ export default  (obj, func, ...args)=>{
                             let store = {}
                             switch (obj[props]) {
                                 case 'bid':
-                                    (async (obj, props,data) => {
+                                   await (async (obj, props,data) => {
                                         /**
                                          * get current feed
                                          */
-
                                         let feeds = await matcher['mongo']({
                                             input: 'action',
                                             type:'bidItem',
@@ -1068,6 +1067,7 @@ export default  (obj, func, ...args)=>{
                                             type: 'all'
                                         }, 'get', 'type')
 
+                                        console.log('ddddddddddddddddddddddddddddddddd', store)
                                         /**
                                          * собираю всю информацию
                                          * @type {{}}
@@ -1109,8 +1109,10 @@ export default  (obj, func, ...args)=>{
                                             }
 
                                         }
+
                                         let menu = {}
                                         let menuSource = {}
+
                                         for(let i = 0; i < store['varan-editor'].length; i ++){
                                             switch (store['varan-editor'][i].slot) {
                                                 case 'cardDescription':
@@ -1126,6 +1128,7 @@ export default  (obj, func, ...args)=>{
                                                     }
                                                     if(menu.querySelector('.update') === null){
                                                         menu.querySelector('.menu-convert').insertAdjacentHTML('afterend', `<button class="update" type="button">update</button>`)
+                                                        console.assert(false)
                                                         addEventListener({
                                                             input:'action',
                                                             type:'menu-update',
@@ -1135,6 +1138,7 @@ export default  (obj, func, ...args)=>{
                                                         menu.querySelector('.update').remove()
 
                                                         menu.querySelector('.menu-convert').insertAdjacentHTML('afterend', `<button class="update" type="button">update</button>`)
+                                                        console.assert(false)
                                                         addEventListener({
                                                             input:'action',
                                                             type:'menu-update',
@@ -1532,7 +1536,7 @@ export default  (obj, func, ...args)=>{
 
                                     break
                                 case 'bid-item':
-                                    (async (obj, props,data) => {
+                                    await (async (obj, props,data) => {
                                         /**
                                          * получаем хранилище
                                          */

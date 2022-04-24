@@ -1,6 +1,5 @@
-@import "./docs/css/interface.scss";
-@import "./docs/css/fonts.scss";
-@import "./docs/css/media.scss";
+//@import "./docs/css/fonts.scss";
+//@import "./docs/css/media.scss";
 
 section#account{
   display: flex;
@@ -18,7 +17,7 @@ section#account{
     margin: 2vw;
     flex-direction: column;
     p.preview{
-      @include fonts(5);
+      //@include fonts(5);
       text-transform: uppercase;
       font-family: BloggerSans,serif;
       padding: 0.5vw;
@@ -27,22 +26,21 @@ section#account{
       //margin-top: 0.4vw;
     }
     div.data{
-      align-self: stretch;
       div.balance{
         font-family: Roboto, serif;
-        @include fonts(5);
+        //@include fonts(5);
         box-sizing: border-box;
         color: #232f62;
         dic.regularBalance{
           font-family: Roboto, serif;
-          @include fonts(5);
+          //@include fonts(5);
           box-sizing: border-box;
           color: #232f62;
 
         }
       }
       div#multiDomainAccount{
-        @include fonts(5);
+        //@include fonts(5);
         box-sizing: border-box;
         font-family: Roboto, serif;
       }
@@ -94,7 +92,7 @@ section#account{
           input{
             box-sizing: border-box;
             font-family: Roboto, serif;
-            @include fonts(5);
+            //@include fonts(5);
             padding: 1vw;
             text-align: center;
             //margin: 1vw;
@@ -106,7 +104,7 @@ section#account{
             box-sizing: border-box;
             color: #232f62;
             cursor: pointer;
-            width: 93%;
+            //width: 93%;
             text-align: center;
             //height: 4vw;
             display: flex;
@@ -114,7 +112,7 @@ section#account{
             flex-direction: column;
             position: relative;
             font-family: Roboto, serif;
-            @include fonts(5);
+            //@include fonts(5);
             border: 0.2vw solid #cccccc;
             border-radius: 0.4vw;
             transition: 1s;
@@ -122,7 +120,7 @@ section#account{
             background-color: transparent;
             &:hover {
               color: #151515;
-              @include fonts(5);
+              //@include fonts(5);
               //border: 0.3vw solid #151515;
               //padding: 0.4vw;
               border-radius: 0.4vw;
@@ -142,7 +140,7 @@ section#account{
       width: 100%;
       div.name, div.info, div.balanceAccount{
         margin: 1vw;
-        @include fonts(5);
+        //@include fonts(5);
         padding: 1vw;
         box-sizing: border-box;
         color: #232f62;
@@ -155,7 +153,7 @@ section#account{
         flex-direction: column;
         position: relative;
         font-family: Roboto, serif;
-        @include fonts(5);
+        //@include fonts(5);
         border: 0.2vw solid #cccccc;
         border-radius: 0.4vw;
         transition: 1s;
@@ -163,7 +161,7 @@ section#account{
         background-color: transparent;
         &:hover {
           color: #151515;
-          @include fonts(5);
+          //@include fonts(5);
           //border: 0.3vw solid #151515;
           //padding: 0.4vw;
           border-radius: 0.4vw;
@@ -189,7 +187,7 @@ section#account{
         flex-direction: column;
         position: relative;
         font-family: Roboto, serif;
-        @include fonts(5);
+        //@include fonts(5);
         border: 0.2vw solid #cccccc;
         border-radius: 0.4vw;
         transition: 1s;

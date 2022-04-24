@@ -1,6 +1,6 @@
-@import "./docs/css/interface.scss";
-@import "./docs/css/fonts.scss";
-@import "./docs/css/media.scss";
+//@import "./docs/css/interface.scss";
+//@import "./docs/css/fonts.scss";
+//@import "./docs/css/media.scss";
 
 :root {
   --width: 100%;
@@ -98,7 +98,7 @@ input.name, input.address, input.account, input.help, input.runmethod,  input.ti
   justify-content: space-around;
   font-size: 3vw;
   color: steelblue;
-  @include fonts(8);
+  //@include fonts(8);
   font-family: Roboto,serif;
   /*color: #acb2b5;*/
   background: transparent;
@@ -118,7 +118,7 @@ label.name, label.address, label.account, div.container, label.runmethod{
   outline: none;
   justify-content: center;
   //height: 5vw;
-  @include fonts(8);
+  //@include fonts(8);
   font-family: Roboto,serif;
   color: #acb2b5;
   background: transparent;

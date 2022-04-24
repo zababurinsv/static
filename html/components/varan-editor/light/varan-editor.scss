@@ -1,6 +1,6 @@
-@import "./docs/css/interface.scss";
-@import "./docs/css/fonts.scss";
-@import "./docs/css/media.scss";
+//@import "./docs/css/interface.scss";
+//@import "./docs/css/fonts.scss";
+//@import "./docs/css/media.scss";
 
 [slot="view"],
 .ql-container,
@@ -56,7 +56,7 @@
 
   //border-bottom: 0.18vw solid #2ecc71;
   //box-shadow: rgba(0,0,0,0.2) 0 2px 8px;
-  @include varan-media(varan-font-size,1.736vw,1.736vw,1.736vw,1.410vw,1.410vw,1.410vw,1.410vw,0,0,0);
+  //@include varan-media(varan-font-size,1.736vw,1.736vw,1.736vw,1.410vw,1.410vw,1.410vw,1.410vw,0,0,0);
 }
 [slot="view"] > *,
 .ql-editor > * {
@@ -107,7 +107,7 @@
 
 [slot="view"] p,
 .ql-editor p {
-  @include varan-media(varan-font-size,1.736vw,1.736vw,1.736vw,1.410vw,1.410vw,1.410vw,1.410vw,0,0,0);
+  //@include varan-media(varan-font-size,1.736vw,1.736vw,1.736vw,1.410vw,1.410vw,1.410vw,1.410vw,0,0,0);
 }
 [slot="view"] ul > li::before,
 .ql-editor ul > li::before {
@@ -507,15 +507,15 @@
 }
 [slot="view"] .ql-size-small,
 .ql-editor .ql-size-small {
-  @include varan-media(varan-font-size,2.278vw,2.278vw,2.278vw,1.085vw,1.085vw,1.085vw,1.085vw,0,0,0);
+  //@include varan-media(varan-font-size,2.278vw,2.278vw,2.278vw,1.085vw,1.085vw,1.085vw,1.085vw,0,0,0);
 }
 [slot="view"] .ql-size-large,
 .ql-editor .ql-size-large {
-  @include varan-media(varan-font-size,3.363vw,3.363vw,3.363vw,3.092vw,3.092vw,3.092vw,3.092vw,0,0,0);
+  //@include varan-media(varan-font-size,3.363vw,3.363vw,3.363vw,3.092vw,3.092vw,3.092vw,3.092vw,0,0,0);
 }
 [slot="view"] .ql-size-huge,
 .ql-editor .ql-size-huge {
-  @include varan-media(varan-font-size,3.852vw,3.852vw,3.852vw,3.852vw,3.363vw,3.363vw,3.363vw,0,0,0);
+  //@include varan-media(varan-font-size,3.852vw,3.852vw,3.852vw,3.852vw,3.363vw,3.363vw,3.363vw,0,0,0);
 }
 [slot="view"] .ql-direction-rtl,
 .ql-editor .ql-direction-rtl {

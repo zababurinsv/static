@@ -1,8 +1,8 @@
-@import "./docs/css/fonts.scss";
-@import "./docs/css/media.scss";
-@import "./docs/css/interface.scss";
+//@import "./docs/css/fonts.scss";
+//@import "./docs/css/media.scss";
+//@import "./docs/css/interface.scss";
 @mixin h3(){
-  @include border();
+  //@include border();
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -10,7 +10,7 @@
   box-sizing: border-box;
   text-align: center;
   font-family: Roboto, serif;
-  @include fonts(4);
+  //@include fonts(4);
   text-align-last: left;
   margin: 0;
 }
@@ -83,14 +83,14 @@
   margin: auto;
 }
 section{
-  @include disabledSelectText();
-  @include display(column, nowrap, space-evenly, center, stretch);
+  //@include disabledSelectText();
+  //@include display(column, nowrap, space-evenly, center, stretch);
   div#graph{
-    @include display(row, nowrap, space-between, center, stretch);
+    //@include display(row, nowrap, space-between, center, stretch);
 
     div.bid_item{
-      @include display(column, nowrap,stretch, center, stretch);
-      @include border();
+      //@include display(column, nowrap,stretch, center, stretch);
+      //@include border();
       border-radius: 0.5vw;
       width: calc(100vw / 3.5);
       min-height: calc(100vw / 4);
@@ -99,34 +99,34 @@ section{
       label{
         border-top-right-radius: 0.5vw;
         border-top-left-radius: 0.5vw;
-        @include border();
+        //@include border();
         width: 100%;
         text-align-last: start;
-        @include disabledSelect();
+        //@include disabledSelect();
         input{
           margin-right: 1vw;
         }
       }
       div.content{
-        @include display(row, nowrap,space-between, center, stretch);
+        //@include display(row, nowrap,space-between, center, stretch);
         flex-grow: 1;
         background-color: white;
         div.info{
-          //@include border();
+          ////@include border();
           overflow: hidden;
           padding: 0;
           p.preview{
-            @include h3();
+            //@include h3();
             margin: 0;
             text-align-last: left;
             padding-left: 0.5vw;
           }
           width: 51%;
           box-sizing: border-box;
-          @include display(column, nowrap,stretch, center, stretch);
+          //@include display(column, nowrap,stretch, center, stretch);
 
           div.wrapper{
-            @include border();
+            //@include border();
             width: 100%;
             height: 100%;
             div.timestamp_info{
@@ -142,7 +142,7 @@ section{
               }
             }
             button.stat{
-              @include fonts(3);
+              //@include fonts(3);
               font-family: Roboto,serif;
               box-sizing: border-box;
               background: transparent;
@@ -154,7 +154,7 @@ section{
               padding: 0.25vw;
             }
             div.result{
-              @include display(row, nowrap,space-between, space-between, stretch);
+              //@include display(row, nowrap,space-between, space-between, stretch);
               box-sizing: border-box;
               padding: 0.25vw;
               div.result-item{
@@ -169,7 +169,7 @@ section{
         }
         div.orderbook{
           flex-grow: 1;
-          @include display(row, nowrap,space-between, center, stretch);
+          //@include display(row, nowrap,space-between, center, stretch);
 
           div{
             display: flex;
@@ -177,14 +177,14 @@ section{
             align-self: stretch;
             flex-grow: 1;
             p{
-              @include h3();
+              //@include h3();
               margin: 0;
               text-align-last: center;
             }
             div.bid, div.ask{
               display: flex;
               flex-direction: column;
-              @include border();
+              //@include border();
               div.item{
 
               }

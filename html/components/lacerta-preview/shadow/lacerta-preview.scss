@@ -1,9 +1,9 @@
-@import "./docs/css/interface.scss";
-@import "./docs/css/fonts.scss";
-@import "./docs/css/media.scss";
+//@import "./docs/css/interface.scss";
+//@import "./docs/css/fonts.scss";
+//@import "./docs/css/media.scss";
 
 section{
-  @include touch;
+  //@include touch;
   display: flex;
   padding: 0;
   flex-direction: row;
@@ -21,7 +21,7 @@ section{
 
   }
   div.center{
-    @include touch;
+    //@include touch;
     z-index: 77;
     max-width: 49vw;
     font-size: 6vw;
@@ -33,7 +33,7 @@ section{
     margin: 0;;
     border: none;
     p{
-      @include fonts(16);
+      //@include fonts(16);
       font-family: Roboto, serif;
       box-sizing: border-box;
       padding: 0;

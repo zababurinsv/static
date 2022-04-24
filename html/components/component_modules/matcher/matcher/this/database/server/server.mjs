@@ -1,8 +1,8 @@
 import conf from '/static/html/components/component_modules/matcher/matcher/this/database/config/index.mjs'
-import loader from '/static/html/components/component_modules/loader/loader.mjs'
+import Axios from '/static/html/components/component_modules/axios/axios.mjs'
+const axios = Axios['default']
 function server(obj, path,node, method) {
     return new Promise(async (resolve, reject) => {
-        await loader('https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js','axios')
             function setData( data) {
                 return new Promise((resolve, reject) => {
                     let formData  = new FormData();

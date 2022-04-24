@@ -805,7 +805,7 @@ customElements.define('varan-modal-button',
                         }
                         break
                       default:
-                        console.log(slot[key].assignedNodes()[i].tagName)
+                        // console.log(slot[key].assignedNodes()[i].tagName)
                         break
                     }
                   }

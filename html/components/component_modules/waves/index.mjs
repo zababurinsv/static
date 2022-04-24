@@ -1,7 +1,7 @@
-import colorlog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
+// import colorlog from '/static/html/components/component_modules/colorLog/colorLog.mjs'
 import waves from '/static/html/components/component_modules/bundle/waves/waves.index.mjs'
 import config from '/static/html/components/component_modules/account/com.waves-ide_config.mjs'
-import task from '/static/html/components/component_modules/heap/index.mjs'
+// import task from '/static/html/components/component_modules/heap/index.mjs'
 import Axios from '/static/html/components/component_modules/axios/axios.mjs'
 let axios = Axios['default']
 
@@ -9,8 +9,9 @@ let system = {
     net: 'W',
     wvs: 10 ** 8
 }
+
 export default class Waves {
-    constructor(...args) {
+    constructor() {
         this.bank = this.bank.bind(this)
         this.matcher = this.matcher.bind(this)
         this.settings = this.settings.bind(this)
@@ -31,6 +32,7 @@ export default class Waves {
         this.amountNormalize = this.amountNormalize.bind(this)
         this.compareUint8Arrays = this.compareUint8Arrays.bind(this)
     }
+
     compareUint8Arrays(arr1, arr2) {
         //  true    - arr1 bigger
         //  false    - arr2 bigger
@@ -38,6 +40,7 @@ export default class Waves {
         let item2 = waves.base58.decode(arr2)
         return item1.toString('hex') > item2.toString('hex');
     }
+
     matcher(view = true,property='T',color = 'black', substrate={ },relation='matcher'  ) {
         return new Promise(async (resolve, reject) => {
             try {
@@ -62,6 +65,7 @@ export default class Waves {
             }
         })
     }
+
     settings(view = true,property='T',color = 'black', substrate={ },relation='matcher'  ) {
         return new Promise(async (resolve, reject) => {
             await axios({
@@ -86,10 +90,12 @@ export default class Waves {
             });
         })
     }
+
     UserException(message) {
         this.message = message;
         this._scriptDir = import.meta.url;
     }
+
     createNFT(view = true,property='a',color = 'black', substrate={_:'button'},relation='transfer'  ) {
         return new Promise(async (resolve, reject) => {
             try {
@@ -136,9 +142,11 @@ export default class Waves {
             }
         })
     }
+
     getNFT(address='', limit = 1, after = undefined, type){
         return new Promise(async (resolve, reject)=>{
            try {
+               console.assert(false)
             let balance = {}
             if(after === undefined){
                 balance = await fetch(`${config[`${type}`][0]}/assets/nft/${address}/limit/${limit}`)
@@ -161,6 +169,7 @@ export default class Waves {
            }
         })
     }
+
     getOrders(view = true,property='',color = 'black', substrate={_:'order'},relation='order'  ){
         return new Promise(async (resolve, reject)=>{
             try {
@@ -190,6 +199,7 @@ export default class Waves {
             }
         })
     }
+
     cancelAllOrders(view = true,property='',color = 'black', substrate={_:'order'},relation='order'  ){
         return new Promise(async (resolve, reject)=>{
          try {
@@ -218,6 +228,7 @@ export default class Waves {
              }
         })
     }
+
     order(view = true,property='',color = 'black', substrate={_:'order'},relation='order'  ){
         return new Promise(async (resolve, reject)=>{
             let order = {
@@ -255,17 +266,21 @@ export default class Waves {
               });
         })
     }
+
     denormalize(price, priceAssetDecimals, amountAssetDecimals){
         let wvsPrice = 10 ** (priceAssetDecimals - amountAssetDecimals + 8)
         return price/wvsPrice
     }
+
     normalize(price, amountAssetDecimals, priceAssetDecimals){
         let wvsPrice = 10 ** (8 + priceAssetDecimals - amountAssetDecimals)
         return price * wvsPrice
     }
+
     amountNormalize(amount, decimals) {
         return amount * 10 ** decimals
     }
+
     details(v,p,c,s,r){
         return new Promise(async (resolve, reject)=>{
             try {
@@ -287,6 +302,7 @@ export default class Waves {
             }
         })
     }
+
     balance(id){
         return new Promise(async (resolve, reject)=>{
             try {
@@ -308,29 +324,36 @@ export default class Waves {
             }
         })
     }
+
     transfer(console = true,property='a',color = 'black', substrate={_:'button'},relation='transfer'  ){
         // return queue(console, property,color,substrate,relation)
     }
+
     faucet(console = true,property='a',color = 'black', substrate={_:'button'},relation='faucet'  ){
         // return queue(console, property,color,substrate,relation)
     }
+
     bank(console = true,property='a',color = 'black', substrate={_:'button'},relation='bank'  ){
         // return queue(console, property,color,substrate,relation)
     }
+
     wallet(console = true,property='a',color = 'black', substrate={_:'player'},relation='wallet'  ){
         // return queue(console, property,color,substrate,relation)
     }
+
     waitForTx(id, node){
         return  new Promise(async (resolve, reject) => {
             resolve(waves.transactions['waitForTx'](id, node))
         })
     }
+
     end(event){
-        queue(event['detail']['console'], '~end',event['detail']['color'],event['detail']['substrate'],event['detail']['relation']).then((data)=>{
-
-            colorlog(true, 'stat','stat',data, 'статистика')
-
-        })
+        console.log('waves закоментированно действие', event)
+        // queue(event['detail']['console'], '~end',event['detail']['color'],event['detail']['substrate'],event['detail']['relation']).then((data)=>{
+        //
+        //     colorlog(true, 'stat','stat',data, 'статистика')
+        //
+        // })
     }
     get self() {
         return waves

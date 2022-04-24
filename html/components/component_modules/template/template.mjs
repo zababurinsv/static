@@ -31,34 +31,34 @@ function msConversion(millis) {
 }
 export default async (obj, func, ...args)=>{
     return new Promise(async function (resolve, reject) {
-            let out = (obj) => {
-                // //console.log('~~~ out router ~~~')
-                resolve(obj)
-            }
-            let err = (error) => {
-                console.log('~~~ err router ~~~', error)
-                reject(error)
-            }
-            switch (func) {
-                case 'create':
-                    (async (obj, props,data, server) => {
-                        try {
-                            console.log(`${obj['input']}[(request)${obj[props]}]`)
-                            let template = []
-                            switch (obj[props]) {
-                                case 'news':
-                                        let newsDescription  = await   utils({
-                                            input:'varan-menu',
-                                            data: obj['data']['content'],
-                                            type:'string2html'
-                                        },'convert', 'type')
-                                        let newsContent  = await   utils({
-                                            input:'varan-menu',
-                                            data: obj['data']['content:encoded'],
-                                            type:'string2html'
-                                        },'convert', 'type')
+        let out = (obj) => {
+            // //console.log('~~~ out router ~~~')
+            resolve(obj)
+        }
+        let err = (error) => {
+            console.log('~~~ err router ~~~', error)
+            reject(error)
+        }
+        switch (func) {
+            case 'create':
+               await (async (obj, props,data, server) => {
+                    try {
+                        console.log(`${obj['input']}[(request)${obj[props]}]`)
+                        let template = []
+                        switch (obj[props]) {
+                            case 'news':
+                                let newsDescription  = await   utils({
+                                    input:'varan-menu',
+                                    data: obj['data']['content'],
+                                    type:'string2html'
+                                },'convert', 'type')
+                                let newsContent  = await   utils({
+                                    input:'varan-menu',
+                                    data: obj['data']['content:encoded'],
+                                    type:'string2html'
+                                },'convert', 'type')
 
-                                        let feed = `<!--
+                                let feed = `<!--
         --><details class="item item_${Date.parse(obj['data']['isoDate'])}"><!--
         --><div class="timestamp" style="display: none">${Date.parse(obj['data']['isoDate'])}</div><!--
                 --><summary class="item_content"><!--
@@ -92,24 +92,24 @@ export default async (obj, func, ...args)=>{
 
 
 
-                                    out(feed)
-                                    break
-                                case 'template':
-                                    for(let i = 0; i < obj['data'].length; i++){
+                                out(feed)
+                                break
+                            case 'template':
+                                for(let i = 0; i < obj['data'].length; i++){
 
-                                        let description  = await   utils({
-                                            input:'varan-menu',
-                                            data: obj['data'][i]['content'],
-                                            type:'string2html'
-                                        },'convert', 'type')
-                                        let content  = await   utils({
-                                            input:'varan-menu',
-                                            data: obj['data'][i]['content:encoded'],
-                                            type:'string2html'
-                                        },'convert', 'type')
+                                    let description  = await   utils({
+                                        input:'varan-menu',
+                                        data: obj['data'][i]['content'],
+                                        type:'string2html'
+                                    },'convert', 'type')
+                                    let content  = await   utils({
+                                        input:'varan-menu',
+                                        data: obj['data'][i]['content:encoded'],
+                                        type:'string2html'
+                                    },'convert', 'type')
 
-                                        // console.assert(false,obj['data'][i]['pubDate'])
-                                        let feed = `<!--
+                                    // console.assert(false,obj['data'][i]['pubDate'])
+                                    let feed = `<!--
         --><details class="item item_${i}"><!--
         --><div class="timestamp" style="display: none">${Date.parse(obj['data'][i]['isoDate'])}</div><!--
                 --><summary class="item_content"><!--
@@ -140,40 +140,40 @@ export default async (obj, func, ...args)=>{
                     --><button class="change"> изменить </button><!--
                 --></div><!--
             --></details>`
-                                        template.push(feed)
-                                    }
+                                    template.push(feed)
+                                }
 
-                                    out(template)
-                                    break
-                                case'about':
-                                    // console.assert(false, obj)
+                                out(template)
+                                break
+                            case'about':
+                                // console.assert(false, obj)
+                                let description  = await   utils({
+                                    input:'template',
+                                    data:  obj['data'],
+                                    type:'string2html'
+                                },'convert', 'type')
+
+                                let about = `<div class = "content">${description}</div>`
+
+                                out(about)
+
+                                break
+                            case 'templateJson':
+
+                                for(let i = 0; i < obj['data'].length; i++){
+
                                     let description  = await   utils({
-                                        input:'template',
-                                        data:  obj['data'],
+                                        input:'varan-menu',
+                                        data: obj['data'][i]['summary'],
+                                        type:'string2html'
+                                    },'convert', 'type')
+                                    let content  = await   utils({
+                                        input:'varan-menu',
+                                        data: obj['data'][i]['content_html'],
                                         type:'string2html'
                                     },'convert', 'type')
 
-                                    let about = `<div class = "content">${description}</div>`
-
-                                    out(about)
-
-                                    break
-                                case 'templateJson':
-
-                                    for(let i = 0; i < obj['data'].length; i++){
-
-                                        let description  = await   utils({
-                                            input:'varan-menu',
-                                            data: obj['data'][i]['summary'],
-                                            type:'string2html'
-                                        },'convert', 'type')
-                                        let content  = await   utils({
-                                            input:'varan-menu',
-                                            data: obj['data'][i]['content_html'],
-                                            type:'string2html'
-                                        },'convert', 'type')
-
-                                        let feed = `<!--
+                                    let feed = `<!--
         --><details class="item item_${i}"><!--
                 --><div class="timestamp" style="display: none"></div><!--
                 --><summary class="item_content"><!--
@@ -204,41 +204,41 @@ export default async (obj, func, ...args)=>{
                     --><button class="change"> изменить </button><!--
                 --></div><!--
             --></details>`
-                                        template.push(feed)
-                                    }
+                                    template.push(feed)
+                                }
 
-                                    out(template)
-                                    break
-                                case 'moderator':
-
-
-
-                                    let outTemplate = []
-                                    let html = {}
-                                    for(let i = 0; i < obj['data'].length; i++){
-
-                                        let cont = await   utils({
-                                            input:'template',
-                                            data:obj['data'][i]['content'],
-                                            type:'string2html'
-                                        },'convert', 'type')
-                                        let descr = await   utils({
-                                            input:'template',
-                                            data:obj['data'][i]['description'],
-                                            type:'string2html'
-                                        },'convert', 'type')
-
-
-                                        if(data === undefined){
-
-                                            if(obj['data'][i]['positionImg'] === false || obj['data'][i]['positionImg'] === 'false'){
+                                out(template)
+                                break
+                            case 'moderator':
 
 
 
-                                                html =             `<!--
+                                let outTemplate = []
+                                let html = {}
+                                for(let i = 0; i < obj['data'].length; i++){
+
+                                    let cont = await   utils({
+                                        input:'template',
+                                        data:obj['data'][i]['content'],
+                                        type:'string2html'
+                                    },'convert', 'type')
+                                    let descr = await   utils({
+                                        input:'template',
+                                        data:obj['data'][i]['description'],
+                                        type:'string2html'
+                                    },'convert', 'type')
 
 
-                             --><details class="adminMenu item_${i}" ><!--
+                                    if(data === undefined){
+
+                                        if(obj['data'][i]['positionImg'] === false || obj['data'][i]['positionImg'] === 'false'){
+
+
+
+                                            html =             `<!--
+
+
+                            --><details class="adminMenu item_${i}" ><!--
                                 --><div class="timestamp" style="display: none">${obj['data'][i]['timestamp']}</div><!--
                                                       --><summary class="adminContent"><!--
                                                       --><div class ="item"><!--
@@ -261,9 +261,9 @@ export default async (obj, func, ...args)=>{
                                   --></details><!--
                                     
                                     `
-                                            }else{
+                                        }else{
 
-                                                html =       `<!--                  
+                                            html =       `<!--                  
                                                     --><details class="adminMenu item_${i}" ><!--
                                                        --><div class="timestamp" style="display: none">${obj['data'][i]['timestamp']}</div><!--
                                                     --><summary class="adminContent"><!--
@@ -285,18 +285,18 @@ export default async (obj, func, ...args)=>{
                                                     --><button class="change"> изменить </button><!--
                                         --></div><!--
                                 --></details> <!--`
-                                            }
+                                        }
 
-                                        }else{
+                                    }else{
 
-                                            if(obj['data'][i]['positionImg'] === false || obj['data'][i]['positionImg'] === 'false'){
-
-
-
-                                                html =             `<!--
+                                        if(obj['data'][i]['positionImg'] === false || obj['data'][i]['positionImg'] === 'false'){
 
 
-                             --><details class="adminMenu item_${data}" ><!--
+
+                                            html =             `<!--
+
+
+                                --><details class="adminMenu item_${data}" ><!--
                                 --><div class="timestamp" style="display: none">${obj['data'][i]['timestamp']}</div><!--
                                                       --><summary class="adminContent"><!--
                                                       --><div class ="item"><!--
@@ -320,9 +320,9 @@ export default async (obj, func, ...args)=>{
                                   --></details><!--
                                     
                                     `
-                                            }else{
+                                        }else{
 
-                                                html =       `<!--                  
+                                            html =       `<!--                  
                                                     --><details class="adminMenu item_${data}" ><!--
                                                        --><div class="timestamp" style="display: none">${obj['data'][i]['timestamp']}</div><!--
                                                     --><summary class="adminContent"><!--
@@ -348,36 +348,35 @@ export default async (obj, func, ...args)=>{
                                                     --><button class="change"> изменить </button><!--
                                         --></div><!--
                                 --></details> <!--`
-                                            }
-
                                         }
 
-
-
-                                        outTemplate.push(html)
                                     }
 
 
 
-                                    out(outTemplate)
-                                    break
-                                default:
-                                    err(`необрабатываемый тип запроса ${obj[props]}` )
-                                    break
-                            }
-                        } catch (e) { err(e) }
-                    })(obj, args[0], args[1], args[2], args[3])
-                    break
-                case 'get':
-                    (async (obj, props,data) => {
-                        try {
-                            // console.log(`app(${func}[(${obj['input']})${obj[props]}]property)`)
-                            switch (obj[props]) {
-                                case 'auth':
-                                    (async (obj, props,data) => {
-                                        try {
+                                    outTemplate.push(html)
+                                }
 
-                                            let auth = `
+
+
+                                out(outTemplate)
+                                break
+                            default:
+                                err(`необрабатываемый тип запроса ${obj[props]}` )
+                                break
+                        }
+                    } catch (e) { err(e) }
+                })(obj, args[0], args[1], args[2], args[3])
+                break
+            case 'get':
+                await (async (obj, props,data) => {
+                    try {
+                        // console.log(`app(${func}[(${obj['input']})${obj[props]}]property)`)
+                        switch (obj[props]) {
+                            case 'auth':
+                                await (async (obj, props,data) => {
+                                    try {
+                                        let auth = `
                                             <div class="col-md-8 m-auto">
                                             <h1 class="display-4 text-center">
                                             Регистрация
@@ -404,15 +403,14 @@ export default async (obj, func, ...args)=>{
                                             <input type="submit" class="btn btn-info btn-block mt-4">
                                             </form>
                                             </div>`
-                                            out(auth)
-                                        } catch (e) { err(e) }
-                                    })(obj, args[0], args[1], args[2], args[3])
-                                    break
-
-                                case 'login':
-                                    (async (obj, props,data) => {
-                                        try {
-                                            let login = `
+                                        out(auth)
+                                    } catch (e) { err(e) }
+                                })(obj, args[0], args[1], args[2], args[3])
+                                break
+                            case 'login':
+                                await (async (obj, props,data) => {
+                                    try {
+                                        let login = `
                                              <div class="col-md-8 m-auto">
                                              <h1 class="display-4 text-center">
                                              Вход
@@ -430,26 +428,26 @@ export default async (obj, func, ...args)=>{
                                              <input type="submit" class="btn btn-info btn-block mt-4">
                                              </form>
                                              </div>`
-                                            out(login)
-                                        } catch (e) { err(e) }
-                                    })(obj, args[0], args[1], args[2], args[3])
-                                    break
-                                case 'card':
-                                    (async (obj, props,data) => {
-                                        try {
-                                            let cont = await   utils({
-                                                input:'template',
-                                                data:obj['data']['content_html'],
-                                                type:'string2html'
-                                            },'convert', 'type')
-                                            let descr = await   utils({
-                                                input:'template',
-                                                data:obj['data']['summary'],
-                                                type:'string2html'
-                                            },'convert', 'type')
-                                            let lime = msConversion(obj['data']['details']['time']*60*1000)
+                                        out(login)
+                                    } catch (e) { err(e) }
+                                })(obj, args[0], args[1], args[2], args[3])
+                                break
+                            case 'card':
+                                await (async (obj, props,data) => {
+                                    try {
+                                        let cont = await   utils({
+                                            input:'template',
+                                            data:obj['data']['content_html'],
+                                            type:'string2html'
+                                        },'convert', 'type')
+                                        let descr = await   utils({
+                                            input:'template',
+                                            data:obj['data']['summary'],
+                                            type:'string2html'
+                                        },'convert', 'type')
+                                        let lime = msConversion(obj['data']['details']['time']*60*1000)
 
-                                            let html  = `
+                                        let html  = `
              <div class = "item timestamp_${Date.parse(obj['data']['date_modified'])} ">
                 <label class="details">
                     <div class="content">
@@ -501,24 +499,24 @@ export default async (obj, func, ...args)=>{
                 </label>
             </div>
                                         `
-                                            out(html)
-                                        } catch (e) { err(e) }
-                                    })(obj, args[0], args[1], args[2], args[3])
-                                    break
-                                case 'cardAdmin':
-                                    (async (obj, props,data) => {
-                                        try {
-                                            let cont = await   utils({
-                                                input:'template',
-                                                data:obj['data']['content_html'],
-                                                type:'string2html'
-                                            },'convert', 'type')
-                                            let descr = await   utils({
-                                                input:'template',
-                                                data:obj['data']['summary'],
-                                                type:'string2html'
-                                            },'convert', 'type')
-                                            let html  = `
+                                        out(html)
+                                    } catch (e) { err(e) }
+                                })(obj, args[0], args[1], args[2], args[3])
+                                break
+                            case 'cardAdmin':
+                                await (async (obj, props,data) => {
+                                    try {
+                                        let cont = await   utils({
+                                            input:'template',
+                                            data:obj['data']['content_html'],
+                                            type:'string2html'
+                                        },'convert', 'type')
+                                        let descr = await   utils({
+                                            input:'template',
+                                            data:obj['data']['summary'],
+                                            type:'string2html'
+                                        },'convert', 'type')
+                                        let html  = `
              <div class = "item timestamp_${Date.parse(obj['data']['date_modified'])}">
                 <label class="details">
                     <div class="content">
@@ -553,36 +551,35 @@ export default async (obj, func, ...args)=>{
                         </div>
                     </div>
                 </label>
-            </div>
-                                        `
-                                            // console.assert(false, html)
-                                            out(html)
-                                        } catch (e) { err(e) }
-                                    })(obj, args[0], args[1], args[2], args[3])
-                                    break
-                                case 'cardPrice':
-                                    (async (obj, props,data) => {
-                                        try {
-                                            let object = document.createElement('div')
-                                            let html  = `
+            </div>`
+                                        // console.assert(false, html)
+                                        out(html)
+                                    } catch (e) { err(e) }
+                                })(obj, args[0], args[1], args[2], args[3])
+                                break
+                            case 'cardPrice':
+                                await (async (obj, props,data) => {
+                                    try {
+                                        let object = document.createElement('div')
+                                        let html  = `
                                             
                                             
                                             `
-                                            // console.assert(false, html)
-                                            out(html)
-                                        } catch (e) { err(e) }
-                                    })(obj, args[0], args[1], args[2], args[3])
-                                    break
-                                default:
-                                    err(`new type [(${func})${obj[props]}]`)
-                                    break
-                            }
-                        } catch (e) { err(e) }
-                    })(obj, args[0], args[1], args[2], args[3])
-                    break
-                default:
-                    err(`новая функция ${func}`)
-                    break
-            }
+                                        // console.assert(false, html)
+                                        out(html)
+                                    } catch (e) { err(e) }
+                                })(obj, args[0], args[1], args[2], args[3])
+                                break
+                            default:
+                                err(`new type [(${func})${obj[props]}]`)
+                                break
+                        }
+                    } catch (e) { err(e) }
+                })(obj, args[0], args[1], args[2], args[3])
+                break
+            default:
+                err(`новая функция ${func}`)
+                break
+        }
     })
 }

@@ -1,6 +1,6 @@
-@import "./docs/css/interface.scss";
-@import "./docs/css/fonts.scss";
-@import "./docs/css/media.scss";
+//@import "./docs/css/interface.scss";
+//@import "./docs/css/fonts.scss";
+//@import "./docs/css/media.scss";
 
 
 @mixin borderClean() {
@@ -24,7 +24,7 @@
   box-sizing: border-box;
   text-align: center;
   cursor: pointer;
-  @include fonts(8);
+  //@include fonts(8);
   font-family: Roboto,serif;
   background-color: transparent;
   position: relative;
@@ -38,31 +38,31 @@
 @mixin palyer() {
 
   label{
-    @include display(column, nowrap, space-evenly, center, stretch);
+    //@include display(column, nowrap, space-evenly, center, stretch);
     width: 100%;
     //align-items: center;
-    @include fonts(8);
+    //@include fonts(8);
     font-family: Roboto,serif;
     margin: 0.25vw;
     p{
-      @include borderClean();
+      //@include borderClean();
       margin-top: 0;
     }
   }
   div.option{
-    @include display(row, nowrap, space-evenly, center, stretch);
+    //@include display(row, nowrap, space-evenly, center, stretch);
     input{
       flex-grow: 1;
-      @include fonts(8);
-      @include borderClean();
+      //@include fonts(8);
+      //@include borderClean();
       font-family: Roboto,serif;
       margin: 0.25vw;
       cursor: text;
     }
     select, button{
       flex-grow: 1;
-      @include fonts(8);
-      @include borderClean();
+      //@include fonts(8);
+      //@include borderClean();
       font-family: Roboto,serif;
       margin: 0.25vw;
       border: none;
@@ -74,8 +74,8 @@
   margin: auto;
 }
 div.player-input{
-  @include display(row, nowrap, space-evenly, center, stretch);
-  @include palyer();
+  //@include display(row, nowrap, space-evenly, center, stretch);
+  //@include palyer();
   border-radius: 0.5vw;
   width: 100%;
   box-shadow: inset 0vw 0vw 1vw 0px #7694f4;

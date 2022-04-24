@@ -1,6 +1,6 @@
-@import "./docs/css/interface.scss";
-@import "./docs/css/fonts.scss";
-@import "./docs/css/media.scss";
+//@import "./docs/css/interface.scss";
+//@import "./docs/css/fonts.scss";
+//@import "./docs/css/media.scss";
 
 :host{
   width: 100%;
@@ -8,15 +8,15 @@
 }
 
 .bus {
-  @include display(row, nowrap, space-evenly, center, stretch);
+  //@include display(row, nowrap, space-evenly, center, stretch);
   flex-grow: 1;
 
   &-account {
     flex-grow: 1;
-    @include display(row, nowrap, space-between, center, stretch);
+    //@include display(row, nowrap, space-between, center, stretch);
 
     &-label {
-      @include display(column, nowrap, flex-start, center, stretch);
+      //@include display(column, nowrap, flex-start, center, stretch);
     }
 
     &-input {

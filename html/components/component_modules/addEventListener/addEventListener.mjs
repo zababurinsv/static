@@ -11,7 +11,8 @@ export default (obj, self)=>{
 
         // console.assert(false)
 
-        obj.addEventListener('click', async (e)=>{
+        obj.addEventListener('click', async (e) => {
+            console.assert(false)
             let verify = true
             let id =  e.target.parentNode
             while(verify){
