@@ -1,5 +1,4 @@
-import modules from '/static/html/components/auction-graph/modules/index.mjs'
-import { Counter } from '/static/html/components/auction-graph/modules/Counter.mjs'
+import Modules from '/static/html/components/auction-graph/modules/index.mjs'
 import { node } from '/static/html/components/component_modules/hooks/index.mjs'
 
 const template = (self) => {
@@ -18,11 +17,9 @@ const template = (self) => {
 const index =  class extends HTMLElement {
   constructor () {
     super()
-    template(this)
-      .then(data => modules(data))
-      .catch(error => {
+    template(this).catch(error => {
         console.warn('error', error)
-      })
+    })
   }
 
   router = () => {
@@ -43,18 +40,8 @@ const index =  class extends HTMLElement {
   }
 
   connectedCallback() {
-    let App = {}
-    App = node.render(Counter, this)
-    App.url('https://www.org.com')
-    App.type('bar')
-    App.type('bazz')
-    App.type('bazz2')
-    App.type('bazz3')
-    App.type('bazz4')
-    App.click()
-    App.click()
-    App.click()
-
+    let api = node.render(Modules, this.shadowRoot.querySelector('div'))
+    api = api.start()
   }
 
   disconnectedCallback() {

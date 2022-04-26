@@ -256,7 +256,7 @@ export default function Peppermint(_this, options) {
   function addEvent(el, event, func, bool) {
     if (!event) return;
 
-    el.addEventListener? el.addEventListener(event, func, !!bool): el.attachEvent('on'+event, func);
+    el.addEventListener? el.addEventListener(event, func, !!bool): el.attachEvent('on'+event, func, { passive: true} );
   }
 
   //init touch events
@@ -562,7 +562,7 @@ function EventBurrito(_this, options) {
   function addEvent(el, event, func, bool) {
     if (!event) return;
 
-    el.addEventListener? el.addEventListener(event, func, !!bool): el.attachEvent('on'+event, func);
+    el.addEventListener? el.addEventListener(event, func, !!bool): el.attachEvent('on'+event, func, { passive: true} );
 
     //return event remover to easily remove anonymous functions later
     return {

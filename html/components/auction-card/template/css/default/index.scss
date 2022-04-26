@@ -18,7 +18,7 @@
   justify-content: center;
   width:  14vw;
   height: 19.8vw;
-  margin: $--margin/2 auto $--margin-bottom auto;
+  margin: $--margin-1 auto $--margin-bottom auto;
   border: $--border solid black;
   border-radius: var(--border-radius);
 }
@@ -27,7 +27,7 @@
   position: relative;
   width: 2vw;
   height: 0.5vw;
-  margin: $--margin/2 auto 0 auto;
+  margin: $--margin-1 auto 0;
   border: 0.3vw solid $--fir;
   border-radius: 50%;
   border-right-color: transparent;
